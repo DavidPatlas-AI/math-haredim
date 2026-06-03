@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פירוק לגורמים - גורם משותף והפרש ריבועים</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#3a2814;--paper:#f5efe6;--accent:#b5651d;--accent2:#2d6a4f;--gold:#c9a227;--line:#e2d8c8;--shadow:0 10px 30px rgba(58,40,20,.12)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(181,101,29,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:820px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"a²-b²";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:88px;font-weight:900;color:rgba(58,40,20,.05);top:25px;left:16px;direction:ltr}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.25rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#6b5944;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:1.9rem;margin:16px 0;padding:16px;background:var(--paper);border-radius:12px;border:1.5px dashed var(--line);direction:ltr}
+  .note{background:rgba(181,101,29,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(45,106,79,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;direction:ltr;text-align:left}
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:10px;margin-top:14px}
+  .exercise{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;gap:8px;align-items:center;min-height:58px}
+  .num{font-weight:800;color:var(--accent);min-width:30px}
+  .math{font-family:'Frank Ruhl Libre',serif;font-size:1.13rem;direction:ltr;text-align:left;flex:1}
+  .answer{font-family:'Frank Ruhl Libre',serif;font-size:1.08rem;color:var(--accent2);direction:ltr;text-align:left;display:none;flex:1;font-weight:700}
+  .show-answers .math{display:none}.show-answers .answer{display:block}
+  .controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+  .ctrl{font-family:'Heebo';font-weight:700;font-size:.92rem;border:2px solid var(--accent);background:var(--accent);color:#fff;padding:8px 16px;border-radius:10px;cursor:pointer}
+  .ctrl.secondary{background:#fff;color:var(--accent)}
+  .topic-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+  .topic-tabs button{font-family:'Heebo';font-weight:700;border:1.5px solid var(--line);background:#fff;color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer}
+  .topic-tabs button.active{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+  .anim-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .anim-pick button{font-family:'Frank Ruhl Libre',serif;font-size:1.05rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;direction:ltr}
+  .anim-pick button.active{background:var(--ink);color:#fff}
+  .steps{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+  .step{font-family:'Frank Ruhl Libre',serif;font-size:1.45rem;direction:ltr;text-align:center;background:var(--paper);border-radius:12px;padding:14px;opacity:0;transform:translateY(8px);transition:.4s}
+  .step.show{opacity:1;transform:none}
+  .step .lbl{display:block;font-family:'Heebo';font-size:.8rem;color:#6b5944;margin-top:4px;direction:rtl}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#6b5944}.scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:1.7rem;font-weight:900;direction:ltr;padding:22px;background:var(--paper);border-radius:14px;margin-bottom:16px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.05rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+  .opts button.wrong{background:#c0392b;color:#fff;border-color:#c0392b}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#9a8a72;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">פרק ד׳ · פירוק לגורמים</div>
+    <h1>הוצאת גורם משותף והפרש ריבועים</h1>
+    <div class="sub">פירוק לפי נוסחת הכפל המקוצר וגורם משותף</div>
+  </header>
+
+  <nav>
+    <button class="active" data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🎬 שלב-שלב</button>
+    <button data-t="practice">✍️ תרגול</button>
+    <button data-t="game">🎮 משחק</button>
+  </nav>
+
+  <section id="learn" class="show">
+    <div class="card">
+      <h2>הוצאת גורם משותף <span class="tag">חזרה</span></h2>
+      <p>כאשר לכל האיברים יש גורם משותף, מוציאים אותו מחוץ לסוגריים.</p>
+      <div class="formula">ab + ac = a(b + c)</div>
+      <div class="examples">
+        <div>5x + 5 = 5(x + 1)</div>
+        <div>x³ + 2x² + x = x(x² + 2x + 1)</div>
+        <div>t³ − 3t² − t = t(t² − 3t − 1)</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>הפרש ריבועים <span class="tag">נוסחה מרכזית</span></h2>
+      <p>כאשר יש חיסור בין שני ריבועים, מפרקים לשני סוגריים: הפרש כפול סכום.</p>
+      <div class="formula">a² − b² = (a − b)(a + b)</div>
+      <div class="examples">
+        <div>x² − 4 = (x − 2)(x + 2)</div>
+        <div>25 − b² = (5 − b)(5 + b)</div>
+        <div>4x² − 9 = (2x − 3)(2x + 3)</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שני שלבים <span class="tag">גורם משותף ואז נוסחה</span></h2>
+      <p>לפעמים קודם מוציאים גורם משותף, ורק אחר כך משתמשים בנוסחת הפרש ריבועים.</p>
+      <div class="formula">2x² − 18 = 2(x² − 9) = 2(x − 3)(x + 3)</div>
+      <div class="warn">סדר עבודה מומלץ: קודם גורם משותף, אחר כך נוסחת כפל מקוצר.</div>
+    </div>
+  </section>
+
+  <section id="anim">
+    <div class="card">
+      <h2>פירוק שלב-אחר-שלב 🎬</h2>
+      <p>בחרי תרגיל ולחצי הפעל.</p>
+      <div class="anim-pick" id="animPick"></div>
+      <div class="steps" id="steps"></div>
+      <div class="controls"><button class="ctrl" id="playBtn">▶ הפעל</button></div>
+    </div>
+  </section>
+
+  <section id="practice">
+    <div class="card" id="practiceCard">
+      <h2>תרגול מהתמונות <span class="tag">תרגילים 1-45</span></h2>
+      <div class="topic-tabs">
+        <button class="active" data-filter="all">הכול</button>
+        <button data-filter="common">גורם משותף</button>
+        <button data-filter="missing">מציאת הגורם</button>
+        <button data-filter="square">הפרש ריבועים</button>
+        <button data-filter="two">שני שלבים</button>
+      </div>
+      <div class="controls"><button class="ctrl" id="showAnswers">הצג תשובות</button><button class="ctrl secondary" id="hideAnswers">הסתר תשובות</button></div>
+      <div class="exercise-grid" id="exerciseList"></div>
+    </div>
+  </section>
+
+  <section id="game">
+    <div class="card">
+      <h2>משחק פירוק לגורמים 🎮</h2>
+      <div class="scoreboard"><div class="box"><div class="who">ניקוד</div><div class="pts" id="score">0</div></div><div class="box"><div class="who">שאלה</div><div class="pts" id="count">1</div></div></div>
+      <div class="turn-banner">בחרי את הפירוק הנכון</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>על פי הספר: שלמה אבידן - מכינה טכנולוגית · יחידה 1 · טכניקה אלגברית</footer>
+</div>
+
+<script>
+const EX = [
+  [1,'2a + 2b','2(a + b)','common'],[2,'4a − 8b','4(a − 2b)','common'],[3,'5x − 10y + 25z','5(x − 2y + 5z)','common'],[4,'9xy − 27y','9y(x − 3)','common'],[5,'16ab − 4ac','4a(4b − c)','common'],[6,'a² − a','a(a − 1)','common'],[7,'3m² − 6m + 9','3(m² − 2m + 3)','common'],[8,'2x³ − x² − 2x','x(2x² − x − 2)','common'],[9,'3a² + 15a + 18a³','3a(a + 5 + 6a²)','common'],[10,'−x − 5','−(x + 5)','common'],[11,'−x² − x','−x(x + 1)','common'],[12,'−2a³ + 8a²','2a²(−a + 4)','common'],
+  [13,'2x² + 6 = □(x² + 3)','2','missing'],[14,'2x + 10 = □(x + 5)','2','missing'],[15,'9a + 9 = □(a + 1)','9','missing'],[16,'a² + 4a = □(a + 4)','a','missing'],[17,'x² − x = □(x − 1)','x','missing'],[18,'x³ − x² = □(x − 1)','x²','missing'],[19,'y² − y³ = □(1 − y)','y²','missing'],[20,'A³ − A² = □(A − 1)','A²','missing'],[21,'7y + 28 = □(y + 4)','7','missing'],[22,'m − 2m² + 3m³ = □(1 − 2m + 3m²)','m','missing'],
+  [23,'x² − 4','(x − 2)(x + 2)','square'],[24,'x² − 100','(x − 10)(x + 10)','square'],[25,'25 − x²','(5 − x)(5 + x)','square'],[26,'16 − x²','(4 − x)(4 + x)','square'],[27,'a² − 81','(a − 9)(a + 9)','square'],[28,'49 − b²','(7 − b)(7 + b)','square'],[29,'9x² − 1','(3x − 1)(3x + 1)','square'],[30,'25x² − 9','(5x − 3)(5x + 3)','square'],[31,'16 − 4x²','(4 − 2x)(4 + 2x)','square'],[32,'9a² − 4b²','(3a − 2b)(3a + 2b)','square'],[33,'36a² − 25b²','(6a − 5b)(6a + 5b)','square'],[34,'y² − 49x²','(y − 7x)(y + 7x)','square'],
+  [35,'3x² − 12','3(x − 2)(x + 2)','two'],[36,'5x² − 125','5(x − 5)(x + 5)','two'],[37,'9a² − 9','9(a − 1)(a + 1)','two'],[38,'y³ − y','y(y + 1)(y − 1)','two'],[39,'98 − 2c²','2(7 − c)(7 + c)','two'],[40,'ax² − 4a','a(x − 2)(x + 2)','two'],[41,'12x² − 27y²','3(2x − 3y)(2x + 3y)','two'],[42,'18x² − 50','2(3x − 5)(3x + 5)','two'],[43,'9x³ − 36x','9x(x − 2)(x + 2)','two'],[44,'5t⁴ − 125t²','5t²(t + 5)(t − 5)','two'],[45,'2t⁴ − 18t²','2t²(t + 3)(t − 3)','two']
+];
+
+function makeExercise([num,q,a,type]){const d=document.createElement('div');d.className='exercise';d.dataset.type=type;d.innerHTML=`<span class="num">${num}.</span><span class="math">${q} =</span><span class="answer">${a}</span>`;return d;}
+function render(filter='all'){const box=document.getElementById('exerciseList');box.innerHTML='';EX.filter(e=>filter==='all'||e[3]===filter).forEach(e=>box.appendChild(makeExercise(e)));}
+render();
+document.getElementById('showAnswers').onclick=()=>document.getElementById('practiceCard').classList.add('show-answers');
+document.getElementById('hideAnswers').onclick=()=>document.getElementById('practiceCard').classList.remove('show-answers');
+document.querySelectorAll('.topic-tabs button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.topic-tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(b.dataset.filter);};});
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+const SOL=[
+  {expr:'5x + 5',steps:[{t:'5x + 5',l:'5 משותף לשני האיברים'},{t:'5x + 5·1',l:'כותבים 5 בתור 5 כפול 1'},{t:'5(x + 1)',l:'מוציאים 5 מחוץ לסוגריים ✓'}]},
+  {expr:'x³ + 2x² + x',steps:[{t:'x³ + 2x² + x',l:'בכל איבר יש x'},{t:'x·x² + x·2x + x·1',l:'מפרקים לפי x'},{t:'x(x² + 2x + 1)',l:'התוצאה ✓'}]},
+  {expr:'x² − 4',steps:[{t:'x² − 2²',l:'מזהים הפרש ריבועים'},{t:'(x − 2)(x + 2)',l:'לפי הנוסחה a²-b² ✓'}]},
+  {expr:'2x² − 18',steps:[{t:'2x² − 18',l:'קודם מוציאים גורם משותף'},{t:'2(x² − 9)',l:'בתוך הסוגריים יש הפרש ריבועים'},{t:'2(x − 3)(x + 3)',l:'התוצאה הסופית ✓'}]},
+  {expr:'9x³ − 36x',steps:[{t:'9x³ − 36x',l:'מוציאים גורם משותף 9x'},{t:'9x(x² − 4)',l:'בתוך הסוגריים יש הפרש ריבועים'},{t:'9x(x − 2)(x + 2)',l:'התוצאה הסופית ✓'}]}
+];
+let curSol=0;const pick=document.getElementById('animPick');
+SOL.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.expr;b.onclick=()=>{curSol=i;mark();document.getElementById('steps').innerHTML='';};pick.appendChild(b);});
+function mark(){[...pick.children].forEach((b,i)=>b.classList.toggle('active',i===curSol));}mark();
+document.getElementById('playBtn').onclick=()=>{const w=document.getElementById('steps');w.innerHTML='';SOL[curSol].steps.forEach((st,i)=>{const d=document.createElement('div');d.className='step';d.innerHTML=st.t+'<span class="lbl">'+st.l+'</span>';w.appendChild(d);setTimeout(()=>d.classList.add('show'),i*900+150);});};
+
+let score=0, qNum=1, current=null;
+function wrongAnswers(ans){return EX.map(x=>x[2]).filter(x=>x!==ans).sort(()=>Math.random()-.5).slice(0,3)}
+function shuffle(a){return a.sort(()=>Math.random()-.5)}
+function newQ(){document.getElementById('feedback').textContent='';document.getElementById('nextBtn').style.display='none';const item=EX[Math.floor(Math.random()*EX.length)];current={expr:item[1],ans:item[2]};document.getElementById('question').textContent=current.expr+' =';document.getElementById('count').textContent=qNum;const opts=shuffle([current.ans,...wrongAnswers(current.ans)].slice(0,4));const box=document.getElementById('opts');box.innerHTML='';box.style.pointerEvents='auto';opts.forEach(o=>{const b=document.createElement('button');b.textContent=o;b.onclick=()=>answer(b,o);box.appendChild(b);});}
+function answer(btn,val){const box=document.getElementById('opts');box.style.pointerEvents='none';if(val===current.ans){btn.classList.add('right');score++;document.getElementById('score').textContent=score;document.getElementById('feedback').textContent='✓ נכון!';document.getElementById('feedback').style.color='var(--accent2)';}else{btn.classList.add('wrong');[...box.children].find(x=>x.textContent===current.ans).classList.add('right');document.getElementById('feedback').textContent='✗ התשובה הנכונה: '+current.ans;document.getElementById('feedback').style.color='#c0392b';}qNum++;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

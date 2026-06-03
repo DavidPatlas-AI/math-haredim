@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בעיות תערובת</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+    :root {
+      --ink: #1a1a2e;
+      --paper: #f8f6f0;
+      --accent: #2d6a4f;
+      --accent2: #c0392b;
+      --gold: #c9a227;
+      --line: #d5d0c8;
+      --shadow: 0 10px 30px rgba(26, 26, 46, .10);
+      --pos: #2d6a4f;
+      --neg: #c0392b;
+      --mix: #6b3fa0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Heebo', sans-serif; color: var(--ink); line-height: 1.7;
+      min-height: 100vh; padding: 24px 16px 60px;
+      background: radial-gradient(circle at 12% 8%, rgba(107,63,160,.05), transparent 40%),
+                  radial-gradient(circle at 88% 92%, rgba(201,162,39,.05), transparent 40%), var(--paper);
+    }
+    .wrap { max-width: 800px; margin: 0 auto; }
+    header {
+      text-align: center; padding: 30px 20px 26px; border: 2px solid var(--ink);
+      border-radius: 18px; background: #fff; box-shadow: var(--shadow);
+      position: relative; overflow: hidden;
+    }
+    header::before {
+      content: "🧪"; position: absolute; font-size: 110px; top: 0; left: 20px; opacity: .05;
+    }
+    .eyebrow { font-size: .85rem; letter-spacing: 3px; color: var(--mix); font-weight: 600; position: relative; }
+    h1 { font-family: 'Frank Ruhl Libre', serif; font-size: 2.2rem; font-weight: 900; margin: 6px 0 2px; position: relative; }
+    .sub { font-size: 1rem; color: #5a5a6e; position: relative; }
+    nav { display: flex; gap: 8px; justify-content: center; margin: 22px 0; flex-wrap: wrap; }
+    nav button {
+      font-family: 'Heebo'; font-size: .95rem; font-weight: 600; border: 2px solid var(--ink);
+      background: #fff; color: var(--ink); padding: 9px 18px; border-radius: 999px;
+      cursor: pointer; transition: .2s;
+    }
+    nav button:hover { transform: translateY(-2px); }
+    nav button.active { background: var(--mix); color: #fff; border-color: var(--mix); }
+    section { display: none; animation: fade .4s ease; }
+    section.show { display: block; }
+    @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .card {
+      background: #fff; border: 1.5px solid var(--line); border-radius: 16px;
+      padding: 26px 24px; margin-bottom: 18px; box-shadow: var(--shadow);
+    }
+    .card h2 {
+      font-family: 'Frank Ruhl Libre', serif; font-size: 1.5rem; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .tag { background: var(--gold); color: #fff; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; font-family: 'Heebo'; }
+    .tag.prp { background: var(--mix); }
+    .note { background: rgba(107,63,160,.07); border-right: 4px solid var(--mix); padding: 12px 16px; border-radius: 8px; margin-top: 14px; font-size: .97rem; }
+    .warn { background: rgba(192,57,43,.07); border-right: 4px solid var(--accent2); padding: 12px 16px; border-radius: 8px; margin-top: 14px; font-size: .97rem; }
+    .gold-box { background: rgba(201,162,39,.10); border: 2px solid var(--gold); border-radius: 12px; padding: 16px; margin-top: 14px; }
+    .gold-box .title { font-weight: 800; color: #8a6f0e; margin-bottom: 6px; }
+    .examples { display: grid; gap: 8px; margin-top: 8px; }
+    .examples div { background: var(--paper); border-radius: 10px; padding: 10px 14px; font-family: 'Frank Ruhl Libre', serif; font-size: 1.05rem; direction: ltr; text-align: left; line-height: 1.8; }
+    .formula-highlight {
+      background: #fff; border: 2px dashed var(--mix); border-radius: 14px;
+      padding: 16px; text-align: center; font-family: 'Frank Ruhl Libre', serif;
+      font-size: 1.2rem; font-weight: 900; direction: ltr; margin: 14px 0;
+    }
+    .table-demo { width: 100%; border-collapse: collapse; margin: 14px 0; font-family: 'Frank Ruhl Libre', serif; }
+    .table-demo th { background: var(--paper); padding: 10px; border: 1px solid var(--line); font-weight: 900; }
+    .table-demo td { padding: 10px; border: 1px solid var(--line); text-align: center; direction: ltr; }
+
+    /* GAME */
+    .mode-pick { display: flex; gap: 10px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap; }
+    .mode-pick button { font-family: 'Heebo'; font-weight: 600; font-size: 1rem; cursor: pointer; border: 2px solid var(--ink); background: #fff; padding: 12px 20px; border-radius: 12px; transition: .2s; }
+    .mode-pick button.active { background: var(--mix); color: #fff; border-color: var(--mix); }
+    .scoreboard { display: flex; justify-content: space-around; text-align: center; margin-bottom: 16px; }
+    .scoreboard .box { flex: 1; }
+    .scoreboard .who { font-size: .85rem; color: #5a5a6e; }
+    .scoreboard .pts { font-family: 'Frank Ruhl Libre', serif; font-size: 2rem; font-weight: 900; }
+    .turn-banner { text-align: center; font-weight: 700; padding: 8px; border-radius: 10px; background: var(--paper); margin-bottom: 14px; }
+    .q-box { text-align: center; font-family: 'Heebo', sans-serif; font-size: 1.1rem; font-weight: 700; padding: 22px; background: var(--paper); border-radius: 14px; margin-bottom: 14px; }
+    .q-box .math { font-family: 'Frank Ruhl Libre', serif; font-size: 1.2rem; font-weight: 900; direction: ltr; display: block; margin-top: 6px; }
+    .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .opts button { font-family: 'Heebo', sans-serif; font-size: 1rem; font-weight: 700; border: 2px solid var(--ink); background: #fff; padding: 14px; border-radius: 12px; cursor: pointer; transition: .15s; }
+    .opts button:hover { transform: translateY(-2px); }
+    .opts button.right { background: var(--pos); color: #fff; border-color: var(--pos); }
+    .opts button.wrong { background: var(--neg); color: #fff; border-color: var(--neg); }
+    .feedback { text-align: center; font-weight: 700; min-height: 28px; margin-top: 14px; }
+    .next-btn { display: none; margin: 14px auto 0; font-family: 'Heebo'; font-weight: 700; border: none; background: var(--ink); color: #fff; padding: 11px 26px; border-radius: 12px; cursor: pointer; font-size: 1rem; }
+    footer { text-align: center; font-size: .8rem; color: #7d9285; margin-top: 30px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">בגרות · בעיות מילוליות</div>
+    <h1>בעיות תערובת 🧪</h1>
+    <div class="sub">סגסוגות, אחוזי מתכת, ערבוב נוזלים — טבלה אחת מסדרת הכול</div>
+  </header>
+  <nav>
+    <button class="active" data-t="learn">📘 הסבר</button>
+    <button data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn" class="show">
+    <div class="card">
+      <h2>מהי בעיית תערובת? <span class="tag prp">הגדרה</span></h2>
+      <p>בעיות תערובת עוסקות ב<b>ערבוב של חומרים</b> בריכוזים שונים. למשל: סגסוגת מתכת, תמיסת מלח, מיץ פירות.</p>
+      <div class="formula-highlight">כמות החומר הטהור = (אחוז / 100) × כמות התערובת</div>
+      <div class="examples">
+        <div>10 ק"ג סגסוגת עם 30% נחושת → נחושת טהורה: 0.3 × 10 = 3 ק"ג</div>
+        <div>5 ליטר תמיסת מלח 8% → מלח: 0.08 × 5 = 0.4 ליטר</div>
+      </div>
+      <div class="gold-box">
+        <div class="title">💡 עיקרון המפתח</div>
+        <b>החומר הטהור נשמר.</b> כשמערבבים שתי תערובות — כמות החומר הטהור בתערובת הסופית = סכום כמויות החומר הטהור בשתי התערובות המקוריות.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>סוג 1: ערבוב שתי תערובות <span class="tag prp">בסיסי</span></h2>
+      <p><b>השיטה:</b> בונים טבלה — לכל תערובת: כמות, אחוז, וכמות חומר טהור. סכום הכמויות = כמות סופית. סכום החומר הטהור = חומר טהור סופי.</p>
+      <table class="table-demo">
+        <tr><th>תערובת</th><th>כמות (ק"ג)</th><th>אחוז (%)</th><th>חומר טהור (ק"ג)</th></tr>
+        <tr><td>א'</td><td>x</td><td>20%</td><td>0.2x</td></tr>
+        <tr><td>ב'</td><td>y</td><td>50%</td><td>0.5y</td></tr>
+        <tr><td><b>סופית</b></td><td><b>x + y</b></td><td><b>30%</b></td><td><b>0.3(x+y)</b></td></tr>
+      </table>
+      <div class="examples">
+        <div>כמה ק"ג מתערובת 20% ותערובת 50% צריך לערבב לקבלת 30 ק"ג ב-30%?</div>
+        <div>x + y = 30. &nbsp; 0.2x + 0.5y = 0.3·30 = 9.</div>
+        <div>פתרון: x=20, y=10. &nbsp; 20 ק"ג מ-20% + 10 ק"ג מ-50%.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>סוג 2: הוספת חומר טהור <span class="tag prp">חיזוק</span></h2>
+      <p>מוסיפים חומר טהור (100%) לתערובת קיימת כדי להעלות את הריכוז.</p>
+      <div class="examples">
+        <div>ל-5 ק"ג סגסוגת 40% נחושת, מוסיפים נחושת טהורה. רוצים 60%. כמה להוסיף?</div>
+        <div>חומר טהור בהתחלה: 0.4·5 = 2. &nbsp; מוסיפים x ק"ג טהור (100%).</div>
+        <div>סופי: (2 + x) / (5 + x) = 0.6 → 2+x = 3+0.6x → 0.4x = 1 → x = 2.5 ק"ג.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>סוג 3: אידוי / הורדת חומר <span class="tag prp">ריכוז</span></h2>
+      <p>מאדים מים מתמיסה — כמות החומר הטהור נשארת, אבל הכמות הכוללת יורדת → הריכוז עולה.</p>
+      <div class="examples">
+        <div>10 ליטר תמיסת מלח 5%. מאדים מים. רוצים 8%. כמה מים התאדו?</div>
+        <div>מלח: 0.05·10 = 0.5 ליטר. אחרי אידוי x ליטר מים: 0.5/(10−x) = 0.08.</div>
+        <div>0.5 = 0.8 − 0.08x → 0.08x = 0.3 → x = 3.75 ליטר.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שיטת העבודה — טבלה <span class="tag prp">מסודר</span></h2>
+      <div style="background:var(--paper);border-radius:12px;padding:16px;margin-top:10px;counter-reset:step;">
+        <div style="counter-increment:step;padding:6px 0;display:flex;gap:8px;"><b style="color:var(--mix);">1.</b> ציירו טבלה: עמודות — כמות, אחוז, חומר טהור.</div>
+        <div style="counter-increment:step;padding:6px 0;display:flex;gap:8px;"><b style="color:var(--mix);">2.</b> מלאו את מה שידוע. סמנו נעלם = x.</div>
+        <div style="counter-increment:step;padding:6px 0;display:flex;gap:8px;"><b style="color:var(--mix);">3.</b> רשמו משוואת שימור: חומר טהור לפני = חומר טהור אחרי.</div>
+        <div style="counter-increment:step;padding:6px 0;display:flex;gap:8px;"><b style="color:var(--mix);">4.</b> פתרו, בדקו הגיון (כמות לא שלילית, אחוזים בין 0 ל-100).</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> <b>שוכחים להפוך אחוזים לשבר עשרוני.</b> 30% = 0.3. תמיד לחלק ב-100.<br><br>
+        <b>2.</b> <b>מחברים אחוזים.</b> 20% + 50% לא יוצא 70% כשמערבבים — זה תלוי בכמויות!<br><br>
+        <b>3.</b> <b>מבלבלים בין חומר טהור לכמות כוללת.</b> חומר טהור = אחוז × כמות. לא להשוות כמות כוללת לחומר טהור.<br><br>
+        <b>4.</b> <b>שוכחים שב-100% זה 1.0.</b> חומר טהור = 100% = 1.0. לא 100.
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game">
+    <div class="card">
+      <h2>משחק בעיות תערובת 🎮</h2>
+      <p style="text-align:center;font-size:.9rem;color:#5a5a6e;margin-bottom:14px">פתרו — מהי התשובה?</p>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+  <footer>בסיס לבגרות · בעיות תערובת</footer>
+</div>
+
+<script>
+// TABS
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+// GAME
+const POOL=[
+  {q:'10 ק"ג סגסוגת 30% נחושת. כמה ק"ג נחושת טהורה?',ans:'3 ק"ג',wrong:['30 ק"ג','7 ק"ג','0.3 ק"ג']},
+  {q:'5 ליטר תמיסה 8% מלח. כמה מלח?',ans:'0.4 ליטר',wrong:['4 ליטר','8 ליטר','0.08 ליטר']},
+  {q:'מערבבים 2 ק"ג 10% עם 3 ק"ג 40%. האחוז הסופי?',ans:'28%',wrong:['25%','50%','30%']},
+  {q:'ל-4 ק"ג 25% מוסיפים 1 ק"ג טהור. האחוז החדש?',ans:'40%',wrong:['35%','50%','30%']},
+  {q:'מאדים מים מ-8 ליטר 5%. נשארו 5 ליטר. אחוז המלח?',ans:'8%',wrong:['5%','10%','3%']},
+  {q:'כמה ק"ג 20% ו-60% לערבב לקבלת 20 ק"ג 40%?',ans:'10 ק"ג מכל אחד',wrong:['5 ו-15','15 ו-5','8 ו-12']},
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;document.getElementById('turn').textContent='תורו של: '+(turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent);}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';document.getElementById('nextBtn').style.display='none';
+  cur=POOL[Math.floor(Math.random()*POOL.length)];document.getElementById('question').textContent=cur.q;
+  const opts=shuffle([cur.ans,...cur.wrong]),O=document.getElementById('opts');O.innerHTML='';
+  opts.forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.5?btns.find(x=>x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,pick.textContent);},1400);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.ans;fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans)?.classList.add('right');fb.textContent='✗ התשובה: '+cur.ans;fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans)?.classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,563 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סדר פעולות החשבון — יחידה 1, פרק א'</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{
+    --ink:#1f2a44;--paper:#eef0f6;--accent:#3d5a98;--accent2:#c0392b;
+    --gold:#c9a227;--line:#d2d7e4;--shadow:0 10px 30px rgba(31,42,68,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;
+    background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(61,90,152,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"( )";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:170px;font-weight:900;color:rgba(31,42,68,.045);top:-30px;left:10px}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.5rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#5a6478;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}
+  section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .priority{display:grid;gap:10px;margin:14px 0}
+  .prow{display:flex;align-items:center;gap:14px;background:var(--paper);border-radius:12px;padding:12px 16px}
+  .pnum{background:var(--accent);color:#fff;font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:1.3rem;width:38px;height:38px;line-height:38px;text-align:center;border-radius:50%;flex-shrink:0}
+  .prow.p1 .pnum{background:#7b2d8e}.prow.p2 .pnum{background:var(--accent)}.prow.p3 .pnum{background:#2d6a4f}.prow.p0 .pnum{background:var(--accent2)}
+  .ptxt b{font-size:1.1rem}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:1.9rem;margin:16px 0;padding:16px;background:var(--paper);border-radius:12px;border:1.5px dashed var(--line);direction:ltr}
+  .note{background:rgba(61,90,152,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.15rem;direction:ltr;text-align:left}
+  /* animation - step by step solver */
+  .anim-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .anim-pick button{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;direction:ltr}
+  .anim-pick button.active{background:var(--ink);color:#fff}
+  .steps{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+  .step{font-family:'Frank Ruhl Libre',serif;font-size:1.7rem;direction:ltr;text-align:center;background:var(--paper);border-radius:12px;padding:14px;opacity:0;transform:translateY(8px);transition:.4s}
+  .step.show{opacity:1;transform:none}
+  .step .hl{background:var(--gold);color:#fff;padding:0 6px;border-radius:4px}
+  .step .lbl{display:block;font-family:'Heebo';font-size:.8rem;color:#5a6478;margin-top:4px}
+  .anim-controls{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+  .ctrl{font-family:'Heebo';font-weight:600;font-size:.9rem;border:2px solid var(--ink);background:#fff;padding:7px 14px;border-radius:10px;cursor:pointer;transition:.15s}
+  .ctrl.play{background:var(--accent);color:#fff;border-color:var(--accent)}
+  /* game */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#5a6478}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:2.4rem;font-weight:900;direction:ltr;padding:24px;background:var(--paper);border-radius:14px;margin-bottom:16px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:#2d6a4f;color:#fff;border-color:#2d6a4f}
+  .opts button.wrong{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#8890a4;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">יחידה 1 · טכניקה אלגברית · פרק א'</div>
+    <h1>סדר פעולות החשבון</h1>
+    <div class="sub">לסדר שבו מבצעים פעולות יש חשיבות רבה</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🎬 פתרון שלב-שלב</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>למה הסדר חשוב? <span class="tag">דוגמה</span></h2>
+      <p>נחשב: <b style="direction:ltr;display:inline-block">5 + 3·2</b></p>
+      <div class="warn">
+        אם נחשב <b>חיבור קודם</b>: 5+3=8 ואז 8·2 = <b>16</b> ❌<br>
+        אם נחשב <b>כפל קודם</b>: 3·2=6 ואז 5+6 = <b>11</b> ✓
+      </div>
+      <p style="margin-top:10px">התשובה הנכונה היא <b>11</b> — כי לכפל יש עדיפות על חיבור. לכן צריך כללים קבועים.</p>
+    </div>
+
+    <div class="card">
+      <h2>סדר הפעולות</h2>
+      <div class="priority">
+        <div class="prow p1"><div class="pnum">1</div><div class="ptxt"><b>עדיפות ראשונה:</b> חזקה או שורש</div></div>
+        <div class="prow p2"><div class="pnum">2</div><div class="ptxt"><b>עדיפות שנייה:</b> כפל או חילוק</div></div>
+        <div class="prow p3"><div class="pnum">3</div><div class="ptxt"><b>עדיפות שלישית:</b> חיבור או חיסור</div></div>
+        <div class="prow p0"><div class="pnum">( )</div><div class="ptxt"><b>סוגריים תחילה!</b> מבצעים קודם מה שבתוך הסוגריים</div></div>
+      </div>
+      <div class="note">
+        <b>שימו לב:</b> אין עדיפות בין חזקה לשורש, בין כפל לחילוק, או בין חיבור לחיסור. ביניהם פועלים <b>משמאל לימין</b>.<br>
+        בכמה מזווגי סוגריים — פותרים קודם את <b>הפנימיים</b> ואז כלפי חוץ.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>דוגמאות מהספר</h2>
+      <div class="examples">
+        <div>4 + 3·7 − 3 = 4 + 21 − 3 = 22</div>
+        <div>(15 − 3) : 4 + 5 = 12:4 + 5 = 3 + 5 = 8</div>
+        <div>15 + [20 + 3(4−2)] = 15 + [20+6] = 41</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANIMATION -->
+  <section id="anim">
+    <div class="card">
+      <h2>פתרון שלב-אחר-שלב 🎬</h2>
+      <p>בחרו תרגיל ולחצו <b>הפעל</b> — כל שלב יראה איזו פעולה מבצעים ולמה.</p>
+      <div class="anim-pick" id="animPick"></div>
+      <div class="steps" id="steps"></div>
+      <div class="anim-controls">
+        <button class="ctrl play" id="playBtn">▶ הפעל</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק סדר הפעולות 🎮</h2>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 — טכניקה אלגברית · סדר פעולות החשבון</footer>
+</div>
+
+<script>
+/* TABS */
+document.querySelectorAll('nav button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));
+    b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');
+  };
+});
+
+/* ANIMATION - predefined step solutions from the book */
+const SOLUTIONS=[
+  {expr:'5 + 3·2', steps:[
+    {t:'5 + <span class="hl">3·2</span>', l:'קודם כפל (עדיפות שנייה)'},
+    {t:'5 + 6', l:'עכשיו חיבור'},
+    {t:'11', l:'התוצאה ✓'}]},
+  {expr:'4 + 3·7 − 3', steps:[
+    {t:'4 + <span class="hl">3·7</span> − 3', l:'קודם כפל'},
+    {t:'4 + 21 − 3', l:'עכשיו חיבור וחיסור, משמאל לימין'},
+    {t:'22', l:'התוצאה ✓'}]},
+  {expr:'(15 − 3):4 + 5', steps:[
+    {t:'<span class="hl">(15 − 3)</span>:4 + 5', l:'קודם הסוגריים'},
+    {t:'<span class="hl">12:4</span> + 5', l:'עכשיו חילוק'},
+    {t:'3 + 5', l:'ולבסוף חיבור'},
+    {t:'8', l:'התוצאה ✓'}]},
+  {expr:'15 + [20 + 3(4−2)]', steps:[
+    {t:'15 + [20 + 3<span class="hl">(4−2)</span>]', l:'קודם הסוגריים הפנימיים'},
+    {t:'15 + [20 + <span class="hl">3·2</span>]', l:'כפל בתוך הסוגריים המרובעים'},
+    {t:'15 + <span class="hl">[20 + 6]</span>', l:'חיבור שבסוגריים'},
+    {t:'15 + 26', l:'חיבור אחרון'},
+    {t:'41', l:'התוצאה ✓'}]},
+  {expr:'3·4²', steps:[
+    {t:'3·<span class="hl">4²</span>', l:'קודם חזקה (עדיפות ראשונה)'},
+    {t:'3·16', l:'עכשיו כפל'},
+    {t:'48', l:'התוצאה ✓'}]},
+  {expr:'(3·4)²', steps:[
+    {t:'<span class="hl">(3·4)</span>²', l:'קודם הסוגריים'},
+    {t:'12²', l:'עכשיו החזקה'},
+    {t:'144', l:'התוצאה ✓'}]}
+];
+let curSol=0;
+const pickWrap=document.getElementById('animPick');
+SOLUTIONS.forEach((s,i)=>{
+  const b=document.createElement('button');b.textContent=s.expr;
+  b.onclick=()=>{curSol=i;markSol();document.getElementById('steps').innerHTML='';};
+  pickWrap.appendChild(b);
+});
+function markSol(){[...pickWrap.children].forEach((b,i)=>b.classList.toggle('active',i===curSol));}
+markSol();
+
+document.getElementById('playBtn').onclick=()=>{
+  const wrap=document.getElementById('steps');wrap.innerHTML='';
+  const sol=SOLUTIONS[curSol];
+  sol.steps.forEach((st,i)=>{
+    const d=document.createElement('div');d.className='step';
+    d.innerHTML=st.t+'<span class="lbl">'+st.l+'</span>';
+    wrap.appendChild(d);
+    setTimeout(()=>d.classList.add('show'),i*900+200);
+  });
+};
+
+/* GAME - expressions with known answers */
+const POOL=[
+  ['9 + 4·6',33],['(9+4)·6',78],['13 − 2·2',9],['(11−2)·2',18],['14 + 8:2',18],
+  ['(14+8):2',11],['6 + 3·5 + 3',24],['(6+3)·5 + 3',48],['(4+3)·(7+5)',84],
+  ['4·4 − 12:4 + 5',18],['6:(3·2)',1],['(6:3)·2',4],['(16:8):2',1],['16:(8:2)',4],
+  ['3·5² − 23',52],['3·4²',48],['(3·4)²',144],['11·3 − 3(11 − 12:3)',12]
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');mode=b.dataset.m;
+    document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';
+    document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';
+    s1=s2=0;turn=1;updateScore();newQ();
+  };
+});
+function updateScore(){
+  document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;
+  const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;
+  document.getElementById('turn').textContent='תורו של: '+name;
+}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  const [expr,ans]=POOL[Math.floor(Math.random()*POOL.length)];
+  cur={expr,ans};
+  document.getElementById('question').textContent=expr;
+  const opts=new Set([ans]);
+  while(opts.size<4){let d=ans+Math.floor(Math.random()*16-8);if(d>0&&d!==ans)opts.add(d);else opts.add(ans+opts.size*3+1);}
+  const O=document.getElementById('opts');O.innerHTML='';
+  shuffle([...opts]).forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  
+            <!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סדר פעולות החשבון — יחידה 1, פרק א'</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{
+    --ink:#1f2a44;--paper:#eef0f6;--accent:#3d5a98;--accent2:#c0392b;
+    --gold:#c9a227;--line:#d2d7e4;--shadow:0 10px 30px rgba(31,42,68,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;
+    background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(61,90,152,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"( )";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:170px;font-weight:900;color:rgba(31,42,68,.045);top:-30px;left:10px}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.5rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#5a6478;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}
+  section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .priority{display:grid;gap:10px;margin:14px 0}
+  .prow{display:flex;align-items:center;gap:14px;background:var(--paper);border-radius:12px;padding:12px 16px}
+  .pnum{background:var(--accent);color:#fff;font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:1.3rem;width:38px;height:38px;line-height:38px;text-align:center;border-radius:50%;flex-shrink:0}
+  .prow.p1 .pnum{background:#7b2d8e}.prow.p2 .pnum{background:var(--accent)}.prow.p3 .pnum{background:#2d6a4f}.prow.p0 .pnum{background:var(--accent2)}
+  .ptxt b{font-size:1.1rem}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:1.9rem;margin:16px 0;padding:16px;background:var(--paper);border-radius:12px;border:1.5px dashed var(--line);direction:ltr}
+  .note{background:rgba(61,90,152,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.15rem;direction:ltr;text-align:left}
+  /* animation - step by step solver */
+  .anim-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .anim-pick button{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;direction:ltr}
+  .anim-pick button.active{background:var(--ink);color:#fff}
+  .steps{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+  .step{font-family:'Frank Ruhl Libre',serif;font-size:1.7rem;direction:ltr;text-align:center;background:var(--paper);border-radius:12px;padding:14px;opacity:0;transform:translateY(8px);transition:.4s}
+  .step.show{opacity:1;transform:none}
+  .step .hl{background:var(--gold);color:#fff;padding:0 6px;border-radius:4px}
+  .step .lbl{display:block;font-family:'Heebo';font-size:.8rem;color:#5a6478;margin-top:4px}
+  .anim-controls{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+  .ctrl{font-family:'Heebo';font-weight:600;font-size:.9rem;border:2px solid var(--ink);background:#fff;padding:7px 14px;border-radius:10px;cursor:pointer;transition:.15s}
+  .ctrl.play{background:var(--accent);color:#fff;border-color:var(--accent)}
+  /* game */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#5a6478}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:2.4rem;font-weight:900;direction:ltr;padding:24px;background:var(--paper);border-radius:14px;margin-bottom:16px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:#2d6a4f;color:#fff;border-color:#2d6a4f}
+  .opts button.wrong{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#8890a4;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">יחידה 1 · טכניקה אלגברית · פרק א'</div>
+    <h1>סדר פעולות החשבון</h1>
+    <div class="sub">לסדר שבו מבצעים פעולות יש חשיבות רבה</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🎬 פתרון שלב-שלב</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>למה הסדר חשוב? <span class="tag">דוגמה</span></h2>
+      <p>נחשב: <b style="direction:ltr;display:inline-block">5 + 3·2</b></p>
+      <div class="warn">
+        אם נחשב <b>חיבור קודם</b>: 5+3=8 ואז 8·2 = <b>16</b> ❌<br>
+        אם נחשב <b>כפל קודם</b>: 3·2=6 ואז 5+6 = <b>11</b> ✓
+      </div>
+      <p style="margin-top:10px">התשובה הנכונה היא <b>11</b> — כי לכפל יש עדיפות על חיבור. לכן צריך כללים קבועים.</p>
+    </div>
+
+    <div class="card">
+      <h2>סדר הפעולות</h2>
+      <div class="priority">
+        <div class="prow p1"><div class="pnum">1</div><div class="ptxt"><b>עדיפות ראשונה:</b> חזקה או שורש</div></div>
+        <div class="prow p2"><div class="pnum">2</div><div class="ptxt"><b>עדיפות שנייה:</b> כפל או חילוק</div></div>
+        <div class="prow p3"><div class="pnum">3</div><div class="ptxt"><b>עדיפות שלישית:</b> חיבור או חיסור</div></div>
+        <div class="prow p0"><div class="pnum">( )</div><div class="ptxt"><b>סוגריים תחילה!</b> מבצעים קודם מה שבתוך הסוגריים</div></div>
+      </div>
+      <div class="note">
+        <b>שימו לב:</b> אין עדיפות בין חזקה לשורש, בין כפל לחילוק, או בין חיבור לחיסור. ביניהם פועלים <b>משמאל לימין</b>.<br>
+        בכמה מזווגי סוגריים — פותרים קודם את <b>הפנימיים</b> ואז כלפי חוץ.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>דוגמאות מהספר</h2>
+      <div class="examples">
+        <div>4 + 3·7 − 3 = 4 + 21 − 3 = 22</div>
+        <div>(15 − 3) : 4 + 5 = 12:4 + 5 = 3 + 5 = 8</div>
+        <div>15 + [20 + 3(4−2)] = 15 + [20+6] = 41</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANIMATION -->
+  <section id="anim">
+    <div class="card">
+      <h2>פתרון שלב-אחר-שלב 🎬</h2>
+      <p>בחרו תרגיל ולחצו <b>הפעל</b> — כל שלב יראה איזו פעולה מבצעים ולמה.</p>
+      <div class="anim-pick" id="animPick"></div>
+      <div class="steps" id="steps"></div>
+      <div class="anim-controls">
+        <button class="ctrl play" id="playBtn">▶ הפעל</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק סדר הפעולות 🎮</h2>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 — טכניקה אלגברית · סדר פעולות החשבון</footer>
+</div>
+
+<script>
+/* TABS */
+document.querySelectorAll('nav button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));
+    b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');
+  };
+});
+
+/* ANIMATION - predefined step solutions from the book */
+const SOLUTIONS=[
+  {expr:'5 + 3·2', steps:[
+    {t:'5 + <span class="hl">3·2</span>', l:'קודם כפל (עדיפות שנייה)'},
+    {t:'5 + 6', l:'עכשיו חיבור'},
+    {t:'11', l:'התוצאה ✓'}]},
+  {expr:'4 + 3·7 − 3', steps:[
+    {t:'4 + <span class="hl">3·7</span> − 3', l:'קודם כפל'},
+    {t:'4 + 21 − 3', l:'עכשיו חיבור וחיסור, משמאל לימין'},
+    {t:'22', l:'התוצאה ✓'}]},
+  {expr:'(15 − 3):4 + 5', steps:[
+    {t:'<span class="hl">(15 − 3)</span>:4 + 5', l:'קודם הסוגריים'},
+    {t:'<span class="hl">12:4</span> + 5', l:'עכשיו חילוק'},
+    {t:'3 + 5', l:'ולבסוף חיבור'},
+    {t:'8', l:'התוצאה ✓'}]},
+  {expr:'15 + [20 + 3(4−2)]', steps:[
+    {t:'15 + [20 + 3<span class="hl">(4−2)</span>]', l:'קודם הסוגריים הפנימיים'},
+    {t:'15 + [20 + <span class="hl">3·2</span>]', l:'כפל בתוך הסוגריים המרובעים'},
+    {t:'15 + <span class="hl">[20 + 6]</span>', l:'חיבור שבסוגריים'},
+    {t:'15 + 26', l:'חיבור אחרון'},
+    {t:'41', l:'התוצאה ✓'}]},
+  {expr:'3·4²', steps:[
+    {t:'3·<span class="hl">4²</span>', l:'קודם חזקה (עדיפות ראשונה)'},
+    {t:'3·16', l:'עכשיו כפל'},
+    {t:'48', l:'התוצאה ✓'}]},
+  {expr:'(3·4)²', steps:[
+    {t:'<span class="hl">(3·4)</span>²', l:'קודם הסוגריים'},
+    {t:'12²', l:'עכשיו החזקה'},
+    {t:'144', l:'התוצאה ✓'}]}
+];
+let curSol=0;
+const pickWrap=document.getElementById('animPick');
+SOLUTIONS.forEach((s,i)=>{
+  const b=document.createElement('button');b.textContent=s.expr;
+  b.onclick=()=>{curSol=i;markSol();document.getElementById('steps').innerHTML='';};
+  pickWrap.appendChild(b);
+});
+function markSol(){[...pickWrap.children].forEach((b,i)=>b.classList.toggle('active',i===curSol));}
+markSol();
+
+document.getElementById('playBtn').onclick=()=>{
+  const wrap=document.getElementById('steps');wrap.innerHTML='';
+  const sol=SOLUTIONS[curSol];
+  sol.steps.forEach((st,i)=>{
+    const d=document.createElement('div');d.className='step';
+    d.innerHTML=st.t+'<span class="lbl">'+st.l+'</span>';
+    wrap.appendChild(d);
+    setTimeout(()=>d.classList.add('show'),i*900+200);
+  });
+};
+
+/* GAME - expressions with known answers */
+const POOL=[
+  ['9 + 4·6',33],['(9+4)·6',78],['13 − 2·2',9],['(11−2)·2',18],['14 + 8:2',18],
+  ['(14+8):2',11],['6 + 3·5 + 3',24],['(6+3)·5 + 3',48],['(4+3)·(7+5)',84],
+  ['4·4 − 12:4 + 5',18],['6:(3·2)',1],['(6:3)·2',4],['(16:8):2',1],['16:(8:2)',4],
+  ['3·5² − 23',52],['3·4²',48],['(3·4)²',144],['11·3 − 3(11 − 12:3)',12]
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');mode=b.dataset.m;
+    document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';
+    document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';
+    s1=s2=0;turn=1;updateScore();newQ();
+  };
+});
+function updateScore(){
+  document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;
+  const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;
+  document.getElementById('turn').textContent='תורו של: '+name;
+}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  const [expr,ans]=POOL[Math.floor(Math.random()*POOL.length)];
+  cur={expr,ans};
+  document.getElementById('question').textContent=expr;
+  const opts=new Set([ans]);
+  while(opts.size<4){let d=ans+Math.floor(Math.random()*16-8);if(d>0&&d!==ans)opts.add(d);else opts.add(ans+opts.size*3+1);}
+  const O=document.getElementById('opts');O.innerHTML='';
+  shuffle([...opts]).forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){
+    O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';
+    setTimeout(()=>{const btns=[...O.children];
+      let pick=Math.random()<0.7?btns.find(x=>+x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];
+      cpuAnswer(pick,+pick.textContent);},2000);
+  } else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){
+  lock();const fb=document.getElementById('feedback');
+  if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.expr+' = '+cur.ans;fb.style.color='#2d6a4f';}
+  else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>+x.textContent===cur.ans).classList.add('right');fb.textContent='✗ לא מדויק. התשובה: '+cur.ans;fb.style.color='var(--accent2)';}
+  endTurn();
+}
+function cpuAnswer(btn,v){
+  const fb=document.getElementById('feedback');
+  if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}
+  else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>+x.textContent===cur.ans).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}
+  fb.style.color='var(--ink)';endTurn();
+}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;
+document.getElementById('n2').textContent='מחשב';
+newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>
+.Groups[1].Value + $indicator
+        
+    setTimeout(()=>{const btns=[...O.children];
+      let pick=Math.random()<0.7?btns.find(x=>+x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];
+      cpuAnswer(pick,+pick.textContent);},2000);
+  } else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){
+  lock();const fb=document.getElementById('feedback');
+  if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.expr+' = '+cur.ans;fb.style.color='#2d6a4f';}
+  else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>+x.textContent===cur.ans).classList.add('right');fb.textContent='✗ לא מדויק. התשובה: '+cur.ans;fb.style.color='var(--accent2)';}
+  endTurn();
+}
+function cpuAnswer(btn,v){
+  const fb=document.getElementById('feedback');
+  if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}
+  else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>+x.textContent===cur.ans).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}
+  fb.style.color='var(--ink)';endTurn();
+}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;
+document.getElementById('n2').textContent='מחשב';
+newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

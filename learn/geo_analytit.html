@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>גיאומטריה אנליטית</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#2d1f3a;--paper:#efebf3;--accent:#7c3aa8;--accent2:#c0392b;--gold:#c9a227;--line:#dcd2e4;--shadow:0 10px 30px rgba(45,31,58,.12);--pos:#2d6a4f;--neg:#c0392b;--ptA:#1d6e9e;--ptB:#e0533d;--grid:#dcd2e4}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(124,58,168,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"(x,y)";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:130px;font-weight:900;color:rgba(45,31,58,.05);top:20px;left:20px}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#6e5878;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .note{background:rgba(124,58,168,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .gold-box{background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:12px;padding:16px;margin-top:14px}
+  .gold-box .title{font-weight:800;color:#8a6f0e;margin-bottom:6px}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:1.5rem;margin:14px 0;padding:16px;background:var(--paper);border-radius:12px;direction:ltr;font-weight:800}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.05rem;direction:ltr;text-align:left}
+  .point-card{display:inline-block;padding:8px 14px;border-radius:10px;font-family:'Frank Ruhl Libre',serif;font-weight:900;color:#fff;margin:0 4px}
+  .point-card.A{background:var(--ptA)}
+  .point-card.B{background:var(--ptB)}
+
+  /* Three formula cards */
+  .formulas-grid{display:grid;gap:14px;margin-top:14px}
+  .fcard{background:linear-gradient(135deg,#fff,var(--paper));border-radius:14px;padding:18px;border:2px solid var(--accent)}
+  .fcard h3{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:900;color:var(--accent);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .fcard .ico{font-size:1.3rem}
+  .fcard .formula-line{font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;font-weight:800;direction:ltr;text-align:center;background:#fff;border-radius:10px;padding:10px;margin-top:8px}
+
+  /* INTERACTIVE GRAPH */
+  .anim-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .anim-pick button{font-family:'Heebo';font-weight:600;font-size:.85rem;border:2px solid var(--ink);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer}
+  .anim-pick button.active{background:var(--ink);color:#fff}
+  .graph-wrap{padding:14px;background:var(--paper);border-radius:14px;margin-top:14px}
+  .graph-svg{width:100%;height:auto;display:block;background:#fff;border-radius:12px;border:1px solid var(--line);cursor:crosshair;touch-action:none}
+  .hint{text-align:center;font-size:.8rem;color:#6e5878;margin-top:8px;font-style:italic}
+  .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+  @media (max-width:560px){.results-grid{grid-template-columns:1fr}}
+  .res-card{background:#fff;border-radius:12px;padding:12px;text-align:center;border-top:4px solid}
+  .res-card.dist{border-color:var(--ptA)}
+  .res-card.mid{border-color:var(--gold)}
+  .res-card.slope{border-color:var(--ptB)}
+  .res-card .l{font-size:.78rem;color:#6e5878;font-weight:600}
+  .res-card .v{font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;font-weight:900;direction:ltr;margin-top:4px}
+  .res-card.dist .v{color:var(--ptA)}
+  .res-card.mid .v{color:#8a6f0e}
+  .res-card.slope .v{color:var(--ptB)}
+  .points-display{display:flex;justify-content:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+  .pt-info{background:#fff;border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:10px;font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:1.1rem;direction:ltr}
+  .pt-dot{width:14px;height:14px;border-radius:50%}
+  .pt-dot.A{background:var(--ptA)}
+  .pt-dot.B{background:var(--ptB)}
+
+  /* GAME */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#6e5878}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Heebo';font-size:1rem;line-height:1.6;padding:18px;background:var(--paper);border-radius:14px;margin-bottom:14px;font-weight:600}
+  .q-box .q-eq{display:block;font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;font-weight:900;direction:ltr;margin-top:8px;color:var(--accent)}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--pos);color:#fff;border-color:var(--pos)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#8e7a98;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">3 יחידות · בגרות · נקודות במישור</div>
+    <h1>גיאומטריה אנליטית</h1>
+    <div class="sub">מרחק, אמצע, ושיפוע בין שתי נקודות</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🎯 גרף אינטראקטיבי</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>מה זו גיאומטריה אנליטית? <span class="tag">בסיס</span></h2>
+      <p>גיאומטריה אנליטית = <b>גיאומטריה במערכת צירים</b>. במקום לדבר על "נקודה" באוויר, כל נקודה מוגדרת ע"י זוג מספרים <b style="direction:ltr;display:inline-block">(x, y)</b>.</p>
+      <p style="text-align:center">לדוגמה: הנקודה <span class="point-card A">A(2, 3)</span> נמצאת 2 ימינה ו-3 למעלה מהראשית.</p>
+      <div class="gold-box">
+        <div class="title">💡 הרעיון המרכזי</div>
+        אם יודעים את הקואורדינטות של שתי נקודות — אפשר לחשב את כל מה שצריך עליהן: מרחק, אמצע, שיפוע. הכל בנוסחאות פשוטות.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שלוש הנוסחאות החשובות <span class="tag">לבגרות</span></h2>
+      <p>נתונות שתי נקודות: <span class="point-card A">A(x₁, y₁)</span> <span class="point-card B">B(x₂, y₂)</span></p>
+      <div class="formulas-grid">
+        <div class="fcard">
+          <h3><span class="ico">📏</span> מרחק בין שתי נקודות</h3>
+          <p>אורך הקטע AB:</p>
+          <div class="formula-line">AB = √((x₂−x₁)² + (y₂−y₁)²)</div>
+          <div style="font-size:.85rem;color:#6e5878;margin-top:6px">הנוסחה היא בעצם <b>משפט פיתגורס</b> — שני ההפרשים הם הניצבים, והמרחק הוא היתר.</div>
+        </div>
+        <div class="fcard">
+          <h3><span class="ico">📍</span> אמצע קטע</h3>
+          <p>הנקודה שנמצאת בדיוק באמצע הדרך מ-A ל-B:</p>
+          <div class="formula-line">M = ( (x₁+x₂)/2 , (y₁+y₂)/2 )</div>
+          <div style="font-size:.85rem;color:#6e5878;margin-top:6px">פשוט: <b>ממוצע של x-ים, ממוצע של y-ים</b>.</div>
+        </div>
+        <div class="fcard">
+          <h3><span class="ico">📈</span> שיפוע</h3>
+          <p>שיפוע הקו דרך A ו-B:</p>
+          <div class="formula-line">m = (y₂ − y₁) / (x₂ − x₁)</div>
+          <div style="font-size:.85rem;color:#6e5878;margin-top:6px">חישוב: כמה הקו עולה לחלק כמה הוא זז ימינה.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>דוגמה מלאה</h2>
+      <p>נתונות הנקודות <span class="point-card A">A(1, 2)</span> <span class="point-card B">B(4, 6)</span>. נמצא את שלושת הערכים:</p>
+      <div class="examples">
+        <div><b>מרחק:</b> √((4−1)² + (6−2)²) = √(9+16) = √25 = 5</div>
+        <div><b>אמצע:</b> ((1+4)/2, (2+6)/2) = (2.5, 4)</div>
+        <div><b>שיפוע:</b> (6−2)/(4−1) = 4/3</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>מקרים מיוחדים <span class="tag">חשוב להכיר</span></h2>
+      <div class="examples">
+        <div><b>קו אופקי:</b> y₁ = y₂ → שיפוע = 0</div>
+        <div><b>קו אנכי:</b> x₁ = x₂ → שיפוע <b>אינו מוגדר</b> (חילוק באפס)</div>
+        <div><b>שתי נקודות זהות:</b> מרחק = 0, אין שיפוע</div>
+      </div>
+      <div class="note">
+        <b>טריק לזכור:</b> אם הנקודות באותו גובה (y שווה) — קו ישר אופקי, שיפוע 0. אם באותו אנכי (x שווה) — אין שיפוע.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> בנוסחת המרחק — <b>אל תשכחו את השורש!</b> זה לא רק (x₂−x₁)² + (y₂−y₁)², אלא <b>השורש של זה</b>.<br><br>
+        <b>2.</b> בנוסחת השיפוע — <b>y תמיד למעלה</b>, x למטה. אם תהפכו, תקבלו את התוצאה ההפוכה.<br><br>
+        <b>3.</b> שמרו על <b>סדר הנקודות עקבי</b>: אם בנוסחה אחת אתם מחשבים x₂−x₁, אז גם ב-y תחשבו y₂−y₁ (לא הפוך).<br><br>
+        <b>4.</b> סימנים שליליים — שמרו על הסוגריים: <b>(−3)²</b> זה <b>9</b>, לא −9.
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE GRAPH -->
+  <section id="anim">
+    <div class="card">
+      <h2>גררו את הנקודות 🎯</h2>
+      <p>נסו <b>לגרור</b> את הנקודות הכחולה והאדומה — ותראו את המרחק, האמצע והשיפוע משתנים בזמן אמת.</p>
+      <div class="anim-pick" id="presetPick"></div>
+      <div class="graph-wrap">
+        <svg class="graph-svg" id="graph" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="hint">↑ אפשר ללחוץ ולגרור את הנקודות הצבעוניות</div>
+        <div class="points-display">
+          <div class="pt-info"><div class="pt-dot A"></div><span id="ptA">A(2, 3)</span></div>
+          <div class="pt-info"><div class="pt-dot B"></div><span id="ptB">B(5, 7)</span></div>
+        </div>
+        <div class="results-grid">
+          <div class="res-card dist"><div class="l">📏 מרחק AB</div><div class="v" id="distV">5</div></div>
+          <div class="res-card mid"><div class="l">📍 אמצע M</div><div class="v" id="midV">(3.5, 5)</div></div>
+          <div class="res-card slope"><div class="l">📈 שיפוע m</div><div class="v" id="slopeV">1.33</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק הנקודות 🎮</h2>
+      <p style="text-align:center;font-size:.9rem;color:#6e5878;margin-bottom:14px">חישבו מרחק, אמצע ושיפוע בין נקודות.</p>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>בסיס לבגרות 3 יח"ל · גיאומטריה אנליטית</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+/* ===== INTERACTIVE GRAPH WITH DRAGGABLE POINTS ===== */
+const SVG=document.getElementById('graph');
+const CX=200,CY=200,U=24;
+// state: two points in math coordinates
+let A={x:2,y:3}, B={x:5,y:7};
+let dragging=null; // 'A' or 'B'
+
+const PRESETS=[
+  {label:'A(1,2) → B(4,6)',a:{x:1,y:2},b:{x:4,y:6}},
+  {label:'A(0,0) → B(3,4)',a:{x:0,y:0},b:{x:3,y:4}},
+  {label:'A(−2,1) → B(2,5)',a:{x:-2,y:1},b:{x:2,y:5}},
+  {label:'A(−3,−2) → B(3,4)',a:{x:-3,y:-2},b:{x:3,y:4}},
+  {label:'A(1,5) → B(6,1)',a:{x:1,y:5},b:{x:6,y:1}}
+];
+const pp=document.getElementById('presetPick');
+PRESETS.forEach((p,i)=>{const b=document.createElement('button');b.textContent=p.label;b.onclick=()=>{A={...p.a};B={...p.b};mark(i);draw();};pp.appendChild(b);});
+function mark(i){[...pp.children].forEach((b,j)=>b.classList.toggle('active',i===j));}
+
+function toScreen(mx,my){return {x:CX+mx*U, y:CY-my*U};}
+function toMath(sx,sy){return {x:Math.round((sx-CX)/U), y:Math.round(-(sy-CY)/U)};}
+
+function draw(){
+  let svg='';
+  // grid
+  for(let i=-8;i<=8;i++){if(i===0)continue;const px=CX+i*U;const py=CY-i*U;svg+='<line x1="'+px+'" y1="0" x2="'+px+'" y2="400" stroke="var(--grid)" stroke-width="0.5"/><line x1="0" y1="'+py+'" x2="400" y2="'+py+'" stroke="var(--grid)" stroke-width="0.5"/>';}
+  // axes
+  svg+='<line x1="0" y1="'+CY+'" x2="400" y2="'+CY+'" stroke="#5b4f6c" stroke-width="2"/>';
+  svg+='<line x1="'+CX+'" y1="0" x2="'+CX+'" y2="400" stroke="#5b4f6c" stroke-width="2"/>';
+  // labels
+  for(let i=-7;i<=7;i++){if(i===0||i%2!==0)continue;const px=CX+i*U;const py=CY-i*U;svg+='<text x="'+px+'" y="'+(CY+14)+'" text-anchor="middle" font-size="10" fill="#5b4f6c" font-family="Frank Ruhl Libre">'+i+'</text><text x="'+(CX-8)+'" y="'+(py+3)+'" text-anchor="end" font-size="10" fill="#5b4f6c" font-family="Frank Ruhl Libre">'+i+'</text>';}
+  // arrows
+  svg+='<polygon points="395,'+CY+' 388,'+(CY-4)+' 388,'+(CY+4)+'" fill="#5b4f6c"/>';
+  svg+='<polygon points="'+CX+',5 '+(CX-4)+',12 '+(CX+4)+',12" fill="#5b4f6c"/>';
+  svg+='<text x="392" y="'+(CY-8)+'" text-anchor="end" font-size="11" fill="#5b4f6c" font-style="italic">x</text>';
+  svg+='<text x="'+(CX+8)+'" y="12" font-size="11" fill="#5b4f6c" font-style="italic">y</text>';
+
+  // segment AB
+  const sa=toScreen(A.x,A.y), sb=toScreen(B.x,B.y);
+  svg+='<line x1="'+sa.x+'" y1="'+sa.y+'" x2="'+sb.x+'" y2="'+sb.y+'" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 4"/>';
+  // midpoint
+  const mx=(A.x+B.x)/2, my=(A.y+B.y)/2;
+  const sm=toScreen(mx,my);
+  svg+='<circle cx="'+sm.x+'" cy="'+sm.y+'" r="6" fill="var(--gold)" stroke="#fff" stroke-width="2"/>';
+  svg+='<text x="'+(sm.x+9)+'" y="'+(sm.y-9)+'" font-size="11" font-weight="800" fill="#8a6f0e" font-family="Frank Ruhl Libre">M('+(mx%1===0?mx:mx.toFixed(1))+','+(my%1===0?my:my.toFixed(1))+')</text>';
+  // point A
+  svg+='<circle cx="'+sa.x+'" cy="'+sa.y+'" r="9" fill="var(--ptA)" stroke="#fff" stroke-width="2.5" class="drag-pt" data-pt="A" style="cursor:grab"/>';
+  svg+='<text x="'+(sa.x-12)+'" y="'+(sa.y-10)+'" font-size="13" font-weight="900" fill="var(--ptA)" font-family="Frank Ruhl Libre">A('+A.x+','+A.y+')</text>';
+  // point B
+  svg+='<circle cx="'+sb.x+'" cy="'+sb.y+'" r="9" fill="var(--ptB)" stroke="#fff" stroke-width="2.5" class="drag-pt" data-pt="B" style="cursor:grab"/>';
+  svg+='<text x="'+(sb.x+10)+'" y="'+(sb.y-10)+'" font-size="13" font-weight="900" fill="var(--ptB)" font-family="Frank Ruhl Libre">B('+B.x+','+B.y+')</text>';
+
+  SVG.innerHTML=svg;
+
+  // update labels
+  document.getElementById('ptA').textContent='A('+A.x+', '+A.y+')';
+  document.getElementById('ptB').textContent='B('+B.x+', '+B.y+')';
+  const dx=B.x-A.x, dy=B.y-A.y;
+  const dist=Math.sqrt(dx*dx+dy*dy);
+  document.getElementById('distV').textContent=(dist%1===0?dist:dist.toFixed(2));
+  document.getElementById('midV').textContent='('+(mx%1===0?mx:mx.toFixed(1))+', '+(my%1===0?my:my.toFixed(1))+')';
+  if(dx===0){document.getElementById('slopeV').textContent='לא מוגדר';}
+  else{const sl=dy/dx;document.getElementById('slopeV').textContent=(sl%1===0?sl:sl.toFixed(2));}
+}
+
+function getSvgCoords(evt){
+  const rect=SVG.getBoundingClientRect();
+  const clientX=evt.touches?evt.touches[0].clientX:evt.clientX;
+  const clientY=evt.touches?evt.touches[0].clientY:evt.clientY;
+  const x=(clientX-rect.left)*400/rect.width;
+  const y=(clientY-rect.top)*400/rect.height;
+  return {x,y};
+}
+
+SVG.addEventListener('mousedown',startDrag);
+SVG.addEventListener('touchstart',startDrag,{passive:false});
+function startDrag(evt){
+  if(evt.target.classList.contains('drag-pt')){
+    dragging=evt.target.dataset.pt;
+    evt.preventDefault();
+  }
+}
+SVG.addEventListener('mousemove',doDrag);
+SVG.addEventListener('touchmove',doDrag,{passive:false});
+function doDrag(evt){
+  if(!dragging)return;
+  evt.preventDefault();
+  const c=getSvgCoords(evt);
+  const m=toMath(c.x,c.y);
+  // clamp to range
+  m.x=Math.max(-7,Math.min(7,m.x));
+  m.y=Math.max(-7,Math.min(7,m.y));
+  if(dragging==='A')A=m;else B=m;
+  draw();
+}
+window.addEventListener('mouseup',()=>dragging=null);
+window.addEventListener('touchend',()=>dragging=null);
+
+draw();
+
+/* ===== GAME ===== */
+const POOL=[
+  {q:'מרחק בין A(1,2) ו-B(4,6) =',ans:'5',wrong:['7','25','3']},
+  {q:'מרחק בין A(0,0) ו-B(3,4) =',ans:'5',wrong:['7','25','12']},
+  {q:'מרחק בין A(2,3) ו-B(5,7) =',ans:'5',wrong:['7','3','25']},
+  {q:'מרחק בין A(−1,1) ו-B(2,5) =',ans:'5',wrong:['4','7','25']},
+  {q:'אמצע הקטע A(2,4) — B(6,8) =',ans:'(4, 6)',wrong:['(8, 12)','(2, 2)','(3, 5)']},
+  {q:'אמצע הקטע A(0,0) — B(4,6) =',ans:'(2, 3)',wrong:['(4, 6)','(1, 2)','(6, 4)']},
+  {q:'אמצע הקטע A(−2,3) — B(4,−1) =',ans:'(1, 1)',wrong:['(2, 2)','(3, 1)','(−1, 1)']},
+  {q:'אמצע הקטע A(1,5) — B(7,3) =',ans:'(4, 4)',wrong:['(8, 8)','(3, 4)','(4, 8)']},
+  {q:'שיפוע הקו דרך A(1,2) ו-B(4,8) =',ans:'2',wrong:['3','1/2','6']},
+  {q:'שיפוע הקו דרך A(0,1) ו-B(3,10) =',ans:'3',wrong:['9','1/3','11']},
+  {q:'שיפוע הקו דרך A(2,5) ו-B(6,5) =',ans:'0',wrong:['לא מוגדר','אינסוף','1']},
+  {q:'שיפוע הקו דרך A(3,1) ו-B(3,8) =',ans:'לא מוגדר',wrong:['0','7','1/7']},
+  {q:'שיפוע הקו דרך A(−1,2) ו-B(1,6) =',ans:'2',wrong:['−2','4','1/2']},
+  {q:'מרחק בין A(0,0) ל-B(6,8) =',ans:'10',wrong:['14','100','7']}
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;document.getElementById('turn').textContent='תורו של: '+name;}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  cur=POOL[Math.floor(Math.random()*POOL.length)];
+  document.getElementById('question').textContent=cur.q;
+  const opts=shuffle([cur.ans,...cur.wrong]);
+  const O=document.getElementById('opts');O.innerHTML='';
+  opts.forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.7?btns.find(x=>x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,pick.textContent);},2000);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.ans;fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='✗ התשובה: '+cur.ans;fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

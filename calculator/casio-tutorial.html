@@ -1,0 +1,1197 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מדריך מחשבון fx-991EX</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap');
+
+:root {
+  --bg: #0f1117;
+  --panel: #1a1d27;
+  --panel2: #22263a;
+  --accent: #4a9eff;
+  --accent2: #ff9500;
+  --accent3: #30d158;
+  --red: #e83030;
+  --text: #e8eaf0;
+  --sub: #8892aa;
+  --border: #2e3350;
+  --highlight: rgba(74,158,255,0.15);
+  --highlight-orange: rgba(255,149,0,0.2);
+  --highlight-green: rgba(48,209,88,0.15);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Heebo', sans-serif;
+  min-height: 100vh;
+  direction: rtl;
+}
+
+/* LAYOUT */
+.app {
+  display: grid;
+  grid-template-columns: 1fr 310px;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+  gap: 0;
+}
+
+/* HEADER */
+.header {
+  grid-column: 1/-1;
+  background: linear-gradient(135deg, #12152a 0%, #1a1d30 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent), #7cc8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.header .sub { font-size: 13px; color: var(--sub); margin-right: 4px; }
+
+/* LEFT PANEL — TUTORIAL */
+.tutorial-panel {
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* TOPIC TABS */
+.topics {
+  display: flex;
+  overflow-x: auto;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+.topics::-webkit-scrollbar { display: none; }
+.topic-btn {
+  padding: 10px 14px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  color: var(--sub);
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.topic-btn:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.topic-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* CONTENT */
+.tutorial-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.lesson-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+.lesson-subtitle {
+  font-size: 13px;
+  color: var(--sub);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* MODE TOGGLE */
+.mode-toggle {
+  display: flex;
+  gap: 0;
+  background: var(--panel2);
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  width: fit-content;
+}
+.mode-btn {
+  padding: 6px 18px;
+  border-radius: 6px;
+  border: none;
+  font-family: 'Heebo', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: none;
+  color: var(--sub);
+  transition: all 0.2s;
+}
+.mode-btn.active { background: var(--accent); color: #fff; }
+
+/* STEPS */
+.steps { display: flex; flex-direction: column; gap: 10px; }
+
+.step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.step.active {
+  border-color: var(--accent);
+  background: var(--highlight);
+  box-shadow: 0 0 0 1px rgba(74,158,255,0.2);
+}
+.step.done {
+  border-color: var(--accent3);
+  background: var(--highlight-green);
+}
+.step-num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: var(--sub);
+  transition: all 0.3s;
+}
+.step.active .step-num { background: var(--accent); color: #fff; }
+.step.done .step-num { background: var(--accent3); color: #fff; }
+.step-text { flex: 1; }
+.step-action {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 3px;
+  line-height: 1.4;
+}
+.step-detail {
+  font-size: 11.5px;
+  color: var(--sub);
+  line-height: 1.5;
+}
+
+/* KEY TAGS */
+.key {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  border-bottom: 3px solid #222;
+  border-radius: 4px;
+  padding: 1px 7px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11.5px;
+  color: #fff;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.key.orange { background: #8a5500; border-color: #cc7700; border-bottom-color: #553300; color: #ffcc66; }
+.key.blue { background: #0d2a52; border-color: #1a5faa; border-bottom-color: #071a38; color: #7cc8ff; }
+.key.red { background: #550000; border-color: #cc2222; border-bottom-color: #330000; color: #ff8888; }
+.key.green-k { background: #0a3a1a; border-color: #30d158; border-bottom-color: #051a0a; color: #30d158; }
+
+/* FORMULA DISPLAY */
+.formula-box {
+  background: #0d1117;
+  border: 1px solid #30d15840;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px;
+  color: var(--accent3);
+  text-align: center;
+  direction: ltr;
+}
+
+/* EXAMPLE BOX */
+.example-box {
+  background: var(--panel2);
+  border: 1px solid var(--accent2);
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 16px;
+}
+.example-box h4 {
+  font-size: 13px;
+  color: var(--accent2);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.example-q {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text);
+  direction: ltr;
+  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+}
+.example-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ex-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text);
+  background: rgba(255,255,255,0.04);
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+.ex-arrow { color: var(--accent); font-size: 10px; }
+
+/* ANSWER */
+.answer-box {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(48,209,88,0.1);
+  border: 1px solid rgba(48,209,88,0.3);
+  border-radius: 8px;
+  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 16px;
+  color: var(--accent3);
+}
+
+/* NEXT BTN */
+.next-btn {
+  margin-top: 18px;
+  width: 100%;
+  padding: 11px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.next-btn:hover { background: #3a8ee8; transform: translateY(-1px); }
+.next-btn:disabled { background: var(--border); color: var(--sub); cursor: default; transform: none; }
+
+/* PRACTICE PANEL */
+.practice-area { display: flex; flex-direction: column; gap: 14px; }
+.practice-q {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.practice-q h4 { font-size: 12px; color: var(--sub); margin-bottom: 8px; }
+.practice-q .q-text {
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Share Tech Mono', monospace;
+  direction: ltr;
+  color: var(--text);
+  margin-bottom: 12px;
+  text-align: center;
+}
+.answer-input {
+  display: flex;
+  gap: 8px;
+}
+.answer-input input {
+  flex: 1;
+  background: #0f1117;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: var(--text);
+  direction: ltr;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.answer-input input:focus { border-color: var(--accent); }
+.check-btn {
+  padding: 8px 16px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.feedback { margin-top: 8px; font-size: 12px; padding: 6px 10px; border-radius: 6px; display: none; }
+.feedback.correct { background: rgba(48,209,88,0.15); color: var(--accent3); display: block; }
+.feedback.wrong { background: rgba(232,48,48,0.15); color: #ff6b6b; display: block; }
+
+/* ========== CALCULATOR ========== */
+.calc-panel {
+  background: linear-gradient(180deg, #1a1a1a 0%, #111 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px 12px;
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+}
+
+.calculator {
+  width: 268px;
+  background: linear-gradient(170deg, #1c1c1c 0%, #111 40%, #0a0a0a 100%);
+  border-radius: 12px 12px 20px 20px;
+  padding: 0 0 16px 0;
+  box-shadow: 0 0 0 1px #333, 0 8px 40px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.07);
+  position: sticky;
+  top: 0;
+  direction: ltr;
+}
+
+/* TOP BAR */
+.top-bar {
+  background: linear-gradient(135deg, #1a3a6b 0%, #0d2a52 50%, #071a38 100%);
+  border-radius: 12px 12px 0 0;
+  padding: 10px 14px 8px;
+}
+.brand-line { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px; }
+.casio-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 17px; font-weight: 700;
+  color: #fff; letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(100,180,255,0.5);
+}
+.solar-panel {
+  width: 42px; height: 13px;
+  background: repeating-linear-gradient(90deg, #1a2a1a 0px, #1a2a1a 5px, #0d1a0d 5px, #0d1a0d 6px);
+  border: 1px solid #333; border-radius: 2px;
+}
+.model-line { display: flex; align-items: baseline; gap: 6px; }
+.model-name { font-family: 'Orbitron', sans-serif; font-size: 8.5px; color: rgba(255,255,255,0.7); letter-spacing: 1px; }
+.classwiz { font-family: 'Orbitron', sans-serif; font-size: 6.5px; color: #4a9eff; letter-spacing: 2px; }
+
+/* DISPLAY */
+.display-housing {
+  background: #111; margin: 7px 9px; border-radius: 5px; padding: 5px;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+}
+.display-screen {
+  background: linear-gradient(180deg, #9db08e 0%, #a8b89a 30%, #b0c0a2 100%);
+  border-radius: 3px; padding: 5px 8px; min-height: 64px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+  position: relative;
+}
+.display-screen::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%);
+  pointer-events: none;
+}
+.display-indicators {
+  display: flex; gap: 4px; margin-bottom: 3px; flex-wrap: wrap;
+}
+.indicator {
+  font-family: 'Share Tech Mono', monospace; font-size: 6.5px;
+  color: #2a3a20; opacity: 0.5;
+}
+.indicator.on { opacity: 1; }
+.indicator.shift-on { opacity: 1; color: #b36000; }
+.indicator.alpha-on { opacity: 1; color: #990000; }
+.display-formula {
+  font-family: 'Share Tech Mono', monospace; font-size: 9.5px;
+  color: #2a4020; min-height: 14px; text-align: right; direction: ltr;
+}
+.display-main {
+  font-family: 'Share Tech Mono', monospace; font-size: 10px;
+  color: #1a2a10; min-height: 18px; text-align: right; direction: ltr;
+}
+.display-result {
+  font-family: 'Share Tech Mono', monospace; font-size: 18px;
+  color: #0d1a08; text-align: right; font-weight: bold; direction: ltr;
+}
+
+/* BUTTONS */
+.buttons-area { padding: 3px 7px 0; }
+.btn-row { display: flex; gap: 3px; margin-bottom: 3px; justify-content: center; }
+
+.btn {
+  border: none; border-radius: 3px; cursor: pointer;
+  font-family: 'Share Tech Mono', monospace;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  position: relative;
+  transition: transform 0.08s, box-shadow 0.08s, filter 0.08s;
+  outline: none;
+}
+.btn:active { transform: translateY(2px) scale(0.95); filter: brightness(0.8); box-shadow: none !important; }
+
+/* HIGHLIGHTED BUTTON */
+.btn.lit {
+  animation: pulse-btn 0.5s ease-in-out infinite alternate;
+  z-index: 5;
+}
+@keyframes pulse-btn {
+  from { box-shadow: 0 0 0 2px #4a9eff, 0 0 8px rgba(74,158,255,0.6); filter: brightness(1.3); }
+  to   { box-shadow: 0 0 0 3px #7cc8ff, 0 0 16px rgba(74,158,255,0.9); filter: brightness(1.5); }
+}
+.btn.lit-orange {
+  animation: pulse-orange 0.5s ease-in-out infinite alternate;
+}
+@keyframes pulse-orange {
+  from { box-shadow: 0 0 0 2px #ff9500, 0 0 8px rgba(255,149,0,0.6); filter: brightness(1.3); }
+  to   { box-shadow: 0 0 0 3px #ffcc00, 0 0 16px rgba(255,200,0,0.9); filter: brightness(1.5); }
+}
+
+.btn-top {
+  position: absolute; top: -12px; left: 0; right: 0;
+  display: flex; justify-content: space-between; padding: 0 1px;
+}
+.lbl-shift { font-family: 'Share Tech Mono', monospace; font-size: 6px; color: #ff9500; }
+.lbl-alpha { font-family: 'Share Tech Mono', monospace; font-size: 6px; color: #e83030; text-align: right; }
+.btn-main { font-size: 8.5px; line-height: 1.1; text-align: center; }
+.btn-sub { font-size: 6px; opacity: 0.8; margin-top: 1px; }
+
+.btn-dark { background: linear-gradient(180deg,#2e2e2e,#1a1a1a); color:#fff; box-shadow:0 3px 0 #0a0a0a; border-top:1px solid rgba(255,255,255,0.1); }
+.btn-shift-c { background: linear-gradient(180deg,#e08800,#b86e00); color:#fff; box-shadow:0 3px 0 #6b3e00; border-top:1px solid rgba(255,220,100,0.3); }
+.btn-alpha-c { background: linear-gradient(180deg,#cc2222,#991111); color:#fff; box-shadow:0 3px 0 #550000; }
+.btn-blue { background: linear-gradient(180deg,#1a5faa,#0d3d75); color:#fff; box-shadow:0 3px 0 #071a38; }
+.btn-light { background: linear-gradient(180deg,#d0d0d0,#a8a8a8); color:#111; box-shadow:0 3px 0 #555; border-top:1px solid rgba(255,255,255,0.5); }
+.btn-equals { background: linear-gradient(180deg,#1a5faa,#0d3d75); color:#fff; box-shadow:0 3px 0 #071a38; }
+
+.w26{width:26px;height:24px} .w30{width:30px;height:26px} .w32{width:32px;height:26px}
+.w36{width:36px;height:28px} .w38{width:38px;height:28px} .w40{width:40px;height:30px}
+.w44{width:44px;height:30px} .w50{width:50px;height:34px}
+
+.nav-section { display:flex; justify-content:center; margin:5px 0 3px; }
+.nav-ring { position:relative; width:66px; height:66px; }
+.nav-ring-outer { position:absolute; inset:0; border-radius:50%; background:linear-gradient(135deg,#3a3a3a,#1a1a1a); box-shadow:0 3px 6px rgba(0,0,0,0.6); }
+.nav-center { position:absolute; top:50%;left:50%; transform:translate(-50%,-50%); width:26px;height:26px; border-radius:50%; background:linear-gradient(135deg,#2a2a2a,#111); border:1px solid #444; display:flex;align-items:center;justify-content:center; cursor:pointer; z-index:10; font-size:6.5px;color:#fff;font-family:'Share Tech Mono',monospace; }
+.nav-up,.nav-down,.nav-left,.nav-right { position:absolute;width:20px;height:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:8px;color:#ccc;z-index:5; }
+.nav-up{top:3px;left:50%;transform:translateX(-50%)}
+.nav-down{bottom:3px;left:50%;transform:translateX(-50%)}
+.nav-left{left:3px;top:50%;transform:translateY(-50%)}
+.nav-right{right:3px;top:50%;transform:translateY(-50%)}
+
+.sep { height:1px; background:linear-gradient(90deg,transparent,#333,transparent); margin:4px 10px; }
+
+.screw { width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#555,#222);border:1px solid #444; }
+
+/* PROGRESS BAR */
+.progress-bar { height:3px; background:var(--border); border-radius:2px; margin-bottom:16px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),#7cc8ff); border-radius:2px; transition:width 0.4s ease; }
+
+/* HINT BOX */
+.hint-box {
+  background: rgba(255,149,0,0.08);
+  border: 1px solid rgba(255,149,0,0.25);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  color: #ffcc88;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.hint-icon { font-size: 14px; flex-shrink: 0; }
+
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>מדריך מחשבון Casio fx-991EX</h1>
+    <div class="sub">הכנה לבחינות מה״ט — 3 יחידות</div>
+  </div>
+</div>
+
+<!-- TUTORIAL PANEL -->
+<div class="tutorial-panel">
+  <div class="topics" id="topics"></div>
+
+  <div class="tutorial-content" id="tutorial-content">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- CALCULATOR PANEL -->
+<div class="calc-panel">
+  <div class="calculator" id="calc">
+
+    <div class="top-bar">
+      <div class="brand-line">
+        <div class="casio-logo">CASIO</div>
+        <div class="solar-panel"></div>
+      </div>
+      <div class="model-line">
+        <div class="model-name">fx-991EX</div>
+        <div class="classwiz">ClassWiz</div>
+      </div>
+    </div>
+
+    <div class="display-housing">
+      <div class="display-screen">
+        <div class="display-indicators">
+          <span class="indicator" id="ind-S">S</span>
+          <span class="indicator" id="ind-A">A</span>
+          <span class="indicator on">Math</span>
+          <span class="indicator on">D</span>
+          <span class="indicator">Rad</span>
+          <span class="indicator on">Norm1</span>
+        </div>
+        <div class="display-formula" id="disp-formula"></div>
+        <div class="display-main" id="disp-main">0</div>
+        <div class="display-result" id="disp-result"></div>
+      </div>
+    </div>
+
+    <div class="buttons-area">
+
+      <!-- ROW 1 -->
+      <div class="btn-row" style="margin-top:8px;margin-bottom:12px;">
+        <button class="btn btn-blue w40" id="btn-MENU" onclick="pressCalc('MENU')"><span class="btn-main">MENU</span></button>
+        <button class="btn btn-dark w40" id="btn-BACK" onclick="pressCalc('BACK')"><span class="btn-main" style="font-size:7px">BACK<br>SPACE</span></button>
+        <button class="btn btn-dark w40" id="btn-DEL" onclick="pressCalc('DEL')"><span class="btn-main">DEL</span></button>
+        <button class="btn btn-dark w40" id="btn-AC" onclick="pressCalc('AC')"><span class="btn-main">AC</span></button>
+      </div>
+
+      <!-- ROW 2 -->
+      <div class="btn-row" style="margin-bottom:13px;">
+        <button class="btn btn-shift-c w40" id="btn-SHIFT" onclick="pressCalc('SHIFT')"><span class="btn-main">SHIFT</span></button>
+        <button class="btn btn-alpha-c w40" id="btn-ALPHA" onclick="pressCalc('ALPHA')"><span class="btn-main">ALPHA</span></button>
+        <button class="btn btn-dark w40" id="btn-CALC" style="position:relative">
+          <div class="btn-top"><span class="lbl-shift">SOLVE</span></div>
+          <span class="btn-main">CALC</span>
+        </button>
+        <button class="btn btn-dark w40" id="btn-OPTN" style="position:relative">
+          <div class="btn-top"><span class="lbl-shift">CLR</span></div>
+          <span class="btn-main" style="font-size:7.5px">OPTN</span>
+        </button>
+      </div>
+
+      <!-- NAV -->
+      <div class="nav-section">
+        <div class="nav-ring">
+          <div class="nav-ring-outer"></div>
+          <div class="nav-up" id="btn-UP" onclick="pressCalc('UP')">▲</div>
+          <div class="nav-down" id="btn-DOWN" onclick="pressCalc('DOWN')">▼</div>
+          <div class="nav-left" id="btn-LEFT" onclick="pressCalc('LEFT')">◄</div>
+          <div class="nav-right" id="btn-RIGHT" onclick="pressCalc('RIGHT')">►</div>
+          <div class="nav-center" id="btn-EQ" onclick="pressCalc('EQ')">=</div>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <!-- ROW 3 -->
+      <div class="btn-row" style="margin-top:7px;margin-bottom:12px;">
+        <button class="btn btn-dark w32" id="btn-sin" style="position:relative" onclick="pressCalc('sin')">
+          <div class="btn-top"><span class="lbl-shift">sin⁻¹</span><span class="lbl-alpha">D</span></div>
+          <span class="btn-main">sin</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-cos" style="position:relative" onclick="pressCalc('cos')">
+          <div class="btn-top"><span class="lbl-shift">cos⁻¹</span><span class="lbl-alpha">R</span></div>
+          <span class="btn-main">cos</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-tan" style="position:relative" onclick="pressCalc('tan')">
+          <div class="btn-top"><span class="lbl-shift">tan⁻¹</span><span class="lbl-alpha">G</span></div>
+          <span class="btn-main">tan</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-frac" style="position:relative" onclick="pressCalc('frac')">
+          <div class="btn-top"><span class="lbl-shift">a+b/c</span></div>
+          <span class="btn-main" style="font-size:8px">a/b</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-pow" style="position:relative" onclick="pressCalc('pow')">
+          <div class="btn-top"><span class="lbl-shift">ⁿ√x</span></div>
+          <span class="btn-main" style="font-size:8px">x<sup>□</sup></span>
+        </button>
+      </div>
+
+      <!-- ROW 4 -->
+      <div class="btn-row" style="margin-bottom:12px;">
+        <button class="btn btn-dark w32" id="btn-log" style="position:relative" onclick="pressCalc('log')">
+          <div class="btn-top"><span class="lbl-shift">10ˣ</span><span class="lbl-alpha">i</span></div>
+          <span class="btn-main">log</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-ln" style="position:relative" onclick="pressCalc('ln')">
+          <div class="btn-top"><span class="lbl-shift">eˣ</span><span class="lbl-alpha">θ</span></div>
+          <span class="btn-main">ln</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-x2" style="position:relative" onclick="pressCalc('x2')">
+          <div class="btn-top"><span class="lbl-shift">√</span><span class="lbl-alpha">E</span></div>
+          <span class="btn-main">x²</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-inv" style="position:relative" onclick="pressCalc('inv')">
+          <div class="btn-top"><span class="lbl-shift">MAT</span></div>
+          <span class="btn-main">x⁻¹</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-par" style="position:relative" onclick="pressCalc('par')">
+          <div class="btn-top"><span class="lbl-shift">%</span></div>
+          <span class="btn-main">( )</span>
+        </button>
+      </div>
+
+      <div class="sep"></div>
+
+      <!-- ROW 5: 7 8 9 -->
+      <div class="btn-row" style="margin-top:5px;margin-bottom:12px;">
+        <button class="btn btn-dark w32" id="btn-7" style="position:relative" onclick="pressCalc('7')">
+          <div class="btn-top"><span class="lbl-shift" style="font-size:5.5px">STAT</span></div>
+          <span class="btn-main" style="font-size:13px">7</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-8" style="position:relative" onclick="pressCalc('8')">
+          <div class="btn-top"><span class="lbl-shift" style="font-size:5.5px">TABL</span></div>
+          <span class="btn-main" style="font-size:13px">8</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-9" style="position:relative" onclick="pressCalc('9')">
+          <div class="btn-top"><span class="lbl-shift" style="font-size:5.5px">VCT</span></div>
+          <span class="btn-main" style="font-size:13px">9</span>
+        </button>
+        <button class="btn btn-light w32" id="btn-div" onclick="pressCalc('/')"><span class="btn-main" style="font-size:13px">÷</span></button>
+        <button class="btn btn-light w32" id="btn-mul" onclick="pressCalc('*')"><span class="btn-main" style="font-size:13px">×</span></button>
+      </div>
+
+      <!-- ROW 6: 4 5 6 -->
+      <div class="btn-row" style="margin-bottom:12px;">
+        <button class="btn btn-dark w32" id="btn-4" style="position:relative" onclick="pressCalc('4')">
+          <div class="btn-top"><span class="lbl-shift" style="font-size:5.5px">EQN</span></div>
+          <span class="btn-main" style="font-size:13px">4</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-5" onclick="pressCalc('5')"><span class="btn-main" style="font-size:13px">5</span></button>
+        <button class="btn btn-dark w32" id="btn-6" onclick="pressCalc('6')"><span class="btn-main" style="font-size:13px">6</span></button>
+        <button class="btn btn-light w32" id="btn-minus" onclick="pressCalc('-')"><span class="btn-main" style="font-size:15px">−</span></button>
+        <button class="btn btn-light w32" id="btn-plus" onclick="pressCalc('+')"><span class="btn-main" style="font-size:15px">+</span></button>
+      </div>
+
+      <!-- ROW 7: 1 2 3 -->
+      <div class="btn-row" style="margin-bottom:12px;">
+        <button class="btn btn-dark w32" id="btn-1" style="position:relative" onclick="pressCalc('1')">
+          <div class="btn-top"><span class="lbl-shift" style="font-size:5px">CMPLX</span></div>
+          <span class="btn-main" style="font-size:13px">1</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-2" onclick="pressCalc('2')"><span class="btn-main" style="font-size:13px">2</span></button>
+        <button class="btn btn-dark w32" id="btn-3" onclick="pressCalc('3')"><span class="btn-main" style="font-size:13px">3</span></button>
+        <button class="btn btn-light w32" id="btn-neg" onclick="pressCalc('(-)')"><span class="btn-main" style="font-size:10px">(−)</span></button>
+        <button class="btn btn-dark w32" id="btn-pi" style="position:relative" onclick="pressCalc('pi')">
+          <div class="btn-top"><span class="lbl-shift">e</span><span class="lbl-alpha">π</span></div>
+          <span class="btn-main" style="font-size:12px">π</span>
+        </button>
+      </div>
+
+      <!-- ROW 8 -->
+      <div class="btn-row">
+        <button class="btn btn-dark w40" id="btn-0" style="position:relative" onclick="pressCalc('0')">
+          <div class="btn-top"><span class="lbl-shift">INS</span></div>
+          <span class="btn-main" style="font-size:13px">0</span>
+        </button>
+        <button class="btn btn-dark w32" id="btn-dot" onclick="pressCalc('.')"><span class="btn-main" style="font-size:15px">.</span></button>
+        <button class="btn btn-dark w40" id="btn-exp" style="position:relative" onclick="pressCalc('exp')">
+          <div class="btn-top"><span class="lbl-shift">ENG</span></div>
+          <span class="btn-main" style="font-size:8px">×10ⁿ</span>
+        </button>
+        <button class="btn btn-equals w50" id="btn-EQ2" onclick="pressCalc('EQ')"><span style="font-size:18px">=</span></button>
+      </div>
+
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:10px 14px 0;">
+      <div class="screw"></div><div class="screw"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end app -->
+
+<script>
+// ===================== DATA =====================
+const topics = [
+  {
+    id: 'pow',
+    label: 'חזקות',
+    icon: 'xⁿ',
+    desc: 'חישוב ביטויים עם חזקות — למשל 2³ או 5⁴',
+    steps: [
+      { action: 'הקלד את הבסיס', detail: 'הכנס את המספר שברצונך להעלות לחזקה (הבסיס). למשל: <span class="key">2</span>', keys: ['2'] },
+      { action: 'לחץ על כפתור החזקה', detail: 'הכפתור <span class="key">x□</span> (xⁿ) — מעביר את הסמן לאחר הבסיס ומחכה למעריך', keys: ['pow'] },
+      { action: 'הקלד את המעריך', detail: 'הכנס את המספר שאליו מעלים. למשל: <span class="key">3</span> לחזקת 3', keys: ['3'] },
+      { action: 'לחץ = לחישוב', detail: 'המחשבון מציג 2³ = 8', keys: ['EQ'] },
+    ],
+    formula: '2³ = 8',
+    hint: 'אחרי שתקיש את המעריך, לחץ ← (חץ ימינה) כדי לצאת מחלון המעריך לפני הוספת פעולות נוספות',
+    example: {
+      q: '3⁴ = ?',
+      steps: [
+        { keys: ['3'], label: 'הקש 3 (הבסיס)' },
+        { keys: ['pow'], label: 'לחץ xⁿ' },
+        { keys: ['4'], label: 'הקש 4 (המעריך)' },
+        { keys: ['EQ'], label: 'לחץ =' },
+      ],
+      answer: '81'
+    },
+    practice: [
+      { q: '2⁸ = ?', answer: '256' },
+      { q: '5³ = ?', answer: '125' },
+    ]
+  },
+  {
+    id: 'frac',
+    label: 'שברים',
+    icon: 'a/b',
+    desc: 'הכנסת שברים, חישובים עם שברים, ועיצוב כשבר',
+    steps: [
+      { action: 'לחץ על כפתור השבר', detail: 'לחץ <span class="key">a/b</span> — יפתח תצוגת שבר עם מקום למונה ולמכנה', keys: ['frac'] },
+      { action: 'הקלד את המונה', detail: 'הכנס את המספר בחלק העליון. למשל: <span class="key">3</span>', keys: ['3'] },
+      { action: 'עבור למכנה', detail: 'לחץ <span class="key">▼</span> (חץ למטה) כדי לעבור לחלק התחתון', keys: ['DOWN'] },
+      { action: 'הקלד את המכנה', detail: 'הכנס את המספר בחלק התחתון. למשל: <span class="key">4</span>', keys: ['4'] },
+      { action: 'לחץ = לחישוב', detail: 'המחשבון מחשב ומציג את התוצאה כשבר', keys: ['EQ'] },
+    ],
+    formula: '3/4 + 1/2 = 5/4',
+    hint: 'לקבלת תוצאה עשרונית במקום שבר — לחץ S⇔D אחרי שקיבלת תוצאה',
+    example: {
+      q: '2/3 + 1/6 = ?',
+      steps: [
+        { keys: ['frac'], label: 'לחץ a/b' },
+        { keys: ['2'], label: 'הקש 2 (מונה)' },
+        { keys: ['DOWN'], label: 'לחץ ▼' },
+        { keys: ['3'], label: 'הקש 3 (מכנה)' },
+        { keys: ['plus'], label: 'לחץ +' },
+        { keys: ['frac'], label: 'לחץ a/b שוב' },
+        { keys: ['1'], label: 'הקש 1' },
+        { keys: ['DOWN'], label: 'לחץ ▼' },
+        { keys: ['6'], label: 'הקש 6' },
+        { keys: ['EQ'], label: 'לחץ =' },
+      ],
+      answer: '5/6'
+    },
+    practice: [
+      { q: '3/8 + 1/4 = ?', answer: '5/8' },
+      { q: '7/3 − 1/3 = ?', answer: '2' },
+    ]
+  },
+  {
+    id: 'par',
+    label: 'סוגרים',
+    icon: '( )',
+    desc: 'שימוש בסוגרים לקביעת סדר פעולות',
+    steps: [
+      { action: 'לחץ על כפתור הסוגרים', detail: 'לחץ <span class="key">( )</span> — המחשבון פותח סוגר שמאלי ( אוטומטית', keys: ['par'] },
+      { action: 'הקלד את הביטוי בתוך הסוגרים', detail: 'למשל: <span class="key">3</span> <span class="key">+</span> <span class="key">5</span>', keys: ['3', 'plus', '5'] },
+      { action: 'לחץ שוב ( ) לסגירה', detail: 'לחיצה שנייה על <span class="key">( )</span> סוגרת את הסוגר ) אוטומטית', keys: ['par'] },
+      { action: 'המשך עם הביטוי', detail: 'למשל הכפל: <span class="key">×</span> <span class="key">2</span>', keys: ['mul', '2'] },
+      { action: 'לחץ =', detail: '(3+5)×2 = 16', keys: ['EQ'] },
+    ],
+    formula: '(3+5) × 2 = 16',
+    hint: 'אפשר גם להקיש ( ו-) ישירות בנפרד — כפתור ( ) לסירוגין פותח וסוגר',
+    example: {
+      q: '(7−3) × (2+5) = ?',
+      steps: [
+        { keys: ['par'], label: 'פתח סוגר (' },
+        { keys: ['7'], label: '7' },
+        { keys: ['minus'], label: '−' },
+        { keys: ['3'], label: '3' },
+        { keys: ['par'], label: 'סגור )' },
+        { keys: ['mul'], label: '×' },
+        { keys: ['par'], label: 'פתח (' },
+        { keys: ['2'], label: '2' },
+        { keys: ['plus'], label: '+' },
+        { keys: ['5'], label: '5' },
+        { keys: ['par'], label: 'סגור )' },
+        { keys: ['EQ'], label: '=' },
+      ],
+      answer: '28'
+    },
+    practice: [
+      { q: '(2+3)² = ?', answer: '25' },
+      { q: '(10−4) × 3 = ?', answer: '18' },
+    ]
+  },
+  {
+    id: 'sin',
+    label: 'sin / cos',
+    icon: 'sin',
+    desc: 'חישוב פונקציות טריגונומטריות sin ו-cos',
+    steps: [
+      { action: 'ודא שהמחשבון במצב Degree', detail: 'לחץ <span class="key orange">SHIFT</span> ← <span class="key">MENU(SETUP)</span> ← בחר <span class="key">Degree</span>. המסך יציג D', keys: ['SHIFT'] },
+      { action: 'לחץ sin', detail: 'לחץ <span class="key">sin</span> — יפתח אוטומטית sin( על המסך', keys: ['sin'] },
+      { action: 'הקלד את הזווית בדרגות', detail: 'למשל: <span class="key">3</span><span class="key">0</span> לזווית 30°', keys: ['3', '0'] },
+      { action: 'לחץ =', detail: 'sin(30°) = 0.5 בדיוק', keys: ['EQ'] },
+    ],
+    formula: 'sin(30°) = 0.5',
+    hint: 'לחישוב cos — בדיוק אותו תהליך אבל לוחצים cos במקום sin. cos(60°) = 0.5',
+    example: {
+      q: 'cos(45°) = ?',
+      steps: [
+        { keys: ['cos'], label: 'לחץ cos' },
+        { keys: ['4'], label: '4' },
+        { keys: ['5'], label: '5' },
+        { keys: ['EQ'], label: '=' },
+      ],
+      answer: '0.7071...'
+    },
+    practice: [
+      { q: 'sin(90°) = ?', answer: '1' },
+      { q: 'cos(0°) = ?', answer: '1' },
+    ]
+  },
+  {
+    id: 'arcsin',
+    label: '−sin (הפוך)',
+    icon: 'sin⁻¹',
+    desc: 'מציאת זווית מתוך ערך sin — sin⁻¹ (SHIFT+sin)',
+    steps: [
+      { action: 'לחץ SHIFT', detail: 'לחץ <span class="key orange">SHIFT</span> — התוויות הכתומות מתאפשרות', keys: ['SHIFT'] },
+      { action: 'לחץ sin (כדי לקבל sin⁻¹)', detail: 'כעת לחיצה על <span class="key">sin</span> מפעילה sin⁻¹ — מחזיר זווית', keys: ['sin'] },
+      { action: 'הקלד את הערך', detail: 'למשל: <span class="key">0</span><span class="key">.</span><span class="key">5</span> (כלומר: של איזו זווית sin = 0.5?)', keys: ['0', 'dot', '5'] },
+      { action: 'לחץ =', detail: 'sin⁻¹(0.5) = 30°', keys: ['EQ'] },
+    ],
+    formula: 'sin⁻¹(0.5) = 30°',
+    hint: 'אותו עיקרון לחישוב cos⁻¹ ו-tan⁻¹ — SHIFT ואז הכפתור המתאים',
+    example: {
+      q: 'cos⁻¹(0.5) = ?',
+      steps: [
+        { keys: ['SHIFT'], label: 'לחץ SHIFT' },
+        { keys: ['cos'], label: 'לחץ cos (= cos⁻¹)' },
+        { keys: ['0'], label: '0' },
+        { keys: ['dot'], label: '.' },
+        { keys: ['5'], label: '5' },
+        { keys: ['EQ'], label: '=' },
+      ],
+      answer: '60°'
+    },
+    practice: [
+      { q: 'sin⁻¹(1) = ?', answer: '90' },
+      { q: 'cos⁻¹(1) = ?', answer: '0' },
+    ]
+  },
+  {
+    id: 'sqrt',
+    label: 'שורש',
+    icon: '√',
+    desc: 'חישוב שורש ריבועי — SHIFT + x²',
+    steps: [
+      { action: 'לחץ SHIFT', detail: 'לחץ <span class="key orange">SHIFT</span> — מפעיל את הפונקציות הכתומות', keys: ['SHIFT'] },
+      { action: 'לחץ x² (לקבלת √)', detail: 'לחץ <span class="key">x²</span> — הפונקציה הכתומה מעליו היא √', keys: ['x2'] },
+      { action: 'הקלד את הביטוי', detail: 'הכנס את המספר שממנו לקחת שורש. למשל: <span class="key">2</span><span class="key">5</span>', keys: ['2', '5'] },
+      { action: 'לחץ =', detail: '√25 = 5', keys: ['EQ'] },
+    ],
+    formula: '√25 = 5',
+    hint: 'לשורש שאינו ריבועי (שורש שלישי, רביעי...) — לחץ SHIFT ואז xⁿ כדי לקבל ⁿ√x',
+    example: {
+      q: '√(16 + 9) = ?',
+      steps: [
+        { keys: ['SHIFT'], label: 'לחץ SHIFT' },
+        { keys: ['x2'], label: 'לחץ x² (= √)' },
+        { keys: ['par'], label: 'פתח (' },
+        { keys: ['1'], label: '1' },
+        { keys: ['6'], label: '6' },
+        { keys: ['plus'], label: '+' },
+        { keys: ['9'], label: '9' },
+        { keys: ['par'], label: 'סגור )' },
+        { keys: ['EQ'], label: '=' },
+      ],
+      answer: '5'
+    },
+    practice: [
+      { q: '√144 = ?', answer: '12' },
+      { q: '√(100−36) = ?', answer: '8' },
+    ]
+  },
+  {
+    id: 'trinomial',
+    label: 'פירוק טרינום',
+    icon: 'EQN',
+    desc: 'פתרון משוואה ריבועית ax²+bx+c=0 עם EQN',
+    steps: [
+      { action: 'לחץ MENU', detail: 'לחץ <span class="key blue">MENU</span> — פתח את תפריט המצבים הראשי', keys: ['MENU'] },
+      { action: 'בחר EQN (מצב 8)', detail: 'לחץ <span class="key">8</span> — תפריט פתרון משוואות', keys: ['8'] },
+      { action: 'בחר סדר 2 (ריבועית)', detail: 'בחר <span class="key">2</span> — משוואה ax²+bx+c=0', keys: ['2'] },
+      { action: 'הכנס מקדמים', detail: 'הכנס a, לחץ =, הכנס b, לחץ =, הכנס c, לחץ =', keys: ['1', 'EQ', 'minus', '5', 'EQ', '6', 'EQ'] },
+      { action: 'קרא את השורשים', detail: 'המחשבון מציג x₁ ו-x₂ — הם הגורמים של הטרינום', keys: [] },
+    ],
+    formula: 'x²−5x+6=0 → x=2, x=3',
+    hint: 'אם השורש הוא שבר כמו 3/2, אז הגורמים הם (2x−3) — כפול מכנה!',
+    example: {
+      q: 'x²+x−6=0, מצא x',
+      steps: [
+        { keys: ['MENU'], label: 'לחץ MENU' },
+        { keys: ['8'], label: 'בחר 8 (EQN)' },
+        { keys: ['2'], label: 'בחר 2 (ריבועית)' },
+        { keys: ['1', 'EQ'], label: 'a=1, לחץ =' },
+        { keys: ['1', 'EQ'], label: 'b=1, לחץ =' },
+        { keys: ['neg', '6', 'EQ'], label: 'c=−6, לחץ =' },
+      ],
+      answer: 'x=2, x=−3'
+    },
+    practice: [
+      { q: 'x²−7x+12=0, מה השורשים?', answer: 'x=3, x=4' },
+      { q: 'x²−x−6=0, מה השורשים?', answer: 'x=3, x=−2' },
+    ]
+  },
+];
+
+// ===================== STATE =====================
+let currentTopic = 0;
+let currentStep = 0;
+let mode = 'learn'; // 'learn' | 'practice'
+let shiftOn = false;
+
+// calc state
+let expr = '';
+let resultShown = false;
+
+// ===================== CALC LOGIC =====================
+function updateCalcDisplay() {
+  document.getElementById('disp-main').textContent = expr || '0';
+}
+
+function pressCalc(key) {
+  // update display
+  const map = {
+    '0':'0','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7','8':'8','9':'9',
+    '.':'.','pi':'π','+':'+','-':'−','*':'×','/':'÷',
+    'sin':'sin(','cos':'cos(','tan':'tan(',
+    'log':'log(','ln':'ln(',
+    'par':'(','frac':'/','pow':'^','x2':'²',
+    '(-) ':'(-',
+  };
+  if (key === 'SHIFT') {
+    shiftOn = !shiftOn;
+    document.getElementById('ind-S').className = shiftOn ? 'indicator shift-on' : 'indicator';
+    return;
+  }
+  if (key === 'AC') { expr=''; document.getElementById('disp-result').textContent=''; document.getElementById('disp-formula').textContent=''; }
+  else if (key === 'DEL') { expr = expr.slice(0,-1); }
+  else if (key === 'EQ') {
+    try {
+      let f = expr.replace(/π/g,'Math.PI').replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-')
+        .replace(/sin\(/g,'Math.sin(').replace(/cos\(/g,'Math.cos(').replace(/tan\(/g,'Math.tan(')
+        .replace(/log\(/g,'Math.log10(').replace(/ln\(/g,'Math.log(')
+        .replace(/\^(\d+)/g,'**$1').replace(/²/g,'**2');
+      let r = Function('"use strict";return('+f+')')();
+      document.getElementById('disp-formula').textContent = expr;
+      document.getElementById('disp-result').textContent = parseFloat(r.toFixed(10)).toString();
+      expr = parseFloat(r.toFixed(10)).toString();
+    } catch(e) {
+      document.getElementById('disp-result').textContent = 'SYNTAX ERR';
+    }
+  }
+  else if (map[key]) { expr += map[key]; }
+  shiftOn = false;
+  document.getElementById('ind-S').className = 'indicator';
+  updateCalcDisplay();
+}
+
+// ===================== HIGHLIGHT =====================
+let litTimers = [];
+
+function clearLit() {
+  document.querySelectorAll('.btn.lit, .btn.lit-orange').forEach(b => {
+    b.classList.remove('lit','lit-orange');
+  });
+  litTimers.forEach(t => clearTimeout(t));
+  litTimers = [];
+}
+
+function highlightKey(keyId, orange) {
+  const el = document.getElementById('btn-' + keyId);
+  if (!el) return;
+  el.classList.add(orange ? 'lit-orange' : 'lit');
+}
+
+// ===================== RENDER =====================
+function renderTopics() {
+  const container = document.getElementById('topics');
+  container.innerHTML = '';
+  topics.forEach((t, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'topic-btn' + (i === currentTopic ? ' active' : '');
+    btn.textContent = t.label;
+    btn.onclick = () => { currentTopic = i; currentStep = 0; mode = 'learn'; renderAll(); };
+    container.appendChild(btn);
+  });
+}
+
+function renderLearn() {
+  const t = topics[currentTopic];
+  const progress = ((currentStep) / t.steps.length) * 100;
+
+  let stepsHtml = t.steps.map((s, i) => {
+    let cls = 'step';
+    if (i === currentStep) cls += ' active';
+    else if (i < currentStep) cls += ' done';
+    return `<div class="${cls}" onclick="goStep(${i})">
+      <div class="step-num">${i < currentStep ? '✓' : i+1}</div>
+      <div class="step-text">
+        <div class="step-action">${s.action}</div>
+        ${i === currentStep ? `<div class="step-detail">${s.detail}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  const exSteps = t.example.steps.map(s =>
+    `<div class="ex-step">
+      <span class="ex-arrow">▶</span>
+      <span>${s.keys.map(k => `<span class="key">${keyLabel(k)}</span>`).join(' ')}</span>
+      <span style="color:var(--sub);margin-right:4px">${s.label}</span>
+    </div>`
+  ).join('');
+
+  return `
+    <div class="lesson-title">${t.label}</div>
+    <div class="lesson-subtitle">${t.desc}</div>
+
+    <div class="mode-toggle">
+      <button class="mode-btn active" onclick="setMode('learn')">📖 הסבר</button>
+      <button class="mode-btn" onclick="setMode('practice')">✏️ תרגול</button>
+    </div>
+
+    <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+
+    <div class="steps">${stepsHtml}</div>
+
+    <div class="formula-box" dir="ltr">${t.formula}</div>
+
+    ${t.hint ? `<div class="hint-box"><span class="hint-icon">💡</span><span>${t.hint}</span></div>` : ''}
+
+    <div class="example-box">
+      <h4>📝 דוגמה מלאה</h4>
+      <div class="example-q">${t.example.q}</div>
+      <div class="example-steps">${exSteps}</div>
+      <div class="answer-box">= ${t.example.answer}</div>
+    </div>
+
+    ${currentStep < t.steps.length - 1
+      ? `<button class="next-btn" onclick="nextStep()">הצעד הבא ▶</button>`
+      : `<button class="next-btn" style="background:var(--accent3)" onclick="setMode('practice')">עבור לתרגול ✏️</button>`
+    }
+  `;
+}
+
+function renderPractice() {
+  const t = topics[currentTopic];
+  const qs = t.practice.map((p, i) => `
+    <div class="practice-q">
+      <h4>שאלה ${i+1}</h4>
+      <div class="q-text">${p.q}</div>
+      <div class="answer-input">
+        <input type="text" id="ans-${i}" placeholder="תשובה..." onkeydown="if(event.key==='Enter')checkAns(${i})">
+        <button class="check-btn" onclick="checkAns(${i})">בדוק</button>
+      </div>
+      <div class="feedback" id="fb-${i}"></div>
+    </div>
+  `).join('');
+
+  return `
+    <div class="lesson-title">${t.label} — תרגול</div>
+    <div class="lesson-subtitle">נסה לפתור עם המחשבון שמשמאל. לחץ "בדוק" לאחר הכנסת התשובה.</div>
+
+    <div class="mode-toggle">
+      <button class="mode-btn" onclick="setMode('learn')">📖 הסבר</button>
+      <button class="mode-btn active" onclick="setMode('practice')">✏️ תרגול</button>
+    </div>
+
+    <div class="practice-area">${qs}</div>
+  `;
+}
+
+function setMode(m) {
+  mode = m;
+  renderContent();
+}
+
+function renderContent() {
+  const t = topics[currentTopic];
+  document.getElementById('tutorial-content').innerHTML =
+    mode === 'learn' ? renderLearn() : renderPractice();
+
+  // highlight relevant keys
+  clearLit();
+  if (mode === 'learn' && currentStep < t.steps.length) {
+    const step = t.steps[currentStep];
+    step.keys.forEach((k, idx) => {
+      const isShift = k === 'SHIFT';
+      litTimers.push(setTimeout(() => highlightKey(k, isShift || (step.keys[0]==='SHIFT' && idx===1)), idx * 300));
+    });
+  }
+}
+
+function renderAll() {
+  renderTopics();
+  renderContent();
+}
+
+function goStep(i) {
+  currentStep = i;
+  renderContent();
+}
+
+function nextStep() {
+  const t = topics[currentTopic];
+  if (currentStep < t.steps.length - 1) {
+    currentStep++;
+    renderContent();
+    document.getElementById('tutorial-content').scrollTo({top: 0, behavior:'smooth'});
+  }
+}
+
+function checkAns(i) {
+  const t = topics[currentTopic];
+  const p = t.practice[i];
+  const val = document.getElementById('ans-'+i).value.trim();
+  const fb = document.getElementById('fb-'+i);
+  // normalize
+  const norm = s => s.replace(/\s/g,'').replace(/,/g,'').toLowerCase();
+  if (norm(val) === norm(p.answer)) {
+    fb.className = 'feedback correct';
+    fb.textContent = '✅ נכון! ' + p.answer;
+  } else {
+    fb.className = 'feedback wrong';
+    fb.textContent = '❌ לא מדויק. התשובה: ' + p.answer;
+  }
+}
+
+function keyLabel(k) {
+  const labels = {
+    'SHIFT':'SHIFT','MENU':'MENU','sin':'sin','cos':'cos','tan':'tan',
+    'frac':'a/b','pow':'xⁿ','x2':'x²','par':'( )','plus':'+','minus':'−',
+    'mul':'×','div':'÷','EQ':'=','DOWN':'▼','UP':'▲','LEFT':'◄','RIGHT':'►',
+    'dot':'.','neg':'(−)','0':'0','1':'1','2':'2','3':'3','4':'4',
+    '5':'5','6':'6','7':'7','8':'8','9':'9',
+  };
+  return labels[k] || k;
+}
+
+// INIT
+renderAll();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

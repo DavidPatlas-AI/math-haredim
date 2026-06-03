@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אחוזים</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#1a3d2e;--paper:#e8f0eb;--accent:#2d6a4f;--accent2:#c0392b;--gold:#c9a227;--line:#c5d4cc;--shadow:0 10px 30px rgba(26,61,46,.12);--pos:#2d6a4f;--neg:#c0392b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(45,106,79,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"%";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:200px;font-weight:900;color:rgba(26,61,46,.05);top:-30px;left:30px}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.5rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#456b5b;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .note{background:rgba(45,106,79,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .gold-box{background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:12px;padding:16px;margin-top:14px}
+  .gold-box .title{font-weight:800;color:#8a6f0e;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:1.6rem;margin:14px 0;padding:14px;background:var(--paper);border-radius:12px;direction:ltr}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;direction:ltr;text-align:left}
+
+  /* Three question cards */
+  .three-q{display:grid;gap:12px;margin-top:14px}
+  .qcard{background:linear-gradient(135deg,#fff,var(--paper));border:2px solid var(--accent);border-radius:14px;padding:16px}
+  .qcard .qtype{display:inline-block;background:var(--accent);color:#fff;font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:99px;margin-bottom:8px}
+  .qcard .ex{font-style:italic;color:#456b5b;margin-bottom:8px;font-size:.92rem}
+  .qcard .form{font-family:'Frank Ruhl Libre',serif;font-weight:800;direction:ltr;background:#fff;padding:8px 12px;border-radius:8px;text-align:center;font-size:1.15rem}
+
+  /* PIE CALCULATOR ANIMATION */
+  .calc-wrap{padding:18px;background:var(--paper);border-radius:14px;margin-top:14px}
+  .calc-controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+  .calc-controls .ctrl-group{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .calc-controls label{font-size:.85rem;font-weight:600;color:#456b5b}
+  .calc-controls input[type=number]{width:90px;font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;font-weight:800;text-align:center;border:2px solid var(--ink);background:#fff;padding:8px;border-radius:10px;direction:ltr}
+  .calc-controls input[type=number]:focus{outline:none;border-color:var(--accent)}
+  .pie-stage{display:flex;align-items:center;justify-content:center;gap:30px;flex-wrap:wrap;margin-bottom:16px}
+  .pie{width:180px;height:180px;border-radius:50%;background:conic-gradient(var(--accent) 0% 25%,#e9e9e9 25% 100%);position:relative;transition:background .6s}
+  .pie::after{content:"";position:absolute;inset:30px;background:#fff;border-radius:50%;border:2px solid var(--paper)}
+  .pie-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:2;text-align:center}
+  .pie-label .pct{font-family:'Frank Ruhl Libre',serif;font-size:2rem;font-weight:900;color:var(--accent);line-height:1}
+  .pie-label .lbl{font-size:.78rem;color:#5b7568;margin-top:2px}
+  .calc-result{flex:1;min-width:180px;background:#fff;border-radius:14px;padding:18px;text-align:center;border:2px dashed var(--accent)}
+  .calc-result .from{font-size:.85rem;color:#5b7568}
+  .calc-result .big{font-family:'Frank Ruhl Libre',serif;font-size:2.4rem;font-weight:900;color:var(--accent);margin:4px 0}
+  .calc-result .explain{font-size:.85rem;color:#5b7568;direction:ltr;font-family:'Frank Ruhl Libre',serif}
+
+  /* GAME */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#456b5b}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{font-family:'Heebo';font-size:1rem;line-height:1.7;direction:rtl;padding:18px;background:var(--paper);border-radius:14px;margin-bottom:14px;text-align:right;font-weight:600}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--pos);color:#fff;border-color:var(--pos)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#789085;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">3 יחידות · גם לבגרות וגם לחיים</div>
+    <h1>אחוזים</h1>
+    <div class="sub">הנחות, מע"מ, ריבית, רווח — שולטים בכל הסיטואציות</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🥧 מחשבון חזותי</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>מה זה אחוז? <span class="tag">בסיס</span></h2>
+      <p>אחוז = <b>חלק מתוך 100</b>. המילה "אחוז" עצמה באה מ"אחד למאה". 50% זה חצי, 25% זה רבע, 100% זה הכל.</p>
+      <div class="formula">25% = 25/100 = 0.25 = רבע</div>
+      <div class="gold-box">
+        <div class="title">💡 הסוד הגדול</div>
+        כל בעיית אחוזים אפשר לפתור בנוסחה אחת:<br>
+        <b style="font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;display:inline-block;margin-top:6px;direction:ltr">חלק = שלם · אחוז/100</b>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>3 סוגי שאלות באחוזים <span class="tag">חשוב להכיר</span></h2>
+      <p>כל שאלה באחוזים היא אחת מ-3 השאלות הבאות. תכירו אותן — ותדעו תמיד מה לעשות.</p>
+      <div class="three-q">
+        <div class="qcard">
+          <span class="qtype">סוג 1</span>
+          <div><b>מוצאים את החלק</b> (יודעים את השלם והאחוז)</div>
+          <div class="ex">"כמה זה 20% מ-150?"</div>
+          <div class="form">חלק = 150 · 20:100 = 30</div>
+        </div>
+        <div class="qcard">
+          <span class="qtype">סוג 2</span>
+          <div><b>מוצאים את האחוז</b> (יודעים את השלם והחלק)</div>
+          <div class="ex">"30 הם איזה אחוז מ-150?"</div>
+          <div class="form">אחוז = (30:150)·100 = 20%</div>
+        </div>
+        <div class="qcard">
+          <span class="qtype">סוג 3</span>
+          <div><b>מוצאים את השלם</b> (יודעים את החלק והאחוז)</div>
+          <div class="ex">"30 הם 20% — מהו השלם?"</div>
+          <div class="form">שלם = 30 · 100:20 = 150</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>הנחות והעלאות <span class="tag">סיטואציות נפוצות</span></h2>
+      <p>מחיר חולצה 200 ש"ח, הנחה של 30%. כמה משלמים?</p>
+      <div class="examples">
+        <div>שיטה 1: ההנחה = 200 · 30/100 = 60. המחיר החדש = 200 − 60 = 140</div>
+        <div>שיטה 2 (קצרה): משלמים 70% מהמחיר → 200 · 70/100 = 140</div>
+      </div>
+      <div class="note"><b>טיפ זהב:</b> כשיש הנחה של X% — משלמים (100−X)%. כשיש העלאה של X% — משלמים (100+X)%.</div>
+    </div>
+
+    <div class="card">
+      <h2>מע"מ, רווח, ריבית <span class="tag">חיים אמיתיים</span></h2>
+      <div class="examples">
+        <div>מע"מ 17%: מוצר ב-200 → מוסיפים 17% → 200·1.17 = 234</div>
+        <div>רווח 20%: קניתי ב-100, מכרתי עם רווח 20% → 100·1.20 = 120</div>
+        <div>ריבית שנתית 5%: הפקדתי 1000, אחרי שנה → 1000·1.05 = 1050</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> "ירד ב-50% ואז עלה ב-50%" — <b>לא חזר למחיר המקורי!</b><br>
+        &nbsp;&nbsp;100 → 50 (אחרי הירידה) → 75 (אחרי העלייה).<br><br>
+        <b>2.</b> 30% מ-200 הוא לא 30. צריך לחשב: 200·30/100 = 60.<br><br>
+        <b>3.</b> "5% הוסיפו" זה <b>5% מהמחיר המקורי</b> — לא 5 ש"ח.
+      </div>
+    </div>
+  </section>
+
+  <!-- PIE CALCULATOR -->
+  <section id="anim">
+    <div class="card">
+      <h2>המחשבון החזותי 🥧</h2>
+      <p>שנו את המספרים — וראו איך החלק מהשלם מצויר כפיצה אמיתית, עם החישוב המלא.</p>
+      <div class="calc-wrap">
+        <div class="calc-controls">
+          <div class="ctrl-group">
+            <label>השלם</label>
+            <input type="number" id="whole" value="200" min="1" max="10000">
+          </div>
+          <div class="ctrl-group">
+            <label>האחוז %</label>
+            <input type="number" id="percent" value="25" min="0" max="100">
+          </div>
+        </div>
+        <div class="pie-stage">
+          <div class="pie" id="pie">
+            <div class="pie-label">
+              <div class="pct" id="pieLabel">25%</div>
+              <div class="lbl">מהשלם</div>
+            </div>
+          </div>
+          <div class="calc-result">
+            <div class="from">החלק (<span id="pctOut">25</span>% מתוך <span id="wholeOut">200</span>):</div>
+            <div class="big" id="resultBig">50</div>
+            <div class="explain" id="explain">200 · 25 / 100 = 50</div>
+          </div>
+        </div>
+      </div>
+      <div class="note">נסו ערכים שונים: <b>מחיר 150, הנחה 30%</b> → תראו שההנחה היא 45 ש"ח, אז המחיר הסופי 105. <b>שכר 5000, מס 10%</b> → המס הוא 500.</div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק האחוזים 🎮</h2>
+      <p style="text-align:center;font-size:.9rem;color:#456b5b;margin-bottom:14px">כל מיני סיטואציות אמיתיות — חישבו בראש או בעזרת הנוסחה.</p>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>בסיס לבגרות 3 יח"ל · אחוזים</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+/* ===== PIE CALCULATOR ===== */
+const wholeIn=document.getElementById('whole'),pctIn=document.getElementById('percent');
+function updatePie(){
+  const w=Math.max(0,parseFloat(wholeIn.value)||0);
+  const p=Math.max(0,Math.min(100,parseFloat(pctIn.value)||0));
+  const part=w*p/100;
+  document.getElementById('pie').style.background='conic-gradient(var(--accent) 0% '+p+'%, #e9e9e9 '+p+'% 100%)';
+  document.getElementById('pieLabel').textContent=p+'%';
+  document.getElementById('pctOut').textContent=p;
+  document.getElementById('wholeOut').textContent=w;
+  document.getElementById('resultBig').textContent=(part%1===0?part:part.toFixed(2));
+  document.getElementById('explain').textContent=w+' · '+p+' / 100 = '+(part%1===0?part:part.toFixed(2));
+}
+wholeIn.addEventListener('input',updatePie);
+pctIn.addEventListener('input',updatePie);
+updatePie();
+
+/* ===== GAME ===== */
+const POOL=[
+  {q:'כמה זה 20% מ-150?',ans:30,wrong:[20,150,3]},
+  {q:'כמה זה 50% מ-80?',ans:40,wrong:[50,30,80]},
+  {q:'כמה זה 25% מ-200?',ans:50,wrong:[25,75,150]},
+  {q:'כמה זה 10% מ-450?',ans:45,wrong:[10,4.5,450]},
+  {q:'מחיר חולצה 200 ש"ח, הנחה של 30%. כמה משלמים בסוף?',ans:140,wrong:[60,170,30]},
+  {q:'מחיר עוגה 80 ש"ח, הנחה 25%. המחיר אחרי ההנחה?',ans:60,wrong:[20,55,75]},
+  {q:'משכורת 5000 ש"ח, מס הכנסה 10%. כמה משלמים מס?',ans:500,wrong:[50,4500,5500]},
+  {q:'הפקדתי 1000 בבנק עם ריבית 5%. כמה אקבל אחרי שנה?',ans:1050,wrong:[50,1500,950]},
+  {q:'מוצר ב-200 ש"ח + מע"מ 17%. כמה משלמים בסוף?',ans:234,wrong:[217,217.40,170]},
+  {q:'30 הם איזה אחוז מ-150?',ans:20,wrong:[30,50,15]},
+  {q:'40 הם איזה אחוז מ-200?',ans:20,wrong:[40,50,80]},
+  {q:'25 הם איזה אחוז מ-100?',ans:25,wrong:[100,4,75]},
+  {q:'מחיר עלה ב-20%, מ-50 ל-?',ans:60,wrong:[70,40,30]},
+  {q:'מספר תלמידים גדל ב-50%. היו 40, כמה עכשיו?',ans:60,wrong:[50,90,20]},
+  {q:'40 הם 20%. מהו השלם?',ans:200,wrong:[60,8,80]},
+  {q:'25 הם 50% מסכום. מהו הסכום?',ans:50,wrong:[12.5,75,100]},
+  {q:'מחיר אחרי הנחה של 25% הוא 75 ש"ח. מהו המחיר המקורי?',ans:100,wrong:[93.75,80,150]}
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;document.getElementById('turn').textContent='תורו של: '+name;}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  cur=POOL[Math.floor(Math.random()*POOL.length)];
+  document.getElementById('question').textContent=cur.q;
+  const opts=shuffle([cur.ans,...cur.wrong]);
+  const O=document.getElementById('opts');O.innerHTML='';
+  opts.forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.dataset.val=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.7?btns.find(x=>+x.dataset.val===cur.ans):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,+pick.dataset.val);},2000);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! התשובה: '+cur.ans;fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>+x.dataset.val===cur.ans).classList.add('right');fb.textContent='✗ התשובה: '+cur.ans;fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>+x.dataset.val===cur.ans).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

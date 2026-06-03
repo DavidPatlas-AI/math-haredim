@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סיפורי מתמטיקה ומוטיבציה</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#1a1a3d;--paper:#ecebf5;--accent:#3949ab;--accent2:#c0392b;--gold:#c9a227;--line:#cdcde0;--shadow:0 10px 30px rgba(26,26,61,.12);--pos:#2d6a4f;--neg:#c0392b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.8;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(57,73,171,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  .back{display:inline-block;margin-bottom:14px;color:var(--accent);text-decoration:none;font-weight:700}
+  .back:hover{text-decoration:underline}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"∞";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:200px;color:rgba(57,73,171,.06);top:-20px;left:30px;line-height:1}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.3rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#5a5a7a;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* QUOTES */
+  .quote-card{background:linear-gradient(135deg,#fff,var(--paper));border:1.5px solid var(--accent);border-radius:16px;padding:24px;margin-bottom:14px;position:relative;box-shadow:var(--shadow)}
+  .quote-card::before{content:"\""; position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:80px;color:rgba(57,73,171,.15);top:-10px;right:14px;line-height:1;font-weight:900}
+  .quote-card .text{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:500;font-style:italic;line-height:1.7;padding-right:30px}
+  .quote-card .author{font-size:.9rem;color:var(--accent);font-weight:700;margin-top:10px;text-align:left}
+
+  /* LIFE */
+  .life-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:560px){.life-grid{grid-template-columns:1fr}}
+  .life-card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:18px;transition:.25s;cursor:pointer;position:relative;overflow:hidden}
+  .life-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--accent)}
+  .life-card.open{grid-column:1/-1;cursor:default;border-color:var(--accent);background:linear-gradient(135deg,#fff,var(--paper))}
+  .life-card .icon{font-size:2.5rem;margin-bottom:8px;display:block}
+  .life-card .title{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:900;color:var(--accent);margin-bottom:4px}
+  .life-card .short{font-size:.9rem;color:#5a5a7a}
+  .life-card .full{display:none;margin-top:14px;padding-top:14px;border-top:2px dashed var(--accent);font-size:.95rem;line-height:1.8}
+  .life-card.open .full{display:block;animation:fade .35s ease}
+  .life-card.open .short{display:none}
+  .life-card .full b{color:var(--accent)}
+  .life-card .full .formula{background:#fff;border-radius:8px;padding:10px;margin-top:8px;font-family:'Frank Ruhl Libre',serif;direction:ltr;text-align:left;font-weight:700;border-right:3px solid var(--gold)}
+  .life-card .close-x{margin-top:10px;text-align:center;font-size:.85rem;color:var(--accent);font-weight:700;cursor:pointer;padding:4px}
+  .life-card .close-x:hover{text-decoration:underline}
+
+  /* STORIES */
+  .story-card{background:#fff;border-right:6px solid var(--accent);border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+  .story-card h3{font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;font-weight:900;color:var(--accent);margin-bottom:8px}
+  .story-card .when{font-size:.8rem;color:#9090a8;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .story-card p{margin-bottom:10px}
+  .story-card .lesson{background:rgba(201,162,39,.12);border-radius:10px;padding:12px;margin-top:10px;border:1px solid var(--gold)}
+  .story-card .lesson b{color:#8a6f0e}
+
+  /* MOTIV */
+  .motiv-card{background:linear-gradient(135deg,var(--accent),#5d6cdb);color:#fff;border-radius:16px;padding:24px;margin-bottom:14px;text-align:center;box-shadow:var(--shadow)}
+  .motiv-card .big{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:900;line-height:1.4;margin-bottom:8px}
+  .motiv-card .small{font-size:.95rem;opacity:.92}
+  .motiv-card.gold{background:linear-gradient(135deg,var(--gold),#daa520);color:#fff}
+  footer{text-align:center;font-size:.8rem;color:#8a8aa0;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" class="back">← חזרה לעמוד הבית</a>
+  <header>
+    <div class="eyebrow">∞ למה ללמוד מתמטיקה?</div>
+    <h1>סיפורים ומוטיבציה</h1>
+    <div class="sub">איפה פוגשים מתמטיקה בחיים — וציטוטים שיעוררו השראה</div>
+  </header>
+
+  <nav>
+    <button class="active" data-t="quotes">📜 ציטוטים</button>
+    <button data-t="life">🌍 בחיים</button>
+    <button data-t="stories">📖 סיפורים</button>
+    <button data-t="motiv">💪 מוטיבציה</button>
+  </nav>
+
+  <!-- QUOTES -->
+  <section id="quotes" class="show">
+    <div class="quote-card">
+      <div class="text">המתמטיקה היא השפה שבה הטבע מדבר.</div>
+      <div class="author">— גלילאו גלילאי</div>
+    </div>
+    <div class="quote-card">
+      <div class="text">המתמטיקה היא המוזיקה של ההיגיון.</div>
+      <div class="author">— ג'יימס ג'וזף סילבסטר</div>
+    </div>
+    <div class="quote-card">
+      <div class="text">דאגתי תמיד הייתה לא שלא אוכל לפתור בעיה, אלא שלא אבין אותה.</div>
+      <div class="author">— ברטראנד ראסל</div>
+    </div>
+    <div class="quote-card">
+      <div class="text">מתמטיקה לא נלמדת — היא מתרגלים אותה. תרגול הוא הדרך היחידה להבין.</div>
+      <div class="author">— פאול הלמוס</div>
+    </div>
+    <div class="quote-card">
+      <div class="text">כל בעיה מתמטית קשה — היא הזדמנות חבויה להבנה עמוקה יותר.</div>
+      <div class="author">— ז'אק הדמרד</div>
+    </div>
+    <div class="quote-card">
+      <div class="text">אם לא יודעים איך — מנסים. אם לא מצליחים — מנסים שוב, אחרת. מתמטיקה היא בסופו של דבר התמדה.</div>
+      <div class="author">— ג'ון פון נוימן</div>
+    </div>
+    <div class="quote-card">
+      <div class="text">הסיבה שאנשים חושבים שמתמטיקה קשה — היא שאף אחד לא לימד אותם שהם יכולים.</div>
+      <div class="author">— מתורגם משיחה של מורה אנונימי</div>
+    </div>
+    <div class="quote-card">
+      <div class="text">אל תדאג לקושי שלך במתמטיקה. אני יכול להבטיח שהקושי שלי גדול עוד יותר.</div>
+      <div class="author">— אלברט איינשטיין</div>
+    </div>
+  </section>
+
+  <!-- LIFE -->
+  <section id="life">
+    <p style="text-align:center;margin-bottom:14px;color:#5a5a7a">לחצו על כל קלף כדי לקרוא איפה הנושא הזה מופיע בחיים.</p>
+    <div class="life-grid" id="lifeGrid"></div>
+  </section>
+
+  <!-- STORIES -->
+  <section id="stories">
+    <div class="story-card">
+      <div class="when">המאה ה-3 לפנה"ס</div>
+      <h3>ארכימדס ו"מצאתי!"</h3>
+      <p>ארכימדס היה צריך לגלות אם כתר המלך עשוי מזהב טהור. נכנס לאמבטיה, ראה איך המים עולים, וצעק <i>"אאוריקה!" (מצאתי!)</i>. הוא גילה שכל גוף בנוזל דוחה משקל מים השווה לנפחו — כלל פיזיקלי שלא היה מתגלה בלי <b>חישוב נפחים</b>.</p>
+      <div class="lesson"><b>השיעור:</b> רגעי הברקה לא באים כשמסתכלים במסך — הם באים כשהמוח עובד ברקע, כשמתנים, מסבירים, מנסים. תנו לעצמכם זמן לחשוב.</div>
+    </div>
+
+    <div class="story-card">
+      <div class="when">המאה ה-6 לפנה"ס</div>
+      <h3>פיתגורס והמשפט שכולם מכירים</h3>
+      <p>פיתגורס היווני גילה שבמשולש ישר-זווית: a² + b² = c². זה גרם להפיכה בגיאומטריה — לראשונה אפשר היה לחשב מרחקים בלי למדוד פיזית.</p>
+      <p>אבל הסיפור המעניין: פיתגורס גילה גם את <b>המספרים האי-רציונליים</b> (כמו √2), וזה הפחיד את התלמידים שלו עד כדי כך שהם ניסו להסתיר את זה. אחד מהם, היפסוס, נטבע (לפי האגדה) על שגילה את הסוד!</p>
+      <div class="lesson"><b>השיעור:</b> כל "טריק" שאתם לומדים היום — מישהו בעבר נאבק שעות כדי לגלות אותו. אתם מקבלים אלפי שנות חוכמה בחינם.</div>
+    </div>
+
+    <div class="story-card">
+      <div class="when">1614</div>
+      <h3>נפייר ולוגריתמים — מהפכה בחישוב</h3>
+      <p>לפני הלוגריתמים, אסטרונומים בילו ימים שלמים בחישובים. ג'ון נפייר הסקוטי המציא את הלוגריתמים — שיטה ש<b>הופכת כפל לחיבור</b>.</p>
+      <p>פתאום מה שלקח שעות — לקח דקות. נאמר שעל ידי המצאת הלוגריתמים, נפייר "האריך את חייו של אסטרונום במחצית". המצאה זו אפשרה מאוחר יותר את הניווט בים, הכרטוגרפיה, וכל המהפכה המדעית.</p>
+      <div class="lesson"><b>השיעור:</b> כל פיסה מתמטית שתלמדו — היא כלי שיכול לחסוך לכם זמן, כסף, או חיים, בהמשך הדרך.</div>
+    </div>
+
+    <div class="story-card">
+      <div class="when">1850-1900</div>
+      <h3>סופי ז'רמן — מתמטיקאית שהסתתרה כגבר</h3>
+      <p>בצרפת של המאה ה-19, נשים לא הורשו ללמוד מתמטיקה באוניברסיטה. סופי ז'רמן, נערה צרפתייה צעירה, התאהבה במתמטיקה דרך ספרים בספריית אביה. כדי ללמוד באקול פוליטכניק, היא שלחה את עבודותיה בשם בדוי של גבר — אנטואן-אוגוסט לה בלאן.</p>
+      <p>מתמטיקאי בשם לגראנז' התרשם כל-כך, שביקש לפגוש את "מר לה בלאן". כשהבין שזו אישה — הוא נהיה לחונכה. ז'רמן הפכה לאחת המתמטיקאיות הגדולות בהיסטוריה, וזכתה לפרס מהאקדמיה הצרפתית.</p>
+      <div class="lesson"><b>השיעור:</b> המתמטיקה לא מבדילה בין סוגי אנשים. אם אתם רוצים — אתם יכולים. הקושי הוא חיצוני, היכולת היא פנימית.</div>
+    </div>
+
+    <div class="story-card">
+      <div class="when">1969</div>
+      <h3>איך נחתנו על הירח</h3>
+      <p>חישוב מסלול נחיתת אפולו 11 על הירח התבסס על מתמטיקה תיכונית פלוס קצת מתמטיקה מתקדמת. <b>פונקציות, גרפים, וטריגונומטריה</b> אפשרו לחשב מסלולים מדויקים.</p>
+      <p>קתרין ג'ונסון, מתמטיקאית אפרו-אמריקאית בנאס"א, חישבה את המסלולים בידיים — כי המחשבים אז היו לא אמינים. בלעדיה — אולי לא היו נוחתים.</p>
+      <div class="lesson"><b>השיעור:</b> מה שאתם לומדים היום — אותה <b>פונקציה לינארית</b>, אותה <b>טריגונומטריה</b> — אלה אבני הבניין של חלל, מטוסים, וטכנולוגיה.</div>
+    </div>
+
+    <div class="story-card">
+      <div class="when">1990 ועד היום</div>
+      <h3>איך גוגל יודע למצוא את מה שאתם מחפשים?</h3>
+      <p>ב-1996, שני סטודנטים בסטנפורד — לארי פייג' וסרגיי ברין — שאלו שאלה: איך לדרג עמודי אינטרנט בחשיבות? התשובה שלהם, אלגוריתם PageRank, הייתה <b>שילוב של אלגברה לינארית והסתברות</b>.</p>
+      <p>הם בנו מטריצה ענקית של מיליארדי עמודים, ופתרו את ה<b>וקטור העצמי</b> שלה — מושג ממתמטיקה תיכונית מתקדמת. התוצאה: גוגל, אחת החברות הגדולות בעולם.</p>
+      <div class="lesson"><b>השיעור:</b> מתמטיקה היא לא רק חישוב — היא דרך לפתור בעיות אמיתיות בעולם. שאלה טובה + כלים מתמטיים = מהפכה.</div>
+    </div>
+  </section>
+
+  <!-- MOTIVATION -->
+  <section id="motiv">
+    <div class="motiv-card">
+      <div class="big">"לא נולדים עם מתמטיקה — מתרגלים אותה."</div>
+      <div class="small">כל מומחה היה פעם מתחיל. כל שאלה שאת/ה פותר/ת — מקרבת לרמה הבאה.</div>
+    </div>
+
+    <div class="motiv-card gold">
+      <div class="big">10 דקות ביום = 60 שעות בשנה</div>
+      <div class="small">לתרגל קצת כל יום עדיף הרבה יותר מ-3 שעות פעם בשבוע. המוח קולט במנות קטנות וקבועות.</div>
+    </div>
+
+    <div class="motiv-card">
+      <div class="big">"לא הצלחתי" = "עוד לא הצלחתי"</div>
+      <div class="small">ההבדל בין שני המשפטים האלה הוא ההבדל בין מי שמוותר ומי שמצליח. המתמטיקה מצריכה זמן — ולכל אחד יש את הזמן שלו.</div>
+    </div>
+
+    <div class="motiv-card gold">
+      <div class="big">⭐ הסוד של המומחים</div>
+      <div class="small">המומחה הוא לא מי שלא טועה — הוא מי שטעה אלפי פעמים, ולמד מכל טעות. שגיאה במתמטיקה זה לא כישלון, זה <b>מורה דרך</b>.</div>
+    </div>
+
+    <div class="motiv-card">
+      <div class="big">בגרות במתמטיקה = פתיחת דלתות</div>
+      <div class="small">תעודת בגרות במתמטיקה פותחת דלתות בכל מקצוע — מהנדסים, רואי חשבון, רופאים, מורים, יזמים. גם אם לא תשתמשו בנוסחאות — הוכחתם משמעת ויכולת חשיבה.</div>
+    </div>
+
+    <div class="motiv-card gold">
+      <div class="big">📚 איינשטיין נכשל פעם במתמטיקה?</div>
+      <div class="small">לא ולא. זה מיתוס. איינשטיין דווקא הצטיין במתמטיקה מילדות. הוא רק התלונן שהמתמטיקה נדרשה לפיזיקה — קשה יותר ממה שחשב.<br>אז אם איינשטיין התקשה — אתם בחברה מצוינת.</div>
+    </div>
+
+    <div class="motiv-card">
+      <div class="big">"קודם פעם אחת, אחר כך מאה"</div>
+      <div class="small">משפט מנהג חב"ד שמתאים גם פה: התחילו בפתרון <b>תרגיל אחד</b>. אחר כך תרגיל שני. תוך כמה ימים — תהיו במאות. המסע מתחיל בצעד אחד.</div>
+    </div>
+
+    <div class="motiv-card gold">
+      <div class="big">🎯 אתם רחוקים פחות ממה שנראה</div>
+      <div class="small">תסתכלו בעמוד הבית — כל נושא שעבדתם עליו, הוא לבנה בקיר. הקיר נראה גבוה — אבל כל לבנה היא צעד קטן. עוד כמה לבנים — ויש לכם בית.</div>
+    </div>
+  </section>
+
+  <footer>אתר תרגול מתמטיקה · השראה ומוטיבציה</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+/* ===== LIFE EXAMPLES ===== */
+const LIFE=[
+  {icon:'🛒',title:'במכולת',short:'אחוזים, הנחות, מע"מ',
+   full:'<p>כשרואים שלט "20% הנחה" על מוצר ב-150 ש"ח — אתם מחשבים אחוזים. כשרושמים את הקנייה — אתם מחברים.</p><p><b>טריק יומיומי:</b> הנחה של 20% = משלמים 80% מהמחיר.</p><div class="formula">150 × 0.80 = 120 ₪</div><p>מי שיודע מתמטיקה לא נופל לפח של "מבצעים" מטעים.</p>'},
+  
+  {icon:'🏦',title:'בבנק',short:'ריבית, חיסכון, הלוואות',
+   full:'<p>ריבית של 5% על חיסכון של 10,000 ש"ח לשנה = 500 ש"ח רווח. אבל ריבית של 8% על הלוואה? זה עולה הרבה!</p><p>בהלוואות לדיור (משכנתה) — הבדל של 1% בריבית = <b>עשרות אלפי שקלים</b> לאורך 30 שנה.</p><div class="formula">חיסכון 100,000 ב-5% שנתי במשך 10 שנים:<br>100,000 × 1.05^10 ≈ 162,889 ₪</div><p>מתמטיקה כאן = כסף אמיתי.</p>'},
+  
+  {icon:'🚗',title:'בנהיגה',short:'מהירות, זמן, מרחק',
+   full:'<p>אם נוסעים 90 קמ"ש למשך 2.5 שעות — כמה ק"מ נסעתם? פשוט: 90 × 2.5 = <b>225 ק"מ</b>.</p><p>אם הדלק עולה 7 ש"ח/ליטר והרכב צורך 8 ליטר ל-100 ק"מ — נסיעה של 600 ק"מ עולה:</p><div class="formula">600 × (8/100) × 7 = 336 ₪</div><p>תכנון נסיעה = מתמטיקה.</p>'},
+  
+  {icon:'🍳',title:'במטבח',short:'מתכונים, יחסים, החלפת כמויות',
+   full:'<p>מתכון לעוגה מ-8 מנות, אבל אתם רוצים ל-12? צריך להכפיל הכל ב-12/8 = 1.5.</p><div class="formula">3 ביצים × 1.5 = 4.5 ביצים<br>200 גרם קמח × 1.5 = 300 גרם</div><p>מתמטיקה במטבח = מי שיודע, אופה טוב יותר.</p>'},
+  
+  {icon:'📱',title:'בסמארטפון',short:'הצפנה, נתונים, אלגוריתמים',
+   full:'<p>כל הודעה שאתם שולחים בוואטסאפ — מוצפנת באמצעות מתמטיקה (מספרים ראשוניים גדולים).</p><p>כל וידאו ביוטיוב — דחוס באלגוריתמים מתמטיים. כל אפליקציה רצה על מעבד שמבצע מיליארדי חישובים בשנייה.</p><p><b>גוגל, פייסבוק, אינסטגרם</b> — כולם בנויים על אלגוריתמים מתמטיים.</p>'},
+  
+  {icon:'🏗️',title:'בבנייה',short:'שטחים, נפחים, יציבות',
+   full:'<p>קבלן בונה דירה: כמה מטרים מרובעים? כמה בלוקים צריך לקיר? כמה בטון לרצפה?</p><p>מהנדס בונה גשר: כמה ברזל לחזק? איך לחשב את הכוחות? — <b>טריגונומטריה + פיתגורס</b>.</p><div class="formula">קיר באורך 6מ, גובה 2.7מ:<br>שטח = 16.2 מ"ר</div><p>בלי מתמטיקה — אין בניינים.</p>'},
+  
+  {icon:'⚕️',title:'ברפואה',short:'מינונים, סטטיסטיקה, אבחון',
+   full:'<p>רופא מחשב מינון: 10 מ"ג לכל ק"ג משקל גוף, ילד שוקל 25 ק"ג → 250 מ"ג.</p><p>קוד ECG הוא גרף — רופאים מנתחים אותו עם מתמטיקה. רנטגן, CT, MRI — כולם משתמשים בהמרות מתמטיות.</p><p>מחקרים על תרופות — הכל סטטיסטיקה: אחוז שיפור, סבירויות, מובהקות.</p>'},
+  
+  {icon:'🎵',title:'במוזיקה',short:'תדרים, יחסים, חלוקות זמן',
+   full:'<p>כל תו במוזיקה הוא תדר (Hz). תו דו = 261.6 Hz. תו דו אוקטבה למעלה = כפול: 523.2 Hz.</p><p>יחסים בין תווים = יחסים מתמטיים יפים (3:2, 4:3). מוזיקאי טוב מבין מתמטיקה אינטואיטיבית.</p><p>פיתגורס עצמו גילה את היחסים האלה!</p>'},
+  
+  {icon:'⚽',title:'בספורט',short:'סטטיסטיקה, זוויות, מסלולים',
+   full:'<p>שחקן כדורגל בועט — הזווית והכוח קובעים את המסלול. סלע בכדורסל = חישובי טריגונומטריה תת-מודעיים.</p><p>סטטיסטיקה: ממוצע אחוזי הצלחה, סטיות תקן, הסתברויות לניצחון.</p><p>אופנועי קרסים בטור דה פראנס מחשבים את הזווית האופטימלית של גלגל לפיה.</p>'},
+  
+  {icon:'🚀',title:'בחלל ובטילים',short:'מסלולים, פיזיקה, דיוק קיצוני',
+   full:'<p>טיל "כיפת ברזל" — מחשב את מסלול הטיל המתקרב ב<b>שבר שנייה</b> בעזרת משוואות. אם הטיל יפגע — מיירטים. אם לא — חוסכים.</p><p>שיגור לוויין — דורש מהירות בריחה (11.2 ק"מ/שנייה), זווית מדויקת, וחישוב משיכת כדור הארץ.</p><p>נחיתה על מאדים — חישובי מסלול ל<b>340 מיליון ק"מ</b> מרחק. סטייה של 0.001° = פספוס של מאות אלפי ק"מ.</p>'},
+  
+  {icon:'🎨',title:'באמנות ועיצוב',short:'פרופורציות, פרספקטיבה, יחס הזהב',
+   full:'<p>ה"מונה ליזה" של ליאונרדו דה וינצ\'י — בנויה על <b>יחס הזהב</b> (1.618). בנייני יוון העתיקה — אותו יחס.</p><p>בעיצוב גרפי, אדריכלות, צילום — הפרופורציות מבוססות על מתמטיקה. העין שלנו אוהבת יחסים נכונים.</p><div class="formula">יחס הזהב φ = (1+√5)/2 ≈ 1.618</div>'},
+  
+  {icon:'🌱',title:'בטבע',short:'דפוסים, פרקטלים, גאומטריה',
+   full:'<p>חמניות מסתדרות לפי <b>סדרת פיבונאצ\'י</b>. עלים על ענף סובבים בזוויות מתמטיות. צדף נאוטילוס = ספירלה לוגריתמית.</p><p>גלים בים, ענני מערכת — כל אלה דפוסים שאפשר לתאר במשוואות.</p><p>גלילאו אמר זה: "ספר הטבע כתוב בשפת המתמטיקה".</p>'}
+];
+
+function renderLife(){
+  const G=document.getElementById('lifeGrid');G.innerHTML='';
+  LIFE.forEach(L=>{
+    const c=document.createElement('div');c.className='life-card';
+    c.innerHTML='<span class="icon">'+L.icon+'</span><div class="title">'+L.title+'</div><div class="short">'+L.short+' — לחצו ↓</div><div class="full">'+L.full+'<div class="close-x">▲ סגור</div></div>';
+    c.onclick=function(e){
+      if(e.target.classList.contains('close-x')){c.classList.remove('open');return;}
+      if(!c.classList.contains('open')){
+        document.querySelectorAll('.life-card.open').forEach(x=>x.classList.remove('open'));
+        c.classList.add('open');
+        setTimeout(()=>c.scrollIntoView({behavior:'smooth',block:'center'}),50);
+      }
+    };
+    G.appendChild(c);
+  });
+}
+renderLife();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

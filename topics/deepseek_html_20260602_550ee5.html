@@ -1,0 +1,286 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מרובעים - גיאומטריה לבגרות</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+    :root {
+      --ink: #1a1a2e;
+      --paper: #f8f6f0;
+      --accent: #2d6a4f;
+      --accent2: #c0392b;
+      --gold: #c9a227;
+      --line: #d5d0c8;
+      --shadow: 0 10px 30px rgba(26, 26, 46, .10);
+      --pos: #2d6a4f;
+      --neg: #c0392b;
+      --sq: #1e6091;
+      --rect: #2d6a4f;
+      --rhomb: #6b3fa0;
+      --para: #d97706;
+      --trap: #c0392b;
+      --kite: #c9a227;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Heebo', sans-serif; color: var(--ink); line-height: 1.7;
+      min-height: 100vh; padding: 24px 16px 60px;
+      background: radial-gradient(circle at 12% 8%, rgba(30,96,145,.05), transparent 40%),
+                  radial-gradient(circle at 88% 92%, rgba(217,119,6,.05), transparent 40%), var(--paper);
+    }
+    .wrap { max-width: 800px; margin: 0 auto; }
+    header {
+      text-align: center; padding: 30px 20px 26px; border: 2px solid var(--ink);
+      border-radius: 18px; background: #fff; box-shadow: var(--shadow);
+      position: relative; overflow: hidden;
+    }
+    header::before {
+      content: "◻◼"; position: absolute; font-family: sans-serif;
+      font-size: 130px; font-weight: 900; color: rgba(26,26,46,.03); top: 10px; left: 20px;
+    }
+    .eyebrow { font-size: .85rem; letter-spacing: 3px; color: var(--sq); font-weight: 600; position: relative; }
+    h1 { font-family: 'Frank Ruhl Libre', serif; font-size: 2.2rem; font-weight: 900; margin: 6px 0 2px; position: relative; }
+    .sub { font-size: 1rem; color: #5a5a6e; position: relative; }
+    nav { display: flex; gap: 8px; justify-content: center; margin: 22px 0; flex-wrap: wrap; }
+    nav button {
+      font-family: 'Heebo'; font-size: .95rem; font-weight: 600; border: 2px solid var(--ink);
+      background: #fff; color: var(--ink); padding: 9px 18px; border-radius: 999px;
+      cursor: pointer; transition: .2s;
+    }
+    nav button:hover { transform: translateY(-2px); }
+    nav button.active { background: var(--sq); color: #fff; border-color: var(--sq); }
+    section { display: none; animation: fade .4s ease; }
+    section.show { display: block; }
+    @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .card {
+      background: #fff; border: 1.5px solid var(--line); border-radius: 16px;
+      padding: 26px 24px; margin-bottom: 18px; box-shadow: var(--shadow);
+    }
+    .card h2 {
+      font-family: 'Frank Ruhl Libre', serif; font-size: 1.5rem; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .tag { background: var(--gold); color: #fff; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; font-family: 'Heebo'; }
+    .tag.sq { background: var(--sq); }
+    .tag.rect { background: var(--rect); }
+    .tag.rhomb { background: var(--rhomb); }
+    .tag.para { background: var(--para); }
+    .tag.trap { background: var(--trap); }
+    .tag.kite { background: var(--kite); }
+    .note { background: rgba(30,96,145,.07); border-right: 4px solid var(--sq); padding: 12px 16px; border-radius: 8px; margin-top: 14px; font-size: .97rem; }
+    .warn { background: rgba(192,57,43,.07); border-right: 4px solid var(--accent2); padding: 12px 16px; border-radius: 8px; margin-top: 14px; font-size: .97rem; }
+    .gold-box { background: rgba(201,162,39,.10); border: 2px solid var(--gold); border-radius: 12px; padding: 16px; margin-top: 14px; }
+    .gold-box .title { font-weight: 800; color: #8a6f0e; margin-bottom: 6px; }
+    .shape-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;
+    }
+    @media (max-width: 550px) { .shape-grid { grid-template-columns: 1fr; } }
+    .shape-card {
+      border: 2px solid var(--line); border-radius: 14px; padding: 16px;
+      background: #fff; text-align: center; transition: .2s;
+    }
+    .shape-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .shape-card svg { width: 90px; height: 70px; margin-bottom: 6px; }
+    .shape-card .name { font-family: 'Frank Ruhl Libre', serif; font-size: 1.2rem; font-weight: 900; }
+    .shape-card .props { font-size: .85rem; color: #5a5a6e; margin-top: 4px; line-height: 1.5; }
+    .formula-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-family: 'Frank Ruhl Libre', serif; }
+    .formula-table th { background: var(--paper); padding: 10px; border: 1px solid var(--line); font-weight: 900; }
+    .formula-table td { padding: 10px; border: 1px solid var(--line); text-align: center; direction: ltr; }
+
+    /* GAME */
+    .mode-pick { display: flex; gap: 10px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap; }
+    .mode-pick button { font-family: 'Heebo'; font-weight: 600; font-size: 1rem; cursor: pointer; border: 2px solid var(--ink); background: #fff; padding: 12px 20px; border-radius: 12px; transition: .2s; }
+    .mode-pick button.active { background: var(--sq); color: #fff; border-color: var(--sq); }
+    .scoreboard { display: flex; justify-content: space-around; text-align: center; margin-bottom: 16px; }
+    .scoreboard .box { flex: 1; }
+    .scoreboard .who { font-size: .85rem; color: #5a5a6e; }
+    .scoreboard .pts { font-family: 'Frank Ruhl Libre', serif; font-size: 2rem; font-weight: 900; }
+    .turn-banner { text-align: center; font-weight: 700; padding: 8px; border-radius: 10px; background: var(--paper); margin-bottom: 14px; }
+    .q-box { text-align: center; font-family: 'Heebo', sans-serif; font-size: 1.15rem; font-weight: 700; padding: 22px; background: var(--paper); border-radius: 14px; margin-bottom: 14px; }
+    .q-box .math { font-family: 'Frank Ruhl Libre', serif; font-size: 1.3rem; font-weight: 900; direction: ltr; display: block; margin-top: 6px; }
+    .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .opts button { font-family: 'Heebo', sans-serif; font-size: 1rem; font-weight: 700; border: 2px solid var(--ink); background: #fff; padding: 14px; border-radius: 12px; cursor: pointer; transition: .15s; }
+    .opts button:hover { transform: translateY(-2px); }
+    .opts button.right { background: var(--pos); color: #fff; border-color: var(--pos); }
+    .opts button.wrong { background: var(--neg); color: #fff; border-color: var(--neg); }
+    .feedback { text-align: center; font-weight: 700; min-height: 28px; margin-top: 14px; }
+    .next-btn { display: none; margin: 14px auto 0; font-family: 'Heebo'; font-weight: 700; border: none; background: var(--ink); color: #fff; padding: 11px 26px; border-radius: 12px; cursor: pointer; font-size: 1rem; }
+    footer { text-align: center; font-size: .8rem; color: #7d9285; margin-top: 30px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">בגרות · גיאומטריה</div>
+    <h1>מרובעים</h1>
+    <div class="sub">ריבוע, מלבן, מעוין, מקבילית, טרפז, דלתון — תכונות, שטחים והיקפים</div>
+  </header>
+  <nav>
+    <button class="active" data-t="learn">📘 הסבר</button>
+    <button data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn" class="show">
+    <div class="card">
+      <h2>מהו מרובע? <span class="tag sq">הגדרה</span></h2>
+      <p><b>מרובע</b> הוא מצולע בעל <b>4 צלעות</b>. סכום הזוויות הפנימיות במרובע הוא תמיד <b>360°</b>.</p>
+      <p style="margin-top:8px">המרובעים מתחלקים למשפחות לפי תכונות: צלעות מקבילות, צלעות שוות, זוויות מיוחדות, ואלכסונים.</p>
+      <div class="gold-box">
+        <div class="title">💡 היררכיה — מי בתוך מי?</div>
+        <b>ריבוע</b> ⊂ <b>מעוין</b> ⊂ <b>מקבילית</b> ⊂ <b>טרפז</b> &nbsp;|&nbsp; <b>ריבוע</b> ⊂ <b>מלבן</b> ⊂ <b>מקבילית</b><br>
+        כל ריבוע הוא גם מלבן, מעוין, מקבילית וטרפז. לא להפך!
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>ששת המרובעים — תכונות <span class="tag sq">סיכום</span></h2>
+      <div class="shape-grid">
+        <div class="shape-card" style="border-color:var(--sq)">
+          <svg viewBox="0 0 80 70"><rect x="15" y="10" width="50" height="50" fill="rgba(30,96,145,.15)" stroke="var(--sq)" stroke-width="2.5"/><line x1="15" y1="10" x2="65" y2="60" stroke="var(--sq)" stroke-width="1" stroke-dasharray="4"/><line x1="65" y1="10" x2="15" y2="60" stroke="var(--sq)" stroke-width="1" stroke-dasharray="4"/></svg>
+          <div class="name">ריבוע</div>
+          <div class="props">4 צלעות שוות<br>4 זוויות 90°<br>אלכסונים שווים, מאונכים, חוצים זוויות</div>
+        </div>
+        <div class="shape-card" style="border-color:var(--rect)">
+          <svg viewBox="0 0 80 70"><rect x="10" y="15" width="60" height="40" fill="rgba(45,106,79,.15)" stroke="var(--rect)" stroke-width="2.5"/><line x1="10" y1="15" x2="70" y2="55" stroke="var(--rect)" stroke-width="1" stroke-dasharray="4"/><line x1="70" y1="15" x2="10" y2="55" stroke="var(--rect)" stroke-width="1" stroke-dasharray="4"/></svg>
+          <div class="name">מלבן</div>
+          <div class="props">4 זוויות 90°<br>צלעות נגדיות שוות<br>אלכסונים שווים</div>
+        </div>
+        <div class="shape-card" style="border-color:var(--rhomb)">
+          <svg viewBox="0 0 80 70"><polygon points="40,8 72,35 40,62 8,35" fill="rgba(107,63,160,.15)" stroke="var(--rhomb)" stroke-width="2.5"/><line x1="40" y1="8" x2="40" y2="62" stroke="var(--rhomb)" stroke-width="1" stroke-dasharray="4"/><line x1="8" y1="35" x2="72" y2="35" stroke="var(--rhomb)" stroke-width="1" stroke-dasharray="4"/></svg>
+          <div class="name">מעוין</div>
+          <div class="props">4 צלעות שוות<br>אלכסונים מאונכים<br>אלכסונים חוצי זווית</div>
+        </div>
+        <div class="shape-card" style="border-color:var(--para)">
+          <svg viewBox="0 0 80 70"><polygon points="15,50 30,12 70,12 55,50" fill="rgba(217,119,6,.15)" stroke="var(--para)" stroke-width="2.5"/><line x1="15" y1="50" x2="70" y2="12" stroke="var(--para)" stroke-width="1" stroke-dasharray="4"/><line x1="30" y1="12" x2="55" y2="50" stroke="var(--para)" stroke-width="1" stroke-dasharray="4"/></svg>
+          <div class="name">מקבילית</div>
+          <div class="props">צלעות נגדיות מקבילות ושוות<br>זוויות נגדיות שוות<br>אלכסונים חוצים זה את זה</div>
+        </div>
+        <div class="shape-card" style="border-color:var(--trap)">
+          <svg viewBox="0 0 80 70"><polygon points="10,55 15,15 65,15 70,55" fill="rgba(192,57,43,.15)" stroke="var(--trap)" stroke-width="2.5"/><line x1="10" y1="55" x2="70" y2="55" stroke="var(--trap)" stroke-width="3"/><line x1="15" y1="15" x2="65" y2="15" stroke="var(--trap)" stroke-width="3"/></svg>
+          <div class="name">טרפז</div>
+          <div class="props">זוג צלעות מקבילות (בסיסים)<br>טרפז שו"ש: זוויות בסיס שוות<br>אלכסונים שווים בטרפז שו"ש</div>
+        </div>
+        <div class="shape-card" style="border-color:var(--kite)">
+          <svg viewBox="0 0 80 70"><polygon points="40,8 72,35 40,62 8,35" fill="rgba(201,162,39,.15)" stroke="var(--kite)" stroke-width="2.5" transform="translate(0,0)"/><polygon points="40,8 65,50 40,35 15,50" fill="rgba(201,162,39,.15)" stroke="var(--kite)" stroke-width="2.5"/></svg>
+          <div class="name">דלתון</div>
+          <div class="props">2 זוגות צלעות סמוכות שוות<br>אלכסון ראשי = חוצה זווית<br>אלכסונים מאונכים</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שטחים והיקפים <span class="tag rect">נוסחאות</span></h2>
+      <table class="formula-table">
+        <tr><th>צורה</th><th>שטח</th><th>היקף</th></tr>
+        <tr><td>ריבוע (צלע a)</td><td>a²</td><td>4a</td></tr>
+        <tr><td>מלבן (a, b)</td><td>a · b</td><td>2(a+b)</td></tr>
+        <tr><td>מעוין (אלכסונים p, q)</td><td>(p·q)/2</td><td>4a</td></tr>
+        <tr><td>מקבילית (צלע a, גובה h)</td><td>a · h</td><td>2(a+b)</td></tr>
+        <tr><td>טרפז (בסיסים a, b, גובה h)</td><td>(a+b)·h / 2</td><td>סכום 4 הצלעות</td></tr>
+        <tr><td>דלתון (אלכסונים p, q)</td><td>(p·q)/2</td><td>2(a+b) — צלעות שונות</td></tr>
+      </table>
+      <div class="note">
+        <b>חשוב!</b> במקבילית, הגובה h חייב להיות <b>אנכי לבסיס</b> — לא לצלע הסמוכה. בטרפז, הגובה הוא המרחק בין הבסיסים.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>משפטים הפוכים <span class="tag para">איך מוכיחים?</span></h2>
+      <p>בבגרות שואלים: "הוכח שמרובע הוא מקבילית/מעוין/מלבן...". אלה המשפטים ההפוכים:</p>
+      <div style="background:var(--paper);border-radius:12px;padding:16px;margin-top:10px">
+        <b>מרובע הוא <span style="color:var(--para)">מקבילית</span> אם:</b> זוג צלעות נגדיות מקבילות <b>וגם</b> שוות<br>
+        <b>או:</b> שני זוגות צלעות נגדיות שוות | <b>או:</b> האלכסונים חוצים זה את זה<br><br>
+        <b>מרובע הוא <span style="color:var(--rhomb)">מעוין</span> אם:</b> כל הצלעות שוות | <b>או:</b> מקבילית שהאלכסונים שלה מאונכים<br>
+        <b>או:</b> מקבילית שבה אלכסון חוצה זווית<br><br>
+        <b>מרובע הוא <span style="color:var(--rect)">מלבן</span> אם:</b> כל הזוויות 90° | <b>או:</b> מקבילית שהאלכסונים שלה שווים<br>
+        <b>או:</b> מקבילית עם זווית אחת 90°<br><br>
+        <b>מרובע הוא <span style="color:var(--sq)">ריבוע</span> אם:</b> הוא גם מלבן וגם מעוין
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>סכום זוויות <span class="tag trap">360°</span></h2>
+      <p>בכל מרובע, סכום הזוויות הפנימיות הוא 360°. אפשר להוכיח ע"י חלוקה לשני משולשים (180°+180°).</p>
+      <div class="examples" style="display:grid;gap:8px;margin-top:8px">
+        <div style="background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;direction:ltr;text-align:left;">בטרפז: α + δ = 180° (חד-צדדיות בין בסיסים מקבילים)</div>
+        <div style="background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;direction:ltr;text-align:left;">במקבילית: זוויות סמוכות = 180°</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> <b>מבלבלים בין גובה לצלע.</b> במקבילית, הגובה הוא אנכי לבסיס — לא לצלע הסמוכה!<br><br>
+        <b>2.</b> <b>שוכחים שהאלכסונים במעוין מאונכים.</b> זה המפתח לחישוב שטח המעוין: p·q/2.<br><br>
+        <b>3.</b> <b>טרפז — חובה זוג מקבילים אחד.</b> אם יש שני זוגות — זו מקבילית!<br><br>
+        <b>4.</b> <b>שטח טרפז:</b> (a+b)·h/2. לא a·b·h!
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game">
+    <div class="card">
+      <h2>משחק מרובעים 🎮</h2>
+      <p style="text-align:center;font-size:.9rem;color:#5a5a6e;margin-bottom:14px">ענו על השאלות — זיהוי, תכונות ושטחים</p>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+  <footer>בסיס לבגרות · מרובעים</footer>
+</div>
+
+<script>
+// TABS
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+// GAME
+const POOL=[
+  {q:'לאיזה מרובע יש 4 צלעות שוות ו-4 זוויות 90°?',ans:'ריבוע',wrong:['מעוין','מלבן','טרפז']},
+  {q:'באיזה מרובע האלכסונים תמיד מאונכים?',ans:'מעוין',wrong:['מלבן','מקבילית','טרפז']},
+  {q:'איזה מרובע הוא גם מלבן וגם מעוין?',ans:'ריבוע',wrong:['מקבילית','דלתון','טרפז שו"ש']},
+  {q:'כמה זוויות 90° יש במלבן?',ans:'4',wrong:['2','0','תלוי']},
+  {q:'שטח ריבוע שצלעו 6 ס"מ?',ans:'36 סמ"ר',wrong:['24 סמ"ר','12 סמ"ר','18 סמ"ר']},
+  {q:'שטח מלבן 4×7?',ans:'28 סמ"ר',wrong:['22 סמ"ר','11 סמ"ר','14 סמ"ר']},
+  {q:'שטח מעוין שאלכסוניו 8 ו-6?',ans:'24 סמ"ר',wrong:['48 סמ"ר','14 סמ"ר','28 סמ"ר']},
+  {q:'בטרפז בסיסים 5 ו-9, גובה 4. השטח?',ans:'28 סמ"ר',wrong:['56 סמ"ר','14 סמ"ר','20 סמ"ר']},
+  {q:'סכום הזוויות במרובע?',ans:'360°',wrong:['180°','270°','540°']},
+  {q:'איזה מרובע הוא "מקבילית עם אלכסונים שווים"?',ans:'מלבן',wrong:['מעוין','ריבוע','דלתון']},
+  {q:'היקף ריבוע שצלעו 10?',ans:'40',wrong:['100','20','50']},
+  {q:'מה תמיד נכון על אלכסוני מקבילית?',ans:'חוצים זה את זה',wrong:['שווים','מאונכים','חוצי זווית']},
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;document.getElementById('turn').textContent='תורו של: '+(turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent);}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';document.getElementById('nextBtn').style.display='none';
+  cur=POOL[Math.floor(Math.random()*POOL.length)];document.getElementById('question').textContent=cur.q;
+  const opts=shuffle([cur.ans,...cur.wrong]),O=document.getElementById('opts');O.innerHTML='';
+  opts.forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.55?btns.find(x=>x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,pick.textContent);},1400);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.ans;fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans)?.classList.add('right');fb.textContent='✗ התשובה: '+cur.ans;fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans)?.classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>בעיות מילוליות</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#2d1f3d;--paper:#f0ecf4;--accent:#6a3d9b;--accent2:#c0392b;--gold:#c9a227;--line:#dcd3e3;--shadow:0 10px 30px rgba(45,31,61,.12);--pos:#2d6a4f;--neg:#c0392b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(106,61,155,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"?";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:200px;font-weight:900;color:rgba(45,31,61,.05);top:-40px;left:20px}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.3rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#5c4d6e;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .note{background:rgba(106,61,155,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .gold-box{background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:12px;padding:16px;margin-top:14px}
+  .gold-box .title{font-weight:800;color:#8a6f0e;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+  /* dictionary table */
+  .dict{display:grid;gap:8px;margin-top:14px}
+  .dict-row{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;background:var(--paper);border-radius:10px;padding:10px 14px}
+  .dict-row .word{font-weight:700;color:var(--accent)}
+  .dict-row .arr{color:#aaa;font-size:1.2rem}
+  .dict-row .math{font-family:'Frank Ruhl Libre',serif;font-weight:800;direction:ltr;font-size:1.1rem;text-align:left}
+
+  /* steps how to */
+  .steps-howto{display:grid;gap:10px;margin:14px 0}
+  .step-row{display:flex;gap:12px;align-items:flex-start;background:var(--paper);border-radius:10px;padding:10px 14px}
+  .step-row .n{background:var(--accent);color:#fff;font-family:'Frank Ruhl Libre',serif;font-weight:900;width:30px;height:30px;line-height:30px;text-align:center;border-radius:50%;flex-shrink:0;font-size:.95rem}
+
+  /* example walkthrough */
+  .example-box{background:linear-gradient(135deg,#fff,#f5f1f8);border:2px solid var(--accent);border-radius:14px;padding:18px;margin-top:14px}
+  .example-box .q{background:rgba(106,61,155,.1);border-radius:10px;padding:12px;font-style:italic;margin-bottom:14px;font-size:1rem;line-height:1.8}
+  .ex-step{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+  .ex-step .num{background:var(--accent);color:#fff;width:26px;height:26px;line-height:26px;text-align:center;border-radius:50%;font-weight:800;font-size:.85rem;flex-shrink:0;margin-top:2px}
+  .ex-step .body{flex:1}
+  .ex-step .math{font-family:'Frank Ruhl Libre',serif;font-weight:800;direction:ltr;background:#fff;border-radius:6px;padding:4px 10px;display:inline-block;margin-top:4px}
+
+  /* INTERACTIVE TRANSLATOR ANIMATION */
+  .translator{padding:14px;background:var(--paper);border-radius:14px;margin-top:14px}
+  .anim-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .anim-pick button{font-family:'Heebo';font-weight:600;font-size:.85rem;border:2px solid var(--ink);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer}
+  .anim-pick button.active{background:var(--ink);color:#fff}
+  .word-cloud{background:#fff;border-radius:12px;padding:14px;min-height:80px;font-size:1.05rem;line-height:2;direction:rtl;text-align:right}
+  .word-cloud .w{display:inline-block;padding:2px 6px;margin:2px;border-radius:6px;transition:.4s}
+  .word-cloud .w.hl{background:rgba(106,61,155,.18);color:var(--accent);font-weight:700;transform:scale(1.05)}
+  .word-cloud .w.unknown{background:rgba(201,162,39,.25);color:#8a6f0e;font-weight:800}
+  .conv-arrow{text-align:center;font-size:1.5rem;color:var(--accent);margin:10px 0;opacity:0;transition:.5s}
+  .conv-arrow.show{opacity:1}
+  .equation-out{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:1.7rem;font-weight:900;direction:ltr;background:#fff;border:2px dashed var(--accent);border-radius:12px;padding:14px;opacity:0;transform:translateY(8px);transition:.5s}
+  .equation-out.show{opacity:1;transform:none}
+  .solution-out{text-align:center;font-family:'Heebo';font-weight:700;color:var(--pos);margin-top:10px;opacity:0;transition:.5s}
+  .solution-out.show{opacity:1}
+  .anim-controls{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+  .ctrl{font-family:'Heebo';font-weight:600;font-size:.9rem;border:2px solid var(--ink);background:#fff;padding:8px 16px;border-radius:10px;cursor:pointer}
+  .ctrl.play{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* GAME */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#5c4d6e}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{font-family:'Heebo';font-size:1.05rem;line-height:1.8;direction:rtl;padding:20px;background:var(--paper);border-radius:14px;margin-bottom:14px;text-align:right}
+  .q-box .q-eq{display:block;text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:900;direction:ltr;margin-top:8px;color:var(--accent)}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--pos);color:#fff;border-color:var(--pos)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#8c7c9c;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">3 יחידות · בגרות · הנושא הכי שכיח</div>
+    <h1>בעיות מילוליות</h1>
+    <div class="sub">איך להפוך סיפור למשוואה — ולפתור</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🔄 מתרגם</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>למה זה קשה? <span class="tag">לא רק חשבון</span></h2>
+      <p>בעיות מילוליות זה לא רק לדעת לחשב — זה לדעת <b>מה לחשב</b>. הקושי האמיתי הוא להפוך את הסיפור למשוואה. ברגע שיש משוואה, הפתרון פשוט.</p>
+      <div class="gold-box">
+        <div class="title">💡 הסוד</div>
+        כל בעיה מילולית = שאלה אחת: <b>"מה אני לא יודע?"</b> — את זה מסמנים ב-x, ואז כותבים משוואה שמתארת את הסיפור.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>מילון: ממילים למתמטיקה <span class="tag">חשוב לזכור</span></h2>
+      <div class="dict">
+        <div class="dict-row"><span class="word">סכום / יחד / סך הכל</span><span class="arr">→</span><span class="math">+</span></div>
+        <div class="dict-row"><span class="word">הפרש / פחות / יותר מ-</span><span class="arr">→</span><span class="math">−</span></div>
+        <div class="dict-row"><span class="word">מכפלה / פי / כפול</span><span class="arr">→</span><span class="math">·</span></div>
+        <div class="dict-row"><span class="word">חלקי / מנה / לחלק ל-</span><span class="arr">→</span><span class="math">:</span></div>
+        <div class="dict-row"><span class="word">שווה / זה / הוא</span><span class="arr">→</span><span class="math">=</span></div>
+        <div class="dict-row"><span class="word">מספר לא ידוע / נעלם</span><span class="arr">→</span><span class="math">x</span></div>
+        <div class="dict-row"><span class="word">פי 2 / כפול</span><span class="arr">→</span><span class="math">2x</span></div>
+        <div class="dict-row"><span class="word">חצי / רבע מ-</span><span class="arr">→</span><span class="math">x:2 &nbsp; x:4</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>4 הצעדים <span class="tag">תהליך מסודר</span></h2>
+      <div class="steps-howto">
+        <div class="step-row"><div class="n">1</div><div><b>קוראים פעמיים.</b> פעם ראשונה — להבין. פעם שנייה — לסמן מספרים ומילים חשובות.</div></div>
+        <div class="step-row"><div class="n">2</div><div><b>מסמנים ב-x</b> את מה שלא יודעים — בדרך כלל את מה שהשאלה שואלת עליו.</div></div>
+        <div class="step-row"><div class="n">3</div><div><b>כותבים משוואה</b> שמתרגמת את הסיפור — בעזרת המילון למעלה.</div></div>
+        <div class="step-row"><div class="n">4</div><div><b>פותרים את המשוואה</b> — ואז עונים על השאלה במילים (לא רק "x=5").</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>דוגמה שלמה <span class="tag">בעיית גיל</span></h2>
+      <div class="example-box">
+        <div class="q">"שרה היא פי 3 מאחיה. סכום גילם הוא 24 שנים. בן כמה האח?"</div>
+        <div class="ex-step"><div class="num">1</div><div class="body"><b>מה לא יודעים?</b> גיל האח. נסמן: <span class="math">x = גיל האח</span></div></div>
+        <div class="ex-step"><div class="num">2</div><div class="body"><b>גיל שרה?</b> פי 3 מהאח → <span class="math">3x</span></div></div>
+        <div class="ex-step"><div class="num">3</div><div class="body"><b>המשוואה:</b> סכום הגילים = 24 → <span class="math">x + 3x = 24</span></div></div>
+        <div class="ex-step"><div class="num">4</div><div class="body"><b>פותרים:</b> <span class="math">4x = 24</span>, ולכן <span class="math">x = 6</span></div></div>
+        <div class="ex-step"><div class="num">5</div><div class="body"><b>תשובה במילים:</b> האח בן 6, שרה בת 18. בדיקה: 18 = 3·6 ✓ &nbsp; 18+6 = 24 ✓</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> "<b>פי 3 יותר</b>" זה לא אותו דבר כמו "<b>3 יותר</b>".<br>
+        &nbsp;&nbsp;פי 3 = 3x &nbsp;|&nbsp; 3 יותר = x+3<br><br>
+        <b>2.</b> "<b>X פחות Y</b>" — שימו לב לסדר. אם "לדן יש 5 יותר מלרון", זה <b>דן = רון + 5</b> (לא להפך).<br><br>
+        <b>3.</b> <b>לא לשכוח לענות על השאלה!</b> אם השאלה "בן כמה האח?", אל תכתבו רק "x=6" — כתבו "האח בן 6 שנים".
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE TRANSLATOR -->
+  <section id="anim">
+    <div class="card">
+      <h2>המתרגם — מילים למשוואה 🔄</h2>
+      <p>בחרו בעיה ולחצו <b>תרגם</b> — תראו איך הסיפור מאיר חלק-חלק והופך למשוואה.</p>
+      <div class="anim-pick" id="animPick"></div>
+      <div class="translator">
+        <div class="word-cloud" id="cloud"></div>
+        <div class="conv-arrow" id="arrow">⬇</div>
+        <div class="equation-out" id="eqOut">—</div>
+        <div class="solution-out" id="solOut"></div>
+      </div>
+      <div class="anim-controls">
+        <button class="ctrl" id="resetBtn">🔄 התחל מחדש</button>
+        <button class="ctrl play" id="playBtn">▶ תרגם</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק התרגום 🎮</h2>
+      <p style="text-align:center;font-size:.9rem;color:#5c4d6e;margin-bottom:14px">קראו את הבעיה — איזו משוואה מתארת אותה נכון?</p>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">הבעיה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>בסיס לבגרות 3 יח"ל · בעיות מילוליות</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+/* ===== TRANSLATOR ANIMATION =====
+   Each problem has tokens (words). highlights = sequence of word indices to highlight.
+   Each step also has a partial equation building up.
+*/
+const PROBLEMS=[
+  {title:'בעיית גיל',
+   words:['שרה','היא','פי 3','מאחיה.','סכום גילם','הוא','24','שנים.'],
+   steps:[
+     {hl:[3],note:'מה לא יודעים? גיל האח'},
+     {hl:[0,2],note:'גיל שרה = פי 3 מהאח = 3x'},
+     {hl:[4,5,6],note:'סכום הגילים = 24'}
+   ],
+   tokenClass:{3:'unknown'},
+   eq:'x + 3x = 24',
+   sol:'x = 6 → האח בן 6, שרה בת 18'},
+
+  {title:'בעיית מספר',
+   words:['חשבתי','על','מספר.','הוספתי','עליו','7','וקיבלתי','כפליים','של','המספר.','מה','המספר?'],
+   steps:[
+     {hl:[2,11],note:'המספר הוא הנעלם → x'},
+     {hl:[3,4,5],note:'הוספתי 7 → x + 7'},
+     {hl:[6,7,8,9],note:'שווה לכפליים המספר → 2x'}
+   ],
+   tokenClass:{2:'unknown',11:'unknown'},
+   eq:'x + 7 = 2x',
+   sol:'x = 7 → המספר הוא 7'},
+
+  {title:'בעיית קנייה',
+   words:['קניתי','3','עפרונות','ומחברת.','המחברת','עולה','12','שקלים.','שילמתי','27','שקלים','בסך הכל.','כמה','עולה','עיפרון?'],
+   steps:[
+     {hl:[14],note:'מחיר עיפרון = x'},
+     {hl:[1,2],note:'3 עפרונות = 3x'},
+     {hl:[4,5,6],note:'מחברת = 12'},
+     {hl:[8,9,11],note:'סך הכל = 27'}
+   ],
+   tokenClass:{14:'unknown'},
+   eq:'3x + 12 = 27',
+   sol:'x = 5 → עיפרון עולה 5 שקלים'},
+
+  {title:'בעיית הפרש',
+   words:['לדני','יש','פי 2','כסף','משל','רוני.','יחד','יש','להם','90','שקלים.','כמה','יש','לרוני?'],
+   steps:[
+     {hl:[13],note:'נסמן: לרוני יש x שקלים'},
+     {hl:[0,2],note:'לדני יש פי 2 → 2x'},
+     {hl:[6,7,9],note:'יחד = 90'}
+   ],
+   tokenClass:{13:'unknown'},
+   eq:'x + 2x = 90',
+   sol:'x = 30 → לרוני יש 30 ש"ח, לדני 60'},
+
+  {title:'בעיית מלבן',
+   words:['במלבן','האורך','גדול ב-4','מהרוחב.','הקף','המלבן','הוא','28','ס"מ.','מה','האורך?'],
+   steps:[
+     {hl:[3],note:'נסמן: רוחב = x'},
+     {hl:[1,2],note:'אורך = x + 4'},
+     {hl:[4,5,7],note:'היקף = 2(אורך+רוחב) = 28'}
+   ],
+   tokenClass:{},
+   eq:'2(x + x+4) = 28',
+   sol:'x = 5 → רוחב 5, אורך 9 ס"מ'}
+];
+
+let curP=0,stepI=-1;
+const pickWrap=document.getElementById('animPick');
+PROBLEMS.forEach((p,i)=>{const b=document.createElement('button');b.textContent=p.title;b.onclick=()=>{curP=i;stepI=-1;markP();renderCloud();};pickWrap.appendChild(b);});
+function markP(){[...pickWrap.children].forEach((b,i)=>b.classList.toggle('active',i===curP));}
+
+function renderCloud(){
+  const p=PROBLEMS[curP];
+  const c=document.getElementById('cloud');c.innerHTML='';
+  p.words.forEach((w,i)=>{
+    const sp=document.createElement('span');sp.className='w';
+    if(p.tokenClass && p.tokenClass[i])sp.classList.add(p.tokenClass[i]);
+    sp.textContent=w;sp.dataset.i=i;c.appendChild(sp);
+    c.appendChild(document.createTextNode(' '));
+  });
+  document.getElementById('arrow').classList.remove('show');
+  document.getElementById('eqOut').classList.remove('show');
+  document.getElementById('eqOut').textContent='—';
+  document.getElementById('solOut').classList.remove('show');
+  document.getElementById('solOut').textContent='';
+}
+markP();renderCloud();
+
+document.getElementById('playBtn').onclick=()=>{
+  renderCloud();
+  const p=PROBLEMS[curP];
+  let i=0;
+  const step=()=>{
+    if(i>=p.steps.length){
+      // show equation + solution
+      setTimeout(()=>{
+        document.getElementById('arrow').classList.add('show');
+        document.getElementById('eqOut').textContent=p.eq;
+        document.getElementById('eqOut').classList.add('show');
+        setTimeout(()=>{
+          document.getElementById('solOut').textContent=p.sol;
+          document.getElementById('solOut').classList.add('show');
+        },900);
+      },400);
+      return;
+    }
+    // clear previous step highlights (except permanent unknown classes)
+    document.querySelectorAll('#cloud .w.hl').forEach(el=>el.classList.remove('hl'));
+    p.steps[i].hl.forEach(idx=>{const el=document.querySelector('#cloud .w[data-i="'+idx+'"]');if(el)el.classList.add('hl');});
+    i++;setTimeout(step,1300);
+  };
+  step();
+};
+document.getElementById('resetBtn').onclick=()=>{renderCloud();};
+
+/* ===== GAME ===== */
+const GAMEPOOL=[
+  /* ── מספרים ── */
+  {q:'מספר ועוד 5 שווה 12. מהי המשוואה?',correct:'x + 5 = 12',ans:7,wrong:['x − 5 = 12','5x = 12','x + 12 = 5']},
+  {q:'מספר פחות 6 שווה 14. מהי המשוואה?',correct:'x − 6 = 14',ans:20,wrong:['x + 6 = 14','6 − x = 14','6x = 14']},
+  {q:'כפליים מספר ועוד 3 שווה 17. מהי המשוואה?',correct:'2x + 3 = 17',ans:7,wrong:['x + 3 = 17','2(x + 3) = 17','2x − 3 = 17']},
+  {q:'הסכום של מספר ופי 3 שלו הוא 24. מהי המשוואה?',correct:'x + 3x = 24',ans:6,wrong:['3x − x = 24','x · 3x = 24','x + 3 = 24']},
+  {q:'אם נכפיל מספר ב-5 ונחסיר 8 נקבל 22. מהי המשוואה?',correct:'5x − 8 = 22',ans:6,wrong:['5x + 8 = 22','5(x − 8) = 22','x − 8 = 22']},
+  {q:'שלישית מספר מסוים שווה 9. מהי המשוואה?',correct:'x : 3 = 9',ans:27,wrong:['3x = 9','x − 3 = 9','x + 9 = 3']},
+  {q:'חמישה יותר מכפליים מספר שווה 23. מהי המשוואה?',correct:'2x + 5 = 23',ans:9,wrong:['2x − 5 = 23','5x + 2 = 23','2(x + 5) = 23']},
+  {q:'שני מספרים עוקבים. סכומם 37. מהי המשוואה? (x = הקטן)',correct:'x + (x+1) = 37',ans:18,wrong:['x + x = 37','2x = 37','x + 1 = 37']},
+  {q:'מספר גדול ב-3 ממספר אחר. ביחד הם 17. מהי המשוואה? (x = הקטן)',correct:'x + (x+3) = 17',ans:7,wrong:['x + 3 = 17','2x = 17','x + 3x = 17']},
+  {q:'כפליים מספר פחות 4 שווה 18. מהי המשוואה?',correct:'2x − 4 = 18',ans:11,wrong:['2x + 4 = 18','2(x − 4) = 18','2x = 18']},
+  {q:'שלושה מספרים שווים. סכומם 15. מהי המשוואה? (x = כל מספר)',correct:'3x = 15',ans:5,wrong:['x + 3 = 15','x : 3 = 15','x³ = 15']},
+  {q:'רבע ממספר שווה 13. מהי המשוואה?',correct:'x : 4 = 13',ans:52,wrong:['4x = 13','x − 4 = 13','x + 4 = 13']},
+
+  /* ── גיל ── */
+  {q:'דני בן x שנים. אביו בן פי 4 ממנו. ביחד הם בני 50. מהי המשוואה?',correct:'x + 4x = 50',ans:10,wrong:['4x − x = 50','x + 4 = 50','4x = 50']},
+  {q:'גיל האם פי 5 מבתה. סכום גיליהן 36. מהי המשוואה? (x = גיל הבת)',correct:'x + 5x = 36',ans:6,wrong:['5x − x = 36','x · 5 = 36','x + 5 = 36']},
+  {q:'אחות גדולה מאחיה ב-8 שנים. סכום גיליהם 34. מהי המשוואה? (x = האח)',correct:'x + (x+8) = 34',ans:13,wrong:['x + x = 34','x + 8x = 34','8x = 34']},
+  {q:'שרה היא פי 3 מאחיה. סכום גילם 24. בן כמה האח? (x = האח)',correct:'x + 3x = 24',ans:6,wrong:['3x − x = 24','x + 3 = 24','3x = 24']},
+  {q:'לסבא יש פי 6 שנים מנכדו. יחד הם בני 70. מהי המשוואה? (x = הנכד)',correct:'x + 6x = 70',ans:10,wrong:['6x − x = 70','6x = 70','x + 6 = 70']},
+  {q:'בעוד 5 שנים האב יהיה פי 2 מגיל בנו. היום הבן בן x, האב בן 3x. מהי המשוואה?',correct:'3x + 5 = 2(x + 5)',ans:5,wrong:['3x = 2x','3x + 5 = 2x + 5','3x = 2(x+5)']},
+
+  /* ── קנייה וכסף ── */
+  {q:'מחיר חולצה הוא x. שילמתי על 4 חולצות 180 ש"ח. מהי המשוואה?',correct:'4x = 180',ans:45,wrong:['x + 4 = 180','x − 4 = 180','x : 4 = 180']},
+  {q:'כרטיס אוטובוס עולה x שקלים. קניתי 5 כרטיסים ושילמתי 30 ש"ח. מהי המשוואה?',correct:'5x = 30',ans:6,wrong:['x + 5 = 30','x : 5 = 30','5 + x = 30']},
+  {q:'קניתי ספר ועט. הספר יקר ב-15 ש"ח מהעט. שילמתי 43 ש"ח. מהי המשוואה? (x = עט)',correct:'x + (x+15) = 43',ans:14,wrong:['x + 15 = 43','2x = 43','2x + 15 = 43']},
+  {q:'מחיר חצי ק"ג תפוחים הוא x שקלים. ק"ג שלם עולה 18 ש"ח. מהי המשוואה?',correct:'2x = 18',ans:9,wrong:['x : 2 = 18','x + 18 = 2','x + 2 = 18']},
+  {q:'מחיר מוצר אחרי הנחה של 20% הוא 64 ש"ח. מהי המשוואה? (x = מחיר מקורי)',correct:'0.8x = 64',ans:80,wrong:['x − 20 = 64','x + 20 = 64','0.2x = 64']},
+  {q:'חנות נתנה הנחה של 25% ומחיר החולצה היה 90 ש"ח. מה המחיר המקורי? (x = מקורי)',correct:'0.75x = 90',ans:120,wrong:['x − 25 = 90','x − 0.25 = 90','0.25x = 90']},
+  {q:'קניתי 3 עפרונות ומחברת. המחברת עולה 12 ש"ח. שילמתי 27 ש"ח. מהי המשוואה? (x = עיפרון)',correct:'3x + 12 = 27',ans:5,wrong:['3x = 27','3x + 27 = 12','x + 12 = 27']},
+  {q:'לישי יש 3 פעמים יותר כדורים מלמשה. ביחד יש להם 24. מהי המשוואה? (x = משה)',correct:'x + 3x = 24',ans:6,wrong:['3x − x = 24','x + 3 = 24','3x = 24']},
+  {q:'מחלקים 96 ש"ח בין 3 אחים שווה בשווה. כמה כל אחד מקבל? (x = חלקו)',correct:'3x = 96',ans:32,wrong:['x : 3 = 96','x + 3 = 96','x + 96 = 3']},
+  {q:'מחיר פיצה גדולה כפול ממחיר קטנה. הגדולה עולה x. ביחד 45 ש"ח. מהי המשוואה?',correct:'x + x:2 = 45',ans:30,wrong:['2x = 45','x + 2x = 45','x : 2 = 45']},
+  {q:'בחנות יש 8 חולצות ו-3 מכנסיים. חולצה עולה x, מכנסיים x+20. גבו 220 ש"ח. מהי המשוואה?',correct:'8x + 3(x+20) = 220',ans:10,wrong:['8x + 3x = 220','11x = 220','8x + 3x + 20 = 220']},
+
+  /* ── כיתה ומספרים ── */
+  {q:'בכיתה x תלמידים. הצטרפו 8 חדשים והיו 32. מהי המשוואה?',correct:'x + 8 = 32',ans:24,wrong:['x − 8 = 32','8x = 32','x + 32 = 8']},
+  {q:'יש 24 תלמידים בכיתה. יחס בנות לבנים הוא 3:1. כמה בנות? (x = בנות)',correct:'x + x:3 = 24',ans:18,wrong:['3x = 24','x : 3 = 24','x + 3 = 24']},
+  {q:'ציוני 3 מבחנים: 78, 84, ו-x. הממוצע 82. מהי המשוואה?',correct:'(78 + 84 + x) : 3 = 82',ans:84,wrong:['78 + 84 + x = 82','x : 3 = 82','(78 + 84) : x = 82']},
+  {q:'לחנות נכנסו 40 לקוחות. 60% קנו משהו. כמה קנו? (x = שקנו)',correct:'x = 0.6 · 40',ans:24,wrong:['x + 60 = 40','x · 40 = 60','x : 40 = 6']},
+
+  /* ── גיאומטריה ── */
+  {q:'משולש שווה-צלעות עם צלע x. ההיקף שלו 27. מהי המשוואה?',correct:'3x = 27',ans:9,wrong:['x + 3 = 27','x³ = 27','x : 3 = 27']},
+  {q:'היקף ריבוע הוא 52 ס"מ. מהי אורך הצלע? (x = הצלע)',correct:'4x = 52',ans:13,wrong:['x + 4 = 52','x² = 52','4 + x = 52']},
+  {q:'אורך מלבן הוא פי 3 מהרוחב. ההיקף 48 ס"מ. מהי המשוואה? (x = הרוחב)',correct:'2(x + 3x) = 48',ans:6,wrong:['x + 3x = 48','2x + 3 = 48','6x = 48']},
+  {q:'במלבן האורך גדול ב-4 מהרוחב. ההיקף 28 ס"מ. מהי המשוואה? (x = הרוחב)',correct:'2(x + x+4) = 28',ans:5,wrong:['x + x + 4 = 28','2x + 4 = 28','4x = 28']},
+  {q:'גינה מלבנית. האורך 6 מ׳ יותר מהרוחב. שטחה 40 מ"ר. מהי המשוואה? (x = הרוחב)',correct:'x(x+6) = 40',ans:4,wrong:['x + (x+6) = 40','2x + 6 = 40','6x = 40']},
+
+  /* ── מהירות ונסיעה ── */
+  {q:'רכבת נסעה 3 שעות ועברה 210 קמ. מה מהירותה? (x = המהירות)',correct:'3x = 210',ans:70,wrong:['x : 3 = 210','x + 3 = 210','3 + x = 210']},
+  {q:'נסעתי שעתיים ב-80 קמ"ש ושעה ב-60 קמ"ש. כמה קמ סה"כ? (x = סה"כ)',correct:'x = 2·80 + 1·60',ans:220,wrong:['x = 80 + 60','x = 80 · 60','x = 3 · 80']},
+  {q:'שני עיירות מרוחקות 120 קמ. אוטובוס נסע 2 שעות. מה מהירותו? (x = המהירות)',correct:'2x = 120',ans:60,wrong:['x + 2 = 120','x : 2 = 120','x · 2 = 12']},
+  {q:'טיול נמשך 4 שעות. הנסיעה x שעות, ההליכה שעה וחצי. מהי המשוואה?',correct:'x + 1.5 = 4',ans:2.5,wrong:['x − 1.5 = 4','1.5x = 4','4x = 1.5']},
+
+  /* ── עבודה וזמן ── */
+  {q:'ברכה מתמלאת בצינור ב-6 שעות. כמה מהברכה מתמלא בשעה? (x = חלק לשעה)',correct:'6x = 1',ans:'1/6',wrong:['x : 6 = 1','x + 6 = 1','6 + x = 1']},
+  {q:'מסלול ריצה: אתמול רצתי x ק"מ. היום 2 יותר. ביחד 14 ק"מ. מהי המשוואה?',correct:'x + (x+2) = 14',ans:6,wrong:['2x = 14','x + 2 = 14','x + x − 2 = 14']},
+  {q:'פועל בונה 3 קירות ביום. אחרי x ימים בנה 18 קירות. מהי המשוואה?',correct:'3x = 18',ans:6,wrong:['x + 3 = 18','x : 3 = 18','x + 18 = 3']},
+
+  /* ── הפרש ויחס ── */
+  {q:'לדני יש פי 2 כסף משל רוני. יחד יש להם 90 ש"ח. מהי המשוואה? (x = רוני)',correct:'x + 2x = 90',ans:30,wrong:['2x − x = 90','x + 2 = 90','2x = 90']},
+  {q:'הפרש בין מספר ל-15 הוא 7. מהי המשוואה?',correct:'x − 15 = 7',ans:22,wrong:['x + 15 = 7','15 − x = 7','15x = 7']},
+  {q:'במחברת יש פי 2 דפים מעיפרון. ביחד עולים 21 ש"ח. מהי המשוואה? (x = עיפרון)',correct:'x + 2x = 21',ans:7,wrong:['x − 2x = 21','2x = 21','x + 2 = 21']},
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;document.getElementById('turn').textContent='תורו של: '+name;}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  cur=GAMEPOOL[Math.floor(Math.random()*GAMEPOOL.length)];
+  document.getElementById('question').innerHTML=cur.q;
+  const opts=shuffle([cur.correct,...cur.wrong]);
+  const O=document.getElementById('opts');O.innerHTML='';
+  opts.forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.65?btns.find(x=>x.textContent===cur.correct):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,pick.textContent);},2000);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===cur.correct){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.correct+' → x = '+cur.ans;fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.correct).classList.add('right');fb.textContent='✗ הנכון: '+cur.correct;fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cur.correct){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.correct;}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.correct).classList.add('right');fb.textContent='🤖 המחשב טעה! הנכון: '+cur.correct;}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>טיפים למתמטיקה</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+        :root {
+            --ink: #1a1a2e;
+            --paper: #f8f6f0;
+            --accent: #2d6a4f;
+            --accent2: #c0392b;
+            --gold: #c9a227;
+            --line: #d5d0c8;
+            --shadow: 0 10px 30px rgba(26, 26, 46, .10);
+            --tip: #1e6091;
+            --shortcut: #d97706;
+            --warn: #c0392b;
+            --check: #2d6a4f;
+            --memory: #6b3fa0;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Heebo', sans-serif;
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 24px 16px 60px;
+            background: radial-gradient(circle at 12% 8%, rgba(30, 96, 145, .04), transparent 40%),
+                radial-gradient(circle at 88% 92%, rgba(201, 162, 39, .05), transparent 40%),
+                var(--paper);
+        }
+        .wrap {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 30px 20px 26px;
+            border: 2px solid var(--ink);
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: "💡";
+            position: absolute;
+            font-size: 120px;
+            top: -10px;
+            left: 15px;
+            opacity: .05;
+        }
+        .eyebrow {
+            font-size: .85rem;
+            letter-spacing: 3px;
+            color: var(--tip);
+            font-weight: 600;
+            position: relative;
+        }
+        h1 {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin: 6px 0 2px;
+            position: relative;
+        }
+        .sub {
+            font-size: 1rem;
+            color: #5a5a6e;
+            position: relative;
+        }
+        .card {
+            background: #fff;
+            border: 1.5px solid var(--line);
+            border-radius: 16px;
+            padding: 26px 24px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow);
+        }
+        .card h2 {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            background: var(--gold);
+            color: #fff;
+            font-size: .75rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-family: 'Heebo';
+        }
+        .tag.blue {
+            background: var(--tip);
+        }
+        .tag.orange {
+            background: var(--shortcut);
+        }
+        .tag.red {
+            background: var(--warn);
+        }
+        .tag.grn {
+            background: var(--check);
+        }
+        .tag.prp {
+            background: var(--memory);
+        }
+        .tip-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--line);
+        }
+        .tip-row:last-child {
+            border-bottom: none;
+        }
+        .tip-icon {
+            font-size: 1.3rem;
+            min-width: 30px;
+            text-align: center;
+        }
+        .note {
+            background: rgba(30, 96, 145, .07);
+            border-right: 4px solid var(--tip);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 14px;
+            font-size: .97rem;
+        }
+        .warn-box {
+            background: rgba(192, 57, 43, .07);
+            border-right: 4px solid var(--accent2);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 14px;
+            font-size: .97rem;
+        }
+        .gold-box {
+            background: rgba(201, 162, 39, .10);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 14px;
+        }
+        .gold-box .title {
+            font-weight: 800;
+            color: #8a6f0e;
+            margin-bottom: 6px;
+        }
+        .examples {
+            display: grid;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .examples div {
+            background: var(--paper);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.05rem;
+            direction: ltr;
+            text-align: left;
+            line-height: 1.8;
+        }
+        .two-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 14px;
+        }
+        @media (max-width: 550px) {
+            .two-cols {
+                grid-template-columns: 1fr;
+            }
+        }
+        footer {
+            text-align: center;
+            font-size: .8rem;
+            color: #7d9285;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="eyebrow">🧠 שיטות עבודה של תלמידים חזקים</div>
+            <h1>טיפים למתמטיקה</h1>
+            <div class="sub">קיצורי דרך, טריקים לזיכרון, בדיקת תשובות, טעויות נפוצות — ודרכי חשיבה של מי שיודע</div>
+        </header>
+
+        <!-- ============ כללי ============ -->
+        <div class="card">
+            <h2>🧠 חשיבה — לפני שנוגעים בעט <span class="tag blue">כללי</span></h2>
+            <div class="tip-row"><span class="tip-icon">1</span><span><b>קראו את השאלה פעמיים.</b> בפעם הראשונה — רק להבין. בפעם השנייה — לסמן מספרים ומילות מפתח (מהירות, שטח, מכנה, שורש).</span></div>
+            <div class="tip-row"><span class="tip-icon">2</span><span><b>שאלו: "מה רוצים ממני?"</b> לפני שאתם פותרים — תכתבו מה היחידות של התשובה (ק"מ? סמ"ר? x=? תחום?).</span></div>
+            <div class="tip-row"><span class="tip-icon">3</span><span><b>שרטטו.</b> גם אם אין שרטוט בשאלה — ציירו. גרף, טבלה, ציר מספרים — כל דבר שעוזר לעין.</span></div>
+            <div class="tip-row"><span class="tip-icon">4</span><span><b>תמיד תכתבו.</b> אל תנסו לפתור בראש. כתבו כל שלב. טעויות קורות כשמדלגים על שלבים.</span></div>
+            <div class="tip-row"><span class="tip-icon">5</span><span><b>בדיקה גסה.</b> קיבלתם x=2000? שאלו: "הגיוני?" אם השאלה על שעות, 2000 לא הגיוני.</span></div>
+        </div>
+
+        <!-- ============ קיצורי דרך ============ -->
+        <div class="card">
+            <h2>⚡ קיצורי דרך — לחשב מהר יותר <span class="tag orange">מהיר</span></h2>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>משוואה ריבועית — בדקו קודם סכום=0.</b> x²−5x+6=0 — לפני דלתא, נסו לפרק: (x−2)(x−3)=0. חוסך 2 דקות.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>הצבה — בדקו 0, 1, −1 קודם.</b> אם מבקשים לבדוק פתרון — הציבו 0, 1 או −1. לרוב זה אחד מהם.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>צמצום צולב.</b> (x+1)/(x−2) · (x−2)/(x+3) — אל תפתחו! זה = (x+1)/(x+3).</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>נוסחת השורשים המקוצרת.</b> כש-b זוגי: x = [−b/2 ± √((b/2)²−ac)]/a.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>שטח משולש ישר-זווית.</b> (ניצב₁ × ניצב₂)/2. לא צריך גובה!</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>טרפז — שטח.</b> (בסיס₁+בסיס₂)×גובה/2. זוכרים: "ממוצע הבסיסים כפול גובה".</span></div>
+        </div>
+
+        <!-- ============ זיכרון ============ -->
+        <div class="card">
+            <h2>🧠 טריקים לזיכרון — נוסחאות בראש <span class="tag prp">זיכרון</span></h2>
+            <div class="tip-row"><span class="tip-icon">📌</span><span><b>נוסחאות כפל מקוצר:</b> (a+b)² = a² + <b>2</b>ab + b². זוכרים: "ראשון בריבוע, <b>פעמיים</b> הראשון כפול השני, אחרון בריבוע".</span></div>
+            <div class="tip-row"><span class="tip-icon">📌</span><span><b>הפרש ריבועים:</b> a²−b² = (a+b)(a−b). זוכרים: "הפרש = סכום כפול הפרש".</span></div>
+            <div class="tip-row"><span class="tip-icon">📌</span><span><b>דרך = מהירות × זמן:</b> מציירים משולש: s למעלה, v ו-t למטה. מכסים מה שרוצים.</span></div>
+            <div class="tip-row"><span class="tip-icon">📌</span><span><b>זווית מרכזית = 2 × היקפית:</b> "המרכז רואה פי 2".</span></div>
+            <div class="tip-row"><span class="tip-icon">📌</span><span><b>שטח עיגול:</b> πr². "פי ריבוע" = π·r². לא להתבלבל עם היקף 2πr.</span></div>
+            <div class="tip-row"><span class="tip-icon">📌</span><span><b>טור חשבוני:</b> aₙ = a₁ + (n−1)d. "האיבר הראשון + (מקום פחות 1) כפול ההפרש".</span></div>
+        </div>
+
+        <!-- ============ אלגברה ============ -->
+        <div class="card">
+            <h2>📐 אלגברה — טיפים ספציפיים <span class="tag blue">אלגברה</span></h2>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>תחום הגדרה — קודם כל!</b> לפני כל שאלה עם שבר או שורש — רשמו: x≠? x≥? איבדתם 2 נקודות על זה.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>פירוק לגורמים:</b> תמיד קודם גורם משותף, אחר כך טרינום/הפרש ריבועים. 2x²−8 = 2(x²−4) = 2(x+2)(x−2).</span></div>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>אי-שוויון — היפוך סימן:</b> כופלים/מחלקים במספר שלילי = הופכים > ל-<. −2x>6 → x<−3.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>משוואה עם שברים:</b> כופלים במכנה המשותף. אבל קודם — תחום הגדרה! x=2 אולי פותר אבל אולי אסור.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>צמצום — רק גורמים!</b> (x²+4x)/(x) = x(x+4)/x = x+4. מותר. (x²+4)/(x) — אסור לצמצם, x²+4 לא מפורק.</span></div>
+        </div>
+
+        <!-- ============ גיאומטריה ============ -->
+        <div class="card">
+            <h2>📏 גיאומטריה — טיפים בשטח <span class="tag blue">גיאומטריה</span></h2>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>שרטטו לפי סדר.</b> קודם ציר, אחר כך נקודות, אחר כך צורות. שרטוט לא מסודר = בלגן במוח.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>סמנו כל מה שידוע.</b> זווית שווה? צלע שווה? סמנו על השרטוט. מה שרואים — זוכרים.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>חפיפת משולשים — צלע משותפת.</b> יש קו שמופיע בשני משולשים? מיד תכתבו: "צלע משותפת".</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>שטח — אל תשכחו לחלק ב-2.</b> משולש, טרפז, מעוין, דלתון — כולם דורשים ÷2.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>גובה = אנכי לבסיס.</b> במקבילית, במשולש, בטרפז — גובה הוא תמיד קו מאונך, לא צלע.</span></div>
+        </div>
+
+        <!-- ============ פונקציות ============ -->
+        <div class="card">
+            <h2>📈 פרבולה — טיפים <span class="tag blue">פונקציות</span></h2>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>x קודקוד = −b/(2a).</b> לא לשכוח את המינוס! b=−4 → x=2.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>y קודקוד — הציבו בפונקציה.</b> מצאו x? תציבו במשוואה <b>המקורית</b> — לא בנגזרת, לא בנוסחה אחרת.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>a>0 = מחייכת ∪.</b> a<0 = עצובה ∩. זוכרים: "חיובי — שמח, שלילי — עצוב".</span></div>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>חיתוך y — x=0.</b> תמיד. חיתוך x — y=0. אל תתבלבלו.</span></div>
+        </div>
+
+        <!-- ============ בעיות מילוליות ============ -->
+        <div class="card">
+            <h2>📝 בעיות מילוליות — טיפים <span class="tag blue">מילוליות</span></h2>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>טבלה.</b> בעיות תנועה: v, t, s. בעיות הספק: זמן, קצב. בעיות מספרים: מספר, סכום. טבלה = סדר.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>מהירות ממוצעת = סה"כ דרך / סה"כ זמן.</b> לא ממוצע של מהירויות! 80 קמ"ש + 60 קמ"ש לא שווה 70 בממוצע.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>פגישה = סכום מהירויות.</b> מרדף = הפרש מהירויות. אל תתבלבלו.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔹</span><span><b>הספק — 1 חלקי זמן.</b> ברז ממלא ב-4 שעות = 1/4 בריכה לשעה. תמיד תהפכו לקצב.</span></div>
+        </div>
+
+        <!-- ============ סטטיסטיקה והסתברות ============ -->
+        <div class="card">
+            <h2>🎲 סטטיסטיקה והסתברות <span class="tag blue">נתונים</span></h2>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>חציון — תמיינו!</b> לפני שמוצאים חציון, מסדרים מהקטן לגדול. n זוגי? ממוצע שני האמצעיים.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>ממוצע עם שכיחויות:</b> (ערך×שכיחות + ...)/סך השכיחויות. לא שוכחים לחלק בסך.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>עץ — כפל לאורך מסלול, חיבור בין מסלולים.</b> "וגם" = ×. "או" = + (כשהמאורעות זרים).</span></div>
+            <div class="tip-row"><span class="tip-icon">🔸</span><span><b>תלויים?</b> "עם החזרה" = בלתי-תלויים. "בלי החזרה" = תלויים.</span></div>
+        </div>
+
+        <!-- ============ בדיקת תשובות ============ -->
+        <div class="card">
+            <h2>✅ איך בודקים תשובה — 5 שיטות <span class="tag grn">בדיקה</span></h2>
+            <div class="tip-row"><span class="tip-icon">1</span><span><b>הצבה חוזרת.</b> מצאתם x=3? תציבו במשוואה <b>המקורית</b>. יוצא שוויון? מעולה.</span></div>
+            <div class="tip-row"><span class="tip-icon">2</span><span><b>הגיון.</b> שאלה על גובה — תשובה שלילית? פסול. שאלה על זמן — 1000 שעות? כנראה טעות.</span></div>
+            <div class="tip-row"><span class="tip-icon">3</span><span><b>יחידות.</b> ביקשתי מטרים, קיבלתי מטרים? 4 ס"מ + 3 מ' = 3.04 מ' (או 304 ס"מ). אל תערבבו.</span></div>
+            <div class="tip-row"><span class="tip-icon">4</span><span><b>פירוק הפוך.</b> פירקתם לגורמים? תפתחו סוגריים — חוזרים למקור? (x+2)(x+3)=x²+5x+6.</span></div>
+            <div class="tip-row"><span class="tip-icon">5</span><span><b>סכום = 1.</b> בעץ הסתברות — כל הענפים שיוצאים מאותה נקודה = 1.</span></div>
+        </div>
+
+        <!-- ============ טעויות נפוצות ============ -->
+        <div class="card">
+            <h2>⚠️ טעויות נפוצות — ואיך להימנע <span class="tag red">זהירות</span></h2>
+            <div class="tip-row"><span class="tip-icon">❌</span><span><b>שוכחים היפוך סימן באי-שוויון.</b> −2x>6 → x<−3. תזכורת: כפל/חילוק בשלילי = הופך.</span></div>
+            <div class="tip-row"><span class="tip-icon">❌</span><span><b>מצמצמים איבר-איבר.</b> (x+3)/(x) — אסור! 3/x + x/x = 1 + 3/x. לא "מצטמצם".</span></div>
+            <div class="tip-row"><span class="tip-icon">❌</span><span><b>שוכחים תחום הגדרה.</b> 1/(x−2) — x≠2. תמיד. גם בפתרון וגם בבדיקה.</span></div>
+            <div class="tip-row"><span class="tip-icon">❌</span><span><b>שטח — לא מחלקים ב-2.</b> משולש, טרפז, מעוין, דלתון — ÷2. זיכרון: "חצי מכפלת..."</span></div>
+            <div class="tip-row"><span class="tip-icon">❌</span><span><b>יחס שטחים בדמיון = k².</b> k=3 → שטח פי 9, לא פי 3.</span></div>
+            <div class="tip-row"><span class="tip-icon">❌</span><span><b>טור חשבוני — שוכחים (n−1).</b> aₙ = a₁+(n−1)d. לא a₁+n·d.</span></div>
+        </div>
+
+        <!-- ============ תלמידים חזקים ============ -->
+        <div class="card">
+            <h2>🏆 דרכי חשיבה של תלמידים חזקים <span class="tag gold">מנטליות</span></h2>
+            <div class="tip-row"><span class="tip-icon">🧠</span><span><b>לא נלחצים מ"שאלה קשה".</b> קראו, נשמו, תפרקו לחתיכות. איזה חלק אני יודע? מה חסר? תכתבו — תגיעו.</span></div>
+            <div class="tip-row"><span class="tip-icon">🧠</span><span><b>משתמשים בשאלות קודמות.</b> סעיף א' נותן לכם נתון לסעיף ב'. אל תתחילו מאפס — השתמשו במה שכבר מצאתם.</span></div>
+            <div class="tip-row"><span class="tip-icon">🧠</span><span><b>בודקים תוך כדי.</b> לא בסוף. פתרתם אגף? תבדקו. חישבתם שורשים? תציבו אחד לבדיקה מהירה.</span></div>
+            <div class="tip-row"><span class="tip-icon">🧠</span><span><b>מכירים את הטעויות של עצמם.</b> אתם יודעים שאתם שוכחים היפוך סימן? תכתבו "היפוך?" על הדף. תזכורת.</span></div>
+            <div class="tip-row"><span class="tip-icon">🧠</span><span><b>לא מוותרים.</b> גם אם לא יודעים — כותבים מה שכן יודעים. תחום הגדרה, שרטוט, סימון נתונים — זה נותן נקודות.</span></div>
+        </div>
+
+        <footer>🧠 טיפים למתמטיקה · נבנה עם כל הלב · 31 במאי 2026</footer>
+    </div>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

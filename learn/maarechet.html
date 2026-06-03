@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>משוואות עם שני נעלמים</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#1f2a3d;--paper:#ebeff5;--accent:#2c5e8e;--accent2:#c0392b;--gold:#c9a227;--line:#c9d3e0;--shadow:0 10px 30px rgba(31,42,61,.12);--pos:#2d6a4f;--neg:#c0392b;--c-eq1:#2c5e8e;--c-eq2:#e0533d;--grid:#d9dfe8}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(44,94,142,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"x,y";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:140px;font-weight:900;color:rgba(31,42,61,.05);top:0;left:30px}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#566476;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .note{background:rgba(44,94,142,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .gold-box{background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:12px;padding:16px;margin-top:14px}
+  .gold-box .title{font-weight:800;color:#8a6f0e;margin-bottom:6px}
+  .system{display:grid;gap:6px;margin:14px auto;max-width:280px;font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:900;direction:ltr;background:var(--paper);border-radius:12px;padding:14px;position:relative}
+  .system::before{content:"";position:absolute;right:8px;top:14px;bottom:14px;width:3px;background:var(--ink);border-radius:99px}
+  .system div{padding-right:14px}
+  .system .e1{color:var(--c-eq1)}
+  .system .e2{color:var(--c-eq2)}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;direction:ltr;text-align:left}
+  .method-card{border-radius:14px;padding:16px;margin-top:14px}
+  .method-card.m1{background:linear-gradient(135deg,#fff,rgba(44,94,142,.08));border:2px solid var(--c-eq1)}
+  .method-card.m2{background:linear-gradient(135deg,#fff,rgba(224,83,61,.08));border:2px solid var(--c-eq2)}
+  .method-card h3{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:900;margin-bottom:8px}
+  .method-card.m1 h3{color:var(--c-eq1)}
+  .method-card.m2 h3{color:var(--c-eq2)}
+  .steps-howto{display:grid;gap:8px;margin-top:8px}
+  .step-row{display:flex;gap:10px;align-items:flex-start;background:#fff;border-radius:8px;padding:8px 12px;font-size:.95rem}
+  .step-row .n{color:#fff;font-family:'Frank Ruhl Libre',serif;font-weight:900;width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;flex-shrink:0;font-size:.85rem}
+  .m1 .step-row .n{background:var(--c-eq1)}
+  .m2 .step-row .n{background:var(--c-eq2)}
+
+  /* GRAPH ANIMATION */
+  .anim-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .anim-pick button{font-family:'Frank Ruhl Libre',serif;font-size:1rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;direction:ltr}
+  .anim-pick button.active{background:var(--ink);color:#fff}
+  .graph-wrap{padding:14px;background:var(--paper);border-radius:14px;margin-top:14px}
+  .graph-svg{width:100%;height:auto;display:block;background:#fff;border-radius:12px;border:1px solid var(--line)}
+  .system-display{display:flex;gap:14px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+  .eq-card{flex:1;min-width:200px;background:#fff;border-radius:12px;padding:14px;text-align:center;border:2px solid}
+  .eq-card.e1{border-color:var(--c-eq1)}
+  .eq-card.e2{border-color:var(--c-eq2)}
+  .eq-card .eqtxt{font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:900;direction:ltr}
+  .eq-card.e1 .eqtxt{color:var(--c-eq1)}
+  .eq-card.e2 .eqtxt{color:var(--c-eq2)}
+  .solution-box{background:linear-gradient(135deg,#fff,rgba(201,162,39,.12));border:2px solid var(--gold);border-radius:14px;padding:16px;margin-top:14px;text-align:center}
+  .solution-box .lbl{font-size:.85rem;color:#8a6f0e;font-weight:700;margin-bottom:6px}
+  .solution-box .val{font-family:'Frank Ruhl Libre',serif;font-size:1.8rem;font-weight:900;direction:ltr;color:#8a6f0e}
+
+  /* GAME */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#566476}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:900;direction:ltr;padding:20px;background:var(--paper);border-radius:14px;margin-bottom:14px;text-align:center;white-space:pre-line}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--pos);color:#fff;border-color:var(--pos)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#7d8a9b;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">3 יחידות · בגרות · שני נעלמים</div>
+    <h1>מערכת משוואות</h1>
+    <div class="sub">שתי משוואות, שני נעלמים — פתרון בשתי שיטות</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🎯 גרף נקודת המפגש</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>מה זו מערכת משוואות? <span class="tag">בסיס</span></h2>
+      <p>מערכת משוואות = <b>שתי משוואות יחד</b>, עם <b>שני נעלמים</b> (בדרך כלל x ו-y). המטרה: למצוא ערכי x ו-y ש<b>מקיימים את שתי המשוואות בו-זמנית</b>.</p>
+      <div class="system">
+        <div class="e1">2x + y = 10</div>
+        <div class="e2">x − y = 2</div>
+      </div>
+      <p style="text-align:center">הסוגריים המסולסלים מציינים שמדובר במערכת — שתי המשוואות חייבות להתקיים יחד.</p>
+      <div class="gold-box">
+        <div class="title">💡 משמעות גרפית</div>
+        כל משוואה מציירת קו ישר במישור. הפתרון = <b>נקודת המפגש</b> של שני הקווים. אם הם נחתכים — יש פתרון אחד. אם הם מקבילים — אין פתרון.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שיטה 1: הצבה <span class="tag">השיטה הנפוצה</span></h2>
+      <div class="method-card m1">
+        <h3>הרעיון: מבטאים נעלם אחד באמצעות השני, ומציבים</h3>
+        <div class="steps-howto">
+          <div class="step-row"><div class="n">1</div><div><b>מבודדים</b> נעלם אחד באחת המשוואות (בדרך כלל את הקל ביותר).</div></div>
+          <div class="step-row"><div class="n">2</div><div><b>מציבים</b> את הביטוי במשוואה השנייה — נשארת משוואה עם נעלם אחד.</div></div>
+          <div class="step-row"><div class="n">3</div><div><b>פותרים</b> את המשוואה הרגילה ומוצאים את הנעלם הראשון.</div></div>
+          <div class="step-row"><div class="n">4</div><div><b>מציבים בחזרה</b> כדי למצוא את הנעלם השני.</div></div>
+        </div>
+      </div>
+      <div class="note" style="direction:ltr;text-align:left">
+        <b>דוגמה:</b> {x + y = 7 ; 2x − y = 5}<br>
+        מהמשוואה הראשונה: y = 7 − x<br>
+        נציב בשנייה: 2x − (7 − x) = 5 → 3x = 12 → x = 4<br>
+        ולכן y = 7 − 4 = 3 ✓ הפתרון: (4, 3)
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שיטה 2: השוואת מקדמים <span class="tag">השיטה הקצרה</span></h2>
+      <div class="method-card m2">
+        <h3>הרעיון: מבטלים נעלם ע"י חיבור/חיסור המשוואות</h3>
+        <div class="steps-howto">
+          <div class="step-row"><div class="n">1</div><div><b>מסדרים</b> את שתי המשוואות בצורה דומה (x משמאל, y באמצע, מספר מימין).</div></div>
+          <div class="step-row"><div class="n">2</div><div><b>כופלים</b> משוואה (או שתיים) כך שמקדמי אחד הנעלמים יהיו זהים או הופכיים.</div></div>
+          <div class="step-row"><div class="n">3</div><div><b>מחברים או מחסרים</b> את המשוואות — נעלם אחד "נעלם".</div></div>
+          <div class="step-row"><div class="n">4</div><div><b>פותרים</b> את המשוואה שנשארה, ומציבים בחזרה.</div></div>
+        </div>
+      </div>
+      <div class="note" style="direction:ltr;text-align:left">
+        <b>דוגמה:</b> {2x + y = 10 ; x − y = 2}<br>
+        מקדמי y הם 1 ו-−1, הופכיים — נחבר את המשוואות:<br>
+        (2x + y) + (x − y) = 10 + 2 → 3x = 12 → x = 4<br>
+        נציב במשוואה השנייה: 4 − y = 2 → y = 2 ✓ הפתרון: (4, 2)
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>איך להחליט באיזו שיטה לבחור? <span class="tag">טיפ פרקטי</span></h2>
+      <div class="gold-box">
+        <b>שיטת הצבה</b> טובה כשמקדם של אחד הנעלמים הוא 1 או −1 — קל לבודד.<br><br>
+        <b>שיטת השוואה</b> טובה כשהמקדמים גדולים, אבל קל להפוך אותם להופכיים בכפל.<br><br>
+        <b>בבגרות</b> — מקבלים נקודות על שתי השיטות. בחרו את הקלה יותר לבעיה הספציפית.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> כשמציבים — <b>חובה לשים סוגריים</b> סביב הביטוי. אם y = 7−x, ונציב 2y → צריך לכתוב 2(7−x), לא 2·7−x.<br><br>
+        <b>2.</b> בשיטת השוואה — <b>שימו לב לסימן</b>. אם המקדמים זהים (לא הופכיים), צריך לחסר משוואה ממשוואה, לא לחבר.<br><br>
+        <b>3.</b> <b>אל תשכחו למצוא את הנעלם השני!</b> טעות נפוצה — מוצאים את x ומסיימים, אבל צריך גם את y.<br><br>
+        <b>4.</b> <b>תמיד מאמתים</b> ע"י הצבת שני הערכים בשתי המשוואות המקוריות.
+      </div>
+    </div>
+  </section>
+
+  <!-- GRAPH -->
+  <section id="anim">
+    <div class="card">
+      <h2>הפתרון כנקודת מפגש 🎯</h2>
+      <p>בחרו מערכת משוואות ותראו איך שני הקווים נחתכים <b>בדיוק בנקודת הפתרון</b>.</p>
+      <div class="anim-pick" id="animPick"></div>
+      <div class="graph-wrap">
+        <svg class="graph-svg" id="graph" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="system-display">
+          <div class="eq-card e1"><div class="eqtxt" id="eq1">2x + y = 10</div></div>
+          <div class="eq-card e2"><div class="eqtxt" id="eq2">x − y = 2</div></div>
+        </div>
+        <div class="solution-box">
+          <div class="lbl">📍 נקודת המפגש = הפתרון</div>
+          <div class="val" id="solutionTxt">x = 4, y = 2</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק המערכות 🎮</h2>
+      <p style="text-align:center;font-size:.9rem;color:#566476;margin-bottom:14px">פתרו את מערכת המשוואות ומצאו את הנקודה (x, y).</p>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>בסיס לבגרות 3 יח"ל · מערכת משוואות עם שני נעלמים</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+/* ===== GRAPH WITH INTERSECTION =====
+   Each system stored as: 2 lines (in slope-intercept y = m*x + b form for drawing),
+   plus original equation strings and solution.
+*/
+const SYSTEMS=[
+  {expr:'{2x+y=10 ; x−y=2}', eq1:'2x + y = 10', eq2:'x − y = 2',  m1:-2, b1:10, m2:1,  b2:-2, sx:4, sy:2},
+  {expr:'{x+y=7 ; 2x−y=5}',  eq1:'x + y = 7',  eq2:'2x − y = 5',  m1:-1, b1:7,  m2:2,  b2:-5, sx:4, sy:3},
+  {expr:'{x+y=8 ; x−y=2}',   eq1:'x + y = 8',  eq2:'x − y = 2',   m1:-1, b1:8,  m2:1,  b2:-2, sx:5, sy:3},
+  {expr:'{3x+y=11 ; x+y=5}', eq1:'3x + y = 11', eq2:'x + y = 5',  m1:-3, b1:11, m2:-1, b2:5,  sx:3, sy:2},
+  {expr:'{x+2y=8 ; x−y=2}',  eq1:'x + 2y = 8', eq2:'x − y = 2',  m1:-0.5, b1:4, m2:1, b2:-2, sx:4, sy:2},
+  {expr:'{x+y=5 ; 2x+y=8}',  eq1:'x + y = 5',  eq2:'2x + y = 8', m1:-1, b1:5,  m2:-2, b2:8, sx:3, sy:2}
+];
+
+let curS=0;
+const pw=document.getElementById('animPick');
+SYSTEMS.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.expr;b.onclick=()=>{curS=i;mk();drawGraph();};pw.appendChild(b);});
+function mk(){[...pw.children].forEach((b,i)=>b.classList.toggle('active',i===curS));}
+
+const SVG=document.getElementById('graph');
+const CX=200,CY=200,U=24;
+function drawGraph(){
+  const s=SYSTEMS[curS];
+  let svg='';
+  // grid
+  for(let i=-8;i<=8;i++){if(i===0)continue;const px=CX+i*U;const py=CY-i*U;svg+='<line x1="'+px+'" y1="0" x2="'+px+'" y2="400" stroke="var(--grid)" stroke-width="0.5"/><line x1="0" y1="'+py+'" x2="400" y2="'+py+'" stroke="var(--grid)" stroke-width="0.5"/>';}
+  // axes
+  svg+='<line x1="0" y1="'+CY+'" x2="400" y2="'+CY+'" stroke="#475569" stroke-width="2"/>';
+  svg+='<line x1="'+CX+'" y1="0" x2="'+CX+'" y2="400" stroke="#475569" stroke-width="2"/>';
+  // axis numbers
+  for(let i=-7;i<=7;i++){if(i===0||i%2!==0)continue;const px=CX+i*U;const py=CY-i*U;svg+='<text x="'+px+'" y="'+(CY+14)+'" text-anchor="middle" font-size="10" fill="#475569" font-family="Frank Ruhl Libre">'+i+'</text><text x="'+(CX-8)+'" y="'+(py+3)+'" text-anchor="end" font-size="10" fill="#475569" font-family="Frank Ruhl Libre">'+i+'</text>';}
+  // arrows + labels
+  svg+='<polygon points="395,'+CY+' 388,'+(CY-4)+' 388,'+(CY+4)+'" fill="#475569"/>';
+  svg+='<polygon points="'+CX+',5 '+(CX-4)+',12 '+(CX+4)+',12" fill="#475569"/>';
+  svg+='<text x="392" y="'+(CY-8)+'" text-anchor="end" font-size="11" fill="#475569" font-style="italic">x</text>';
+  svg+='<text x="'+(CX+8)+'" y="12" font-size="11" fill="#475569" font-style="italic">y</text>';
+  // line 1
+  const x1L=-8,x1R=8;
+  const y1L=s.m1*x1L+s.b1, y1R=s.m1*x1R+s.b1;
+  svg+='<line x1="'+(CX+x1L*U)+'" y1="'+(CY-y1L*U)+'" x2="'+(CX+x1R*U)+'" y2="'+(CY-y1R*U)+'" stroke="var(--c-eq1)" stroke-width="3" stroke-linecap="round"/>';
+  // line 2
+  const y2L=s.m2*x1L+s.b2, y2R=s.m2*x1R+s.b2;
+  svg+='<line x1="'+(CX+x1L*U)+'" y1="'+(CY-y2L*U)+'" x2="'+(CX+x1R*U)+'" y2="'+(CY-y2R*U)+'" stroke="var(--c-eq2)" stroke-width="3" stroke-linecap="round"/>';
+  // intersection point
+  const px=CX+s.sx*U, py=CY-s.sy*U;
+  // pulsing circle (animated via animateTransform)
+  svg+='<circle cx="'+px+'" cy="'+py+'" r="14" fill="var(--gold)" opacity="0.3"><animate attributeName="r" values="10;18;10" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0.1;0.5" dur="2s" repeatCount="indefinite"/></circle>';
+  svg+='<circle cx="'+px+'" cy="'+py+'" r="7" fill="var(--gold)" stroke="#fff" stroke-width="2.5"/>';
+  svg+='<text x="'+(px+12)+'" y="'+(py-10)+'" font-size="13" font-weight="900" fill="#8a6f0e" font-family="Frank Ruhl Libre">('+s.sx+', '+s.sy+')</text>';
+
+  SVG.innerHTML=svg;
+  document.getElementById('eq1').textContent=s.eq1;
+  document.getElementById('eq2').textContent=s.eq2;
+  document.getElementById('solutionTxt').textContent='x = '+s.sx+',  y = '+s.sy;
+}
+mk();drawGraph();
+
+/* ===== GAME ===== */
+const POOL=[
+  {q:'x + y = 10\nx − y = 2',ans:'(6, 4)',wrong:['(5, 5)','(4, 6)','(8, 2)']},
+  {q:'2x + y = 10\nx − y = 2',ans:'(4, 2)',wrong:['(2, 4)','(3, 4)','(5, 0)']},
+  {q:'x + y = 7\n2x − y = 5',ans:'(4, 3)',wrong:['(3, 4)','(5, 2)','(2, 5)']},
+  {q:'x + y = 8\nx − y = 2',ans:'(5, 3)',wrong:['(3, 5)','(4, 4)','(6, 2)']},
+  {q:'3x + y = 11\nx + y = 5',ans:'(3, 2)',wrong:['(2, 3)','(4, 1)','(5, 0)']},
+  {q:'x + 2y = 8\nx − y = 2',ans:'(4, 2)',wrong:['(2, 4)','(6, 1)','(0, 4)']},
+  {q:'x + y = 5\n2x + y = 8',ans:'(3, 2)',wrong:['(2, 3)','(4, 1)','(1, 4)']},
+  {q:'2x + 3y = 16\nx + y = 6',ans:'(2, 4)',wrong:['(4, 2)','(3, 3)','(5, 1)']},
+  {q:'x + y = 6\nx − y = 0',ans:'(3, 3)',wrong:['(2, 4)','(4, 2)','(6, 0)']},
+  {q:'2x − y = 1\nx + y = 5',ans:'(2, 3)',wrong:['(3, 2)','(1, 4)','(4, 1)']},
+  {q:'3x − y = 7\nx + y = 5',ans:'(3, 2)',wrong:['(2, 3)','(4, 1)','(1, 4)']},
+  {q:'x + y = 4\n2x − y = 5',ans:'(3, 1)',wrong:['(1, 3)','(2, 2)','(4, 0)']}
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;document.getElementById('turn').textContent='תורו של: '+name;}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  cur=POOL[Math.floor(Math.random()*POOL.length)];
+  document.getElementById('question').textContent=cur.q;
+  const opts=shuffle([cur.ans,...cur.wrong]);
+  const O=document.getElementById('opts');O.innerHTML='';
+  opts.forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.65?btns.find(x=>x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,pick.textContent);},2000);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.ans;fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='✗ התשובה: '+cur.ans;fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

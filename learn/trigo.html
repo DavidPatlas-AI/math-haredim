@@ -1,0 +1,381 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>טריגונומטריה</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#1a2e3d;--paper:#e8eff5;--accent:#1d6e9e;--accent2:#c0392b;--gold:#c9a227;--line:#c8d6e2;--shadow:0 10px 30px rgba(26,46,61,.12);--pos:#2d6a4f;--neg:#c0392b;
+    --opp:#e0533d;--adj:#3aa66f;--hyp:#1d6e9e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(29,110,158,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"△";position:absolute;font-size:170px;font-weight:900;color:rgba(26,46,61,.05);top:0;left:30px;line-height:1}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.3rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#5a6e7d;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .note{background:rgba(29,110,158,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .gold-box{background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:12px;padding:16px;margin-top:14px}
+  .gold-box .title{font-weight:800;color:#8a6f0e;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+  /* SIDE LABELS */
+  .sides-explain{display:grid;grid-template-columns:1fr 1.4fr;gap:18px;align-items:center;margin-top:14px}
+  @media (max-width:560px){.sides-explain{grid-template-columns:1fr}}
+  .sides-svg{width:100%;height:auto;background:var(--paper);border-radius:14px;padding:14px}
+  .sides-list{display:flex;flex-direction:column;gap:8px}
+  .side-item{background:var(--paper);border-radius:10px;padding:10px 14px;border-right:4px solid}
+  .side-item.opp{border-color:var(--opp)}
+  .side-item.adj{border-color:var(--adj)}
+  .side-item.hyp{border-color:var(--hyp)}
+  .side-item .name{font-weight:800;font-family:'Frank Ruhl Libre',serif;font-size:1.05rem}
+  .side-item.opp .name{color:var(--opp)}
+  .side-item.adj .name{color:var(--adj)}
+  .side-item.hyp .name{color:var(--hyp)}
+  .side-item .desc{font-size:.85rem;color:#5a6e7d}
+
+  /* SOH CAH TOA */
+  .formulas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+  @media (max-width:560px){.formulas-grid{grid-template-columns:1fr}}
+  .fbox{border-radius:14px;padding:14px;text-align:center;background:#fff;border:2px solid}
+  .fbox.sin{border-color:var(--opp)}.fbox.cos{border-color:var(--adj)}.fbox.tan{border-color:var(--gold)}
+  .fbox .fn{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:900}
+  .fbox.sin .fn{color:var(--opp)}.fbox.cos .fn{color:var(--adj)}.fbox.tan .fn{color:var(--gold)}
+  .fbox .frac{font-family:'Frank Ruhl Libre',serif;display:inline-block;margin-top:8px}
+  .fbox .frac .top{display:block;border-bottom:2px solid var(--ink);padding:0 4px 2px;font-weight:800}
+  .fbox .frac .bot{display:block;padding:2px 4px;font-weight:800}
+  .mnemonic{background:linear-gradient(135deg,#fff,var(--paper));border:2px solid var(--gold);border-radius:14px;padding:16px;margin-top:14px;text-align:center}
+  .mnemonic .big{font-family:'Frank Ruhl Libre',serif;font-size:1.8rem;font-weight:900;color:#8a6f0e;letter-spacing:2px;direction:ltr}
+  .mnemonic .sub{font-size:.9rem;color:#5a6e7d;margin-top:4px}
+  .mnemonic .let{color:var(--opp)}.mnemonic .ado{color:var(--adj)}
+
+  /* INTERACTIVE TRIANGLE */
+  .tri-wrap{padding:14px;background:var(--paper);border-radius:14px;margin-top:14px}
+  .tri-svg{width:100%;height:auto;display:block;background:#fff;border-radius:12px}
+  .tri-controls{margin-top:14px;background:#fff;border-radius:12px;padding:12px}
+  .tri-controls .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .tri-controls .name{font-weight:700;color:var(--accent)}
+  .tri-controls .val{font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:900;direction:ltr}
+  .tri-controls input[type=range]{width:100%;accent-color:var(--accent)}
+  .tri-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}
+  .ti-card{background:#fff;border-radius:10px;padding:10px;text-align:center;border-top:3px solid}
+  .ti-card.sin{border-color:var(--opp)}.ti-card.cos{border-color:var(--adj)}.ti-card.tan{border-color:var(--gold)}
+  .ti-card .l{font-size:.78rem;color:#5a6e7d}
+  .ti-card .v{font-family:'Frank Ruhl Libre',serif;font-weight:900;direction:ltr;margin-top:2px}
+  .ti-card.sin .v{color:var(--opp)}.ti-card.cos .v{color:var(--adj)}.ti-card.tan .v{color:#8a6f0e}
+  .preset-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .preset-row button{font-family:'Frank Ruhl Libre',serif;font-size:.95rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:6px 12px;border-radius:8px;cursor:pointer;direction:ltr}
+  .preset-row button:hover{background:var(--ink);color:#fff}
+
+  /* GAME */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#5a6e7d}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Heebo';font-size:1rem;line-height:1.7;padding:18px;background:var(--paper);border-radius:14px;margin-bottom:14px;font-weight:600}
+  .q-box .q-eq{display:block;font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:900;direction:ltr;margin-top:8px;color:var(--accent)}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--pos);color:#fff;border-color:var(--pos)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#7d8e9d;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">3 יחידות · בגרות · נושא ויזואלי</div>
+    <h1>טריגונומטריה</h1>
+    <div class="sub">סינוס, קוסינוס, טנגנס במשולש ישר-זווית</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">📐 משולש חי</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>מה זו טריגונומטריה? <span class="tag">בסיס</span></h2>
+      <p>טריגונומטריה היא <b>חקר היחסים</b> במשולש. בבגרות 3 יח"ל מתעסקים במשולש <b>ישר-זווית</b> בלבד — אחת הזוויות בו היא 90°.</p>
+      <div class="gold-box">
+        <div class="title">💡 הרעיון המרכזי</div>
+        אם יודעים זווית אחת ואורך אחד במשולש — אפשר למצוא את כל השאר. הקסם של טריגונומטריה הוא בדיוק זה.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שלושת הצלעות <span class="tag">חשוב מאוד</span></h2>
+      <p>במשולש ישר-זווית — ביחס לזווית מסוימת (לא הזווית הישרה) — לכל צלע יש שם:</p>
+      <div class="sides-explain">
+        <svg class="sides-svg" viewBox="0 0 200 180" preserveAspectRatio="xMidYMid meet">
+          <!-- triangle: A bottom-left, B bottom-right (right angle), C top-right -->
+          <polygon points="20,150 180,150 180,30" fill="rgba(29,110,158,.08)" stroke="var(--ink)" stroke-width="2"/>
+          <!-- right angle square -->
+          <rect x="165" y="135" width="15" height="15" fill="none" stroke="var(--ink)" stroke-width="2"/>
+          <!-- angle theta at A -->
+          <path d="M 50 150 A 30 30 0 0 0 38 132" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+          <text x="44" y="143" font-size="13" fill="var(--accent)" font-weight="800" font-family="Frank Ruhl Libre">θ</text>
+          <!-- side labels -->
+          <text x="100" y="170" text-anchor="middle" font-size="11" fill="var(--adj)" font-weight="800">סמוכה</text>
+          <text x="188" y="92" font-size="11" fill="var(--opp)" font-weight="800" writing-mode="vertical-rl">נגדית</text>
+          <text x="86" y="78" font-size="11" fill="var(--hyp)" font-weight="800" transform="rotate(-37 86 78)">יתר</text>
+        </svg>
+        <div class="sides-list">
+          <div class="side-item hyp">
+            <div class="name">יתר (Hypotenuse)</div>
+            <div class="desc">הצלע מול הזווית הישרה — תמיד <b>הארוכה ביותר</b></div>
+          </div>
+          <div class="side-item opp">
+            <div class="name">נגדית (Opposite)</div>
+            <div class="desc">הצלע <b>מול</b> הזווית שמתעניינים בה (θ)</div>
+          </div>
+          <div class="side-item adj">
+            <div class="name">סמוכה (Adjacent)</div>
+            <div class="desc">הצלע <b>צמודה</b> לזווית (לא היתר)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שלוש הפונקציות <span class="tag">הלב של הנושא</span></h2>
+      <p>כל פונקציה היא <b>יחס בין שתי צלעות</b>:</p>
+      <div class="formulas-grid">
+        <div class="fbox sin">
+          <div class="fn">sin θ</div>
+          <div class="frac"><span class="top" style="color:var(--opp)">נגדית</span><span class="bot" style="color:var(--hyp)">יתר</span></div>
+        </div>
+        <div class="fbox cos">
+          <div class="fn">cos θ</div>
+          <div class="frac"><span class="top" style="color:var(--adj)">סמוכה</span><span class="bot" style="color:var(--hyp)">יתר</span></div>
+        </div>
+        <div class="fbox tan">
+          <div class="fn">tan θ</div>
+          <div class="frac"><span class="top" style="color:var(--opp)">נגדית</span><span class="bot" style="color:var(--adj)">סמוכה</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>איך לזכור: SOH-CAH-TOA <span class="tag">דרך הזכירה הקלאסית</span></h2>
+      <div class="mnemonic">
+        <div class="big"><span class="let">S</span>OH · <span class="let">C</span>AH · <span class="let">T</span>OA</div>
+        <div class="sub" style="font-size:.95rem;margin-top:10px;text-align:right;direction:rtl">
+          <b>S</b>in = <b style="color:var(--opp)">O</b>pposite / <b style="color:var(--hyp)">H</b>ypotenuse<br>
+          <b>C</b>os = <b style="color:var(--adj)">A</b>djacent / <b style="color:var(--hyp)">H</b>ypotenuse<br>
+          <b>T</b>an = <b style="color:var(--opp)">O</b>pposite / <b style="color:var(--adj)">A</b>djacent
+        </div>
+      </div>
+      <div class="note">תלמידים בכל העולם זוכרים את ה-3 נוסחאות באמצעות "SOH-CAH-TOA". פשוט אומרים את זה בקול 20 פעם — וזה נשאר לכל החיים.</div>
+    </div>
+
+    <div class="card">
+      <h2>דוגמה מלאה</h2>
+      <p>במשולש ישר-זווית, היתר = 10 ס"מ, וזווית אחת = 30°. מצאו את הנגדית.</p>
+      <div style="background:var(--paper);border-radius:10px;padding:12px;font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;direction:ltr">
+        sin 30° = נגדית / יתר<br>
+        sin 30° = נגדית / 10<br>
+        0.5 = נגדית / 10<br>
+        נגדית = 10 · 0.5 = <b>5 ס"מ</b>
+      </div>
+      <div class="note"><b>שלבים:</b> 1) מזהים איזו צלע מבקשים. 2) בוחרים את הפונקציה (sin/cos/tan) שכוללת אותה ואת מה שיודעים. 3) פותרים משוואה פשוטה.</div>
+    </div>
+
+    <div class="card">
+      <h2>ערכים שכדאי לדעת בעל-פה <span class="tag">מועדפי הבגרות</span></h2>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;text-align:center;font-family:'Frank Ruhl Libre',serif">
+        <thead><tr style="background:var(--accent);color:#fff"><th style="padding:8px">זווית</th><th style="padding:8px">sin</th><th style="padding:8px">cos</th><th style="padding:8px">tan</th></tr></thead>
+        <tbody>
+          <tr style="background:var(--paper)"><td style="padding:8px;font-weight:800">0°</td><td>0</td><td>1</td><td>0</td></tr>
+          <tr><td style="padding:8px;font-weight:800">30°</td><td>1/2</td><td>√3/2</td><td>1/√3</td></tr>
+          <tr style="background:var(--paper)"><td style="padding:8px;font-weight:800">45°</td><td>√2/2</td><td>√2/2</td><td>1</td></tr>
+          <tr><td style="padding:8px;font-weight:800">60°</td><td>√3/2</td><td>1/2</td><td>√3</td></tr>
+          <tr style="background:var(--paper)"><td style="padding:8px;font-weight:800">90°</td><td>1</td><td>0</td><td>—</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> <b>הנגדית והסמוכה מתחלפות לפי הזווית!</b> אם משנים זווית — הצלעות "מחליפות תפקיד".<br><br>
+        <b>2.</b> <b>היתר תמיד הצלע הארוכה</b>, ותמיד מול הזווית הישרה. היא לא משתנה לפי הזווית.<br><br>
+        <b>3.</b> שימו לב למחשבון — לעבוד ב-<b>מצב DEG</b> (מעלות), לא ברדיאנים. אחרת תקבלו תשובות שגויות.
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE TRIANGLE -->
+  <section id="anim">
+    <div class="card">
+      <h2>המשולש החי 📐</h2>
+      <p>הזיזו את המחוון — תראו איך הצלעות והפונקציות משתנות עם הזווית.</p>
+      <div class="tri-wrap">
+        <svg class="tri-svg" id="triSvg" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tri-controls">
+          <div class="row"><span class="name">זווית θ</span><span class="val"><span id="angleVal">30</span>°</span></div>
+          <input type="range" id="angleSlider" min="10" max="80" step="1" value="30">
+        </div>
+        <div class="tri-info">
+          <div class="ti-card sin"><div class="l">sin θ</div><div class="v" id="sinV">0.500</div></div>
+          <div class="ti-card cos"><div class="l">cos θ</div><div class="v" id="cosV">0.866</div></div>
+          <div class="ti-card tan"><div class="l">tan θ</div><div class="v" id="tanV">0.577</div></div>
+        </div>
+        <div class="preset-row">
+          <button data-a="30">30°</button>
+          <button data-a="45">45°</button>
+          <button data-a="60">60°</button>
+          <button data-a="20">20°</button>
+          <button data-a="75">75°</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק הטריגונומטריה 🎮</h2>
+      <p style="text-align:center;font-size:.9rem;color:#5a6e7d;margin-bottom:14px">זיהוי צלעות, יחסים, וחישובים. אפשר להיעזר במחשבון.</p>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>בסיס לבגרות 3 יח"ל · טריגונומטריה במשולש ישר-זווית</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+/* ===== INTERACTIVE TRIANGLE ===== */
+const SVG=document.getElementById('triSvg');
+function drawTri(){
+  const deg=parseFloat(document.getElementById('angleSlider').value);
+  const rad=deg*Math.PI/180;
+  const hyp=10;
+  const opp=hyp*Math.sin(rad);
+  const adj=hyp*Math.cos(rad);
+  // scale to viewbox
+  const scale=24;
+  // triangle vertices: A (angle θ, bottom-left), B (right angle, bottom-right), C (top-right)
+  const Ax=50, Ay=270;
+  const Bx=Ax+adj*scale, By=Ay;
+  const Cx=Bx, Cy=Ay-opp*scale;
+  // draw
+  let svg='';
+  // fill
+  svg+='<polygon points="'+Ax+','+Ay+' '+Bx+','+By+' '+Cx+','+Cy+'" fill="rgba(29,110,158,.08)" stroke="var(--ink)" stroke-width="2"/>';
+  // right angle marker
+  const sq=12;
+  svg+='<rect x="'+(Bx-sq)+'" y="'+(By-sq)+'" width="'+sq+'" height="'+sq+'" fill="none" stroke="var(--ink)" stroke-width="1.5"/>';
+  // angle arc at A
+  const arcR=28;
+  const ex=Ax+arcR, ey=Ay;
+  const ax2=Ax+arcR*Math.cos(rad), ay2=Ay-arcR*Math.sin(rad);
+  svg+='<path d="M '+ex+' '+ey+' A '+arcR+' '+arcR+' 0 0 0 '+ax2.toFixed(1)+' '+ay2.toFixed(1)+'" fill="none" stroke="var(--accent)" stroke-width="2.5"/>';
+  // angle label
+  const labR=44;
+  const lx=Ax+labR*Math.cos(rad/2), ly=Ay-labR*Math.sin(rad/2);
+  svg+='<text x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" font-size="16" fill="var(--accent)" font-weight="800" font-family="Frank Ruhl Libre">θ='+deg+'°</text>';
+  // side labels with values
+  // adjacent (bottom)
+  svg+='<text x="'+((Ax+Bx)/2)+'" y="'+(Ay+22)+'" text-anchor="middle" font-size="13" fill="var(--adj)" font-weight="800" font-family="Frank Ruhl Libre">סמוכה ('+adj.toFixed(2)+')</text>';
+  // opposite (right)
+  svg+='<text x="'+(Bx+12)+'" y="'+((By+Cy)/2)+'" font-size="13" fill="var(--opp)" font-weight="800" font-family="Frank Ruhl Libre">נגדית ('+opp.toFixed(2)+')</text>';
+  // hypotenuse (diagonal)
+  const midX=(Ax+Cx)/2, midY=(Ay+Cy)/2;
+  // perpendicular offset
+  const dx=Cx-Ax, dy=Cy-Ay, L=Math.sqrt(dx*dx+dy*dy);
+  const ox=-dy/L*16, oy=dx/L*16;
+  svg+='<text x="'+(midX+ox).toFixed(1)+'" y="'+(midY+oy).toFixed(1)+'" text-anchor="middle" font-size="13" fill="var(--hyp)" font-weight="800" font-family="Frank Ruhl Libre" transform="rotate('+(-deg)+' '+(midX+ox).toFixed(1)+' '+(midY+oy).toFixed(1)+')">יתר ('+hyp+')</text>';
+  // vertex labels
+  svg+='<circle cx="'+Ax+'" cy="'+Ay+'" r="3" fill="var(--ink)"/>';
+  svg+='<circle cx="'+Bx+'" cy="'+By+'" r="3" fill="var(--ink)"/>';
+  svg+='<circle cx="'+Cx+'" cy="'+Cy+'" r="3" fill="var(--ink)"/>';
+  SVG.innerHTML=svg;
+  // update info
+  document.getElementById('angleVal').textContent=deg;
+  document.getElementById('sinV').textContent=Math.sin(rad).toFixed(3);
+  document.getElementById('cosV').textContent=Math.cos(rad).toFixed(3);
+  document.getElementById('tanV').textContent=Math.tan(rad).toFixed(3);
+}
+document.getElementById('angleSlider').addEventListener('input',drawTri);
+document.querySelectorAll('.preset-row button').forEach(b=>b.onclick=()=>{document.getElementById('angleSlider').value=b.dataset.a;drawTri();});
+drawTri();
+
+/* ===== GAME ===== */
+const POOL=[
+  {q:'במשולש ישר-זווית, sin θ = ?',correct:'נגדית/יתר',wrong:['סמוכה/יתר','נגדית/סמוכה','יתר/נגדית']},
+  {q:'במשולש ישר-זווית, cos θ = ?',correct:'סמוכה/יתר',wrong:['נגדית/יתר','סמוכה/נגדית','יתר/סמוכה']},
+  {q:'במשולש ישר-זווית, tan θ = ?',correct:'נגדית/סמוכה',wrong:['נגדית/יתר','סמוכה/יתר','יתר/נגדית']},
+  {q:'מהי הצלע הארוכה ביותר במשולש ישר-זווית?',correct:'היתר',wrong:['הנגדית','הסמוכה','אי אפשר לדעת']},
+  {q:'מול איזו זווית נמצא היתר?',correct:'הזווית הישרה',wrong:['הזווית החדה הקטנה','הזווית החדה הגדולה','כל זווית']},
+  {q:'sin 30° = ?',correct:'1/2',wrong:['√3/2','√2/2','1']},
+  {q:'cos 60° = ?',correct:'1/2',wrong:['√3/2','√2/2','√3']},
+  {q:'tan 45° = ?',correct:'1',wrong:['√2','√2/2','1/2']},
+  {q:'sin 90° = ?',correct:'1',wrong:['0','1/2','אינסוף']},
+  {q:'cos 0° = ?',correct:'1',wrong:['0','1/2','−1']},
+  {q:'sin 45° = ?',correct:'√2/2',wrong:['1/2','√3/2','1']},
+  {q:'tan 60° = ?',correct:'√3',wrong:['1/√3','1','√3/2']},
+  {q:'במשולש: יתר=10, sin θ = 0.6. מהי הצלע הנגדית?',correct:'6',wrong:['16','0.06','3']},
+  {q:'במשולש: יתר=20, θ=30°. מהי הצלע הנגדית?',correct:'10',wrong:['20','17.3','5']},
+  {q:'במשולש: סמוכה=3, נגדית=4. מהו tan θ?',correct:'4/3',wrong:['3/4','7','12']}
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;document.getElementById('turn').textContent='תורו של: '+name;}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  cur=POOL[Math.floor(Math.random()*POOL.length)];
+  document.getElementById('question').textContent=cur.q;
+  const opts=shuffle([cur.correct,...cur.wrong]);
+  const O=document.getElementById('opts');O.innerHTML='';
+  opts.forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.7?btns.find(x=>x.textContent===cur.correct):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,pick.textContent);},2000);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===cur.correct){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.correct;fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.correct).classList.add('right');fb.textContent='✗ התשובה: '+cur.correct;fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cur.correct){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.correct;}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.correct).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.correct;}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

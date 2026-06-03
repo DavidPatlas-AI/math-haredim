@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חיבור וחיסור שברים</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#3a2814;--paper:#f5efe6;--accent:#b5651d;--accent2:#2d6a4f;--gold:#c9a227;--line:#e2d8c8;--shadow:0 10px 30px rgba(58,40,20,.12)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(181,101,29,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:900px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"1/3 + 1/4";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:78px;font-weight:900;color:rgba(58,40,20,.05);top:30px;left:18px;direction:ltr}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.25rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#6b5944;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.92rem;font-weight:700;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 16px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:1.65rem;margin:16px 0;padding:16px;background:var(--paper);border-radius:12px;border:1.5px dashed var(--line);direction:ltr}
+  .note{background:rgba(181,101,29,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(45,106,79,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.08rem;direction:ltr;text-align:left}
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-top:14px}
+  .exercise{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;gap:8px;align-items:center;min-height:58px}
+  .num{font-weight:800;color:var(--accent);min-width:30px}
+  .math{font-family:'Frank Ruhl Libre',serif;font-size:1.08rem;direction:ltr;text-align:left;flex:1}
+  .answer{font-family:'Frank Ruhl Libre',serif;font-size:1.06rem;color:var(--accent2);direction:ltr;text-align:left;display:none;flex:1;font-weight:700}
+  .show-answers .math{display:none}.show-answers .answer{display:block}
+  .controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+  .ctrl{font-family:'Heebo';font-weight:700;font-size:.92rem;border:2px solid var(--accent);background:var(--accent);color:#fff;padding:8px 16px;border-radius:10px;cursor:pointer}
+  .ctrl.secondary{background:#fff;color:var(--accent)}
+  .topic-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+  .topic-tabs button{font-family:'Heebo';font-weight:700;border:1.5px solid var(--line);background:#fff;color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer}
+  .topic-tabs button.active{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+  .anim-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .anim-pick button{font-family:'Frank Ruhl Libre',serif;font-size:1.02rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;direction:ltr}
+  .anim-pick button.active{background:var(--ink);color:#fff}
+  .steps{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+  .step{font-family:'Frank Ruhl Libre',serif;font-size:1.32rem;direction:ltr;text-align:center;background:var(--paper);border-radius:12px;padding:14px;opacity:0;transform:translateY(8px);transition:.4s}
+  .step.show{opacity:1;transform:none}
+  .step .lbl{display:block;font-family:'Heebo';font-size:.8rem;color:#6b5944;margin-top:4px;direction:rtl}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#6b5944}.scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:900;direction:ltr;padding:22px;background:var(--paper);border-radius:14px;margin-bottom:16px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+  .opts button.wrong{background:#c0392b;color:#fff;border-color:#c0392b}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#9a8a72;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">פרק ה׳ · שברים</div>
+    <h1>חיבור וחיסור שברים</h1>
+    <div class="sub">מכנה משותף · שברים מספריים · שברים אלגבריים עם מונים מספריים</div>
+  </header>
+
+  <nav>
+    <button class="active" data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🎬 שלב-שלב</button>
+    <button data-t="practice">✍️ תרגול</button>
+    <button data-t="game">🎮 משחק</button>
+  </nav>
+
+  <section id="learn" class="show">
+    <div class="card">
+      <h2>חיבור וחיסור שברים <span class="tag">שני שלבים</span></h2>
+      <p>אם לכל השברים יש אותו מכנה - מחברים או מחסרים את המונים בלבד. אם המכנים שונים - קודם מביאים את כל השברים למכנה משותף.</p>
+      <div class="formula">1/5 + 2/5 + 3/5 = (1+2+3)/5 = 6/5 = 1 1/5</div>
+      <div class="note">שלב א: מרחיבים את כל השברים למכנה משותף. שלב ב: מחברים/מחסרים את המונים בלבד.</div>
+    </div>
+
+    <div class="card">
+      <h2>מכנה משותף <span class="tag">איך מוצאים?</span></h2>
+      <p>מחפשים מספר שמתחלק בכל המכנים. לפעמים מכפילים את המכנים זה בזה, ולפעמים אפשר למצוא מספר קטן יותר.</p>
+      <div class="examples">
+        <div>1/2 + 1/4 = 2/4 + 1/4 = 3/4</div>
+        <div>1/3 + 1/5 = 5/15 + 3/15 = 8/15</div>
+        <div>2/3 − 1/12 + 1/4 = 8/12 − 1/12 + 3/12 = 10/12 = 5/6</div>
+      </div>
+      <div class="warn">חשוב לרשום את השברים לאחר הרחבה בסוגריים אם המונה הוא ביטוי אלגברי.</div>
+    </div>
+
+    <div class="card">
+      <h2>שברים אלגבריים <span class="tag">מונים עם אותיות</span></h2>
+      <p>כאשר המונה כולל x או ביטוי אלגברי, עדיין מביאים למכנה משותף, ואז כותבים את כל המונים על קו שבר אחד ומכנסים איברים דומים.</p>
+      <div class="formula">(2x+3)/2 − (x−2)/6 − (x+2)/3 = (3(2x+3) − (x−2) − 2(x+2))/6</div>
+      <div class="note">אחרי הכינוס מקבלים: (3x+7)/6</div>
+    </div>
+  </section>
+
+  <section id="anim">
+    <div class="card">
+      <h2>פתרון שלב-אחר-שלב 🎬</h2>
+      <p>בחרי דוגמה ולחצי הפעל.</p>
+      <div class="anim-pick" id="animPick"></div>
+      <div class="steps" id="steps"></div>
+      <div class="controls"><button class="ctrl" id="playBtn">▶ הפעל</button></div>
+    </div>
+  </section>
+
+  <section id="practice">
+    <div class="card" id="practiceCard">
+      <h2>תרגול מהתמונות <span class="tag">לפי נושאים</span></h2>
+      <div class="topic-tabs">
+        <button class="active" data-filter="all">הכול</button>
+        <button data-filter="simple">שברים מספריים</button>
+        <button data-filter="algebra">שברים אלגבריים</button>
+      </div>
+      <div class="controls"><button class="ctrl" id="showAnswers">הצג תשובות</button><button class="ctrl secondary" id="hideAnswers">הסתר תשובות</button></div>
+      <div class="exercise-grid" id="exerciseList"></div>
+    </div>
+  </section>
+
+  <section id="game">
+    <div class="card">
+      <h2>משחק חיבור וחיסור שברים 🎮</h2>
+      <div class="scoreboard"><div class="box"><div class="who">ניקוד</div><div class="pts" id="score">0</div></div><div class="box"><div class="who">שאלה</div><div class="pts" id="count">1</div></div></div>
+      <div class="turn-banner">בחרי את התוצאה הנכונה</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>על פי הספר: שלמה אבידן - מכינה טכנולוגית · יחידה 1 · טכניקה אלגברית</footer>
+</div>
+
+<script>
+const EX = [
+  [1,'1/3 + 1/4','7/12','simple'],
+  [2,'2/5 + 1/2 + 1/6','1 1/15','simple'],
+  [3,'3/2 + 1/5 + 1/4','1 19/20','simple'],
+  [4,'1/3 + 3/5 − 3/10','19/30','simple'],
+  [5,'1/6 + 1/2 + 1/3 − 1/4','3/4','simple'],
+  [6,'2/5 − 3/10 + 1/15','1/6','simple'],
+  [7,'2/3 + 3/5 − 4/15 + 1/10','1 1/10','simple'],
+  [8,'2 − 7/10 − 1/2 − 1/3','7/15','simple'],
+  [9,'1 1/7 − 18/35','22/35','simple'],
+  [10,'3/4 − 1/6 + 1/2 − 1/3','3/4','simple'],
+  [11,'x/5 + 3x/10','x/2','algebra'],
+  [12,'a/4 + a/3 + a/6','3a/4','algebra'],
+  [13,'y/5 + y²/7','(7y + 5y²)/35','algebra'],
+  [14,'a/3 + a²/9 − a/4','(3a + 4a²)/36','algebra'],
+  [15,'(x+1)/2 − (2x−3)/5 + (x+3)/3','(13x + 63)/30','algebra'],
+  [16,'(2x−1)/5 − (x−3)/15 + (x−1)/2','(25x − 15)/30 = (5x − 3)/6','algebra']
+];
+
+function makeExercise([num,q,a,type]){const d=document.createElement('div');d.className='exercise';d.dataset.type=type;d.innerHTML=`<span class="num">${num}.</span><span class="math">${q} =</span><span class="answer">${a}</span>`;return d;}
+function render(filter='all'){const box=document.getElementById('exerciseList');box.innerHTML='';EX.filter(e=>filter==='all'||e[3]===filter).forEach(e=>box.appendChild(makeExercise(e)));}
+render();
+document.getElementById('showAnswers').onclick=()=>document.getElementById('practiceCard').classList.add('show-answers');
+document.getElementById('hideAnswers').onclick=()=>document.getElementById('practiceCard').classList.remove('show-answers');
+document.querySelectorAll('.topic-tabs button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.topic-tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(b.dataset.filter);};});
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+const SOL=[
+  {expr:'1/2 + 1/4',steps:[{t:'1/2 + 1/4',l:'מחפשים מכנה משותף: 4'},{t:'2/4 + 1/4',l:'מרחיבים את 1/2 פי 2'},{t:'3/4',l:'מחברים מונים בלבד ✓'}]},
+  {expr:'1/3 + 1/5',steps:[{t:'1/3 + 1/5',l:'מכנה משותף: 15'},{t:'5/15 + 3/15',l:'מרחיבים את שני השברים'},{t:'8/15',l:'מחברים מונים ✓'}]},
+  {expr:'2/3 − 1/12 + 1/4',steps:[{t:'2/3 − 1/12 + 1/4',l:'מכנה משותף: 12'},{t:'8/12 − 1/12 + 3/12',l:'מרחיבים לפי הצורך'},{t:'10/12 = 5/6',l:'מחברים ומצמצמים ✓'}]},
+  {expr:'x/5 + 3x/10',steps:[{t:'x/5 + 3x/10',l:'מכנה משותף: 10'},{t:'2x/10 + 3x/10',l:'מרחיבים את השבר הראשון פי 2'},{t:'5x/10 = x/2',l:'מחברים ומצמצמים ✓'}]},
+  {expr:'(x+1)/2 − (2x−3)/5 + (x+3)/3',steps:[{t:'(x+1)/2 − (2x−3)/5 + (x+3)/3',l:'מכנה משותף: 30'},{t:'15(x+1) − 6(2x−3) + 10(x+3)',l:'מרחיבים ורושמים מונים עם סוגריים'},{t:'13x + 63',l:'כינוס מונים'},{t:'(13x + 63)/30',l:'התוצאה ✓'}]}
+];
+let curSol=0;const pick=document.getElementById('animPick');
+SOL.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.expr;b.onclick=()=>{curSol=i;mark();document.getElementById('steps').innerHTML='';};pick.appendChild(b);});
+function mark(){[...pick.children].forEach((b,i)=>b.classList.toggle('active',i===curSol));}mark();
+document.getElementById('playBtn').onclick=()=>{const w=document.getElementById('steps');w.innerHTML='';SOL[curSol].steps.forEach((st,i)=>{const d=document.createElement('div');d.className='step';d.innerHTML=st.t+'<span class="lbl">'+st.l+'</span>';w.appendChild(d);setTimeout(()=>d.classList.add('show'),i*900+150);});};
+
+let score=0,qNum=1,current=null;
+function wrongAnswers(ans){return EX.map(x=>x[2]).filter(x=>x!==ans).sort(()=>Math.random()-.5).slice(0,3)}
+function shuffle(a){return a.sort(()=>Math.random()-.5)}
+function newQ(){document.getElementById('feedback').textContent='';document.getElementById('nextBtn').style.display='none';const item=EX[Math.floor(Math.random()*EX.length)];current={expr:item[1],ans:item[2]};document.getElementById('question').textContent=current.expr+' =';document.getElementById('count').textContent=qNum;const opts=shuffle([current.ans,...wrongAnswers(current.ans)].slice(0,4));const box=document.getElementById('opts');box.innerHTML='';box.style.pointerEvents='auto';opts.forEach(o=>{const b=document.createElement('button');b.textContent=o;b.onclick=()=>answer(b,o);box.appendChild(b);});}
+function answer(btn,val){const box=document.getElementById('opts');box.style.pointerEvents='none';if(val===current.ans){btn.classList.add('right');score++;document.getElementById('score').textContent=score;document.getElementById('feedback').textContent='✓ נכון!';document.getElementById('feedback').style.color='var(--accent2)';}else{btn.classList.add('wrong');[...box.children].find(x=>x.textContent===current.ans).classList.add('right');document.getElementById('feedback').textContent='✗ התשובה הנכונה: '+current.ans;document.getElementById('feedback').style.color='#c0392b';}qNum++;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

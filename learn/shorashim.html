@@ -1,0 +1,613 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שורשים — יחידה 1, פרק א'</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{
+    --ink:#16302b;--paper:#eef2ec;--accent:#2d6a4f;--accent2:#b5651d;
+    --gold:#c9a227;--line:#cdd8cc;--shadow:0 10px 30px rgba(22,48,43,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(201,162,39,.08), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(181,101,29,.08), transparent 40%),
+      var(--paper);
+  }
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"√";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:200px;font-weight:900;color:rgba(22,48,43,.05);top:-50px;left:0;}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.8rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#5c6b5a;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}
+  section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.6rem;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:2rem;margin:18px 0;padding:18px;background:var(--paper);border-radius:12px;border:1.5px dashed var(--line);direction:ltr}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.25rem;direction:ltr;text-align:left}
+  .note{background:rgba(45,106,79,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  /* animation */
+  .anim-stage{text-align:center;padding:10px}
+  .root-vis{font-family:'Frank Ruhl Libre',serif;font-size:2.6rem;direction:ltr;min-height:80px;display:flex;align-items:center;justify-content:center;gap:14px}
+  .root-q{opacity:1}
+  .arrow{font-size:1.6rem;color:#999;opacity:0;transition:.4s}
+  .arrow.show{opacity:1}
+  .root-a{color:var(--accent);font-weight:900;opacity:0;transform:scale(.4);transition:.4s}
+  .root-a.show{opacity:1;transform:scale(1)}
+  .check{margin-top:16px;font-size:1.4rem;font-family:'Frank Ruhl Libre',serif;direction:ltr;opacity:0;transition:.5s;color:var(--accent2)}
+  .check.show{opacity:1}
+  .anim-controls{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+  .ctrl{font-family:'Heebo';font-weight:600;font-size:.9rem;border:2px solid var(--ink);background:#fff;padding:7px 14px;border-radius:10px;cursor:pointer;transition:.15s}
+  .ctrl:hover{background:var(--ink);color:#fff}
+  .ctrl.play{background:var(--accent);color:#fff;border-color:var(--accent)}
+  /* game */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}
+  .scoreboard .who{font-size:.85rem;color:#5c6b5a}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:3rem;font-weight:900;direction:ltr;padding:24px;background:var(--paper);border-radius:14px;margin-bottom:16px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .opts button.wrong{background:#c0392b;color:#fff;border-color:#c0392b}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#8a9588;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">יחידה 1 · טכניקה אלגברית · פרק א'</div>
+    <h1>שׁוֹרָשִׁים</h1>
+    <div class="sub">פעולת השורש היא הפעולה ההפוכה לחזקה</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🎬 אנימציה</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>מה זה שורש? <span class="tag">הגדרה</span></h2>
+      <p>פעולת השורש <b>הפוכה</b> לפעולת החזקה. למשל: אם 2³ = 8, אזי השורש השלישי של 8 שווה 2.</p>
+      <div class="formula">2³ = 8 &nbsp;⟶&nbsp; ∛8 = 2</div>
+      <p>השורש שואל: <b>איזה מספר העלינו בחזקה כדי לקבל את המספר שמתחת לסימן השורש?</b></p>
+      <div class="note">
+        <b>הסבר הסימון:</b> בדוגמה ⁴√16 = 2 —<br>
+        • <b>4</b> הוא המציין (הדרגה) — באיזו חזקה<br>
+        • <b>16</b> הוא המספר שממנו מוציאים את השורש<br>
+        • <b>2</b> היא התשובה
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>דוגמאות</h2>
+      <div class="examples">
+        <div>∛8 = 2 &nbsp; כי &nbsp;2³ = 8</div>
+        <div>⁴√81 = 3 &nbsp; כי &nbsp;3⁴ = 81</div>
+        <div>√16 = 4 &nbsp; כי &nbsp;4² = 16</div>
+        <div>√25 = 5 &nbsp; כי &nbsp;5² = 25</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שורש ריבועי (שורש שני) <span class="tag">חשוב</span></h2>
+      <p>כשלא מופיע שום מספר על סימן השורש — הכוונה היא <b>לשורש השני (ריבועי)</b>. כלומר הסימן √ לבדו פירושו ²√.</p>
+      <div class="examples">
+        <div>√16 = 4 &nbsp; (במקום ²√16)</div>
+        <div>√25 = 5</div>
+        <div>√100 = 10</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANIMATION -->
+  <section id="anim">
+    <div class="card">
+      <h2>השורש כפעולה הפוכה 🎬</h2>
+      <p>בחרו תרגיל שורש, לחצו <b>הפעל</b> — ותראו איך מוצאים את התשובה ובודקים אותה בעזרת חזקה.</p>
+      <div class="anim-controls">
+        <button class="ctrl ex" data-r="2" data-n="16">√16</button>
+        <button class="ctrl ex" data-r="2" data-n="81">√81</button>
+        <button class="ctrl ex" data-r="3" data-n="27">∛27</button>
+        <button class="ctrl ex" data-r="3" data-n="8">∛8</button>
+        <button class="ctrl ex" data-r="4" data-n="16">⁴√16</button>
+        <button class="ctrl ex" data-r="5" data-n="32">⁵√32</button>
+      </div>
+      <div class="anim-stage">
+        <div class="root-vis">
+          <span class="root-q" id="rootQ">√16</span>
+          <span class="arrow" id="rootArrow">→</span>
+          <span class="root-a" id="rootA">?</span>
+        </div>
+        <div class="check" id="rootCheck"></div>
+      </div>
+      <div class="anim-controls">
+        <button class="ctrl play" id="playBtn">▶ הפעל</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק השורשים 🎮</h2>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 — טכניקה אלגברית · שורשים</footer>
+</div>
+
+<script>
+/* TABS */
+document.querySelectorAll('nav button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.t).classList.add('show');
+  };
+});
+
+/* ROOT SYMBOL HELPER */
+function rootSym(r,n){
+  const sup={2:'',3:'∛',4:'⁴√',5:'⁵√',6:'⁶√'};
+  if(r===2) return '√'+n;
+  if(r===3) return '∛'+n;
+  return (r===4?'⁴√':r===5?'⁵√':r===6?'⁶√':r+'√')+n;
+}
+
+/* ANIMATION */
+let curR=2, curN=16;
+function markEx(){
+  document.querySelectorAll('.ex').forEach(x=>{
+    const on = (+x.dataset.r===curR && +x.dataset.n===curN);
+    x.style.background=on?'var(--ink)':'#fff';
+    x.style.color=on?'#fff':'var(--ink)';
+  });
+}
+document.querySelectorAll('.ex').forEach(b=>b.onclick=()=>{
+  curR=+b.dataset.r; curN=+b.dataset.n;
+  document.getElementById('rootQ').textContent=rootSym(curR,curN);
+  document.getElementById('rootArrow').classList.remove('show');
+  document.getElementById('rootA').classList.remove('show');
+  document.getElementById('rootA').textContent='?';
+  document.getElementById('rootCheck').classList.remove('show');
+  markEx();
+});
+markEx();
+
+document.getElementById('playBtn').onclick=()=>{
+  const ans=Math.round(Math.pow(curN,1/curR));
+  const A=document.getElementById('rootA');
+  const arrow=document.getElementById('rootArrow');
+  const chk=document.getElementById('rootCheck');
+  arrow.classList.remove('show');A.classList.remove('show');chk.classList.remove('show');
+  A.textContent='?';
+  setTimeout(()=>arrow.classList.add('show'),300);
+  setTimeout(()=>{A.textContent=ans;A.classList.add('show');},700);
+  setTimeout(()=>{
+    chk.innerHTML='בדיקה: '+ans+'<sup>'+curR+'</sup> = '+curN+' ✓';
+    chk.classList.add('show');
+  },2000);
+};
+
+/* GAME */
+const POOL=[
+  [2,9,3],[2,36,6],[2,4,2],[2,49,7],[2,25,5],[2,1,1],[2,0,0],
+  [2,121,11],[2,144,12],[2,196,14],[2,225,15],
+  [3,8,2],[3,27,3],[3,1000,10],[3,125,5],
+  [4,81,3],[4,16,2],[4,256,4],
+  [5,243,3],[5,32,2],[5,100000,10]
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+
+document.querySelectorAll('.mode-pick button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');mode=b.dataset.m;
+    document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';
+    document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';
+    s1=s2=0;turn=1;updateScore();newQ();
+  };
+});
+function updateScore(){
+  document.getElementById('s1').textContent=s1;
+  document.getElementById('s2').textContent=s2;
+  const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;
+  document.getElementById('turn').textContent='תורו של: '+name;
+}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  const [r,n,ans]=POOL[Math.floor(Math.random()*POOL.length)];
+  cur={r,n,ans};
+  document.getElementById('question').textContent=rootSym(r,n);
+  const opts=new Set([ans]);
+  while(opts.size<4){
+    let d=ans+Math.floor(Math.random()*7-3);
+    if(d>=0 && d!==ans) opts.add(d); else opts.add(ans+opts.size+1);
+  }
+  const O=document.getElementById('opts');O.innerHTML='';
+  shuffle([...opts]).forEach(v=>{
+    const btn=document.createElement('button');
+    btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);
+  });
+  updateScore();
+  
+            <!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שורשים — יחידה 1, פרק א'</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{
+    --ink:#16302b;--paper:#eef2ec;--accent:#2d6a4f;--accent2:#b5651d;
+    --gold:#c9a227;--line:#cdd8cc;--shadow:0 10px 30px rgba(22,48,43,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(201,162,39,.08), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(181,101,29,.08), transparent 40%),
+      var(--paper);
+  }
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"√";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:200px;font-weight:900;color:rgba(22,48,43,.05);top:-50px;left:0;}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.8rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#5c6b5a;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}
+  section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.6rem;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:2rem;margin:18px 0;padding:18px;background:var(--paper);border-radius:12px;border:1.5px dashed var(--line);direction:ltr}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.25rem;direction:ltr;text-align:left}
+  .note{background:rgba(45,106,79,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  /* animation */
+  .anim-stage{text-align:center;padding:10px}
+  .root-vis{font-family:'Frank Ruhl Libre',serif;font-size:2.6rem;direction:ltr;min-height:80px;display:flex;align-items:center;justify-content:center;gap:14px}
+  .root-q{opacity:1}
+  .arrow{font-size:1.6rem;color:#999;opacity:0;transition:.4s}
+  .arrow.show{opacity:1}
+  .root-a{color:var(--accent);font-weight:900;opacity:0;transform:scale(.4);transition:.4s}
+  .root-a.show{opacity:1;transform:scale(1)}
+  .check{margin-top:16px;font-size:1.4rem;font-family:'Frank Ruhl Libre',serif;direction:ltr;opacity:0;transition:.5s;color:var(--accent2)}
+  .check.show{opacity:1}
+  .anim-controls{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+  .ctrl{font-family:'Heebo';font-weight:600;font-size:.9rem;border:2px solid var(--ink);background:#fff;padding:7px 14px;border-radius:10px;cursor:pointer;transition:.15s}
+  .ctrl:hover{background:var(--ink);color:#fff}
+  .ctrl.play{background:var(--accent);color:#fff;border-color:var(--accent)}
+  /* game */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}
+  .scoreboard .who{font-size:.85rem;color:#5c6b5a}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:3rem;font-weight:900;direction:ltr;padding:24px;background:var(--paper);border-radius:14px;margin-bottom:16px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .opts button.wrong{background:#c0392b;color:#fff;border-color:#c0392b}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#8a9588;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">יחידה 1 · טכניקה אלגברית · פרק א'</div>
+    <h1>שׁוֹרָשִׁים</h1>
+    <div class="sub">פעולת השורש היא הפעולה ההפוכה לחזקה</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🎬 אנימציה</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>מה זה שורש? <span class="tag">הגדרה</span></h2>
+      <p>פעולת השורש <b>הפוכה</b> לפעולת החזקה. למשל: אם 2³ = 8, אזי השורש השלישי של 8 שווה 2.</p>
+      <div class="formula">2³ = 8 &nbsp;⟶&nbsp; ∛8 = 2</div>
+      <p>השורש שואל: <b>איזה מספר העלינו בחזקה כדי לקבל את המספר שמתחת לסימן השורש?</b></p>
+      <div class="note">
+        <b>הסבר הסימון:</b> בדוגמה ⁴√16 = 2 —<br>
+        • <b>4</b> הוא המציין (הדרגה) — באיזו חזקה<br>
+        • <b>16</b> הוא המספר שממנו מוציאים את השורש<br>
+        • <b>2</b> היא התשובה
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>דוגמאות</h2>
+      <div class="examples">
+        <div>∛8 = 2 &nbsp; כי &nbsp;2³ = 8</div>
+        <div>⁴√81 = 3 &nbsp; כי &nbsp;3⁴ = 81</div>
+        <div>√16 = 4 &nbsp; כי &nbsp;4² = 16</div>
+        <div>√25 = 5 &nbsp; כי &nbsp;5² = 25</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שורש ריבועי (שורש שני) <span class="tag">חשוב</span></h2>
+      <p>כשלא מופיע שום מספר על סימן השורש — הכוונה היא <b>לשורש השני (ריבועי)</b>. כלומר הסימן √ לבדו פירושו ²√.</p>
+      <div class="examples">
+        <div>√16 = 4 &nbsp; (במקום ²√16)</div>
+        <div>√25 = 5</div>
+        <div>√100 = 10</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANIMATION -->
+  <section id="anim">
+    <div class="card">
+      <h2>השורש כפעולה הפוכה 🎬</h2>
+      <p>בחרו תרגיל שורש, לחצו <b>הפעל</b> — ותראו איך מוצאים את התשובה ובודקים אותה בעזרת חזקה.</p>
+      <div class="anim-controls">
+        <button class="ctrl ex" data-r="2" data-n="16">√16</button>
+        <button class="ctrl ex" data-r="2" data-n="81">√81</button>
+        <button class="ctrl ex" data-r="3" data-n="27">∛27</button>
+        <button class="ctrl ex" data-r="3" data-n="8">∛8</button>
+        <button class="ctrl ex" data-r="4" data-n="16">⁴√16</button>
+        <button class="ctrl ex" data-r="5" data-n="32">⁵√32</button>
+      </div>
+      <div class="anim-stage">
+        <div class="root-vis">
+          <span class="root-q" id="rootQ">√16</span>
+          <span class="arrow" id="rootArrow">→</span>
+          <span class="root-a" id="rootA">?</span>
+        </div>
+        <div class="check" id="rootCheck"></div>
+      </div>
+      <div class="anim-controls">
+        <button class="ctrl play" id="playBtn">▶ הפעל</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק השורשים 🎮</h2>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 — טכניקה אלגברית · שורשים</footer>
+</div>
+
+<script>
+/* TABS */
+document.querySelectorAll('nav button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.t).classList.add('show');
+  };
+});
+
+/* ROOT SYMBOL HELPER */
+function rootSym(r,n){
+  const sup={2:'',3:'∛',4:'⁴√',5:'⁵√',6:'⁶√'};
+  if(r===2) return '√'+n;
+  if(r===3) return '∛'+n;
+  return (r===4?'⁴√':r===5?'⁵√':r===6?'⁶√':r+'√')+n;
+}
+
+/* ANIMATION */
+let curR=2, curN=16;
+function markEx(){
+  document.querySelectorAll('.ex').forEach(x=>{
+    const on = (+x.dataset.r===curR && +x.dataset.n===curN);
+    x.style.background=on?'var(--ink)':'#fff';
+    x.style.color=on?'#fff':'var(--ink)';
+  });
+}
+document.querySelectorAll('.ex').forEach(b=>b.onclick=()=>{
+  curR=+b.dataset.r; curN=+b.dataset.n;
+  document.getElementById('rootQ').textContent=rootSym(curR,curN);
+  document.getElementById('rootArrow').classList.remove('show');
+  document.getElementById('rootA').classList.remove('show');
+  document.getElementById('rootA').textContent='?';
+  document.getElementById('rootCheck').classList.remove('show');
+  markEx();
+});
+markEx();
+
+document.getElementById('playBtn').onclick=()=>{
+  const ans=Math.round(Math.pow(curN,1/curR));
+  const A=document.getElementById('rootA');
+  const arrow=document.getElementById('rootArrow');
+  const chk=document.getElementById('rootCheck');
+  arrow.classList.remove('show');A.classList.remove('show');chk.classList.remove('show');
+  A.textContent='?';
+  setTimeout(()=>arrow.classList.add('show'),300);
+  setTimeout(()=>{A.textContent=ans;A.classList.add('show');},700);
+  setTimeout(()=>{
+    chk.innerHTML='בדיקה: '+ans+'<sup>'+curR+'</sup> = '+curN+' ✓';
+    chk.classList.add('show');
+  },2000);
+};
+
+/* GAME */
+const POOL=[
+  [2,9,3],[2,36,6],[2,4,2],[2,49,7],[2,25,5],[2,1,1],[2,0,0],
+  [2,121,11],[2,144,12],[2,196,14],[2,225,15],
+  [3,8,2],[3,27,3],[3,1000,10],[3,125,5],
+  [4,81,3],[4,16,2],[4,256,4],
+  [5,243,3],[5,32,2],[5,100000,10]
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+
+document.querySelectorAll('.mode-pick button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');mode=b.dataset.m;
+    document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';
+    document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';
+    s1=s2=0;turn=1;updateScore();newQ();
+  };
+});
+function updateScore(){
+  document.getElementById('s1').textContent=s1;
+  document.getElementById('s2').textContent=s2;
+  const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;
+  document.getElementById('turn').textContent='תורו של: '+name;
+}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  const [r,n,ans]=POOL[Math.floor(Math.random()*POOL.length)];
+  cur={r,n,ans};
+  document.getElementById('question').textContent=rootSym(r,n);
+  const opts=new Set([ans]);
+  while(opts.size<4){
+    let d=ans+Math.floor(Math.random()*7-3);
+    if(d>=0 && d!==ans) opts.add(d); else opts.add(ans+opts.size+1);
+  }
+  const O=document.getElementById('opts');O.innerHTML='';
+  shuffle([...opts]).forEach(v=>{
+    const btn=document.createElement('button');
+    btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);
+  });
+  updateScore();
+  if(mode==='cpu'&&turn===2){
+    O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';
+    setTimeout(()=>{
+      const btns=[...O.children];
+      let pick=Math.random()<0.75?btns.find(x=>+x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];
+      cpuAnswer(pick,+pick.textContent);
+    },2000);
+  } else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){
+  lock();const fb=document.getElementById('feedback');
+  if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;
+    fb.textContent='✓ נכון! '+rootSym(cur.r,cur.n)+' = '+cur.ans;fb.style.color='var(--accent)';}
+  else{btn.classList.add('wrong');
+    [...document.getElementById('opts').children].find(x=>+x.textContent===cur.ans).classList.add('right');
+    fb.textContent='✗ לא מדויק. התשובה: '+cur.ans;fb.style.color='#c0392b';}
+  endTurn();
+}
+function cpuAnswer(btn,v){
+  const fb=document.getElementById('feedback');
+  if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}
+  else{btn.classList.add('wrong');
+    [...document.getElementById('opts').children].find(x=>+x.textContent===cur.ans).classList.add('right');
+    fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}
+  fb.style.color='var(--ink)';endTurn();
+}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;
+document.getElementById('n2').textContent='מחשב';
+newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>
+.Groups[1].Value + $indicator
+        
+    setTimeout(()=>{
+      const btns=[...O.children];
+      let pick=Math.random()<0.75?btns.find(x=>+x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];
+      cpuAnswer(pick,+pick.textContent);
+    },2000);
+  } else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){
+  lock();const fb=document.getElementById('feedback');
+  if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;
+    fb.textContent='✓ נכון! '+rootSym(cur.r,cur.n)+' = '+cur.ans;fb.style.color='var(--accent)';}
+  else{btn.classList.add('wrong');
+    [...document.getElementById('opts').children].find(x=>+x.textContent===cur.ans).classList.add('right');
+    fb.textContent='✗ לא מדויק. התשובה: '+cur.ans;fb.style.color='#c0392b';}
+  endTurn();
+}
+function cpuAnswer(btn,v){
+  const fb=document.getElementById('feedback');
+  if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}
+  else{btn.classList.add('wrong');
+    [...document.getElementById('opts').children].find(x=>+x.textContent===cur.ans).classList.add('right');
+    fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}
+  fb.style.color='var(--ink)';endTurn();
+}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;
+document.getElementById('n2').textContent='מחשב';
+newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

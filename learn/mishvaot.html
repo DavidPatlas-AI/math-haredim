@@ -1,0 +1,295 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>משוואות ממעלה ראשונה</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#1a3a52;--paper:#e8eff5;--accent:#1f6091;--accent2:#c0392b;--gold:#c9a227;--line:#c9d6e1;--shadow:0 10px 30px rgba(26,58,82,.12);--pos:#2d6a4f;--neg:#c0392b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(31,96,145,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"x=?";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:140px;font-weight:900;color:rgba(26,58,82,.05);top:0;left:20px}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.3rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#566c80;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .note{background:rgba(31,96,145,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .gold-box{background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:12px;padding:16px;margin-top:14px}
+  .gold-box .title{font-weight:800;color:#8a6f0e;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:1.7rem;margin:14px 0;padding:14px;background:var(--paper);border-radius:12px;direction:ltr}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;direction:ltr;text-align:left}
+  .steps-howto{display:grid;gap:10px;margin:14px 0}
+  .step-row{display:flex;gap:12px;align-items:flex-start;background:var(--paper);border-radius:10px;padding:10px 14px}
+  .step-row .n{background:var(--accent);color:#fff;font-family:'Frank Ruhl Libre',serif;font-weight:900;width:30px;height:30px;line-height:30px;text-align:center;border-radius:50%;flex-shrink:0;font-size:.95rem}
+
+  /* BALANCE ANIMATION */
+  .anim-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .anim-pick button{font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:8px 16px;border-radius:10px;cursor:pointer;direction:ltr}
+  .anim-pick button.active{background:var(--ink);color:#fff}
+  .balance-wrap{margin:18px 0;padding:14px;background:var(--paper);border-radius:14px}
+  .balance{display:flex;justify-content:space-around;align-items:flex-end;min-height:130px;position:relative}
+  .balance::before{content:"";position:absolute;bottom:32px;left:10%;right:10%;height:4px;background:var(--ink);border-radius:2px;transition:transform .5s}
+  .balance::after{content:"";position:absolute;bottom:0;left:50%;width:40px;height:32px;background:var(--ink);transform:translateX(-50%);clip-path:polygon(20% 100%,80% 100%,100% 0,0 0)}
+  .pan{position:relative;width:42%;display:flex;align-items:flex-end;justify-content:center;gap:4px;flex-wrap:wrap;padding:8px;background:#fff;border:2px solid var(--ink);border-radius:0 0 50px 50px;min-height:78px;z-index:2;transition:.5s}
+  .item{display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;border-radius:8px;font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:1.15rem;transition:.4s}
+  .item.x{background:var(--accent);color:#fff}
+  .item.num{background:var(--gold);color:#fff}
+  .item.fade{opacity:0;transform:scale(.2)}
+  .step-line{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:1.6rem;font-weight:900;direction:ltr;padding:10px;background:#fff;border-radius:10px;margin-top:10px;border:2px dashed var(--line)}
+  .step-label{text-align:center;color:var(--accent);font-weight:700;font-size:.9rem;margin-top:8px;min-height:20px}
+  .anim-controls{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+  .ctrl{font-family:'Heebo';font-weight:600;font-size:.9rem;border:2px solid var(--ink);background:#fff;padding:8px 16px;border-radius:10px;cursor:pointer}
+  .ctrl.play{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .ctrl:disabled{opacity:.4;cursor:not-allowed}
+
+  /* game */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#566c80}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900;direction:ltr;padding:24px;background:var(--paper);border-radius:14px;margin-bottom:16px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--pos);color:#fff;border-color:var(--pos)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#7a8a99;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">3 יחידות · בגרות · הבסיס של הכל</div>
+    <h1>משוואות ממעלה ראשונה</h1>
+    <div class="sub">איך מוצאים את x — שיטת המאזניים</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">⚖️ מאזניים</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>מה זו משוואה? <span class="tag">בסיס</span></h2>
+      <p>משוואה היא <b>שוויון</b> בין שני ביטויים, עם נעלם (בדרך כלל x). המטרה: למצוא את ערך ה-x שגורם לשוויון להתקיים.</p>
+      <div class="formula">2x + 5 = 13 &nbsp;⟶&nbsp; x = 4</div>
+      <p>בדיקה: 2·4 + 5 = 8 + 5 = 13 ✓</p>
+    </div>
+
+    <div class="card">
+      <h2>שיטת המאזניים <span class="tag">העיקרון</span></h2>
+      <p>חישבו על המשוואה כעל <b>מאזניים</b> במצב שיווי משקל. הצד השמאלי שווה לימני.</p>
+      <div class="gold-box">
+        <div class="title">💡 הכלל המרכזי</div>
+        מה שעושים לצד אחד — חייבים לעשות גם לצד השני, כדי שהמאזניים יישארו בשיווי משקל.
+      </div>
+      <p style="margin-top:14px">אפשר: לחבר/לחסר אותו מספר משני הצדדים, או להכפיל/לחלק את שני הצדדים באותו מספר (שאינו אפס).</p>
+    </div>
+
+    <div class="card">
+      <h2>הצעדים לפתרון <span class="tag">תהליך</span></h2>
+      <div class="steps-howto">
+        <div class="step-row"><div class="n">1</div><div><b>אם יש סוגריים</b> — פותחים אותם.</div></div>
+        <div class="step-row"><div class="n">2</div><div><b>אם יש שברים</b> — מכפילים במכנה משותף.</div></div>
+        <div class="step-row"><div class="n">3</div><div><b>מעבירים</b> את כל ה-x לצד אחד והמספרים לצד השני (כשמעבירים אגף — מחליפים סימן).</div></div>
+        <div class="step-row"><div class="n">4</div><div><b>מכנסים</b> איברים דומים בכל צד.</div></div>
+        <div class="step-row"><div class="n">5</div><div><b>מחלקים</b> את שני הצדדים במקדם של x — וקיבלנו את התשובה.</div></div>
+        <div class="step-row"><div class="n">6</div><div><b>בודקים</b> ע"י הצבה במשוואה המקורית.</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>דוגמה מלאה</h2>
+      <p>פתרו: <b style="direction:ltr;display:inline-block">3x + 7 = x + 15</b></p>
+      <div class="examples">
+        <div>3x + 7 = x + 15 &nbsp;|−x משני הצדדים</div>
+        <div>2x + 7 = 15 &nbsp;|−7 משני הצדדים</div>
+        <div>2x = 8 &nbsp;|:2 בשני הצדדים</div>
+        <div>x = 4 ✓</div>
+      </div>
+      <div class="note"><b>בדיקה:</b> 3·4+7 = 19 &nbsp;|&nbsp; 4+15 = 19 ✓ מצוין!</div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> כשמעבירים אגף — <b>מחליפים סימן!</b> אם 2x + 7 = 15, אז 2x = 15−7 (לא +7).<br><br>
+        <b>2.</b> כשמכפילים במספר — <b>כופלים את כל הצד, לא רק חלק.</b> אם 2(x+3) = 10, פתחו לפני שחילקתם.<br><br>
+        <b>3.</b> מינוס לפני סוגריים — <b>הופך את כל הסימנים</b>: −(x−5) = −x+5
+      </div>
+    </div>
+  </section>
+
+  <!-- BALANCE ANIMATION -->
+  <section id="anim">
+    <div class="card">
+      <h2>ראו את שיווי המשקל ⚖️</h2>
+      <p>בחרו משוואה ולחצו <b>הצעד הבא</b> — תראו איך כל פעולה משאירה את המאזניים מאוזנים, עד שמתגלה ערך ה-x.</p>
+      <div class="anim-pick" id="animPick"></div>
+      <div class="balance-wrap">
+        <div class="balance">
+          <div class="pan" id="leftPan"></div>
+          <div class="pan" id="rightPan"></div>
+        </div>
+        <div class="step-line" id="stepLine">2x + 5 = 13</div>
+        <div class="step-label" id="stepLabel">המשוואה ההתחלתית</div>
+      </div>
+      <div class="anim-controls">
+        <button class="ctrl" id="resetBtn">🔄 התחל מחדש</button>
+        <button class="ctrl play" id="nextStepBtn">צעד הבא ←</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק המשוואות 🎮</h2>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div style="text-align:center;color:#566c80;font-size:.9rem;margin-bottom:8px">פתרו: מה הערך של x?</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>בסיס לבגרות 3 יח"ל · משוואות ממעלה ראשונה</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+/* ===== BALANCE ANIMATION =====
+   Each equation is broken into steps. State = {left:[{type:'x'|'num',val}], right:[...], label}
+   Step transitions add/remove items from both pans symmetrically.
+*/
+const EQS=[
+  {expr:'2x + 5 = 13',
+   states:[
+     {left:[{t:'x',v:1},{t:'x',v:1},{t:'num',v:5}],right:[{t:'num',v:13}],lbl:'המשוואה ההתחלתית: 2x + 5 = 13',line:'2x + 5 = 13'},
+     {left:[{t:'x',v:1},{t:'x',v:1}],right:[{t:'num',v:8}],lbl:'מורידים 5 משני הצדדים',line:'2x = 8'},
+     {left:[{t:'x',v:1}],right:[{t:'num',v:4}],lbl:'מחלקים את שני הצדדים ב-2',line:'x = 4 ✓'}
+   ]},
+  {expr:'3x = 12',
+   states:[
+     {left:[{t:'x',v:1},{t:'x',v:1},{t:'x',v:1}],right:[{t:'num',v:12}],lbl:'המשוואה ההתחלתית: 3x = 12',line:'3x = 12'},
+     {left:[{t:'x',v:1}],right:[{t:'num',v:4}],lbl:'מחלקים את שני הצדדים ב-3',line:'x = 4 ✓'}
+   ]},
+  {expr:'x + 7 = 10',
+   states:[
+     {left:[{t:'x',v:1},{t:'num',v:7}],right:[{t:'num',v:10}],lbl:'המשוואה ההתחלתית: x + 7 = 10',line:'x + 7 = 10'},
+     {left:[{t:'x',v:1}],right:[{t:'num',v:3}],lbl:'מורידים 7 משני הצדדים',line:'x = 3 ✓'}
+   ]},
+  {expr:'2x + 3 = x + 8',
+   states:[
+     {left:[{t:'x',v:1},{t:'x',v:1},{t:'num',v:3}],right:[{t:'x',v:1},{t:'num',v:8}],lbl:'המשוואה ההתחלתית',line:'2x + 3 = x + 8'},
+     {left:[{t:'x',v:1},{t:'num',v:3}],right:[{t:'num',v:8}],lbl:'מורידים x משני הצדדים',line:'x + 3 = 8'},
+     {left:[{t:'x',v:1}],right:[{t:'num',v:5}],lbl:'מורידים 3 משני הצדדים',line:'x = 5 ✓'}
+   ]},
+  {expr:'4x − 6 = 2x + 8',
+   states:[
+     {left:[{t:'x',v:1},{t:'x',v:1},{t:'x',v:1},{t:'x',v:1},{t:'num',v:-6}],right:[{t:'x',v:1},{t:'x',v:1},{t:'num',v:8}],lbl:'המשוואה ההתחלתית',line:'4x − 6 = 2x + 8'},
+     {left:[{t:'x',v:1},{t:'x',v:1},{t:'num',v:-6}],right:[{t:'num',v:8}],lbl:'מורידים 2x משני הצדדים',line:'2x − 6 = 8'},
+     {left:[{t:'x',v:1},{t:'x',v:1}],right:[{t:'num',v:14}],lbl:'מוסיפים 6 לשני הצדדים',line:'2x = 14'},
+     {left:[{t:'x',v:1}],right:[{t:'num',v:7}],lbl:'מחלקים את שני הצדדים ב-2',line:'x = 7 ✓'}
+   ]}
+];
+
+let curEq=0,stepIdx=0;
+const pickWrap=document.getElementById('animPick');
+EQS.forEach((e,i)=>{const b=document.createElement('button');b.textContent=e.expr;b.onclick=()=>{curEq=i;stepIdx=0;markEq();renderBalance();};pickWrap.appendChild(b);});
+function markEq(){[...pickWrap.children].forEach((b,i)=>b.classList.toggle('active',i===curEq));}
+
+function renderItem(it){
+  const span=document.createElement('span');
+  span.className='item '+(it.t==='x'?'x':'num');
+  span.textContent = it.t==='x' ? 'x' : (it.v>0?'+'+it.v:it.v);
+  return span;
+}
+function fillPan(panEl,items){
+  panEl.innerHTML='';
+  items.forEach(it=>panEl.appendChild(renderItem(it)));
+}
+function renderBalance(){
+  const st=EQS[curEq].states[stepIdx];
+  fillPan(document.getElementById('leftPan'),st.left);
+  fillPan(document.getElementById('rightPan'),st.right);
+  document.getElementById('stepLine').textContent=st.line;
+  document.getElementById('stepLabel').textContent=st.lbl;
+  document.getElementById('nextStepBtn').disabled = stepIdx>=EQS[curEq].states.length-1;
+}
+document.getElementById('nextStepBtn').onclick=()=>{
+  if(stepIdx<EQS[curEq].states.length-1){
+    // fade-out current items briefly
+    document.querySelectorAll('#leftPan .item, #rightPan .item').forEach(el=>el.classList.add('fade'));
+    setTimeout(()=>{stepIdx++;renderBalance();},250);
+  }
+};
+document.getElementById('resetBtn').onclick=()=>{stepIdx=0;renderBalance();};
+markEq();renderBalance();
+
+/* ===== GAME =====
+   Player solves for x. */
+const POOL=[
+  ['x + 5 = 12',7],['x − 3 = 10',13],['2x = 14',7],['3x = 18',6],['x + 9 = 4',-5],
+  ['2x + 3 = 11',4],['3x − 5 = 10',5],['4x + 2 = 18',4],['5x − 7 = 13',4],['2x + 6 = 0',-3],
+  ['x + 4 = 2x − 1',5],['3x + 2 = x + 10',4],['4x − 6 = 2x + 8',7],['5x + 1 = 3x + 11',5],
+  ['2(x + 3) = 14',4],['3(x − 1) = 12',5],['2(x + 5) = x + 13',3],['4(x − 2) = 2x + 4',6],
+  ['x + x + 3 = 11',4],['3x − x = 10',5],['x − 7 = −2',5],['2x + 1 = −7',-4]
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;document.getElementById('turn').textContent='תורו של: '+name;}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function fmtNum(n){return n<0?('−'+Math.abs(n)):String(n);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  const[expr,ans]=POOL[Math.floor(Math.random()*POOL.length)];cur={expr,ans};
+  document.getElementById('question').textContent=expr;
+  const opts=new Set([fmtNum(ans)]);
+  while(opts.size<4){let d=ans+Math.floor(Math.random()*10-5);if(d!==ans)opts.add(fmtNum(d));else opts.add(fmtNum(ans+opts.size*2+1));}
+  const O=document.getElementById('opts');O.innerHTML='';
+  shuffle([...opts]).forEach(v=>{const btn=document.createElement('button');btn.textContent='x = '+v;btn.dataset.val=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.7?btns.find(x=>x.dataset.val===fmtNum(cur.ans)):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,pick.dataset.val);},2000);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===fmtNum(cur.ans)){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.expr+' ⟶ x = '+fmtNum(cur.ans);fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.dataset.val===fmtNum(cur.ans)).classList.add('right');fb.textContent='✗ התשובה: x = '+fmtNum(cur.ans);fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===fmtNum(cur.ans)){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: x = '+fmtNum(cur.ans);}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.dataset.val===fmtNum(cur.ans)).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: x = '+fmtNum(cur.ans);}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

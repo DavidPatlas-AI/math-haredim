@@ -1,0 +1,453 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>לימוד אנגלית לחרדים | 3 יחידות בסיסיות</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800;900&display=swap');
+
+        :root {
+            --bg: #0a0a14;
+            --card: rgba(18, 15, 25, 0.85);
+            --card-solid: #120f19;
+            --gold: #c9a227;
+            --gold-light: #e9cc6e;
+            --gold-dark: #8b6914;
+            --accent: #2d6a4f;
+            --accent2: #b5651d;
+            --text: #e8e6f0;
+            --text-dim: #9a97b0;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-gold: rgba(201, 162, 39, 0.35);
+            --shadow-3d: 0 20px 50px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.4);
+            --shadow-glow: 0 0 30px rgba(201,162,39,0.2), 0 0 60px rgba(201,162,39,0.06);
+            --pos: #3ddc84;
+            --neg: #ff5e5b;
+            --radius-xl: 24px;
+            --radius-lg: 18px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 16px 16px 50px;
+            overflow-x: hidden;
+            perspective: 1200px;
+        }
+
+        .bg-particles { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+        .particle { position:absolute; border-radius:50%; background:var(--gold); animation:floatUp linear infinite; opacity:0; }
+        @keyframes floatUp {
+            0% { transform:translateY(105vh) scale(0); opacity:0; }
+            10% { opacity:0.7; }
+            30% { opacity:0.3; }
+            100% { transform:translateY(-10vh) scale(1.4); opacity:0; }
+        }
+        @keyframes pulseGlow {
+            0%,100% { box-shadow:0 0 20px rgba(201,162,39,0.3), 0 0 50px rgba(201,162,39,0.1); }
+            50% { box-shadow:0 0 35px rgba(201,162,39,0.6), 0 0 80px rgba(201,162,39,0.2); }
+        }
+
+        .wrap { max-width:1100px; margin:0 auto; position:relative; z-index:1; }
+
+        header {
+            text-align:center; padding:36px 24px 30px; border-radius:var(--radius-xl);
+            background:var(--card); border:1px solid var(--border-gold);
+            box-shadow:var(--shadow-3d), var(--shadow-glow);
+            position:relative; overflow:hidden;
+            transform-style:preserve-3d; transform:rotateX(1deg) rotateY(-1deg);
+            transition:transform 0.5s ease; margin-bottom:20px;
+        }
+        header:hover {
+            transform:rotateX(0deg) rotateY(0deg) translateY(-4px);
+            box-shadow:0 28px 60px rgba(0,0,0,0.6), 0 0 50px rgba(201,162,39,0.35);
+        }
+        header::before {
+            content:""; position:absolute; inset:-2px; border-radius:var(--radius-xl);
+            background:linear-gradient(135deg, var(--gold), transparent 40%, transparent 60%, var(--gold-light));
+            z-index:-1; opacity:0.5; filter:blur(10px);
+        }
+        header::after {
+            content:"Hello"; position:absolute; font-family:'Playfair Display', serif;
+            font-size:130px; font-weight:900; color:rgba(255,255,255,0.012);
+            top:-30px; left:10px; transform:rotate(-5deg); pointer-events:none;
+        }
+        .eyebrow { font-size:0.8rem; letter-spacing:5px; color:var(--gold-light); font-weight:700; text-transform:uppercase; position:relative; z-index:1; }
+        h1 {
+            font-family:'Playfair Display', serif; font-size:2.3rem; font-weight:900; margin:4px 0 0;
+            background:linear-gradient(180deg, #e9cc6e 0%, #c9a227 50%, #8b6914 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+            position:relative; z-index:1; filter:drop-shadow(0 2px 6px rgba(201,162,39,0.4));
+        }
+        .sub { font-size:1rem; color:var(--text-dim); position:relative; z-index:1; margin-top:2px; }
+
+        .unit-nav { display:flex; gap:12px; justify-content:center; margin:18px 0 24px; flex-wrap:wrap; perspective:800px; }
+        .unit-nav button {
+            font-family:'Heebo', sans-serif; font-size:1rem; font-weight:700;
+            border:1.5px solid var(--border); background:var(--card); color:var(--text-dim);
+            padding:12px 28px; border-radius:999px; cursor:pointer; transition:var(--transition);
+            box-shadow:0 4px 12px rgba(0,0,0,0.3);
+        }
+        .unit-nav button:hover { transform:translateY(-3px); border-color:var(--gold); color:#fff; }
+        .unit-nav button.active {
+            background:linear-gradient(135deg, #1a1025, #2a1535); color:#fff;
+            border-color:var(--gold); box-shadow:0 6px 20px rgba(201,162,39,0.3);
+        }
+
+        section { display:none; animation:fadeSlideIn 0.5s ease; }
+        section.show { display:block; }
+        @keyframes fadeSlideIn {
+            from { opacity:0; transform:translateY(24px) rotateX(3deg); }
+            to { opacity:1; transform:translateY(0) rotateX(0); }
+        }
+
+        .card {
+            background:var(--card); border:1px solid var(--border); border-radius:var(--radius-xl);
+            padding:28px 26px; margin-bottom:18px; box-shadow:var(--shadow-3d);
+            position:relative; transition:var(--transition);
+        }
+        .card:hover { transform:translateY(-2px); border-color:rgba(255,255,255,0.18); }
+        .card h2 { font-family:'Playfair Display', serif; font-size:1.5rem; margin-bottom:10px; display:flex; align-items:center; gap:10px; color:#fff; }
+        .tag { background:linear-gradient(135deg, var(--gold-dark), var(--gold)); color:#1a1a2e; font-size:0.7rem; font-weight:800; padding:4px 12px; border-radius:20px; }
+
+        .rule-box {
+            background:rgba(201,162,39,0.07); border-right:4px solid var(--gold); padding:1rem 1.2rem;
+            border-radius:var(--radius-md); margin:1rem 0;
+        }
+        .vocab-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin:16px 0; }
+        .vocab-card { background:rgba(255,255,255,0.03); border-radius:var(--radius-sm); padding:10px; display:flex; justify-content:space-between; border:1px solid var(--border); direction:ltr; }
+        .eng { color:var(--gold-light); font-weight:600; }
+        .heb { color:var(--text-dim); }
+
+        .exercise-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:10px; margin-top:14px; }
+        .exercise { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:var(--radius-md); padding:12px; display:flex; gap:8px; align-items:center; }
+        .num { font-weight:800; color:var(--gold); min-width:30px; }
+        .question-text { flex:1; font-size:0.95rem; }
+        .answer { font-size:0.95rem; color:var(--accent); display:none; font-weight:700; }
+        .show-answers .question-text{display:none}.show-answers .answer{display:block}
+        .controls { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:14px 0; }
+        .ctrl { font-weight:700; font-size:0.9rem; border:2px solid var(--accent); background:linear-gradient(135deg, #2d6a4f, #1e4a35); color:#fff; padding:8px 20px; border-radius:var(--radius-sm); cursor:pointer; }
+        .ctrl.secondary { background:transparent; border-color:var(--gold); color:var(--gold-light); }
+
+        .mode-pick { display:flex; gap:10px; justify-content:center; margin-bottom:18px; flex-wrap:wrap; }
+        .mode-pick button { font-weight:700; font-size:1rem; cursor:pointer; border:2px solid var(--border); background:var(--card-solid); color:#fff; padding:12px 22px; border-radius:var(--radius-md); }
+        .mode-pick button.active { background:linear-gradient(135deg, #2d6a4f, #1e4a35); border-color:var(--accent); }
+        .scoreboard { display:flex; justify-content:space-around; text-align:center; margin-bottom:16px; gap:10px; }
+        .scoreboard .box { flex:1; background:rgba(255,255,255,0.03); border-radius:var(--radius-md); padding:14px; border:1px solid var(--border); }
+        .scoreboard .box.winner-glow { border-color:var(--gold); animation:pulseGlow 1s infinite; }
+        .pts { font-family:'Playfair Display', serif; font-size:2.4rem; font-weight:900; }
+        .turn-banner { text-align:center; font-weight:700; padding:10px; background:rgba(255,255,255,0.04); margin-bottom:14px; color:var(--gold-light); }
+        .q-box { text-align:center; font-size:1.2rem; font-weight:900; direction:ltr; padding:24px; background:rgba(255,255,255,0.03); border-radius:var(--radius-lg); margin-bottom:16px; border:1px solid var(--border); }
+        .opts { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .opts button { font-size:0.9rem; font-weight:600; border:2px solid var(--border); background:var(--card-solid); color:#fff; padding:12px; border-radius:var(--radius-md); cursor:pointer; direction:ltr; }
+        .opts button.right { background:linear-gradient(135deg, #1e4a35, #2d6a4f) !important; border-color:var(--pos) !important; }
+        .opts button.wrong { background:linear-gradient(135deg, #5a1e1e, #c0392b) !important; border-color:var(--neg) !important; }
+        .feedback { text-align:center; min-height:30px; margin-top:14px; }
+        .next-btn { display:none; margin:16px auto 0; background:linear-gradient(135deg, #2a1535, #4a2a55); color:#fff; padding:12px 30px; border-radius:30px; cursor:pointer; }
+        .tips-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+        @media (max-width:550px) { .tips-grid { grid-template-columns:1fr; } h1{font-size:1.8rem;} }
+        .tip-card { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:var(--radius-md); padding:16px; }
+        .tip-card .tip-icon { font-size:1.8rem; }
+        .tip-card h4 { color:var(--gold-light); }
+        footer { text-align:center; font-size:0.8rem; color:#5a4a6a; margin-top:30px; }
+        .blessing { color:var(--gold-light); margin-top:8px; font-style:italic; }
+    </style>
+</head>
+<body>
+<div class="bg-particles" id="particles"></div>
+<div class="wrap">
+    <header>
+        <div class="eyebrow">ENGLISH FOR HAREDI COMMUNITY</div>
+        <h1>לימוד אנגלית – 3 יחידות</h1>
+        <div class="sub">שליטה באנגלית בסיסית בקלות | יחידות 1-3</div>
+    </header>
+
+    <div class="unit-nav">
+        <button class="active" data-unit="1">📘 יחידה 1 – Greetings</button>
+        <button data-unit="2">⏰ יחידה 2 – Numbers & Time</button>
+        <button data-unit="3">🏠 יחידה 3 – Daily Activities</button>
+    </div>
+
+    <!-- יחידה 1 -->
+    <section id="unit1" class="show">
+        <div class="card"><h2>👋 יחידה 1 – ברכות והיכרות</h2>
+            <div class="vocab-list">
+                <div class="vocab-card"><span class="eng">Hello</span><span class="heb">שלום</span></div>
+                <div class="vocab-card"><span class="eng">Good morning</span><span class="heb">בוקר טוב</span></div>
+                <div class="vocab-card"><span class="eng">Good afternoon</span><span class="heb">צהריים טובים</span></div>
+                <div class="vocab-card"><span class="eng">Good evening</span><span class="heb">ערב טוב</span></div>
+                <div class="vocab-card"><span class="eng">Good night</span><span class="heb">לילה טוב</span></div>
+                <div class="vocab-card"><span class="eng">How are you?</span><span class="heb">מה שלומך?</span></div>
+                <div class="vocab-card"><span class="eng">I'm fine, thank you</span><span class="heb">אני בסדר, תודה</span></div>
+                <div class="vocab-card"><span class="eng">Goodbye</span><span class="heb">להתראות</span></div>
+                <div class="vocab-card"><span class="eng">See you later</span><span class="heb">נתראה אחר כך</span></div>
+            </div>
+            <div class="rule-box">💡 טיפ: באנגלית נהוג להוסיף "Good" לפני השעה ביום. "Good morning" עד 12:00.</div>
+        </div>
+        <div class="card"><h2>📝 תרגול יחידה 1</h2>
+            <div class="controls"><button class="ctrl" id="showAns1">הצג תשובות</button><button class="ctrl secondary" id="hideAns1">הסתר תשובות</button></div>
+            <div class="exercise-grid" id="exUnit1"></div>
+        </div>
+        <div class="card"><h2>🎮 משחק – יחידה 1</h2>
+            <div class="mode-pick"><button class="active" data-m="cpu1">🤖 נגד מחשב</button><button data-m="duo1">👥 שני שחקנים</button></div>
+            <div class="scoreboard"><div class="box" id="box1_1"><div class="who">שחקן 1</div><div class="pts" id="s1_1">0</div></div><div class="box" id="box2_1"><div class="who">מחשב</div><div class="pts" id="s2_1">0</div></div></div>
+            <div class="turn-banner" id="turn1">תור: שחקן 1</div>
+            <div class="q-box" id="q1">—</div><div class="opts" id="opts1"></div>
+            <div class="feedback" id="fb1"></div><button class="next-btn" id="next1">השאלה הבאה ←</button>
+        </div>
+    </section>
+
+    <!-- יחידה 2 -->
+    <section id="unit2">
+        <div class="card"><h2>🔢 יחידה 2 – מספרים ושעות</h2>
+            <div class="vocab-list">
+                <div class="vocab-card"><span class="eng">One, two, three...</span><span class="heb">אחת, שתיים, שלוש</span></div>
+                <div class="vocab-card"><span class="eng">What time is it?</span><span class="heb">מה השעה?</span></div>
+                <div class="vocab-card"><span class="eng">It's two o'clock</span><span class="heb">השעה שתיים</span></div>
+                <div class="vocab-card"><span class="eng">Half past three</span><span class="heb">שלוש וחצי</span></div>
+                <div class="vocab-card"><span class="eng">Quarter past four</span><span class="heb">ארבע ורבע</span></div>
+                <div class="vocab-card"><span class="eng">Quarter to five</span><span class="heb">רבע לחמש</span></div>
+                <div class="vocab-card"><span class="eng">In the morning</span><span class="heb">בבוקר</span></div>
+                <div class="vocab-card"><span class="eng">In the evening</span><span class="heb">בערב</span></div>
+            </div>
+            <div class="rule-box">⏰ מספרים 1-12 חשובים לשעות. זכרו: "half past" = וחצי, "quarter" = רבע.</div>
+        </div>
+        <div class="card"><h2>📝 תרגול יחידה 2</h2>
+            <div class="controls"><button class="ctrl" id="showAns2">הצג תשובות</button><button class="ctrl secondary" id="hideAns2">הסתר תשובות</button></div>
+            <div class="exercise-grid" id="exUnit2"></div>
+        </div>
+        <div class="card"><h2>🎮 משחק – יחידה 2</h2>
+            <div class="mode-pick"><button class="active" data-m="cpu2">🤖 נגד מחשב</button><button data-m="duo2">👥 שני שחקנים</button></div>
+            <div class="scoreboard"><div class="box" id="box1_2"><div class="who">שחקן 1</div><div class="pts" id="s1_2">0</div></div><div class="box" id="box2_2"><div class="who">מחשב</div><div class="pts" id="s2_2">0</div></div></div>
+            <div class="turn-banner" id="turn2">תור: שחקן 1</div>
+            <div class="q-box" id="q2">—</div><div class="opts" id="opts2"></div>
+            <div class="feedback" id="fb2"></div><button class="next-btn" id="next2">השאלה הבאה ←</button>
+        </div>
+    </section>
+
+    <!-- יחידה 3 -->
+    <section id="unit3">
+        <div class="card"><h2>🏠 יחידה 3 – פעולות יומיומיות</h2>
+            <div class="vocab-list">
+                <div class="vocab-card"><span class="eng">Wake up</span><span class="heb">להתעורר</span></div>
+                <div class="vocab-card"><span class="eng">Get dressed</span><span class="heb">להתלבש</span></div>
+                <div class="vocab-card"><span class="eng">Eat breakfast</span><span class="heb">לאכול ארוחת בוקר</span></div>
+                <div class="vocab-card"><span class="eng">Go to work</span><span class="heb">ללכת לעבודה</span></div>
+                <div class="vocab-card"><span class="eng">Study Torah</span><span class="heb">ללמוד תורה</span></div>
+                <div class="vocab-card"><span class="eng">Pray</span><span class="heb">להתפלל</span></div>
+                <div class="vocab-card"><span class="eng">Eat lunch</span><span class="heb">לאכול ארוחת צהריים</span></div>
+                <div class="vocab-card"><span class="eng">Go home</span><span class="heb">לחזור הביתה</span></div>
+                <div class="vocab-card"><span class="eng">Sleep</span><span class="heb">לישון</span></div>
+            </div>
+            <div class="rule-box">📖 בזמן הווה פשוט (Present Simple) מוסיפים S בגוף שלישי יחיד: He eats, She prays.</div>
+        </div>
+        <div class="card"><h2>📝 תרגול יחידה 3</h2>
+            <div class="controls"><button class="ctrl" id="showAns3">הצג תשובות</button><button class="ctrl secondary" id="hideAns3">הסתר תשובות</button></div>
+            <div class="exercise-grid" id="exUnit3"></div>
+        </div>
+        <div class="card"><h2>🎮 משחק – יחידה 3</h2>
+            <div class="mode-pick"><button class="active" data-m="cpu3">🤖 נגד מחשב</button><button data-m="duo3">👥 שני שחקנים</button></div>
+            <div class="scoreboard"><div class="box" id="box1_3"><div class="who">שחקן 1</div><div class="pts" id="s1_3">0</div></div><div class="box" id="box2_3"><div class="who">מחשב</div><div class="pts" id="s2_3">0</div></div></div>
+            <div class="turn-banner" id="turn3">תור: שחקן 1</div>
+            <div class="q-box" id="q3">—</div><div class="opts" id="opts3"></div>
+            <div class="feedback" id="fb3"></div><button class="next-btn" id="next3">השאלה הבאה ←</button>
+        </div>
+    </section>
+
+    <footer><div>נבנה במיוחד עבור לומדי אנגלית במגזר החרדי | 3 יחידות יסוד</div><div class="blessing">בסיעתא דשמיא – הצלחה בלימודים!</div></footer>
+</div>
+
+<script>
+    // Particles
+    (function createParticles() {
+        const container = document.getElementById('particles');
+        for(let i=0;i<55;i++) { let p=document.createElement('div'); p.classList.add('particle'); let s=Math.random()*3+1; p.style.width=s+'px'; p.style.height=s+'px'; p.style.left=Math.random()*100+'%'; p.style.animationDuration=Math.random()*14+8+'s'; p.style.animationDelay=Math.random()*10+'s'; container.appendChild(p); }
+    })();
+
+    // Unit navigation
+    document.querySelectorAll('.unit-nav button').forEach(btn=>{
+        btn.onclick=()=>{
+            document.querySelectorAll('.unit-nav button').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));
+            document.getElementById(`unit${btn.dataset.unit}`).classList.add('show');
+        };
+    });
+
+    // ---------- נתוני תרגילים לכל יחידה ----------
+    const exercises = {
+        1: [
+            {q:"איך אומרים 'שלום'?", ans:"Hello"},
+            {q:"איך אומרים 'בוקר טוב'?", ans:"Good morning"},
+            {q:"איך אומרים 'מה שלומך?'", ans:"How are you?"},
+            {q:"איך עונים 'אני בסדר תודה'?", ans:"I'm fine, thank you"},
+            {q:"איך אומרים 'להתראות'?", ans:"Goodbye"},
+            {q:"איך אומרים 'ערב טוב'?", ans:"Good evening"}
+        ],
+        2: [
+            {q:"איך אומרים 'השעה שלוש'?", ans:"It's three o'clock"},
+            {q:"איך אומרים 'רבע לשש'?", ans:"Quarter to six"},
+            {q:"איך אומרים 'שתיים וחצי'?", ans:"Half past two"},
+            {q:"מהי המילה ל'ארבע'?", ans:"Four"},
+            {q:"איך שואלים 'מה השעה?'", ans:"What time is it?"},
+            {q:"איך אומרים 'בבוקר'?", ans:"In the morning"}
+        ],
+        3: [
+            {q:"איך אומרים 'להתעורר'?", ans:"Wake up"},
+            {q:"איך אומרים 'ללמוד תורה'?", ans:"Study Torah"},
+            {q:"איך אומרים 'להתפלל'?", ans:"Pray"},
+            {q:"איך אומרים 'ללכת הביתה'?", ans:"Go home"},
+            {q:"איך אומרים 'לאכול ארוחת בוקר'?", ans:"Eat breakfast"},
+            {q:"איך אומרים 'לישון'?", ans:"Sleep"}
+        ]
+    };
+
+    // פונקציה להצגת תרגילים ביחידה
+    function renderExercises(unit, containerId){
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        exercises[unit].forEach((ex,idx)=>{
+            let div = document.createElement('div'); div.className='exercise';
+            div.innerHTML = `<span class="num">${idx+1}.</span><span class="question-text">${ex.q}</span><span class="answer">${ex.ans}</span>`;
+            container.appendChild(div);
+        });
+    }
+    renderExercises(1,'exUnit1'); renderExercises(2,'exUnit2'); renderExercises(3,'exUnit3');
+
+    // הצגת/הסתרת תשובות
+    function bindAnswers(showBtnId, hideBtnId, cardId){
+        document.getElementById(showBtnId).onclick=()=>document.getElementById(cardId).classList.add('show-answers');
+        document.getElementById(hideBtnId).onclick=()=>document.getElementById(cardId).classList.remove('show-answers');
+    }
+    bindAnswers('showAns1','hideAns1','unit1');
+    bindAnswers('showAns2','hideAns2','unit2');
+    bindAnswers('showAns3','hideAns3','unit3');
+
+    // ---------- מחולל משחקים גנרי ----------
+    function initGame(unit, qBoxId, optsId, fbId, nextId, s1Id, s2Id, turnId, box1Id, box2Id) {
+        let questions = exercises[unit].map(ex => ({ question: ex.q, correct: ex.ans }));
+        let gameQuestions = [];
+        function buildGameQuestions(){
+            gameQuestions = questions.map(q => {
+                let wrongSet = new Set();
+                let allAnswers = exercises[unit].map(x=>x.ans).filter(a=>a!==q.correct);
+                while(wrongSet.size<3 && allAnswers.length){
+                    let r = allAnswers[Math.floor(Math.random()*allAnswers.length)];
+                    if(!wrongSet.has(r)) wrongSet.add(r);
+                }
+                let opts = [q.correct, ...wrongSet];
+                for(let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+                return { question: q.question, correct: q.correct, options: opts };
+            });
+        }
+        let currentGameQuestions = [];
+        let gameMode = 'cpu';
+        let score1=0, score2=0, currentTurn=1, gameActive=true, currentQObj=null;
+        function saveGameState(){}
+        function updateUI(){
+            document.getElementById(s1Id).textContent=score1; document.getElementById(s2Id).textContent=score2;
+            let p1="שחקן 1", p2=(gameMode==='cpu'?'מחשב':'שחקן 2');
+            document.getElementById(turnId).textContent=`תורו של: ${currentTurn===1?p1:p2}`;
+            if(score1>=5 && gameActive) endGame(1);
+            if(score2>=5 && gameActive) endGame(2);
+        }
+        function endGame(winner){
+            if(!gameActive) return;
+            gameActive=false;
+            document.getElementById(fbId).textContent=`🏁 המשחק נגמר! ${winner===1?'שחקן 1':(winner===2?(gameMode==='cpu'?'מחשב':'שחקן 2'):'תיקו')} ניצח!`;
+            document.getElementById(nextId).style.display='none';
+            document.getElementById(optsId).style.pointerEvents='none';
+            document.getElementById(box1Id).classList.remove('winner-glow');
+            document.getElementById(box2Id).classList.remove('winner-glow');
+            if(winner===1) document.getElementById(box1Id).classList.add('winner-glow');
+            if(winner===2) document.getElementById(box2Id).classList.add('winner-glow');
+            setTimeout(()=>resetGame(),3000);
+        }
+        function resetGame(){
+            score1=0; score2=0; currentTurn=1; gameActive=true;
+            buildGameQuestions(); currentGameQuestions = [...gameQuestions];
+            updateUI(); newQuestion();
+        }
+        function newQuestion(){
+            if(!gameActive || !currentGameQuestions.length) return;
+            document.getElementById(fbId).innerHTML=''; document.getElementById(nextId).style.display='none';
+            let idx = Math.floor(Math.random()*currentGameQuestions.length);
+            currentQObj = currentGameQuestions[idx];
+            document.getElementById(qBoxId).textContent = currentQObj.question + " ?";
+            let optsDiv = document.getElementById(optsId); optsDiv.innerHTML='';
+            currentQObj.options.forEach(opt=>{
+                let btn = document.createElement('button'); btn.textContent=opt;
+                btn.onclick=()=>handleAnswer(btn,opt);
+                optsDiv.appendChild(btn);
+            });
+            updateUI();
+            if(gameMode==='cpu' && currentTurn===2 && gameActive){
+                optsDiv.style.pointerEvents='none';
+                setTimeout(()=>{
+                    if(!gameActive) return;
+                    let btns = [...optsDiv.children];
+                    let correctBtn = btns.find(b=>b.textContent===currentQObj.correct);
+                    if(correctBtn) cpuAnswer(correctBtn, currentQObj.correct);
+                    else if(btns.length) cpuAnswer(btns[0], currentQObj.correct);
+                },1200);
+            } else optsDiv.style.pointerEvents='auto';
+        }
+        function handleAnswer(btn,val){
+            if(!gameActive) return;
+            let optsDiv=document.getElementById(optsId); optsDiv.style.pointerEvents='none';
+            let fb=document.getElementById(fbId);
+            if(val===currentQObj.correct){
+                btn.classList.add('right');
+                if(currentTurn===1) score1++; else score2++;
+                fb.innerHTML=`✓ נכון! התשובה: ${currentQObj.correct}`;
+            } else {
+                btn.classList.add('wrong');
+                let correctBtn=[...optsDiv.children].find(b=>b.textContent===currentQObj.correct);
+                if(correctBtn) correctBtn.classList.add('right');
+                fb.innerHTML=`✗ שגוי. נכון: ${currentQObj.correct}`;
+            }
+            endTurn();
+        }
+        function cpuAnswer(btn,correctVal){
+            let fb=document.getElementById(fbId);
+            if(btn.textContent===correctVal){ btn.classList.add('right'); score2++; fb.innerHTML=`🤖 מחשב ענה נכון: ${correctVal}`; }
+            else { btn.classList.add('wrong'); let correctBtn=[...document.getElementById(optsId).children].find(b=>b.textContent===correctVal); if(correctBtn) correctBtn.classList.add('right'); fb.innerHTML=`🤖 מחשב טעה. תשובה: ${correctVal}`; }
+            endTurn();
+        }
+        function endTurn(){
+            updateUI();
+            if(gameActive){ currentTurn = currentTurn===1?2:1; document.getElementById(nextId).style.display='block'; }
+        }
+        document.getElementById(nextId).onclick=()=>{ if(gameActive) newQuestion(); };
+        document.querySelectorAll(`.mode-pick button[data-m^="${unit === 1 ? 'cpu1' : unit===2?'cpu2':'cpu3'}"], .mode-pick button[data-m^="${unit===1?'duo1':unit===2?'duo2':'duo3'}"]`).forEach(btn=>{
+            btn.onclick=()=>{
+                let parent = btn.parentElement;
+                parent.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+                btn.classList.add('active');
+                gameMode = btn.dataset.m.includes('cpu') ? 'cpu' : 'duo';
+                resetGame();
+            };
+        });
+        buildGameQuestions(); resetGame();
+    }
+    // הפעלת המשחקים
+    initGame(1,'q1','opts1','fb1','next1','s1_1','s2_1','turn1','box1_1','box2_1');
+    initGame(2,'q2','opts2','fb2','next2','s1_2','s2_2','turn2','box1_2','box2_2');
+    initGame(3,'q3','opts3','fb3','next3','s1_3','s2_3','turn3','box1_3','box2_3');
+
+    // קיצורי מקלדת אופציונליים
+    document.addEventListener('keydown',e=>{
+        if(e.code==='ArrowRight'){ let activeUnit = document.querySelector('.unit-nav button.active').dataset.unit; if(activeUnit && document.getElementById(`next${activeUnit}`).style.display==='block') document.getElementById(`next${activeUnit}`).click(); }
+    });
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

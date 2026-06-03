@@ -1,0 +1,356 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מבחני מה"ט לדוגמה</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#27272a;--paper:#f3f4f6;--accent:#3d1f7a;--accent2:#c0392b;--gold:#c9a227;--line:#d1d5db;--shadow:0 10px 30px rgba(39,39,42,.12);--pos:#2d6a4f;--neg:#c0392b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(61,31,122,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  .back{display:inline-block;margin-bottom:14px;color:var(--accent);text-decoration:none;font-weight:700}
+  .back:hover{text-decoration:underline}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"📝";position:absolute;font-size:130px;color:rgba(61,31,122,.05);top:30px;left:30px;line-height:1}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.3rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#4b5563;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:12px;color:var(--accent)}
+  
+  /* INFO */
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  @media (max-width:560px){.info-grid{grid-template-columns:1fr}}
+  .info-cell{background:var(--paper);border-radius:10px;padding:12px}
+  .info-cell .lbl{font-size:.8rem;color:#6b7280;font-weight:600}
+  .info-cell .val{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:900;color:var(--accent);margin-top:2px}
+  .topics-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .topics-list .chip{background:var(--paper);border:1px solid var(--accent);color:var(--accent);padding:4px 10px;border-radius:99px;font-size:.85rem;font-weight:600}
+
+  /* QUIZ */
+  .quiz-actions{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .quiz-actions button{font-family:'Heebo';font-weight:700;font-size:1rem;border:none;background:var(--accent);color:#fff;padding:12px 22px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow);transition:.2s}
+  .quiz-actions button:hover{transform:translateY(-2px)}
+  .quiz-actions button.alt{background:#fff;color:var(--accent);border:2px solid var(--accent);box-shadow:none}
+  .quiz-progress{text-align:center;font-size:.9rem;color:#6b7280;margin-bottom:10px}
+  .quiz-progress .bar{height:6px;background:var(--line);border-radius:99px;margin-top:6px;overflow:hidden}
+  .quiz-progress .fill{height:100%;background:var(--accent);transition:width .3s}
+  .q-card{background:#fff;border:2px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
+  .q-card .q-num{font-size:.8rem;color:var(--accent);font-weight:700;margin-bottom:6px}
+  .q-card .q-topic{display:inline-block;background:var(--accent);color:#fff;font-size:.72rem;padding:2px 8px;border-radius:99px;margin-bottom:8px;font-weight:600}
+  .q-card .q-text{font-family:'Heebo';font-size:1.05rem;font-weight:600;line-height:1.7;margin-bottom:8px}
+  .q-card .q-eq{display:block;text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:900;direction:ltr;background:var(--paper);padding:10px;border-radius:10px;margin:8px 0;color:var(--accent)}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  @media (max-width:560px){.opts{grid-template-columns:1fr}}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:12px;border-radius:10px;cursor:pointer;transition:.15s;direction:ltr;text-align:center}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--pos);color:#fff;border-color:var(--pos)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .opts button.disabled{pointer-events:none;opacity:.7}
+  .feedback{margin-top:10px;padding:8px;border-radius:8px;font-weight:700;text-align:center}
+  .feedback.ok{background:rgba(45,106,79,.12);color:var(--pos)}
+  .feedback.no{background:rgba(192,57,43,.12);color:var(--neg)}
+  
+  /* RESULTS */
+  .results-card{background:linear-gradient(135deg,var(--accent),#5d2a85);color:#fff;border-radius:16px;padding:26px;text-align:center;box-shadow:var(--shadow)}
+  .results-card .grade-circle{display:inline-flex;align-items:center;justify-content:center;width:120px;height:120px;border-radius:50%;background:#fff;color:var(--accent);font-family:'Frank Ruhl Libre',serif;font-size:2.5rem;font-weight:900;margin:14px 0}
+  .results-card h3{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:6px}
+  .results-card p{opacity:.9}
+  .results-actions{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+  .results-actions button{font-family:'Heebo';font-weight:700;font-size:.95rem;border:2px solid #fff;background:transparent;color:#fff;padding:10px 20px;border-radius:10px;cursor:pointer}
+  .results-actions button:hover{background:#fff;color:var(--accent)}
+
+  /* EXAM SAMPLES */
+  .sample-card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;cursor:pointer;transition:.25s}
+  .sample-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent)}
+  .sample-card .lbl{font-size:.8rem;color:var(--accent);font-weight:700}
+  .sample-card .ttl{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:900;margin:4px 0}
+  .sample-card .preview{font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;direction:ltr;background:var(--paper);padding:10px;border-radius:8px;margin-top:8px;text-align:center}
+  .sample-card .sol{display:none;margin-top:10px;padding-top:10px;border-top:2px dashed var(--accent);font-size:.95rem}
+  .sample-card.open .sol{display:block;animation:fade .35s ease}
+  .sample-card .sol .step{background:var(--paper);border-radius:8px;padding:8px;margin-top:6px;font-family:'Frank Ruhl Libre',serif;direction:ltr;text-align:left;font-size:.95rem}
+  .sample-card .sol .ans{background:rgba(201,162,39,.15);border:2px solid var(--gold);border-radius:8px;padding:8px;margin-top:8px;font-family:'Frank Ruhl Libre',serif;direction:ltr;font-weight:900;color:#8a6f0e;text-align:center}
+  footer{text-align:center;font-size:.8rem;color:#9ca3af;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" class="back">← חזרה לעמוד הבית</a>
+  <header>
+    <div class="eyebrow">📝 הכנה לבגרות 3 יח"ל</div>
+    <h1>מבחני מה"ט לדוגמה</h1>
+    <div class="sub">שאלות מתוך הבגרות, מחולל מבחן אקראי, ושאלות מפורטות עם פתרון</div>
+  </header>
+
+  <nav>
+    <button class="active" data-t="info">ℹ️ מבנה המבחן</button>
+    <button data-t="quiz">🎯 מבחן אקראי</button>
+    <button data-t="samples">📚 שאלות לדוגמה</button>
+  </nav>
+
+  <!-- INFO -->
+  <section id="info" class="show">
+    <div class="card">
+      <h2>מבנה הבגרות במתמטיקה — 3 יח"ל</h2>
+      <p>הבגרות מחולקת לשני שאלונים. כל אחד הוא מבחן נפרד, וציון הסופי הוא ממוצע משוקלל של שניהם.</p>
+      <div class="info-grid">
+        <div class="info-cell"><div class="lbl">שאלון ראשון</div><div class="val">35381</div></div>
+        <div class="info-cell"><div class="lbl">שאלון שני</div><div class="val">35382</div></div>
+        <div class="info-cell"><div class="lbl">זמן לכל שאלון</div><div class="val">90 דקות</div></div>
+        <div class="info-cell"><div class="lbl">מספר שאלות</div><div class="val">6–8 שאלות</div></div>
+        <div class="info-cell"><div class="lbl">לבחור</div><div class="val">5 שאלות</div></div>
+        <div class="info-cell"><div class="lbl">ערך כל שאלה</div><div class="val">20 נקודות</div></div>
+      </div>
+      <div style="background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:10px;padding:14px;margin-top:14px">
+        <b style="color:#8a6f0e">💡 טיפ:</b> אתם בוחרים <b>5 שאלות מתוך 6-8</b>. תקראו את כולן בהתחלה, ותתחילו מהקלה אליכם.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>נושאים שמופיעים במבחן</h2>
+      <p>על סמך מבחני בגרות מהשנים האחרונות, הנושאים הבאים מופיעים כמעט תמיד:</p>
+      <div class="topics-list">
+        <span class="chip">משוואות מעלה ראשונה</span>
+        <span class="chip">משוואה ריבועית</span>
+        <span class="chip">בעיות מילוליות</span>
+        <span class="chip">אחוזים</span>
+        <span class="chip">פונקציה לינארית</span>
+        <span class="chip">מערכת משוואות</span>
+        <span class="chip">פיתגורס</span>
+        <span class="chip">טריגונומטריה</span>
+        <span class="chip">גיאו' אנליטית</span>
+        <span class="chip">סטטיסטיקה</span>
+        <span class="chip">הסתברות</span>
+        <span class="chip">שטחים והיקפים</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>טיפים כלליים לבגרות</h2>
+      <div style="display:grid;gap:8px">
+        <div style="background:var(--paper);border-right:4px solid var(--accent);padding:10px 14px;border-radius:8px">
+          <b>1.</b> סורקים את כל המבחן לפני שמתחילים — 2-3 דקות
+        </div>
+        <div style="background:var(--paper);border-right:4px solid var(--accent);padding:10px 14px;border-radius:8px">
+          <b>2.</b> מתחילים מהשאלות הקלות — מעלה ביטחון
+        </div>
+        <div style="background:var(--paper);border-right:4px solid var(--accent);padding:10px 14px;border-radius:8px">
+          <b>3.</b> כותבים כל שלב — נקודות חלקיות!
+        </div>
+        <div style="background:var(--paper);border-right:4px solid var(--accent);padding:10px 14px;border-radius:8px">
+          <b>4.</b> משאירים 10 דקות בסוף לבדיקה
+        </div>
+        <div style="background:var(--paper);border-right:4px solid var(--accent);padding:10px 14px;border-radius:8px">
+          <b>5.</b> מציבים את התשובה במשוואה לוודא שעובד
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz">
+    <div class="card" id="quizStart">
+      <h2>🎯 מבחן אקראי</h2>
+      <p>10 שאלות אקראיות מתוך מאגר השאלות, בנושאי הבגרות. כל פעם — מבחן שונה.</p>
+      <p style="background:rgba(201,162,39,.12);border-radius:10px;padding:12px;margin-top:10px;font-size:.92rem">
+        <b style="color:#8a6f0e">איך זה עובד:</b> מקבלים 10 שאלות מקטגוריות שונות. בסוף — ציון, ופירוט לפי נושא.
+      </p>
+      <div class="quiz-actions">
+        <button onclick="startQuiz()">▶ התחל מבחן</button>
+      </div>
+    </div>
+
+    <div id="quizArea" style="display:none">
+      <div class="quiz-progress">
+        <span id="progText">שאלה 1 מתוך 10</span>
+        <div class="bar"><div class="fill" id="progFill" style="width:10%"></div></div>
+      </div>
+      <div id="qHolder"></div>
+      <div class="quiz-actions">
+        <button id="nextQBtn" style="display:none" onclick="nextQ()">השאלה הבאה ←</button>
+      </div>
+    </div>
+
+    <div id="quizResults" style="display:none"></div>
+  </section>
+
+  <!-- SAMPLES -->
+  <section id="samples">
+    <p style="text-align:center;margin-bottom:14px;color:#6b7280">שאלות שכיחות בבגרות. לחצו על כל שאלה לראות פתרון מפורט.</p>
+    <div id="samplesGrid"></div>
+  </section>
+
+  <footer>אתר תרגול מתמטיקה · מבחני מה"ט לדוגמה</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+/* ===== QUESTION POOL ===== */
+const BANK=[
+  // Equations
+  {topic:'משוואות',q:'פתרו את המשוואה:',eq:'3x + 7 = 22',ans:'5',wrong:['7','15','3']},
+  {topic:'משוואות',q:'פתרו את המשוואה:',eq:'2x − 5 = 11',ans:'8',wrong:['3','16','6']},
+  {topic:'משוואות',q:'פתרו את המשוואה:',eq:'4x + 3 = 2x + 15',ans:'6',wrong:['12','3','9']},
+  // Quadratic
+  {topic:'משוואה ריבועית',q:'מצאו את שורשי המשוואה:',eq:'x² − 7x + 10 = 0',ans:'x=2, x=5',wrong:['x=−2, x=−5','x=1, x=10','x=3, x=7']},
+  {topic:'משוואה ריבועית',q:'מצאו את שורשי המשוואה:',eq:'x² − 4 = 0',ans:'x=−2, x=2',wrong:['x=4','x=2','x=−4, x=4']},
+  // Percent
+  {topic:'אחוזים',q:'כמה זה 25% מ-160?',ans:'40',wrong:['25','64','4']},
+  {topic:'אחוזים',q:'מחיר מוצר ירד מ-200 ל-150. באיזה אחוז ירד?',ans:'25%',wrong:['50%','30%','75%']},
+  {topic:'אחוזים',q:'משכורת 8000 ש"ח, מס 15%. כמה משלמים מס?',ans:'1200',wrong:['120','6800','9200']},
+  // Word problems
+  {topic:'בעיות מילוליות',q:'דני בן x שנים. אחותו בת פי 2 מגילו. סכום הגילים 27. בן כמה דני?',ans:'9',wrong:['18','13','15']},
+  {topic:'בעיות מילוליות',q:'קניתי 5 ספרים זהים ב-180 ש"ח. מחיר ספר אחד?',ans:'36',wrong:['175','185','60']},
+  // Linear functions
+  {topic:'פונקציה לינארית',q:'מהו השיפוע של הקו:',eq:'y = 3x − 7',ans:'3',wrong:['−7','7','−3']},
+  {topic:'פונקציה לינארית',q:'איפה הקו y = 2x + 6 חוצה את ציר y?',ans:'(0, 6)',wrong:['(0, −6)','(6, 0)','(0, 2)']},
+  {topic:'פונקציה לינארית',q:'איפה הקו y = x − 4 חוצה את ציר x?',ans:'(4, 0)',wrong:['(−4, 0)','(0, 4)','(0, −4)']},
+  // System
+  {topic:'מערכת משוואות',q:'פתרו את המערכת:',eq:'x + y = 10\nx − y = 4',ans:'(7, 3)',wrong:['(3, 7)','(5, 5)','(6, 4)']},
+  // Pythagoras
+  {topic:'משולשים',q:'במשולש ישר-זווית עם ניצבים 6 ו-8, מהו היתר?',ans:'10',wrong:['14','48','12']},
+  {topic:'משולשים',q:'במשולש ישר-זווית עם יתר 13 וניצב 5, הניצב השני =',ans:'12',wrong:['8','18','144']},
+  // Trig
+  {topic:'טריגונומטריה',q:'בזווית 30°, sin = ?',ans:'1/2',wrong:['√3/2','√2/2','1']},
+  {topic:'טריגונומטריה',q:'במשולש ישר-זווית: יתר=10, sin θ=0.6. הצלע הנגדית =',ans:'6',wrong:['16','0.06','4']},
+  // Analytic
+  {topic:'גיאו אנליטית',q:'המרחק בין A(1,2) ל-B(4,6):',ans:'5',wrong:['7','25','3']},
+  {topic:'גיאו אנליטית',q:'אמצע הקטע A(2,4) — B(8,10):',ans:'(5, 7)',wrong:['(10, 14)','(3, 3)','(4, 6)']},
+  // Areas
+  {topic:'שטחים',q:'שטח מלבן באורך 8 ורוחב 5:',ans:'40',wrong:['26','13','45']},
+  {topic:'שטחים',q:'שטח משולש עם בסיס 6 וגובה 8:',ans:'24',wrong:['48','14','12']},
+  // Powers
+  {topic:'חזקות',q:'כמה זה 2³ · 2⁴?',ans:'128',wrong:['64','512','12']},
+  {topic:'חזקות',q:'כמה זה (3²)³?',ans:'729',wrong:['9','27','3⁵']}
+];
+
+let curQuiz=[],qIdx=0,qScore=0,qWrong=[];
+
+function startQuiz(){
+  // Pick 10 random questions, ensuring topic variety
+  const shuffled=[...BANK].sort(()=>Math.random()-.5);
+  curQuiz=shuffled.slice(0,10);
+  qIdx=0;qScore=0;qWrong=[];
+  document.getElementById('quizStart').style.display='none';
+  document.getElementById('quizArea').style.display='block';
+  document.getElementById('quizResults').style.display='none';
+  showQ();
+}
+function showQ(){
+  document.getElementById('progText').textContent='שאלה '+(qIdx+1)+' מתוך 10';
+  document.getElementById('progFill').style.width=((qIdx+1)*10)+'%';
+  const q=curQuiz[qIdx];
+  const H=document.getElementById('qHolder');
+  let html='<div class="q-card"><div class="q-num">שאלה '+(qIdx+1)+'</div><div class="q-topic">'+q.topic+'</div><div class="q-text">'+q.q+'</div>';
+  if(q.eq)html+='<span class="q-eq">'+q.eq.replace(/\n/g,'<br>')+'</span>';
+  html+='<div class="opts">';
+  const opts=[q.ans,...q.wrong].sort(()=>Math.random()-.5);
+  opts.forEach(o=>{html+='<button data-v="'+o+'">'+o+'</button>';});
+  html+='</div><div class="feedback" id="qfb" style="display:none"></div></div>';
+  H.innerHTML=html;
+  H.querySelectorAll('.opts button').forEach(b=>{b.onclick=()=>answerQ(b,b.dataset.v);});
+  document.getElementById('nextQBtn').style.display='none';
+}
+function answerQ(btn,v){
+  const q=curQuiz[qIdx];
+  document.querySelectorAll('.opts button').forEach(b=>b.classList.add('disabled'));
+  const fb=document.getElementById('qfb');
+  fb.style.display='block';
+  if(v===q.ans){btn.classList.add('right');qScore++;fb.textContent='✓ נכון!';fb.className='feedback ok';}
+  else{btn.classList.add('wrong');document.querySelectorAll('.opts button').forEach(b=>{if(b.dataset.v===q.ans)b.classList.add('right');});qWrong.push(q);fb.textContent='✗ התשובה הנכונה: '+q.ans;fb.className='feedback no';}
+  document.getElementById('nextQBtn').style.display='block';
+  document.getElementById('nextQBtn').textContent=qIdx<9?'השאלה הבאה ←':'סיום ותוצאות 🏆';
+}
+function nextQ(){
+  qIdx++;
+  if(qIdx>=10)showResults();else showQ();
+}
+function showResults(){
+  document.getElementById('quizArea').style.display='none';
+  const R=document.getElementById('quizResults');
+  R.style.display='block';
+  const pct=qScore*10;
+  let msg='';
+  if(pct>=90)msg='מצוין! 🌟 רמה גבוהה — מוכן לבגרות!';
+  else if(pct>=75)msg='טוב מאוד 👍 עוד קצת תרגול וזה יהיה מושלם.';
+  else if(pct>=60)msg='לא רע — יש בסיס. תחזור על הנושאים שטעית בהם.';
+  else msg='יש על מה לעבוד. תחזור על העמודים — וננסה שוב!';
+  let topicErrs={};
+  qWrong.forEach(q=>{topicErrs[q.topic]=(topicErrs[q.topic]||0)+1;});
+  let topicHtml='';
+  if(Object.keys(topicErrs).length>0){
+    topicHtml='<div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px;margin-top:14px;text-align:right"><b style="color:#fff">נושאים לחזור עליהם:</b><ul style="margin-top:6px;padding-right:20px;font-size:.9rem">';
+    Object.entries(topicErrs).forEach(([t,n])=>{topicHtml+='<li>'+t+' ('+n+' שגיאות)</li>';});
+    topicHtml+='</ul></div>';
+  }
+  R.innerHTML='<div class="results-card"><h3>סיימת את המבחן!</h3><div class="grade-circle">'+pct+'</div><p>'+qScore+' תשובות נכונות מתוך 10</p><p style="margin-top:8px;font-weight:700">'+msg+'</p>'+topicHtml+'<div class="results-actions"><button onclick="startQuiz()">🔄 מבחן חדש</button><button onclick="location.href=\'index.html\'">🏠 לעמוד הבית</button></div></div>';
+}
+
+/* ===== SAMPLE QUESTIONS WITH SOLUTIONS ===== */
+const SAMPLES=[
+  {topic:'משוואה ריבועית',title:'שאלה 1 — פתרון משוואה ריבועית',preview:'x² − 8x + 15 = 0',
+   steps:['a=1, b=−8, c=15','Δ = b² − 4ac = 64 − 60 = 4','√Δ = 2','x₁ = (8+2)/2 = 5','x₂ = (8−2)/2 = 3'],
+   ans:'x = 3, x = 5'},
+
+  {topic:'בעיות מילוליות',title:'שאלה 2 — בעיית גיל',preview:'אבא מבוגר מבנו ב-30 שנים. בעוד 5 שנים הוא יהיה פי 3 מבנו. בן כמה האבא?',
+   steps:['x = גיל הבן עכשיו','גיל האבא = x + 30','בעוד 5 שנים: אבא = x + 35, בן = x + 5','x + 35 = 3(x + 5)','x + 35 = 3x + 15','20 = 2x → x = 10'],
+   ans:'הבן בן 10, האבא בן 40'},
+
+  {topic:'אחוזים',title:'שאלה 3 — אחוזים מורכבים',preview:'מחיר מוצר עלה ב-20% ואז ירד ב-25%. אם המחיר הסופי 720, מהו המחיר המקורי?',
+   steps:['x = מחיר מקורי','אחרי עלייה: x · 1.2','אחרי ירידה: x · 1.2 · 0.75 = x · 0.9','0.9x = 720','x = 720 / 0.9 = 800'],
+   ans:'המחיר המקורי: 800 ש"ח'},
+
+  {topic:'מערכת משוואות',title:'שאלה 4 — מערכת משוואות',preview:'2x + 3y = 12\nx − y = 1',
+   steps:['מהשנייה: x = y + 1','נציב בראשונה: 2(y+1) + 3y = 12','2y + 2 + 3y = 12','5y = 10 → y = 2','x = 2 + 1 = 3'],
+   ans:'x = 3, y = 2'},
+
+  {topic:'משולשים',title:'שאלה 5 — פיתגורס',preview:'סולם באורך 13 מטר נשען על קיר. בסיסו 5 מטרים מהקיר. לאיזה גובה הוא מגיע?',
+   steps:['ניצב 1 = 5 (מרחק מהקיר)','יתר = 13 (אורך הסולם)','ניצב 2 = h (גובה)','5² + h² = 13²','25 + h² = 169','h² = 144 → h = 12'],
+   ans:'הסולם מגיע לגובה 12 מטר'},
+
+  {topic:'טריגונומטריה',title:'שאלה 6 — שאלת טריגונומטריה',preview:'במשולש ישר-זווית, יתר = 20, זווית = 30°. מצאו את שתי הצלעות האחרות.',
+   steps:['נגדית = יתר · sin(30°) = 20 · 0.5 = 10','סמוכה = יתר · cos(30°) = 20 · 0.866 ≈ 17.32','בדיקה: 10² + 17.32² = 100 + 300 = 400 = 20² ✓'],
+   ans:'נגדית = 10, סמוכה ≈ 17.32'},
+
+  {topic:'פונקציה לינארית',title:'שאלה 7 — מציאת קו',preview:'מצאו את משוואת הקו העובר דרך הנקודות A(1, 3) ו-B(4, 12).',
+   steps:['שיפוע: m = (12−3)/(4−1) = 9/3 = 3','y = 3x + b','מציבים A: 3 = 3·1 + b → b = 0','משוואה: y = 3x'],
+   ans:'y = 3x'},
+
+  {topic:'גיאו אנליטית',title:'שאלה 8 — מרחקים ואמצע',preview:'נתונות הנקודות A(2, 1) ו-B(8, 9). מצאו: (א) המרחק AB; (ב) אמצע הקטע.',
+   steps:['(א) d = √((8−2)² + (9−1)²) = √(36+64) = √100 = 10','(ב) M = ((2+8)/2, (1+9)/2) = (5, 5)'],
+   ans:'AB = 10, M = (5, 5)'},
+
+  {topic:'אחוזים',title:'שאלה 9 — בעיית ריבית',preview:'הפקדתי 5000 ש"ח בבנק עם ריבית שנתית 4%. כמה אקבל אחרי שנתיים (ריבית פשוטה)?',
+   steps:['ריבית בשנה: 5000 · 0.04 = 200','אחרי שנתיים: 200 · 2 = 400 ריבית','סך הכל: 5000 + 400 = 5400'],
+   ans:'5400 ש"ח'},
+
+  {topic:'שטחים',title:'שאלה 10 — שטח טרפז',preview:'בטרפז עם בסיסים 6 ו-10, וגובה 4 — מהו השטח?',
+   steps:['נוסחה: S = (סכום בסיסים) · גובה / 2','S = (6 + 10) · 4 / 2','S = 16 · 4 / 2 = 32'],
+   ans:'שטח = 32'}
+];
+
+function renderSamples(){
+  const G=document.getElementById('samplesGrid');G.innerHTML='';
+  SAMPLES.forEach(s=>{
+    const c=document.createElement('div');c.className='sample-card';
+    let stepsHtml='';
+    s.steps.forEach((st,i)=>{stepsHtml+='<div class="step"><b>שלב '+(i+1)+':</b> '+st+'</div>';});
+    c.innerHTML='<div class="lbl">'+s.topic+' · לחצו לפתרון</div><div class="ttl">'+s.title+'</div><div class="preview">'+s.preview.replace(/\n/g,'<br>')+'</div><div class="sol">'+stepsHtml+'<div class="ans">תשובה: '+s.ans+'</div></div>';
+    c.onclick=()=>c.classList.toggle('open');
+    G.appendChild(c);
+  });
+}
+renderSamples();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

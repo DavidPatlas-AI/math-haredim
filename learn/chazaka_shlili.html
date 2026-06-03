@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חזקה של מספר שלילי</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#2b1f3a;--paper:#f0eef6;--accent:#5a3d98;--accent2:#c0392b;--gold:#c9a227;--line:#d7d2e0;--shadow:0 10px 30px rgba(43,31,58,.12);--pos:#2d6a4f;--neg:#c0392b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(90,61,152,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"(−)ⁿ";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:130px;font-weight:900;color:rgba(43,31,58,.05);top:0;left:20px}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.3rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#5e5470;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}
+  section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .signgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+  .sg{background:var(--paper);border-radius:12px;padding:14px;text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;direction:ltr}
+  .sg.plus{border:2px solid var(--pos)}.sg.minus{border:2px solid var(--neg)}
+  .sg .res{font-weight:900}.sg.plus .res{color:var(--pos)}.sg.minus .res{color:var(--neg)}
+  .note{background:rgba(90,61,152,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.15rem;direction:ltr;text-align:left}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .vs .col{border-radius:12px;padding:16px;text-align:center}
+  .vs .a{background:rgba(45,106,79,.1);border:2px solid var(--pos)}
+  .vs .b{background:rgba(192,57,43,.1);border:2px solid var(--neg)}
+  .vs .big{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:900;direction:ltr;margin-bottom:6px}
+  /* animation */
+  .anim-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .anim-pick button{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;direction:ltr}
+  .anim-pick button.active{background:var(--ink);color:#fff}
+  .steps{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+  .step{font-family:'Frank Ruhl Libre',serif;font-size:1.6rem;direction:ltr;text-align:center;background:var(--paper);border-radius:12px;padding:14px;opacity:0;transform:translateY(8px);transition:.4s}
+  .step.show{opacity:1;transform:none}
+  .step .lbl{display:block;font-family:'Heebo';font-size:.8rem;color:#5e5470;margin-top:4px}
+  .anim-controls{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+  .ctrl.play{font-family:'Heebo';font-weight:600;font-size:.9rem;border:2px solid var(--accent);background:var(--accent);color:#fff;padding:7px 14px;border-radius:10px;cursor:pointer}
+  /* game */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#5e5470}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:2.6rem;font-weight:900;direction:ltr;padding:24px;background:var(--paper);border-radius:14px;margin-bottom:16px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--pos);color:#fff;border-color:var(--pos)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#9088a0;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">יחידה 1 · טכניקה אלגברית · פרק ב'</div>
+    <h1>חזקה של מספר שלילי</h1>
+    <div class="sub">מתי שלילי בחזקה יוצא חיובי, ומתי שלילי</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🎬 עם סוגריים / בלי</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <section id="learn">
+    <div class="card">
+      <h2>הכלל <span class="tag">חשוב מאוד</span></h2>
+      <p>חזקה = הכפלת המספר בעצמו כמה פעמים. סימן התוצאה נקבע לפי מספר הסימנים השליליים:</p>
+      <div class="signgrid">
+        <div class="sg plus">(−)<sup>זוגי</sup> = <span class="res">+ חיובי</span></div>
+        <div class="sg minus">(−)<sup>אי-זוגי</sup> = <span class="res">− שלילי</span></div>
+      </div>
+      <div class="examples">
+        <div>(−2)⁴ = 16 &nbsp;(חזקה זוגית → חיובי)</div>
+        <div>(−2)⁵ = −32 &nbsp;(חזקה אי-זוגית → שלילי)</div>
+        <div>(−3)⁴ = (−3)·(−3)·(−3)·(−3) = 81</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>הטעות הנפוצה: סוגריים! <span class="tag">להיזהר</span></h2>
+      <p>ההבדל בין <b style="direction:ltr;display:inline-block">(−x)²</b> לבין <b style="direction:ltr;display:inline-block">−x²</b> הוא קריטי:</p>
+      <div class="vs">
+        <div class="col a">
+          <div class="big">(−2)² = 4</div>
+          החזקה על <b>המספר והסימן</b> → חיובי
+        </div>
+        <div class="col b">
+          <div class="big">−2² = −4</div>
+          החזקה רק על <b>המספר</b>, המינוס נשאר → שלילי
+        </div>
+      </div>
+      <div class="warn">
+        כשאין סוגריים, החזקה מתייחסת רק למספר ולא לסימן:<br>
+        <b style="direction:ltr;display:inline-block">−2⁴ = −16</b> &nbsp; אבל &nbsp; <b style="direction:ltr;display:inline-block">(−2)⁴ = 16</b>
+      </div>
+      <div class="examples" style="margin-top:12px">
+        <div>(−3)⁴ = 81 &nbsp;לעומת&nbsp; −3⁴ = −81</div>
+        <div>(−3)³ = −27 &nbsp;וגם&nbsp; −3³ = −27 &nbsp;(כאן זהה!)</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="anim">
+    <div class="card">
+      <h2>פתרון שלב-שלב 🎬</h2>
+      <p>בחרו תרגיל — שימו לב להבדל בין יש סוגריים לאין סוגריים.</p>
+      <div class="anim-pick" id="animPick"></div>
+      <div class="steps" id="steps"></div>
+      <div class="anim-controls"><button class="ctrl play" id="playBtn">▶ הפעל</button></div>
+    </div>
+  </section>
+
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק החזקות השליליות 🎮</h2>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 · פרק ב' · חזקה של מספר שלילי</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+const SOL=[
+  {expr:'(−2)⁴',steps:[{t:'(−2)·(−2)·(−2)·(−2)',l:'מכפילים 4 פעמים'},{t:'4 סימני מינוס → זוגי → חיובי',l:'כלל הסימן'},{t:'16',l:'התוצאה ✓'}]},
+  {expr:'(−2)⁵',steps:[{t:'(−2)·(−2)·(−2)·(−2)·(−2)',l:'מכפילים 5 פעמים'},{t:'5 סימני מינוס → אי-זוגי → שלילי',l:'כלל הסימן'},{t:'−32',l:'התוצאה ✓'}]},
+  {expr:'(−2)²',steps:[{t:'(−2)·(−2)',l:'יש סוגריים → החזקה על הכל'},{t:'+4',l:'שני מינוסים → חיובי'},{t:'4',l:'התוצאה ✓'}]},
+  {expr:'−2²',steps:[{t:'−(2·2)',l:'אין סוגריים → החזקה רק על המספר'},{t:'−(4)',l:'המינוס נשאר בחוץ'},{t:'−4',l:'התוצאה ✓'}]},
+  {expr:'(−3)³',steps:[{t:'(−3)·(−3)·(−3)',l:'מכפילים 3 פעמים'},{t:'3 מינוסים → אי-זוגי → שלילי',l:'כלל הסימן'},{t:'−27',l:'התוצאה ✓'}]}
+];
+let curSol=0;const pw=document.getElementById('animPick');
+SOL.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.expr;b.onclick=()=>{curSol=i;mk();document.getElementById('steps').innerHTML='';};pw.appendChild(b);});
+function mk(){[...pw.children].forEach((b,i)=>b.classList.toggle('active',i===curSol));}mk();
+document.getElementById('playBtn').onclick=()=>{const w=document.getElementById('steps');w.innerHTML='';SOL[curSol].steps.forEach((st,i)=>{const d=document.createElement('div');d.className='step';d.innerHTML=st.t+'<span class="lbl">'+st.l+'</span>';w.appendChild(d);setTimeout(()=>d.classList.add('show'),i*950+200);});};
+
+const POOL=[
+  ['(−5)²',25],['(−12)²',144],['−13²',-169],['−5²',-25],['(−2)³·(−5)',40],['(−20)²:10',40],
+  ['(−10)²:(−5)',-20],['(−22)²:(−11)',-44],['(−3)²',9],['(−2)⁴',16],['(−3)³',-27],['(−2)⁵',-32],
+  ['−7²',-49],['3³−(−3)²',18],['(−2)²+(−2)³·(−3)²',-68],['−(−2)⁵−3³',5]
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;document.getElementById('turn').textContent='תורו של: '+name;}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){document.getElementById('feedback').textContent='';document.getElementById('nextBtn').style.display='none';const[expr,ans]=POOL[Math.floor(Math.random()*POOL.length)];cur={expr,ans};document.getElementById('question').textContent=expr;const opts=new Set([ans]);while(opts.size<4){let d=ans+Math.floor(Math.random()*16-8);if(d!==ans)opts.add(d);else opts.add(ans+opts.size*4+1);}const O=document.getElementById('opts');O.innerHTML='';shuffle([...opts]).forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});updateScore();if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.7?btns.find(x=>+x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,+pick.textContent);},2000);}else O.style.pointerEvents='auto';}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.expr+' = '+cur.ans;fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>+x.textContent===cur.ans).classList.add('right');fb.textContent='✗ לא מדויק. התשובה: '+cur.ans;fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>+x.textContent===cur.ans).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

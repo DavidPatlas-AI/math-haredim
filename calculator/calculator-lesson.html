@@ -1,0 +1,1227 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ללמוד מחשבון</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap');
+
+:root {
+  --bg: #FAFAF7;
+  --card: #FFFFFF;
+  --dark: #1A1A2E;
+  --accent: #2563EB;
+  --accent-light: #EFF6FF;
+  --orange: #F97316;
+  --orange-light: #FFF7ED;
+  --green: #16A34A;
+  --green-light: #F0FDF4;
+  --red: #DC2626;
+  --red-light: #FEF2F2;
+  --yellow: #CA8A04;
+  --yellow-light: #FEFCE8;
+  --text: #111827;
+  --sub: #6B7280;
+  --border: #E5E7EB;
+  --radius: 16px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Heebo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  direction: rtl;
+}
+
+/* ── SCREENS ── */
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* ── WELCOME ── */
+#screen-welcome {
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: linear-gradient(160deg, #1A1A2E 0%, #16213E 60%, #0F3460 100%);
+  color: #fff;
+  text-align: center;
+}
+.welcome-emoji { font-size: 72px; margin-bottom: 20px; animation: bounce 2s infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.welcome-title { font-size: 32px; font-weight: 900; margin-bottom: 12px; line-height: 1.2; }
+.welcome-sub { font-size: 17px; color: rgba(255,255,255,0.75); line-height: 1.7; margin-bottom: 36px; max-width: 340px; }
+.welcome-chips { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:40px; }
+.chip { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); border-radius:100px; padding:7px 16px; font-size:14px; }
+.big-btn {
+  background: #2563EB;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 18px 48px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(37,99,235,0.5);
+  transition: all 0.2s;
+  width: 100%;
+  max-width: 320px;
+}
+.big-btn:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(37,99,235,0.6); }
+.big-btn:active { transform:translateY(0); }
+
+/* ── MAP ── */
+#screen-map {
+  background: var(--bg);
+  padding: 0;
+}
+.map-header {
+  background: var(--dark);
+  color: #fff;
+  padding: 20px 24px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.map-header h2 { font-size: 20px; font-weight: 700; }
+.map-header p { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+.progress-track {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lesson-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.lesson-card::before {
+  content: '';
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--border);
+  transition: background 0.2s;
+}
+.lesson-card.done { border-color: var(--green); }
+.lesson-card.done::before { background: var(--green); }
+.lesson-card.active-lesson { border-color: var(--accent); box-shadow: 0 4px 20px rgba(37,99,235,0.15); }
+.lesson-card.active-lesson::before { background: var(--accent); }
+.lesson-card.locked { opacity: 0.4; cursor: default; }
+.lesson-card:not(.locked):hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
+
+.lesson-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+.lesson-icon.blue { background: var(--accent-light); }
+.lesson-icon.orange { background: var(--orange-light); }
+.lesson-icon.green { background: var(--green-light); }
+.lesson-icon.yellow { background: var(--yellow-light); }
+.lesson-icon.red { background: var(--red-light); }
+
+.lesson-info { flex: 1; }
+.lesson-title { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+.lesson-desc { font-size: 13px; color: var(--sub); }
+.lesson-badge {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+/* ── LESSON ── */
+#screen-lesson {
+  background: var(--bg);
+  flex-direction: column;
+}
+
+.lesson-header {
+  background: var(--dark);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.back-btn {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #fff;
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.lesson-header-info { flex: 1; }
+.lesson-header-title { font-size: 16px; font-weight: 700; color: #fff; }
+.lesson-header-step { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 1px; }
+.xp-badge { background: rgba(255,197,0,0.2); border:1px solid rgba(255,197,0,0.4); border-radius:100px; padding:4px 12px; font-size:13px; color:#FCD34D; font-weight:700; }
+
+.progress-bar-outer {
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+}
+.progress-bar-inner {
+  height: 100%;
+  background: linear-gradient(90deg, #2563EB, #60A5FA);
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* STEP CONTAINER */
+.step-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+/* INSTRUCTION CARD */
+.instruction-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  padding: 24px 20px;
+  text-align: center;
+}
+.instruction-big { font-size: 52px; margin-bottom: 12px; }
+.instruction-title { font-size: 22px; font-weight: 900; margin-bottom: 10px; line-height: 1.3; color: var(--dark); }
+.instruction-text { font-size: 16px; color: var(--sub); line-height: 1.7; }
+.instruction-text strong { color: var(--text); }
+
+/* KEY HIGHLIGHT */
+.key-spotlight {
+  background: var(--dark);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.spotlight-label { font-size: 13px; color: rgba(255,255,255,0.5); }
+.spotlight-key {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.3);
+  border-bottom: 5px solid rgba(0,0,0,0.4);
+  border-radius: 12px;
+  padding: 12px 28px;
+  box-shadow: 0 0 0 4px rgba(37,99,235,0.4), 0 0 30px rgba(37,99,235,0.6);
+  animation: key-pulse 1.5s ease-in-out infinite;
+}
+.spotlight-key.orange { box-shadow: 0 0 0 4px rgba(249,115,22,0.5), 0 0 30px rgba(249,115,22,0.7); border-color: #F97316; }
+@keyframes key-pulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(37,99,235,0.4), 0 0 20px rgba(37,99,235,0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(37,99,235,0.2), 0 0 40px rgba(37,99,235,0.8); }
+}
+.spotlight-arrow { font-size: 36px; animation: arrow-bounce 1s ease-in-out infinite; }
+@keyframes arrow-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+.spotlight-location {
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ANALOGY BOX */
+.analogy-box {
+  background: var(--yellow-light);
+  border: 2px solid #FDE68A;
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.analogy-icon { font-size: 28px; flex-shrink: 0; }
+.analogy-text { font-size: 15px; line-height: 1.7; color: #78350F; }
+
+/* MINI CALC DISPLAY */
+.calc-display {
+  background: #0d1117;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-family: 'Share Tech Mono', monospace;
+}
+.calc-display-screen {
+  background: linear-gradient(180deg, #9db08e, #b0c0a2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  text-align: left;
+  direction: ltr;
+}
+.calc-display-input { font-size: 13px; color: #2a4020; min-height: 18px; }
+.calc-display-result { font-size: 26px; font-weight: 700; color: #0d1a08; margin-top: 4px; }
+
+/* QUESTION CARD */
+.question-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  padding: 24px 20px;
+}
+.question-label { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 1px; margin-bottom: 10px; }
+.question-text { font-size: 20px; font-weight: 900; margin-bottom: 20px; line-height: 1.4; }
+.options-grid { display:flex; flex-direction:column; gap:10px; }
+.option-btn {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  text-align: right;
+  transition: all 0.15s;
+  direction: rtl;
+}
+.option-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-light); }
+.option-btn.correct { background: var(--green-light); border-color: var(--green); color: var(--green); font-weight: 700; }
+.option-btn.wrong { background: var(--red-light); border-color: var(--red); color: var(--red); }
+.option-btn:disabled { cursor: default; }
+
+/* FEEDBACK */
+.feedback-bar {
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: none;
+  gap: 12px;
+  align-items: flex-start;
+}
+.feedback-bar.show { display:flex; }
+.feedback-bar.correct { background: var(--green-light); border: 2px solid var(--green); }
+.feedback-bar.wrong { background: var(--red-light); border: 2px solid var(--red); }
+.feedback-icon { font-size: 28px; flex-shrink: 0; }
+.feedback-content { flex: 1; }
+.feedback-title { font-size: 17px; font-weight: 800; margin-bottom: 4px; }
+.feedback-bar.correct .feedback-title { color: var(--green); }
+.feedback-bar.wrong .feedback-title { color: var(--red); }
+.feedback-body { font-size: 14px; line-height: 1.6; color: var(--text); }
+
+/* SEQUENCE CARD — show which buttons to press in order */
+.sequence-card {
+  background: var(--dark);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.sequence-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 14px; font-weight: 700; letter-spacing: 1px; }
+.sequence-steps { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.seq-key {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-bottom: 3px solid rgba(0,0,0,0.4);
+  border-radius: 8px;
+  padding: 6px 12px;
+  direction: ltr;
+}
+.seq-key.orange { background: rgba(249,115,22,0.25); border-color: #F97316; color: #FED7AA; }
+.seq-key.blue { background: rgba(37,99,235,0.3); border-color: #60A5FA; color: #BFDBFE; }
+.seq-arrow { color: rgba(255,255,255,0.3); font-size: 12px; }
+.seq-result { font-size: 13px; color: #86EFAC; background: rgba(22,163,74,0.2); border: 1px solid rgba(22,163,74,0.4); border-radius: 8px; padding: 6px 12px; font-family: 'Share Tech Mono', monospace; }
+
+/* NAV BUTTONS */
+.nav-area {
+  padding: 16px 20px 32px;
+  display: flex;
+  gap: 10px;
+}
+.nav-next {
+  flex: 1;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+}
+.nav-next:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(37,99,235,0.45); }
+.nav-next:active { transform:translateY(0); }
+.nav-next:disabled { background: var(--border); color: var(--sub); box-shadow:none; cursor:default; transform:none; }
+
+/* CELEBRATION */
+#screen-celebration {
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: linear-gradient(160deg, #064E3B 0%, #065F46 50%, #047857 100%);
+  color: #fff;
+  text-align: center;
+}
+.stars { font-size: 60px; margin-bottom: 16px; animation: star-pop 0.5s ease-out; }
+@keyframes star-pop { from{transform:scale(0) rotate(-20deg)} to{transform:scale(1) rotate(0)} }
+.celeb-title { font-size: 34px; font-weight: 900; margin-bottom: 10px; }
+.celeb-sub { font-size: 17px; color: rgba(255,255,255,0.8); margin-bottom: 32px; line-height: 1.6; }
+.celeb-xp {
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: var(--radius);
+  padding: 20px 32px;
+  margin-bottom: 32px;
+  font-size: 48px;
+  font-weight: 900;
+}
+.celeb-xp span { display:block; font-size:14px; font-weight:400; opacity:0.7; margin-top:4px; }
+
+/* CONFETTI */
+.confetti-piece {
+  position: fixed;
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  animation: confetti-fall linear forwards;
+  pointer-events: none;
+  z-index: 999;
+}
+@keyframes confetti-fall {
+  0% { transform: translateY(-10px) rotate(0deg); opacity:1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity:0; }
+}
+
+/* TOOLTIP TAG */
+.tag {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid #BFDBFE;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Share Tech Mono', monospace;
+  direction: ltr;
+}
+.tag.orange { background: var(--orange-light); color: var(--orange); border-color: #FED7AA; }
+
+/* DIAGRAM — calc zones */
+.calc-zones {
+  background: var(--dark);
+  border-radius: var(--radius);
+  padding: 20px;
+  position: relative;
+}
+.zone {
+  background: rgba(255,255,255,0.07);
+  border: 1px dashed rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.zone-dot { width:10px;height:10px;border-radius:50%;flex-shrink:0; }
+.zone-name { font-size: 14px; font-weight: 700; color: #fff; }
+.zone-desc { font-size: 12px; color: rgba(255,255,255,0.55); margin-top:2px; }
+.zone-arrow-badge { font-family:'Share Tech Mono',monospace; font-size:11px; background:rgba(255,255,255,0.1); border-radius:6px; padding:2px 7px; color:rgba(255,255,255,0.7); margin-right:auto; flex-shrink:0; direction:ltr; }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════ SCREEN: WELCOME ══════════════ -->
+<div class="screen active" id="screen-welcome">
+  <div class="welcome-emoji">🧮</div>
+  <div class="welcome-title">ברוך הבא!<br>נלמד את המחשבון</div>
+  <div class="welcome-sub">
+    שיעורים קצרים וברורים.<br>
+    לא צריך לדעת כלום מראש.<br>
+    <strong style="color:#fff">כל שלב מסביר את עצמו.</strong>
+  </div>
+  <div class="welcome-chips">
+    <span class="chip">✅ צעד אחר צעד</span>
+    <span class="chip">🔴 מה זה כל כפתור</span>
+    <span class="chip">🏆 תרגול אמיתי</span>
+    <span class="chip">💡 הסברים פשוטים</span>
+  </div>
+  <button class="big-btn" onclick="showScreen('screen-map')">מתחילים ▶</button>
+</div>
+
+<!-- ══════════════ SCREEN: MAP ══════════════ -->
+<div class="screen" id="screen-map">
+  <div class="map-header">
+    <h2>השיעורים שלי</h2>
+    <p>לחץ על שיעור כדי להתחיל</p>
+  </div>
+  <div class="progress-track" id="lesson-map"></div>
+</div>
+
+<!-- ══════════════ SCREEN: LESSON ══════════════ -->
+<div class="screen" id="screen-lesson">
+  <div class="lesson-header">
+    <button class="back-btn" onclick="showScreen('screen-map')">←</button>
+    <div class="lesson-header-info">
+      <div class="lesson-header-title" id="lh-title">שיעור</div>
+      <div class="lesson-header-step" id="lh-step">שלב 1</div>
+    </div>
+    <div class="xp-badge" id="lh-xp">0 ⭐</div>
+  </div>
+  <div class="progress-bar-outer">
+    <div class="progress-bar-inner" id="prog-bar" style="width:0%"></div>
+  </div>
+  <div class="step-container" id="step-container"></div>
+  <div class="nav-area">
+    <button class="nav-next" id="nav-next-btn" onclick="nextStep()">המשך ▶</button>
+  </div>
+</div>
+
+<!-- ══════════════ SCREEN: CELEBRATION ══════════════ -->
+<div class="screen" id="screen-celebration">
+  <div class="stars">🌟🌟🌟</div>
+  <div class="celeb-title" id="celeb-title">כל הכבוד!</div>
+  <div class="celeb-sub" id="celeb-sub">סיימת את השיעור!</div>
+  <div class="celeb-xp">+<span id="celeb-xp-num">10</span>⭐<span>נקודות הרוויחת</span></div>
+  <button class="big-btn" onclick="showScreen('screen-map')" style="background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.4);box-shadow:none;">← חזור לשיעורים</button>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  DATA — LESSONS
+// ══════════════════════════════════════════
+const LESSONS = [
+  {
+    id: 'intro',
+    title: 'היכרות עם המחשבון',
+    desc: 'מה זה בכלל ואיפה כל כפתור',
+    icon: '🔍',
+    iconColor: 'blue',
+    xp: 10,
+    steps: [
+      {
+        type: 'explain',
+        emoji: '🧮',
+        title: 'זה המחשבון שלך',
+        text: 'המחשבון הזה נקרא <strong>Casio fx-991EX</strong>.\nהוא זה שמותר להביא לבגרות.\nנלמד אותו ביחד — כפתור אחד בכל פעם.',
+      },
+      {
+        type: 'explain',
+        emoji: '📺',
+        title: 'המסך — שם רואים את התוצאה',
+        text: 'בחלק העליון יש <strong>מסך ירקרק</strong>.\nכשתלחץ מספרים — הם יופיעו שם.\nכשתלחץ = — התוצאה תופיע שם.',
+        display: { input: '5 + 3', result: '8' }
+      },
+      {
+        type: 'zone-map',
+        emoji: '🗺️',
+        title: 'המחשבון מחולק ל-4 אזורים',
+        text: 'כדי שלא תאבד — הנה מפה:',
+        zones: [
+          { color: '#3B82F6', name: 'כפתורי תפריט', desc: 'MENU, DEL, AC — שורה עליונה', badge: 'שורה 1' },
+          { color: '#F97316', name: 'SHIFT ו-ALPHA', desc: 'כפתורים שמפעילים פונקציות נסתרות', badge: 'שורה 2' },
+          { color: '#8B5CF6', name: 'כפתורי מתמטיקה', desc: 'sin, cos, log, שורש, שבר...', badge: 'אמצע' },
+          { color: '#16A34A', name: 'מספרים ופעולות', desc: '0-9 ועם +−×÷=', badge: 'למטה' },
+        ]
+      },
+      {
+        type: 'key-intro',
+        keyText: 'AC',
+        keyColor: '',
+        arrow: '⬆️',
+        location: 'בפינה הימנית העליונה\nכפתור אפור כהה',
+        title: 'כפתור AC — מנקה הכל',
+        text: 'AC = "All Clear" — נקה הכל.\nלחץ אותו תמיד כשרוצים <strong>להתחיל חישוב חדש</strong>.\nכמו מחיקת לוח.',
+        analogy: { icon: '🧹', text: 'AC זה כמו מטאטא — מנקה את כל מה שהיה על המסך ומתחיל מחדש.' }
+      },
+      {
+        type: 'key-intro',
+        keyText: 'DEL',
+        keyColor: '',
+        arrow: '⬆️',
+        location: 'ממש משמאל ל-AC',
+        title: 'כפתור DEL — מוחק אות אחת',
+        text: 'DEL = "Delete" — מוחק.\nלחצת על הספרה הלא נכונה? לחץ DEL — ימחק <strong>רק את האחרונה</strong>.',
+        analogy: { icon: '✏️', text: 'DEL זה כמו מחק — מוחק רק את האות האחרונה, לא את הכל.' }
+      },
+      {
+        type: 'quiz',
+        question: 'רצית לחשב 5+3 אבל לחצת בטעות 5+4. איזה כפתור תלחץ?',
+        options: ['AC — מנקה הכל', 'DEL — מוחק את ה-4 האחרונה', 'MENU'],
+        correct: 1,
+        explanation: 'נכון מאוד! DEL מוחק רק את האחרונה. אז תלחץ DEL ואז 3 — ויצא 5+3.'
+      },
+      {
+        type: 'quiz',
+        question: 'סיימת חישוב ורוצה להתחיל בחישוב חלוטין חדש. מה תלחץ?',
+        options: ['DEL כמה פעמים', 'AC — מנקה הכל בבת אחת', 'לכבות ולהדליק'],
+        correct: 1,
+        explanation: 'בדיוק! AC מנקה הכל בלחיצה אחת. הרבה יותר מהיר מ-DEL כמה פעמים.'
+      },
+    ]
+  },
+
+  {
+    id: 'equals',
+    title: 'כפתור השווה וחשבון פשוט',
+    desc: 'איך מחשבים 5+3, 10−4, 6×3',
+    icon: '🟰',
+    iconColor: 'blue',
+    xp: 10,
+    steps: [
+      {
+        type: 'key-intro',
+        keyText: '=',
+        keyColor: 'blue',
+        arrow: '⬇️',
+        location: 'בפינה הימנית התחתונה — כפתור כחול גדול',
+        title: 'כפתור = — מחשב את התוצאה',
+        text: 'כשסיימת להקיש את החישוב — לחץ <strong>=</strong>.\nהמחשבון יחשב ויציג את התשובה.',
+        analogy: { icon: '🍳', text: 'כמו לחיצה על "הגש" — אחרי שהכנסת את כל הנתונים, לוחצים = ומקבלים את התוצאה.' }
+      },
+      {
+        type: 'sequence',
+        title: 'נחשב 5 + 3',
+        text: 'תראה בדיוק מה ללחוץ:',
+        steps: [
+          { key: '5', color: '' },
+          { key: '+', color: '' },
+          { key: '3', color: '' },
+          { key: '=', color: 'blue' },
+          { key: '8', color: 'result' },
+        ]
+      },
+      {
+        type: 'sequence',
+        title: 'נחשב 12 × 4',
+        text: 'כפתור כפל הוא ×:',
+        steps: [
+          { key: '1', color: '' }, { key: '2', color: '' },
+          { key: '×', color: '' },
+          { key: '4', color: '' },
+          { key: '=', color: 'blue' },
+          { key: '48', color: 'result' },
+        ]
+      },
+      {
+        type: 'quiz',
+        question: 'רצית לחשב 7 × 8. מה הסדר הנכון?',
+        options: ['= ואז 7×8', 'לחץ 7, אחכ ×, אחכ 8, אחכ =', 'לחץ × קודם'],
+        correct: 1,
+        explanation: 'נכון! תמיד: מספר → פעולה → מספר → =. הסדר הטבעי כמו שכותבים.'
+      },
+      {
+        type: 'quiz',
+        question: 'מה התוצאה של 20 ÷ 4 = ?',
+        options: ['80', '5', '24'],
+        correct: 1,
+        explanation: '20 חלקי 4 = 5. כפתור החלוקה הוא ÷ — ממש כמו בכתב.'
+      },
+    ]
+  },
+
+  {
+    id: 'shift',
+    title: 'כפתור SHIFT — המפתח',
+    desc: 'הכפתור הכי חשוב שיש',
+    icon: '🔑',
+    iconColor: 'orange',
+    xp: 15,
+    steps: [
+      {
+        type: 'key-intro',
+        keyText: 'SHIFT',
+        keyColor: 'orange',
+        arrow: '⬆️',
+        location: 'שורה שנייה מלמעלה, הכפתור הכתום הראשון מימין',
+        title: 'SHIFT — כפתור קסם',
+        text: 'על כל כפתור יש כתוב קטן <strong style="color:#F97316">כתום</strong> מעליו.\nכשתלחץ SHIFT קודם — הלחיצה הבאה תפעיל את הכתוב הכתום הזה.',
+        analogy: { icon: '🔑', text: 'SHIFT זה כמו מפתח — הוא לא עושה כלום לבד. אבל אחרי שלוחצים אותו, הכפתור הבא "נפתח" לפונקציה הנסתרת שלו.' }
+      },
+      {
+        type: 'explain',
+        emoji: '🟠',
+        title: 'מה הכתוב הכתום?',
+        text: 'תסתכל על כפתור <strong>x²</strong> (ריבוע).\nמעליו כתוב בכתום: <strong>√</strong> (שורש).\n\nבלי SHIFT: x² = ריבוע\nעם SHIFT לפני: √ = שורש',
+      },
+      {
+        type: 'sequence',
+        title: 'איך עושים שורש של 25?',
+        text: 'SHIFT ← x² ← 25 ← =',
+        steps: [
+          { key: 'SHIFT', color: 'orange' },
+          { key: 'x²(√)', color: '' },
+          { key: '2', color: '' },
+          { key: '5', color: '' },
+          { key: '=', color: 'blue' },
+          { key: '5', color: 'result' },
+        ]
+      },
+      {
+        type: 'quiz',
+        question: 'SHIFT לבד — מה קורה?',
+        options: ['מחשב משהו', 'כלום — צריך ללחוץ כפתור נוסף אחריו', 'מנקה את המסך'],
+        correct: 1,
+        explanation: 'נכון! SHIFT לבד לא עושה כלום. הוא רק "מכין" את הכפתור הבא לפונקציה הכתומה שלו.'
+      },
+      {
+        type: 'quiz',
+        question: 'רוצים לחשב √49. מה הסדר?',
+        options: [
+          '49 ← √ ← =',
+          'SHIFT ← x² ← 49 ← =',
+          'x² ← 49 ← =',
+        ],
+        correct: 1,
+        explanation: 'בדיוק! SHIFT קודם, ואז x² (שמעליו כתוב בכתום √), ואז את המספר, ואז =. התשובה: 7.'
+      },
+    ]
+  },
+
+  {
+    id: 'fractions',
+    title: 'שברים',
+    desc: 'איך כותבים ¾ במחשבון',
+    icon: '½',
+    iconColor: 'green',
+    xp: 15,
+    steps: [
+      {
+        type: 'explain',
+        emoji: '🍕',
+        title: 'שבר — זה חלק מדבר שלם',
+        text: 'כשכותבים ¾ — זה אומר:\n3 מתוך 4 חלקים.\nהמחשבון יודע לעבוד עם שברים בדיוק כמו שכתוב.',
+        analogy: { icon: '🍕', text: 'פיצה חתוכה ל-4 חלקים. אכלת 3. אכלת ¾ מהפיצה.' }
+      },
+      {
+        type: 'key-intro',
+        keyText: 'a/b',
+        keyColor: '',
+        arrow: '◀️',
+        location: 'שורת הפונקציות האמצעית, הכפתור הרביעי מימין',
+        title: 'כפתור a/b — כותב שבר',
+        text: 'לוחצים <strong>a/b</strong> ומופיעה תיבה:\n⬜ (למעלה) ← שם כותבים את המונה (3)\n⬜ (למטה) ← שם כותבים את המכנה (4)',
+      },
+      {
+        type: 'sequence',
+        title: 'איך כותבים ¾?',
+        text: 'a/b ← 3 ← ▼ ← 4 ← =',
+        steps: [
+          { key: 'a/b', color: '' },
+          { key: '3', color: '' },
+          { key: '▼', color: '' },
+          { key: '4', color: '' },
+          { key: '=', color: 'blue' },
+          { key: '3/4', color: 'result' },
+        ]
+      },
+      {
+        type: 'sequence',
+        title: 'חיבור שברים: ½ + ⅓',
+        text: 'נכניס כל שבר בנפרד:',
+        steps: [
+          { key: 'a/b', color: '' }, { key: '1', color: '' }, { key: '▼', color: '' }, { key: '2', color: '' },
+          { key: '+', color: '' },
+          { key: 'a/b', color: '' }, { key: '1', color: '' }, { key: '▼', color: '' }, { key: '3', color: '' },
+          { key: '=', color: 'blue' },
+          { key: '5/6', color: 'result' },
+        ]
+      },
+      {
+        type: 'quiz',
+        question: 'רוצים להכניס את השבר ⅗. מה לוחצים קודם?',
+        options: ['3, אחכ ÷, אחכ 5', 'a/b, אחכ 3, אחכ ▼, אחכ 5', 'SHIFT ואז 3/5'],
+        correct: 1,
+        explanation: 'נכון! a/b פותח את תיבת השבר. אחכ מונה ▼ מכנה. פשוט!'
+      },
+      {
+        type: 'quiz',
+        question: 'לחצת a/b ורשמת 2. עכשיו רוצה לרדת לשורת המכנה. מה תלחץ?',
+        options: ['חץ ▼ (למטה)', '÷', 'SHIFT'],
+        correct: 0,
+        explanation: 'בדיוק! חץ ▼ מוריד אותך לתיבת המכנה. אז תכניס את המכנה ותלחץ =.'
+      },
+    ]
+  },
+
+  {
+    id: 'power',
+    title: 'חזקות',
+    desc: 'מה זה 2³ ואיך מחשבים',
+    icon: 'xⁿ',
+    iconColor: 'yellow',
+    xp: 15,
+    steps: [
+      {
+        type: 'explain',
+        emoji: '🔢',
+        title: 'מה זה חזקה?',
+        text: '2³ אומר: 2 × 2 × 2 = 8\nכלומר — <strong>2 כפול עצמו 3 פעמים</strong>.\nהמספר הגדול (2) נקרא <strong>בסיס</strong>.\nהמספר הקטן למעלה (3) נקרא <strong>מעריך</strong>.',
+        analogy: { icon: '📦', text: 'חדר שגודלו 3×3×3 — זה 3³ = 27 קוביות. המעריך אומר כמה מימדים.' }
+      },
+      {
+        type: 'key-intro',
+        keyText: 'x□',
+        keyColor: '',
+        arrow: '◀️',
+        location: 'שורת הפונקציות, הכפתור האחרון משמאל בשורה',
+        title: 'כפתור x□ — מעלה לחזקה',
+        text: 'קודם כותבים את <strong>הבסיס</strong> (המספר הגדול).\nאחכ לוחצים <strong>x□</strong>.\nאחכ כותבים את <strong>המעריך</strong> (המספר הקטן למעלה).',
+      },
+      {
+        type: 'sequence',
+        title: 'נחשב 2³',
+        text: '2 ← x□ ← 3 ← =',
+        steps: [
+          { key: '2', color: '' },
+          { key: 'x□', color: '' },
+          { key: '3', color: '' },
+          { key: '=', color: 'blue' },
+          { key: '8', color: 'result' },
+        ]
+      },
+      {
+        type: 'explain',
+        emoji: '⚠️',
+        title: 'טיפ חשוב!',
+        text: 'אחרי שכתבת את המעריך — לחץ <strong>חץ ימינה ←</strong> לפני שממשיך.\nאחרת המחשבון לא יבין שסיימת את המעריך.',
+        analogy: { icon: '🚪', text: 'כמו לצאת מהחדר לפני שעושים משהו אחר. חץ ימינה = יצאת ממצב המעריך.' }
+      },
+      {
+        type: 'quiz',
+        question: 'רוצים לחשב 5². מה הסדר?',
+        options: [
+          'x□ ← 5 ← 2 ← =',
+          '5 ← x□ ← 2 ← =',
+          '2 ← x□ ← 5 ← =',
+        ],
+        correct: 1,
+        explanation: 'נכון! קודם הבסיס (5), אחכ x□, אחכ המעריך (2), אחכ =. תשובה: 25.'
+      },
+      {
+        type: 'quiz',
+        question: '3³ = ?',
+        options: ['9', '27', '6'],
+        correct: 1,
+        explanation: '3³ = 3×3×3 = 27. המחשבון מחשב זאת בשנייה!'
+      },
+    ]
+  },
+
+  {
+    id: 'sincos',
+    title: 'sin ו-cos',
+    desc: 'מה הם ואיך משתמשים בהם',
+    icon: '📐',
+    iconColor: 'red',
+    xp: 20,
+    steps: [
+      {
+        type: 'explain',
+        emoji: '📐',
+        title: 'sin ו-cos — על משולשים',
+        text: 'sin ו-cos הם <strong>פונקציות טריגונומטריות</strong>.\nבפשטות — הם עוזרים לחשב <strong>צלעות וזוויות של משולשים</strong>.\nבבגרות 3 יחידות — פוגשים אותם הרבה.',
+        analogy: { icon: '🏔️', text: 'הר בזווית 30°, הרוחב שלו 100 מ׳ — sin(30°) יגיד לך מה הגובה. המחשבון עושה את החישוב.' }
+      },
+      {
+        type: 'explain',
+        emoji: '⚙️',
+        title: 'חשוב! מצב Degree',
+        text: 'המחשבון יכול לעבוד ב-2 מצבים:\n• <strong>Degree (D)</strong> — זוויות בדרגות (30°, 90°...)\n• <strong>Radian (R)</strong> — זוויות ב"רדיאנים" (מתקדם)\n\nבבגרות ישראלית — תמיד <strong>Degree</strong>!\nתראה D קטן על המסך — סימן שאתה במצב הנכון.',
+        analogy: { icon: '🌡️', text: 'כמו מדחום — יש מעלות צלסיוס ופרנהייט. אם אתה בפרנהייט ורוצה צלסיוס — תקבל תשובה שגויה. חשוב לבדוק שאתה ב-D!' }
+      },
+      {
+        type: 'key-intro',
+        keyText: 'sin',
+        keyColor: '',
+        arrow: '◀️',
+        location: 'שורת הפונקציות, הכפתור הראשון מימין',
+        title: 'כפתור sin',
+        text: 'לוחצים <strong>sin</strong> — על המסך יופיע: sin(\nאז מקלידים את הזווית בדרגות ולוחצים =.',
+      },
+      {
+        type: 'sequence',
+        title: 'חישוב sin(30°)',
+        text: 'sin ← 30 ← =',
+        steps: [
+          { key: 'sin', color: '' },
+          { key: '3', color: '' },
+          { key: '0', color: '' },
+          { key: '=', color: 'blue' },
+          { key: '0.5', color: 'result' },
+        ]
+      },
+      {
+        type: 'sequence',
+        title: 'חישוב cos(60°)',
+        text: 'cos ← 60 ← =',
+        steps: [
+          { key: 'cos', color: '' },
+          { key: '6', color: '' },
+          { key: '0', color: '' },
+          { key: '=', color: 'blue' },
+          { key: '0.5', color: 'result' },
+        ]
+      },
+      {
+        type: 'key-intro',
+        keyText: 'sin⁻¹',
+        keyColor: 'orange',
+        arrow: '⬆️',
+        location: 'כתוב בכתום מעל כפתור sin — צריך לחץ SHIFT קודם',
+        title: 'sin⁻¹ — הפוך: מוצאים זווית מ-sin',
+        text: 'sin⁻¹ הולך הפוך:\nיודעים את הערך, <strong>רוצים למצוא את הזווית</strong>.\nלחץ: <strong>SHIFT → sin</strong> ← ואז הערך ← =.',
+      },
+      {
+        type: 'sequence',
+        title: 'sin⁻¹(0.5) = ?',
+        text: 'SHIFT ← sin ← 0.5 ← =',
+        steps: [
+          { key: 'SHIFT', color: 'orange' },
+          { key: 'sin', color: '' },
+          { key: '0', color: '' }, { key: '.', color: '' }, { key: '5', color: '' },
+          { key: '=', color: 'blue' },
+          { key: '30°', color: 'result' },
+        ]
+      },
+      {
+        type: 'quiz',
+        question: 'cos(0°) = כמה?',
+        options: ['0', '1', '0.5'],
+        correct: 1,
+        explanation: 'cos(0°) = 1. תמיד! cos של אפס דרגות הוא תמיד 1 — ערך מקסימלי.'
+      },
+      {
+        type: 'quiz',
+        question: 'רוצים לדעת: "הזווית שה-sin שלה הוא 1". מה מקישים?',
+        options: [
+          'sin ← 1 ← =',
+          'SHIFT ← sin ← 1 ← =',
+          'SHIFT ← cos ← 1 ← =',
+        ],
+        correct: 1,
+        explanation: 'נכון! SHIFT+sin נותן sin⁻¹ — מוצא את הזווית. התשובה: 90°.'
+      },
+    ]
+  },
+];
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let progress = JSON.parse(localStorage.getItem('calc_progress') || '{}');
+let currentLesson = null;
+let currentStepIdx = 0;
+let stepXP = 0;
+let questionAnswered = false;
+
+function saveProgress() {
+  try { localStorage.setItem('calc_progress', JSON.stringify(progress)); } catch(e) {}
+}
+
+// ══════════════════════════════════════════
+//  SCREENS
+// ══════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'screen-map') renderMap();
+  window.scrollTo(0,0);
+}
+
+// ══════════════════════════════════════════
+//  MAP
+// ══════════════════════════════════════════
+function renderMap() {
+  const container = document.getElementById('lesson-map');
+  container.innerHTML = '';
+  LESSONS.forEach((lesson, i) => {
+    const done = progress[lesson.id];
+    const prev = i === 0 || progress[LESSONS[i-1].id];
+    const locked = !prev;
+    const div = document.createElement('div');
+    div.className = 'lesson-card' + (done ? ' done' : (locked ? ' locked' : ' active-lesson'));
+    div.innerHTML = `
+      <div class="lesson-icon ${lesson.iconColor}"><span>${lesson.icon}</span></div>
+      <div class="lesson-info">
+        <div class="lesson-title">${lesson.title}</div>
+        <div class="lesson-desc">${lesson.desc}</div>
+      </div>
+      <div class="lesson-badge">${done ? '✅' : (locked ? '🔒' : '▶️')}</div>
+    `;
+    if (!locked) div.onclick = () => startLesson(lesson);
+    container.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════
+//  LESSON ENGINE
+// ══════════════════════════════════════════
+function startLesson(lesson) {
+  currentLesson = lesson;
+  currentStepIdx = 0;
+  stepXP = 0;
+  questionAnswered = false;
+  document.getElementById('lh-title').textContent = lesson.title;
+  document.getElementById('lh-xp').textContent = '0 ⭐';
+  showScreen('screen-lesson');
+  renderStep();
+}
+
+function renderStep() {
+  const step = currentLesson.steps[currentStepIdx];
+  const total = currentLesson.steps.length;
+  document.getElementById('lh-step').textContent = `שלב ${currentStepIdx+1} מתוך ${total}`;
+  document.getElementById('prog-bar').style.width = ((currentStepIdx / total) * 100) + '%';
+
+  const btn = document.getElementById('nav-next-btn');
+  if (step.type === 'quiz') {
+    btn.textContent = 'המשך ▶';
+    btn.disabled = true;
+    questionAnswered = false;
+  } else {
+    btn.textContent = currentStepIdx === total - 1 ? 'סיום 🎉' : 'המשך ▶';
+    btn.disabled = false;
+  }
+
+  const container = document.getElementById('step-container');
+  container.innerHTML = buildStep(step);
+  container.scrollTo(0, 0);
+}
+
+function buildStep(step) {
+  switch(step.type) {
+    case 'explain': return buildExplain(step);
+    case 'zone-map': return buildZoneMap(step);
+    case 'key-intro': return buildKeyIntro(step);
+    case 'sequence': return buildSequence(step);
+    case 'quiz': return buildQuiz(step);
+    default: return '';
+  }
+}
+
+function buildExplain(step) {
+  const lines = step.text.split('\n').join('<br>');
+  const analogy = step.analogy ? `
+    <div class="analogy-box">
+      <div class="analogy-icon">${step.analogy.icon}</div>
+      <div class="analogy-text">${step.analogy.text}</div>
+    </div>` : '';
+  const display = step.display ? `
+    <div class="calc-display">
+      <div class="calc-display-screen">
+        <div class="calc-display-input">${step.display.input}</div>
+        <div class="calc-display-result">${step.display.result}</div>
+      </div>
+    </div>` : '';
+  return `
+    <div class="instruction-card">
+      <div class="instruction-big">${step.emoji}</div>
+      <div class="instruction-title">${step.title}</div>
+      <div class="instruction-text">${lines}</div>
+    </div>
+    ${display}
+    ${analogy}
+  `;
+}
+
+function buildZoneMap(step) {
+  const zonesHtml = step.zones.map(z => `
+    <div class="zone">
+      <div class="zone-dot" style="background:${z.color}"></div>
+      <div>
+        <div class="zone-name">${z.name}</div>
+        <div class="zone-desc">${z.desc}</div>
+      </div>
+      <div class="zone-arrow-badge">${z.badge}</div>
+    </div>
+  `).join('');
+  return `
+    <div class="instruction-card">
+      <div class="instruction-big">${step.emoji}</div>
+      <div class="instruction-title">${step.title}</div>
+      <div class="instruction-text">${step.text}</div>
+    </div>
+    <div class="calc-zones">${zonesHtml}</div>
+  `;
+}
+
+function buildKeyIntro(step) {
+  const lines = step.text.split('\n').join('<br>');
+  const analogy = step.analogy ? `
+    <div class="analogy-box">
+      <div class="analogy-icon">${step.analogy.icon}</div>
+      <div class="analogy-text">${step.analogy.text}</div>
+    </div>` : '';
+  return `
+    <div class="instruction-card">
+      <div class="instruction-title">${step.title}</div>
+      <div class="instruction-text">${lines}</div>
+    </div>
+    <div class="key-spotlight">
+      <div class="spotlight-label">הכפתור שצריך למצוא:</div>
+      <div class="spotlight-key ${step.keyColor}">${step.keyText}</div>
+      <div class="spotlight-arrow">${step.arrow}</div>
+      <div class="spotlight-location">${step.location.split('\n').join('<br>')}</div>
+    </div>
+    ${analogy}
+  `;
+}
+
+function buildSequence(step) {
+  const seqHtml = step.steps.map((s, i) => {
+    if (s.color === 'result') {
+      return `<span class="seq-result">= ${s.key}</span>`;
+    }
+    const arrow = (i < step.steps.length - 1 && step.steps[i+1].color !== 'result') ? '<span class="seq-arrow">→</span>' : '';
+    return `<span class="seq-key ${s.color}">${s.key}</span>${arrow}`;
+  }).join('');
+  return `
+    <div class="instruction-card">
+      <div class="instruction-title">${step.title}</div>
+      <div class="instruction-text">${step.text}</div>
+    </div>
+    <div class="sequence-card">
+      <div class="sequence-label">סדר הלחיצות:</div>
+      <div class="sequence-steps">${seqHtml}</div>
+    </div>
+  `;
+}
+
+function buildQuiz(step) {
+  const optsHtml = step.options.map((opt, i) => `
+    <button class="option-btn" onclick="selectAnswer(${i})" id="opt-${i}">${opt}</button>
+  `).join('');
+  return `
+    <div class="question-card">
+      <div class="question-label">❓ שאלה</div>
+      <div class="question-text">${step.question}</div>
+      <div class="options-grid">${optsHtml}</div>
+    </div>
+    <div class="feedback-bar" id="feedback-bar">
+      <div class="feedback-icon" id="fb-icon"></div>
+      <div class="feedback-content">
+        <div class="feedback-title" id="fb-title"></div>
+        <div class="feedback-body" id="fb-body"></div>
+      </div>
+    </div>
+  `;
+}
+
+function selectAnswer(idx) {
+  if (questionAnswered) return;
+  questionAnswered = true;
+  const step = currentLesson.steps[currentStepIdx];
+  const correct = step.correct === idx;
+
+  document.querySelectorAll('.option-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (i === step.correct) b.classList.add('correct');
+    else if (i === idx && !correct) b.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('feedback-bar');
+  fb.className = 'feedback-bar show ' + (correct ? 'correct' : 'wrong');
+  document.getElementById('fb-icon').textContent = correct ? '🎉' : '💡';
+  document.getElementById('fb-title').textContent = correct ? 'כל הכבוד! נכון!' : 'לא מדויק — אבל בסדר!';
+  document.getElementById('fb-body').textContent = step.explanation;
+
+  if (correct) {
+    stepXP += 5;
+    document.getElementById('lh-xp').textContent = stepXP + ' ⭐';
+    launchMiniConfetti();
+  }
+
+  document.getElementById('nav-next-btn').disabled = false;
+}
+
+function nextStep() {
+  const total = currentLesson.steps.length;
+  if (currentStepIdx < total - 1) {
+    currentStepIdx++;
+    questionAnswered = false;
+    renderStep();
+    document.getElementById('step-container').scrollTo(0,0);
+  } else {
+    // finish
+    progress[currentLesson.id] = true;
+    saveProgress();
+    launchConfetti();
+    document.getElementById('celeb-title').textContent = 'כל הכבוד! 🏆';
+    document.getElementById('celeb-sub').textContent = 'סיימת את השיעור "' + currentLesson.title + '"';
+    document.getElementById('celeb-xp-num').textContent = stepXP || currentLesson.xp;
+    showScreen('screen-celebration');
+  }
+}
+
+// ══════════════════════════════════════════
+//  CONFETTI
+// ══════════════════════════════════════════
+function launchConfetti() {
+  const colors = ['#2563EB','#F97316','#16A34A','#FCD34D','#EC4899','#8B5CF6'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.cssText = `
+        left: ${Math.random()*100}vw;
+        top: -10px;
+        background: ${colors[Math.floor(Math.random()*colors.length)]};
+        width: ${6+Math.random()*8}px;
+        height: ${6+Math.random()*8}px;
+        border-radius: ${Math.random()>0.5?'50%':'2px'};
+        animation-duration: ${2+Math.random()*2}s;
+        animation-delay: ${Math.random()*0.5}s;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }, i * 30);
+  }
+}
+
+function launchMiniConfetti() {
+  const colors = ['#2563EB','#F97316','#16A34A','#FCD34D'];
+  for (let i = 0; i < 15; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `
+      left:${30+Math.random()*40}vw; top:-5px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${5+Math.random()*5}px; height:${5+Math.random()*5}px;
+      border-radius:50%;
+      animation-duration:${1.5+Math.random()}s;
+    `;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),3000);
+  }
+}
+
+// INIT
+renderMap();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

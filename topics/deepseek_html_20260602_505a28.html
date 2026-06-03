@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מורה פרטי — תוכנית לימוד אישית</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4f6ff;--card:#ffffff;--card2:#eef1fb;--line:#dde2f0;
+  --txt:#1e2040;--mut:#5a6080;--gold:#c8820a;--ink:#12142a;
+  --c1:#e8401a;--c2:#0f9e56;--c3:#2a5bd8;--c4:#7c2ee0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Heebo',sans-serif;color:var(--txt);min-height:100vh;
+  background:
+    radial-gradient(ellipse 110% 70% at 50% -8%,rgba(200,130,10,.12) 0%,transparent 55%),
+    radial-gradient(ellipse 55% 65% at -8% 65%,rgba(42,91,216,.07),transparent 65%),
+    var(--paper);
+}
+
+/* ── NAV ── */
+.top-nav{background:rgba(244,246,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.04)}
+.top-nav a{color:var(--gold);text-decoration:none;font-size:.88rem;font-weight:700;display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;transition:background .18s,color .18s}
+.top-nav a:hover{background:rgba(200,130,10,.1);color:var(--ink)}
+.top-nav .sep{width:1px;height:16px;background:var(--line)}
+.top-nav .crumb{color:var(--mut);font-size:.82rem}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:52px 20px 36px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:50%;left:50%;width:480px;height:480px;transform:translate(-50%,-60%);border-radius:50%;background:radial-gradient(circle,rgba(200,130,10,.09) 0%,transparent 70%);pointer-events:none}
+.hero .ico{font-size:4rem;margin-bottom:16px;display:inline-block;animation:bob 3.5s ease-in-out infinite;position:relative}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
+.hero h1{font-family:'Frank Ruhl Libre',serif;font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,var(--ink) 0%,var(--ink) 40%,var(--gold) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;line-height:1.2}
+.hero p{color:var(--mut);font-size:1rem;max-width:500px;margin:0 auto;line-height:1.8}
+
+/* ── WRAP ── */
+.wrap{max-width:700px;margin:0 auto;padding:30px 16px 80px}
+
+/* ── PHASE ── */
+.phase{display:none}
+.phase.active{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ── STEP HEADER ── */
+.step-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--gold);color:#fff;font-weight:900;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-head h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:900;color:var(--ink)}
+
+/* ── TIME BUTTONS ── */
+.time-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
+@media(max-width:480px){.time-grid{grid-template-columns:1fr}}
+.time-btn{
+  background:var(--card);border:1.5px solid var(--line);border-radius:18px;
+  padding:22px 18px;cursor:pointer;text-align:right;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+  position:relative;overflow:hidden;
+}
+.time-btn::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,var(--gold));transform:scaleX(0);transform-origin:left;border-radius:18px 18px 0 0;transition:transform .25s}
+.time-btn:hover::after{transform:scaleX(1)}
+.time-btn:hover{transform:translateY(-3px);border-color:var(--accent,var(--gold));box-shadow:0 10px 28px rgba(0,0,0,.09)}
+.time-btn .tb-ico{font-size:2rem;margin-bottom:8px;display:block}
+.time-btn .tb-title{font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;font-weight:900;color:var(--ink);display:block;margin-bottom:3px}
+.time-btn .tb-sub{font-size:.82rem;color:var(--mut)}
+.time-btn.t-soon{--accent:var(--c1)}
+.time-btn.t-week{--accent:var(--c4)}
+.time-btn.t-month{--accent:var(--c3)}
+.time-btn.t-none{--accent:var(--c2)}
+
+/* ── TOPIC CONFIDENCE GRID ── */
+.intro-card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:20px 24px;margin-bottom:22px;box-shadow:0 3px 14px rgba(0,0,0,.05)}
+.intro-card p{color:var(--mut);font-size:.92rem;line-height:1.7}
+.legend{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap;font-size:.82rem;color:var(--mut)}
+.legend span{display:flex;align-items:center;gap:5px}
+.dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.dot-r{background:#e8401a}.dot-y{background:#cc7200}.dot-g{background:#0f9e56}
+
+.topic-grid{display:grid;gap:10px;margin-bottom:24px}
+.tc-row{
+  background:var(--card);border:1.5px solid var(--line);border-radius:14px;
+  padding:14px 18px;display:flex;align-items:center;gap:14px;
+  box-shadow:0 2px 8px rgba(0,0,0,.03);transition:border-color .18s;
+}
+.tc-ico{font-size:1.4rem;flex-shrink:0;width:32px;text-align:center}
+.tc-name{font-family:'Frank Ruhl Libre',serif;font-size:1.05rem;font-weight:700;flex:1}
+.tc-imp{font-size:.7rem;font-weight:800;letter-spacing:.8px;padding:2px 8px;border-radius:99px;flex-shrink:0}
+.imp-3{background:rgba(232,64,26,.1);color:#c8310a}
+.imp-2{background:rgba(42,91,216,.1);color:#2a5bd8}
+.tc-btns{display:flex;gap:6px;flex-shrink:0}
+.conf-btn{
+  width:32px;height:32px;border-radius:50%;border:2px solid var(--line);
+  background:none;cursor:pointer;font-size:.95rem;
+  transition:border-color .15s,background .15s,transform .15s;
+  display:flex;align-items:center;justify-content:center;
+}
+.conf-btn:hover{transform:scale(1.12)}
+.conf-btn.sel-r{background:#fdecea;border-color:#e8401a}
+.conf-btn.sel-y{background:#fff8ed;border-color:#cc7200}
+.conf-btn.sel-g{background:#edf8f2;border-color:#0f9e56}
+
+/* ── GENERATE BTN ── */
+.gen-btn{
+  display:block;width:100%;padding:16px;border-radius:14px;
+  background:linear-gradient(135deg,var(--ink),#2d3569);
+  color:#fff;font-family:'Heebo',sans-serif;font-weight:800;font-size:1.05rem;
+  border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 6px 24px rgba(18,20,42,.25);
+  letter-spacing:.3px;
+}
+.gen-btn:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(18,20,42,.35)}
+
+/* ── PLAN OUTPUT ── */
+.plan-header{
+  background:linear-gradient(135deg,#12142a,#1e2350);
+  border-radius:20px;padding:28px 30px;margin-bottom:24px;color:#fff;
+  position:relative;overflow:hidden;
+}
+.plan-header::before{content:'';position:absolute;top:-30px;left:-30px;width:150px;height:150px;border-radius:50%;background:rgba(200,130,10,.15);filter:blur(30px)}
+.plan-header .ph-badge{font-size:.75rem;letter-spacing:2px;color:rgba(200,130,10,.9);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.plan-header h2{font-family:'Frank Ruhl Libre',serif;font-size:1.8rem;font-weight:900;margin-bottom:6px;position:relative}
+.plan-header p{color:rgba(255,255,255,.65);font-size:.9rem;position:relative}
+.plan-header .ph-stats{display:flex;gap:20px;margin-top:18px;flex-wrap:wrap;position:relative}
+.ph-stat{text-align:center}
+.ph-stat .pn{font-family:'Frank Ruhl Libre',serif;font-size:1.6rem;font-weight:900;color:rgba(200,130,10,.9);line-height:1}
+.ph-stat .pl{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:2px}
+
+.plan-item{
+  background:var(--card);border:1.5px solid var(--line);border-radius:18px;
+  padding:0;margin-bottom:14px;overflow:hidden;
+  box-shadow:0 3px 16px rgba(0,0,0,.05);
+  transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s;
+}
+.plan-item:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,.1)}
+.plan-item-top{display:flex;align-items:center;gap:16px;padding:20px 22px 16px}
+.plan-num{
+  width:40px;height:40px;border-radius:50%;background:var(--gold);
+  color:#fff;font-weight:900;font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-family:'Frank Ruhl Libre',serif;
+}
+.plan-ico{font-size:1.8rem;flex-shrink:0}
+.plan-info{flex:1;min-width:0}
+.plan-name{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:900;color:var(--ink);margin-bottom:2px}
+.plan-why{font-size:.83rem;color:var(--mut);line-height:1.5}
+.plan-meta{display:flex;align-items:center;gap:10px;padding:0 22px 16px;flex-wrap:wrap}
+.plan-time{font-size:.78rem;font-weight:700;color:var(--mut);display:flex;align-items:center;gap:4px}
+.plan-priority{font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:99px;letter-spacing:.5px}
+.pri-critical{background:rgba(232,64,26,.12);color:#c8310a}
+.pri-important{background:rgba(42,91,216,.12);color:#2a5bd8}
+.pri-useful{background:rgba(15,158,86,.12);color:#0a7a42}
+.plan-btn{
+  display:block;margin:0 22px 20px;padding:12px 20px;border-radius:12px;
+  background:var(--ink);color:#fff;text-decoration:none;text-align:center;
+  font-weight:700;font-size:.9rem;
+  transition:background .18s,transform .18s;
+}
+.plan-btn:hover{background:#2d3569;transform:scale(1.02)}
+
+.tip-card{
+  background:linear-gradient(160deg,rgba(200,130,10,.07),rgba(200,130,10,.03));
+  border:1px solid rgba(200,130,10,.2);border-radius:18px;
+  padding:22px 26px;margin-top:30px;
+}
+.tip-card h3{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:900;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.tip-list{display:grid;gap:10px}
+.tip-item{display:flex;align-items:flex-start;gap:10px;font-size:.9rem;line-height:1.6}
+.tip-item::before{content:'✓';color:var(--gold);font-weight:900;flex-shrink:0;margin-top:2px}
+
+.restart-btn{
+  display:block;margin-top:24px;padding:13px;border-radius:12px;
+  background:var(--card);border:1.5px solid var(--line);
+  color:var(--mut);font-weight:700;font-size:.9rem;
+  text-align:center;cursor:pointer;transition:border-color .18s,color .18s;
+  width:100%;
+}
+.restart-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+@media(max-width:540px){
+  .hero h1{font-size:2rem}
+  .tc-row{flex-wrap:wrap;gap:10px}
+  .plan-item-top{gap:12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="../index.html">🏠 מרכז ראשי</a>
+  <div class="sep"></div>
+  <span class="crumb">מורה פרטי — תוכנית לימוד</span>
+</nav>
+
+<div class="hero">
+  <div class="ico">🎯</div>
+  <h1>מורה פרטי חכם</h1>
+  <p>ענה על 2 שאלות קצרות — וקבל תוכנית לימוד ממוקדת ואישית לפי הזמן שיש לך ומה שעוד לא שולט בו</p>
+</div>
+
+<div class="wrap">
+
+<!-- ════ PHASE 1: TIME ════ -->
+<div class="phase active" id="phase1">
+  <div class="step-head">
+    <div class="step-num">1</div>
+    <h2>מתי המבחן שלך?</h2>
+  </div>
+  <div class="time-grid">
+    <button class="time-btn t-soon" onclick="pickTime('soon',3)">
+      <span class="tb-ico">😰</span>
+      <span class="tb-title">מחר / עוד יומיים</span>
+      <span class="tb-sub">מיקוד בנושאים הכי חשובים בלבד</span>
+    </button>
+    <button class="time-btn t-week" onclick="pickTime('week',6)">
+      <span class="tb-ico">📅</span>
+      <span class="tb-title">בעוד שבוע</span>
+      <span class="tb-sub">חזרה ממוקדת על הנושאים החלשים</span>
+    </button>
+    <button class="time-btn t-month" onclick="pickTime('month',10)">
+      <span class="tb-ico">📚</span>
+      <span class="tb-title">בעוד חודש+</span>
+      <span class="tb-sub">כיסוי מסודר של כל החומר</span>
+    </button>
+    <button class="time-btn t-none" onclick="pickTime('none',15)">
+      <span class="tb-ico">🎓</span>
+      <span class="tb-title">אין מבחן עכשיו</span>
+      <span class="tb-sub">לומד לשם הידע בקצב שלי</span>
+    </button>
+  </div>
+</div>
+
+<!-- ════ PHASE 2: TOPICS ════ -->
+<div class="phase" id="phase2">
+  <div class="step-head">
+    <div class="step-num">2</div>
+    <h2>איפה אתה עומד בכל נושא?</h2>
+  </div>
+
+  <div class="intro-card">
+    <p>לחץ על הצבע המתאים לכל נושא. אל תדאג — ניתן לשנות.</p>
+    <div class="legend">
+      <span><div class="dot dot-r"></div> לא בטוח / לא מבין</span>
+      <span><div class="dot dot-y"></div> מבין קצת, צריך חיזוק</span>
+      <span><div class="dot dot-g"></div> שולט בנושא</span>
+    </div>
+  </div>
+
+  <div class="topic-grid" id="topicGrid"></div>
+
+  <button class="gen-btn" onclick="generatePlan()">🎯 צור לי תוכנית לימוד אישית ←</button>
+</div>
+
+<!-- ════ PHASE 3: PLAN ════ -->
+<div class="phase" id="phase3">
+  <div id="planOutput"></div>
+  <button class="restart-btn" onclick="restart()">🔄 התחל מחדש עם תוכנית חדשה</button>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+var selectedTime = 'week';
+var maxTopics = 6;
+
+var TOPICS = [
+  {id:'chazakot',   name:'חזקות ושורשים',         ico:'⚡', imp:3, time:20, link:'../learn/chazakot.html',            why:'חזקות מופיעות בכל שאלה — בסיס שאי אפשר בלעדיו'},
+  {id:'seder',      name:'סדר פעולות',             ico:'🔢', imp:2, time:15, link:'../learn/seder_peulot.html',        why:'טעות נפוצה מאוד — חייבים לדעת מה קודם למה'},
+  {id:'shliliyim',  name:'מספרים שליליים',         ico:'➖', imp:2, time:15, link:'../learn/shliliyim.html',           why:'מינוס כפול מינוס — 80% טועים בלחץ מבחן'},
+  {id:'kinus',      name:'כינוס איברים',            ico:'🧮', imp:2, time:20, link:'../learn/kinus_evarim.html',       why:'בסיס לכל אלגברה — חייבים לשלוט בזה'},
+  {id:'sograim',    name:'פתיחת סוגריים',           ico:'📐', imp:3, time:25, link:'../learn/kefel_sograyim.html',     why:'מופיע בכל שאלה שנייה — כלי עבודה בסיסי'},
+  {id:'mekutzar',   name:'נוסחאות כפל מקוצר',      ico:'🔷', imp:3, time:20, link:'../learn/kefel_mekutzar.html',     why:'(a+b)² ועוד — שאלת חובה בכל מבחן 3 יחידות'},
+  {id:'piruk',      name:'פירוק לגורמים',           ico:'🔍', imp:3, time:30, link:'../topics/common_factor_standalone_html.html', why:'גורם משותף + הפרש ריבועים — שתי שאלות לפחות'},
+  {id:'shvarim',    name:'שברים אלגבריים',          ico:'½',  imp:2, time:25, link:'../topics/fractions_algebra_html.html',        why:'צמצום שברים עם ביטויים — מסובך אבל שווה נקודות'},
+  {id:'mishvaot',   name:'משוואות ממעלה ראשונה',   ico:'📏', imp:3, time:25, link:'../learn/mishvaot.html',           why:'שיטת המאזניים — כלי ראשון לכל פתרון'},
+  {id:'miluliyot',  name:'בעיות מילוליות',          ico:'📝', imp:3, time:30, link:'../learn/beayot_miluliyot.html',   why:'מסיפור למשוואה — כ-25% מהמבחן'},
+  {id:'ribuit',     name:'משוואה ריבועית',          ico:'🌊', imp:3, time:30, link:'../learn/mishvaa_ribuit.html',     why:'נוסחת השורשים — חייבים אותה בעל-פה'},
+  {id:'maarechet',  name:'מערכת משוואות',           ico:'🔗', imp:2, time:25, link:'../learn/maarechet.html',          why:'שתי משוואות, שני נעלמים — שיטת הצבה וחיסור'},
+  {id:'funktziot',  name:'פונקציות וגרפים',         ico:'📈', imp:3, time:30, link:'../learn/funktziot.html',          why:'y=mx+b ושיפוע — שאלה אחת לפחות בכל מבחן'},
+  {id:'achuzim',    name:'אחוזים',                  ico:'💯', imp:2, time:20, link:'../learn/achuzim.html',            why:'הנחות, מע"מ וריבית — חישובים בעולם האמיתי'},
+  {id:'geo',        name:'גיאומטריה ומשולשים',     ico:'📐', imp:2, time:35, link:'../learn/meshulashim.html',         why:'פיתגורס, שטחים, היקפים — שאלה מורחבת'},
+];
+
+var confidence = {}; // id -> 'r','y','g'
+
+// ── Build topic grid ──
+var grid = document.getElementById('topicGrid');
+TOPICS.forEach(function(t) {
+  confidence[t.id] = ''; // no selection
+  var row = document.createElement('div');
+  row.className = 'tc-row';
+  row.innerHTML =
+    '<span class="tc-ico">'+t.ico+'</span>' +
+    '<span class="tc-name">'+t.name+'</span>' +
+    '<span class="tc-imp '+(t.imp===3?'imp-3':'imp-2')+'">'+(t.imp===3?'חיוני':'חשוב')+'</span>' +
+    '<div class="tc-btns">' +
+      '<button class="conf-btn" data-id="'+t.id+'" data-c="r" title="לא בטוח / לא מבין" onclick="setConf(\''+t.id+'\',\'r\',this.parentNode)">🔴</button>' +
+      '<button class="conf-btn" data-id="'+t.id+'" data-c="y" title="מבין קצת" onclick="setConf(\''+t.id+'\',\'y\',this.parentNode)">🟡</button>' +
+      '<button class="conf-btn" data-id="'+t.id+'" data-c="g" title="שולט" onclick="setConf(\''+t.id+'\',\'g\',this.parentNode)">🟢</button>' +
+    '</div>';
+  grid.appendChild(row);
+});
+
+function setConf(id, c, btnsEl) {
+  confidence[id] = c;
+  var btns = btnsEl.querySelectorAll('.conf-btn');
+  btns.forEach(function(b) {
+    b.classList.remove('sel-r','sel-y','sel-g');
+    if (b.dataset.c === c) b.classList.add('sel-'+c);
+  });
+}
+
+function pickTime(mode, max) {
+  selectedTime = mode;
+  maxTopics = max;
+  document.getElementById('phase1').classList.remove('active');
+  document.getElementById('phase2').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function generatePlan() {
+  // Score each topic
+  var scored = TOPICS.map(function(t) {
+    var c = confidence[t.id];
+    var weakScore = c === 'r' ? 3 : c === 'y' ? 2 : c === 'g' ? -1 : 1; // no selection = neutral
+    var total = weakScore * t.imp;
+    return {t:t, score:total, conf:c};
+  });
+
+  // Sort: weakest × most important first. Green topics go to bottom.
+  scored.sort(function(a,b) {
+    if (a.conf === 'g' && b.conf !== 'g') return 1;
+    if (b.conf === 'g' && a.conf !== 'g') return -1;
+    return b.score - a.score;
+  });
+
+  // Filter out well-known (green) topics if exam soon
+  var plan;
+  if (selectedTime === 'soon') {
+    plan = scored.filter(function(x){return x.conf !== 'g';}).slice(0, maxTopics);
+    if (plan.length === 0) plan = scored.slice(0, maxTopics); // all green? show critical ones
+  } else {
+    plan = scored.filter(function(x){return x.conf !== 'g';}).slice(0, maxTopics);
+    if (plan.length < 3) {
+      // Add some critical topics even if green
+      var extras = scored.filter(function(x){return x.conf === 'g' && x.t.imp === 3;}).slice(0, 3 - plan.length);
+      plan = plan.concat(extras);
+    }
+  }
+
+  if (plan.length === 0) plan = scored.slice(0, 5);
+
+  var totalTime = plan.reduce(function(s,x){return s+x.t.time;}, 0);
+  var timeLabel = {soon:'מחר / שלשום', week:'השבוע', month:'החודש', none:'ללמידה עצמאית'}[selectedTime];
+
+  var html = '<div class="plan-header">' +
+    '<div class="ph-badge">✦ תוכנית אישית</div>' +
+    '<h2>הנושאים שלך — לפי סדר עדיפות</h2>' +
+    '<p>מבוסס על הבחירות שלך לבחינה: <strong style="color:rgba(200,130,10,.9)">'+timeLabel+'</strong></p>' +
+    '<div class="ph-stats">' +
+      '<div class="ph-stat"><div class="pn">'+plan.length+'</div><div class="pl">נושאים</div></div>' +
+      '<div class="ph-stat"><div class="pn">'+totalTime+'</div><div class="pl">דקות בערך</div></div>' +
+      '<div class="ph-stat"><div class="pn">'+(selectedTime==='soon'?'🔥':selectedTime==='week'?'⚡':'📚')+'</div><div class="pl">עצימות</div></div>' +
+    '</div>' +
+  '</div>';
+
+  plan.forEach(function(x, i) {
+    var t = x.t;
+    var priClass = t.imp === 3 ? 'pri-critical' : x.conf === 'r' ? 'pri-important' : 'pri-useful';
+    var priLabel = t.imp === 3 ? '⭐ חיוני' : x.conf === 'r' ? '⚠️ לחזור' : '✓ לסיים';
+    html += '<div class="plan-item">' +
+      '<div class="plan-item-top">' +
+        '<div class="plan-num">'+(i+1)+'</div>' +
+        '<div class="plan-ico">'+t.ico+'</div>' +
+        '<div class="plan-info">' +
+          '<div class="plan-name">'+t.name+'</div>' +
+          '<div class="plan-why">'+t.why+'</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="plan-meta">' +
+        '<span class="plan-time">⏱ '+t.time+' דקות</span>' +
+        '<span class="plan-priority '+priClass+'">'+priLabel+'</span>' +
+      '</div>' +
+      '<a class="plan-btn" href="'+t.link+'">← כניסה לנושא</a>' +
+    '</div>';
+  });
+
+  var examTips = {
+    soon: ['למדו את הנוסחאות בעל-פה — רשמו אותן 3 פעמים', 'תרגלו 2-3 שאלות על כל נושא, לא יותר', 'לישנו מספיק — מוח עייף טועה יותר', 'הביאו מחשבון ועפרון לגיבוי'],
+    week: ['כל יום: 2 נושאים, 30 דקות כל אחד', 'אחרי כל נושא — פתרו 5 שאלות לפחות', 'בסוף השבוע: מבחן תרגול מהאתר', 'אל תדלגו על בעיות מילוליות — הן שכיחות מאוד'],
+    month: ['התחילו מהבסיס ועלו בהדרגה', 'כתבו דף נוסחאות אישי ועדכנו אותו', 'תרגלו שאלות ממבחנים אמיתיים', 'חזרו על נושאים שלמדתם לפני שבועיים'],
+    none: ['למדו כל נושא עד שאתם מסבירים אותו לאחר', 'החידושים הם: פירוק לגורמים, בעיות מילוליות, ומשוואה ריבועית', 'משחקו נגד המחשב בכל נושא כדי לחזק', 'קראו את הטיפים בכל עמוד — יש שם זהב'],
+  }[selectedTime];
+
+  html += '<div class="tip-card"><h3>💡 טיפים לצליחה — '+timeLabel+'</h3><div class="tip-list">';
+  examTips.forEach(function(tip){html += '<div class="tip-item">'+tip+'</div>';});
+  html += '</div></div>';
+
+  document.getElementById('planOutput').innerHTML = html;
+  document.getElementById('phase2').classList.remove('active');
+  document.getElementById('phase3').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function restart() {
+  confidence = {};
+  selectedTime = 'week';
+  maxTopics = 6;
+  document.querySelectorAll('.conf-btn').forEach(function(b){
+    b.classList.remove('sel-r','sel-y','sel-g');
+  });
+  document.getElementById('phase3').classList.remove('active');
+  document.getElementById('phase2').classList.remove('active');
+  document.getElementById('phase1').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

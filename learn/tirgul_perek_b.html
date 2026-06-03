@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מסכם — פרק ב'</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#1a0e04;--paper:#faf7f2;--accent:#d4621a;--accent2:#1a8a5c;--gold:#d4a020;--line:#d5c8b0;--shadow:0 10px 30px rgba(58,40,20,.12);--neg:#c0392b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(181,101,29,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"∑";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:170px;font-weight:900;color:rgba(58,40,20,.05);top:-30px;left:20px}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.3rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#4a3826;position:relative}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:24px;margin-top:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;margin-bottom:12px;text-align:center}
+  /* topic filter */
+  .filter{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .filter button{font-family:'Heebo';font-weight:600;font-size:.9rem;border:2px solid var(--ink);background:#fff;padding:8px 16px;border-radius:99px;cursor:pointer;transition:.2s}
+  .filter button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .mode-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+  .mode-pick button{font-family:'Heebo';font-weight:600;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:10px 18px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+  .start-btn{display:block;margin:0 auto;font-family:'Heebo';font-weight:800;font-size:1.1rem;border:none;background:var(--accent);color:#fff;padding:13px 38px;border-radius:14px;cursor:pointer;transition:.2s}
+  .start-btn:hover{transform:translateY(-2px)}
+  /* quiz */
+  .topbar{display:flex;justify-content:space-between;font-weight:700;margin-bottom:10px;font-size:.9rem}
+  .progress{height:8px;background:var(--paper);border-radius:99px;overflow:hidden;margin-bottom:14px}
+  .progress .bar{height:100%;background:var(--gold);width:0;transition:.4s}
+  .chip{display:inline-block;background:var(--paper);color:var(--accent);font-size:.78rem;font-weight:700;padding:4px 12px;border-radius:99px;margin-bottom:10px}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:12px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.82rem;color:#4a3826}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:1.9rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:7px;border-radius:10px;background:var(--paper);margin-bottom:12px;font-size:.95rem}
+  .streak{text-align:center;font-size:.85rem;color:var(--accent);font-weight:700;min-height:20px;margin-bottom:8px}
+  .q-box{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:1.7rem;font-weight:900;direction:ltr;padding:22px;background:var(--paper);border-radius:14px;margin-bottom:16px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  .hidden{display:none}
+  /* results */
+  .grade-circle{width:150px;height:150px;border-radius:50%;margin:10px auto 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:'Frank Ruhl Libre',serif}
+  .grade-circle .num{font-size:3.2rem;font-weight:900;line-height:1}
+  .grade-circle .lbl{font-family:'Heebo';font-size:.9rem}
+  .verdict{text-align:center;font-size:1.15rem;font-weight:700;margin-bottom:8px}
+  .again-btn{display:block;margin:18px auto 0;font-family:'Heebo';font-weight:800;border:none;background:var(--gold);color:#fff;padding:12px 34px;border-radius:14px;cursor:pointer;font-size:1.05rem}
+  .back-link{display:block;text-align:center;margin-top:18px;color:var(--accent);font-weight:700;text-decoration:none}
+  footer{text-align:center;font-size:.8rem;color:#9a8a72;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">יחידה 1 · טכניקה אלגברית · פרק ב'</div>
+    <h1>תרגול מסכם</h1>
+    <div class="sub">כל התרגילים של פרק ב' במקום אחד — בחרו נושא ותתחילו</div>
+  </header>
+
+  <!-- SETUP -->
+  <div class="card" id="setup">
+    <h2>על מה לתרגל? 🎯</h2>
+    <div class="filter" id="filter">
+      <button class="active" data-f="all">הכל מעורבב</button>
+      <button data-f="kinus">כינוס איברים</button>
+      <button data-f="pticha">פתיחת סוגריים</button>
+      <button data-f="kefel">סוגריים כפול סוגריים</button>
+    </div>
+    <h2 style="font-size:1.1rem">מצב:</h2>
+    <div class="mode-pick">
+      <button class="active" data-m="solo">תרגול לבד 📝</button>
+      <button data-m="cpu">נגד המחשב 🤖</button>
+      <button data-m="duo">שני שחקנים 👥</button>
+    </div>
+    <button class="start-btn" id="startBtn">התחל ←</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card hidden" id="quiz">
+    <div class="topbar"><span id="qcount">שאלה 1</span><span id="modeLabel">📝 תרגול</span></div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div style="text-align:center"><span class="chip" id="chip">נושא</span></div>
+    <div class="scoreboard" id="sb"><div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div><div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div></div>
+    <div class="turn-banner" id="turn">תורו של: שחקן</div>
+    <div class="streak" id="streak"></div>
+    <div class="q-box" id="question">—</div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn">הבא ←</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card hidden" id="results">
+    <h2>סיכום התרגול 🎓</h2>
+    <div class="grade-circle" id="gc"><div class="num" id="gradeNum">0</div><div class="lbl">אחוז הצלחה</div></div>
+    <div class="verdict" id="verdict"></div>
+    <p style="text-align:center;color:#4a3826" id="streakBest"></p>
+    <button class="again-btn" id="againBtn">תרגול חדש 🔄</button>
+    <a class="back-link" href="index.html">→ חזרה לעמוד הבית</a>
+  </div>
+
+  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 · פרק ב' · תרגול מסכם</footer>
+</div>
+
+<script>
+/* ===== QUESTION BANK ===== */
+/* kinus = combining like terms, pticha = opening single brackets, kefel = bracket times bracket */
+const BANK={
+  kinus:[
+    ['4a + 7a + 12a','23a'],['2x − 5x + 7x','4x'],['−6b − 9b','−15b'],['a + b + 3a − b − 4a','0'],
+    ['x + 2x + y − 2y','3x − y'],['x + y + 2x + 2xy','3x + y + 2xy'],['2a²b + 7a²b − 3a²b','6a²b'],
+    ['−10ab + 20ba','10ab'],['−a + 7b − 5 + 6a − 5b + 4','5a + 2b − 1'],['5 − x² + 2yx² + 5x²','4x² + 2yx² + 5'],
+    ['−3x²y² + 3x²y² + 5x²y − 3xy²','5x²y − 3xy²']
+  ],
+  pticha:[
+    ['4(x+7) + 2(x−3) + 6 + (x+3)','7x + 31'],['2(1−a) + 4(a+3) − 4 − (a−2)','a + 12'],
+    ['4(y+1) − 5(1−y)','9y − 1'],['y(y+2) − y(y−3)','5y'],['2(x−3) − 4(x−2) + 3(1−x)','−5x + 5'],
+    ['4(b+a−3) + 5(a+2−b)','9a − b − 2'],['4x(x−6)','4x² − 24x'],['2a(a+1)','2a² + 2a'],
+    ['2x(1−x) + x(3x−6)','x² − 4x'],['4(x²−6) + 3x(5−2x)','−2x² − 24 + 15x']
+  ],
+  kefel:[
+    ['(x+2)(x+3)','x² + 5x + 6'],['(x−5)(x+4)','x² − x − 20'],['(x+3)(2x−6)','2x² − 18'],
+    ['(7+2a)(7−a)','−2a² + 7a + 49'],['(4a+2)(2a−2)','8a² − 4a − 4'],['4(5−y)(4+y)','−4y² + 4y + 80'],
+    ['−(x+2)(x−4)','−x² + 2x + 8'],['−(2−x)(5+x)','x² + 3x − 10'],['(3−x)(x−2)','−x² + 5x − 6'],
+    ['(a+1)(a−2) − (a+3)(a−1)','−3a + 1'],['(k+5)(k−6) + 2k(1+k)','3k² + k − 30'],
+    ['(y+4)(4−y) − (y+2)(3−y)','10 − y']
+  ]
+};
+const NAMES={kinus:'כינוס איברים',pticha:'פתיחת סוגריים',kefel:'סוגריים כפול סוגריים'};
+
+/* distractors: generate plausible wrong answers by tweaking */
+function distractors(ans){
+  // produce 3 wrong variants by small mutations on numbers/signs
+  const set=new Set();
+  const nums=ans.match(/\d+/g)||[];
+  let tries=0;
+  while(set.size<3 && tries<40){
+    tries++;
+    let v=ans;
+    if(nums.length){
+      // bump a random number
+      const n=nums[Math.floor(Math.random()*nums.length)];
+      const nn=Math.max(0,parseInt(n)+ (Math.random()<.5?1:-1)*(1+Math.floor(Math.random()*3)));
+      v=v.replace(n,String(nn));
+    }
+    if(Math.random()<.4){ // flip a sign
+      if(v.includes('−')) v=v.replace('−','+'); else if(v.includes('+ ')) v=v.replace('+ ','− ');
+    }
+    if(v!==ans) set.add(v);
+  }
+  while(set.size<3) set.add(ans+' '); // padding fallback
+  return [...set].slice(0,3);
+}
+
+let filter='all',mode='solo',quizSet=[],idx=0,s1=0,s2=0,turn=1,cur=null,correct=0,total=0,streak=0,bestStreak=0;
+
+document.querySelectorAll('#filter button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#filter button').forEach(x=>x.classList.remove('active'));b.classList.add('active');filter=b.dataset.f;});
+document.querySelectorAll('#setup .mode-pick button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#setup .mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;});
+
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+
+function buildSet(){
+  let pool=[];
+  const keys = filter==='all'?Object.keys(BANK):[filter];
+  keys.forEach(k=>BANK[k].forEach(q=>pool.push({topic:k,expr:q[0],ans:q[1]})));
+  shuffle(pool);
+  quizSet=pool.slice(0, Math.min(12,pool.length));
+}
+
+document.getElementById('startBtn').onclick=()=>{
+  buildSet();idx=0;s1=0;s2=0;turn=1;correct=0;total=0;streak=0;bestStreak=0;
+  document.getElementById('setup').classList.add('hidden');
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  document.getElementById('modeLabel').textContent=mode==='cpu'?'🤖 נגד המחשב':mode==='duo'?'👥 שני שחקנים':'📝 תרגול';
+  document.getElementById('n1').textContent=mode==='duo'?'שחקן 1':'שחקן';
+  document.getElementById('n2').textContent=mode==='cpu'?'מחשב':mode==='duo'?'שחקן 2':'—';
+  document.getElementById('sb').style.display=mode==='solo'?'none':'flex';
+  document.getElementById('turn').style.display=mode==='solo'?'none':'block';
+  showQ();
+};
+
+function showQ(){
+  const q=quizSet[idx];cur=q;
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('qcount').textContent='שאלה '+(idx+1)+' / '+quizSet.length;
+  document.getElementById('bar').style.width=(idx/quizSet.length*100)+'%';
+  document.getElementById('chip').textContent=NAMES[q.topic];
+  document.getElementById('question').textContent=q.expr+' =';
+  document.getElementById('streak').textContent = streak>=2?('🔥 רצף של '+streak+' נכונות!'):'';
+  let opts=shuffle([q.ans,...distractors(q.ans)]);
+  const O=document.getElementById('opts');O.innerHTML='';
+  opts.forEach(v=>{const b=document.createElement('button');b.textContent=v;b.onclick=()=>answer(b,v);O.appendChild(b);});
+  if(mode!=='solo'){const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;document.getElementById('turn').textContent='תורו של: '+name;}
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.65?btns.find(x=>x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,pick.textContent);},2000);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){
+  lock();const fb=document.getElementById('feedback');const ok=(v===cur.ans);total++;
+  if(ok){btn.classList.add('right');correct++;streak++;bestStreak=Math.max(bestStreak,streak);if(mode==='solo'||turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.expr+' = '+cur.ans;fb.style.color='var(--accent2)';}
+  else{btn.classList.add('wrong');streak=0;[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='✗ התשובה: '+cur.ans;fb.style.color='var(--neg)';}
+  endStep();
+}
+function cpuAnswer(btn,v){
+  const fb=document.getElementById('feedback');const ok=(v===cur.ans);total++;
+  if(ok){btn.classList.add('right');correct++;s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}
+  else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}
+  fb.style.color='var(--ink)';endStep();
+}
+function endStep(){
+  if(mode!=='solo'){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;turn=turn===1?2:1;}
+  document.getElementById('nextBtn').style.display='block';
+}
+document.getElementById('nextBtn').onclick=()=>{idx++;if(idx>=quizSet.length){showResults();return;}showQ();};
+
+function showResults(){
+  document.getElementById('quiz').classList.add('hidden');
+  document.getElementById('results').classList.remove('hidden');
+  const grade=total?Math.round(correct/total*100):0;
+  const col=grade>=85?'#2d6a4f':grade>=60?'#c9a227':'#c0392b';
+  document.getElementById('gc').style.background='linear-gradient(135deg,'+col+',#3a2814)';
+  document.getElementById('gradeNum').textContent=grade;
+  let v;
+  if(mode==='cpu')v=s1>s2?'🏆 ניצחת את המחשב! '+s1+':'+s2:s1<s2?'המחשב ניצח '+s2+':'+s1:'תיקו!';
+  else if(mode==='duo')v=s1>s2?'🏆 שחקן 1 ניצח! '+s1+':'+s2:s1<s2?'🏆 שחקן 2 ניצח! '+s2+':'+s1:'תיקו!';
+  else v=grade>=85?'מצוין! שליטה יפה 🎉':grade>=60?'יפה! עוד קצת תרגול':'כדאי לחזור על ההסבר ולתרגל שוב 💪';
+  document.getElementById('verdict').textContent=v;
+  document.getElementById('streakBest').textContent=bestStreak>=3?('🔥 הרצף הכי ארוך שלך: '+bestStreak+' תשובות נכונות ברצף'):'';
+}
+document.getElementById('againBtn').onclick=()=>{document.getElementById('results').classList.add('hidden');document.getElementById('setup').classList.remove('hidden');};
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

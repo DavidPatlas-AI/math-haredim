@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>כפל ופתיחת סוגריים - תרגול</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#3a2814;--paper:#f5efe6;--accent:#b5651d;--accent2:#2d6a4f;--gold:#c9a227;--line:#e2d8c8;--shadow:0 10px 30px rgba(58,40,20,.12)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(181,101,29,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:980px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"(a+b)(c+d)";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:74px;font-weight:900;color:rgba(58,40,20,.05);top:28px;left:12px;direction:ltr}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.35rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#6b5944;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:1.8rem;margin:16px 0;padding:16px;background:var(--paper);border-radius:12px;border:1.5px dashed var(--line);direction:ltr}
+  .note{background:rgba(181,101,29,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:14px}
+  .ex{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:12px 14px;display:flex;gap:10px;align-items:center;justify-content:space-between;min-height:56px}
+  .num{font-weight:800;color:var(--accent);min-width:34px}
+  .math{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;direction:ltr;text-align:left;flex:1}
+  .ans{font-family:'Frank Ruhl Libre',serif;font-size:1.16rem;direction:ltr;text-align:left;color:var(--accent2);font-weight:700;display:none;flex:1}
+  .show-answers .ans{display:block}.show-answers .math{display:none}
+  .controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+  .controls button{font-family:'Heebo';font-weight:700;border:2px solid var(--accent);background:var(--accent);color:#fff;padding:9px 18px;border-radius:12px;cursor:pointer}
+  .controls button.secondary{background:#fff;color:var(--accent)}
+  .search{width:min(520px,100%);display:block;margin:0 auto 18px;padding:12px 16px;border:2px solid var(--line);border-radius:999px;font-family:'Heebo';font-size:1rem;background:#fff;color:var(--ink)}
+  .mini-title{margin-top:22px;font-weight:800;color:#6b5944;border-bottom:1px solid var(--line);padding-bottom:6px}
+  footer{text-align:center;font-size:.8rem;color:#9a8a72;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">יחידה 1 · טכניקה אלגברית · פרק ב'</div>
+    <h1>תרגול כינוס איברים ופתיחת סוגריים</h1>
+    <div class="sub">עמודים 35-37 · כולל תרגילים ותשובות לבדיקה עצמית</div>
+  </header>
+
+  <nav>
+    <button class="active" data-t="learn">📘 הסבר קצר</button>
+    <button data-t="practice">✍️ תרגילים</button>
+    <button data-t="answers">✅ תשובות</button>
+  </nav>
+
+  <section id="learn" class="show">
+    <div class="card">
+      <h2>כינוס איברים <span class="tag">אותו סוג בלבד</span></h2>
+      <p>מחברים או מחסרים רק איברים מאותו סוג: מספר עם מספר, x עם x, וגם x² עם x². איברים שונים לא מכנסים.</p>
+      <div class="formula">2x + 5x - x = 6x</div>
+      <div class="note">שימי לב: 3x ו-3x² אינם אותו סוג, ולכן לא מחברים אותם.</div>
+    </div>
+    <div class="card">
+      <h2>פתיחת סוגריים <span class="tag">חוק הפילוג</span></h2>
+      <p>מה שנמצא מחוץ לסוגריים כופל כל איבר בתוך הסוגריים.</p>
+      <div class="formula">a(b+c)=ab+ac</div>
+    </div>
+    <div class="card">
+      <h2>כפל שני סוגריים <span class="tag">כל אחד בכל אחד</span></h2>
+      <p>כל איבר בסוגריים הראשונים כופל כל איבר בסוגריים השניים, ואז מכנסים איברים דומים.</p>
+      <div class="formula">(a+b)(c+d)=ac+ad+bc+bd</div>
+    </div>
+  </section>
+
+  <section id="practice">
+    <div class="card">
+      <h2>תרגילים מתוך התמונות</h2>
+      <input class="search" id="searchPractice" placeholder="חיפוש לפי מספר תרגיל, למשל 65 או 90">
+      <div class="controls"><button id="togglePractice">הצג תשובות</button><button class="secondary" id="resetPractice">הסתר תשובות</button></div>
+      <div id="practiceList" class="grid"></div>
+    </div>
+  </section>
+
+  <section id="answers">
+    <div class="card show-answers">
+      <h2>תשובות לבדיקה עצמית</h2>
+      <input class="search" id="searchAnswers" placeholder="חיפוש תשובה לפי מספר תרגיל">
+      <div id="answersList" class="grid"></div>
+    </div>
+  </section>
+
+  <footer>על פי הספר: שלמה אבידן - מכינה טכנולוגית · יחידה 1 · טכניקה אלגברית</footer>
+</div>
+
+<script>
+const data = [
+  [31,'4a + 7a + 12a','23a'],
+  [32,'2x − 5x + 7x','4x'],
+  [33,'−6b − 9b','−15b'],
+  [34,'a + b + 3a − b − 4a','0'],
+  [35,'x + 2x + y − 2y','3x − y'],
+  [36,'x + y + 2x + 2xy','3x + y + 2xy'],
+  [37,'2a²b + 7a²b − 3a²b','6a²b'],
+  [38,'−10ab + 20ba','10ab'],
+  [39,'−a + 7b − 5 + 6a − 5b + 4','5a + 2b − 1'],
+  [40,'5 − x² + 2yx² + 5x²','4x² + 2yx² + 5'],
+  [41,'−3x²y² + 3x²y² + 5x²y − 3xy²','5x²y − 3xy²'],
+  [42,'5a²bc + 5ab²c + 5abc²','לא ניתן לכנס איברים'],
+  [43,'2x² + 9xy − 7 − 8xy + 8 − 3x²','−x² + xy + 1'],
+  [44,'3xa² + 13 + 4x²a − 4xa² − 12 − 5x²a','−xa² − x²a + 1'],
+  [45,'4(x + 7) + 2(x − 3) + 6 + (x + 3)','7x + 31'],
+  [46,'2(1 − a) + 4(a + 3) − 4 − (a − 2)','a + 12'],
+  [47,'4(y + 1) − 5(1 − y)','9y − 1'],
+  [48,'y(y + 2) − y(y − 3)','5y'],
+  [49,'2(x − 3) − 4(x − 2) + 3(1 − x)','−5x + 5'],
+  [50,'4(b + a − 3) + 5(a + 2 − b)','9a − b − 2'],
+  [51,'4x(x − 6)','4x² − 24x'],
+  [52,'2a(a + 1)','2a² + 2a'],
+  [53,'2x(1 − x) + x(3x − 6)','x² − 4x'],
+  [54,'4(x² − 6) + 3x(5 − 2x)','−2x² − 24 + 15x'],
+  [55,'(x + 2)(x + 3)','x² + 5x + 6'],
+  [56,'(x − 5)(x + 4)','x² − x − 20'],
+  [57,'(x + 3)(2x − 6)','2x² − 18'],
+  [58,'(7 + 2a)(7 − a)','−2a² + 7a + 49'],
+  [59,'(4a + 2)(2a − 2)','8a² − 4a − 4'],
+  [60,'4(5 − y)(4 + y)','−4y² + 4y + 80'],
+  [61,'−(x + 2)(x − 4)','−x² + 2x + 8'],
+  [62,'−(2 − x)(5 + x)','x² + 3x − 10'],
+  [63,'−(4 + 2x)(5 − 2x)','4x² − 2x − 20'],
+  [64,'(3 − x)(x − 2)','−x² + 5x − 6'],
+  [65,'2(x + 4)(5 − x) − 5(2x − 1)(x + 1)','−12x² − 3x + 45'],
+  [66,'4(x + 3)(x − 5) − 2(x − 2)(2x + 1)','−2x − 56'],
+  [67,'(a + 1)(a − 2) − (a + 3)(a − 1)','−3a + 1'],
+  [68,'(k + 5)(k − 6) + 2k(1 + k)','3k² + k − 30'],
+  [69,'(y + 4)(4 − y) − (y + 2)(3 − y)','10 − y'],
+  [70,'(a + b)(a + 1) − (a − 1)(b + 2)','a² − a + 2b + 2'],
+  [71,'2(x + y)(y − 1) − (y − x)(x + 2y)','x² + 3xy − 2x − 2y'],
+  [72,'3(x − 3) − 13(x − 1)(x + 2)','−13x² − 10x + 17'],
+  [73,'x(2 − x) − (x − 1)(1 + x)','−2x² + 2x + 1'],
+  [74,'(3 + 2x)(1 − x) + 2(x − 2)(4 − x)','−4x² + 11x − 13'],
+  [75,'x² + 18x + 81','(x + 9)²'],
+  [76,'x² − 6x + 9','(x − 3)²'],
+  [77,'25x² − 20x + 4','(5x − 2)²'],
+  [78,'9x² + 24x + 16','(3x + 4)²'],
+  [79,'2a² + 8a + 8','2(a + 2)²'],
+  [80,'−m² + 10m − 25','−(m − 5)²'],
+  [81,'12m² − 72m + 108','12(m − 3)²'],
+  [82,'4x² + 16xy + 16y²','4(x + 2y)²'],
+  [83,'−a² − 18a − 81','−(a + 9)²'],
+  [84,'5ya² − 10yab + 5yb²','5y(a − b)²'],
+  [85,'−2xb² + 4xab − 2xa²','−2x(a − b)²'],
+  [86,'−x² − 18x − 81','−(x + 9)²'],
+  [87,'−49 + 14x − x²','−(x − 7)²'],
+  [88,'4x² − 16x + 16','4(x − 2)²'],
+  [89,'9x² + 54x + 81','9(x + 3)²'],
+  [90,'13x² − 10x + 95','לא נראה כטרינום ריבועי פשוט'],
+  [91,'−ab − 16b + 64','לא נראה כטרינום ריבועי פשוט'],
+  [92,'4','2²'],
+  [93,'−14x − 7','−7(2x + 1)'],
+  [94,'−5a² + 4a','−a(5a − 4)']
+];
+
+function makeCard(item){
+  const [num, q, ans] = item;
+  const d = document.createElement('div');
+  d.className = 'ex';
+  d.dataset.num = num;
+  d.innerHTML = `<span class="num">${num}.</span><span class="math">${q} =</span><span class="ans">${ans}</span>`;
+  return d;
+}
+function render(listId, query=''){
+  const box = document.getElementById(listId);
+  box.innerHTML = '';
+  data.filter(x => String(x[0]).includes(query.trim())).forEach(x => box.appendChild(makeCard(x)));
+}
+render('practiceList');
+render('answersList');
+
+const practiceSection = document.querySelector('#practice .card');
+document.getElementById('togglePractice').onclick = () => practiceSection.classList.add('show-answers');
+document.getElementById('resetPractice').onclick = () => practiceSection.classList.remove('show-answers');
+document.getElementById('searchPractice').oninput = e => render('practiceList', e.target.value);
+document.getElementById('searchAnswers').oninput = e => render('answersList', e.target.value);
+
+document.querySelectorAll('nav button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.t).classList.add('show');
+  };
+});
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

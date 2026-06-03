@@ -1,0 +1,435 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מרכז הלמידה — אלגברה יחידה 1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{
+    --ink:#12142a;--paper:#f4f6ff;--card:#ffffff;--card2:#eef1fb;
+    --txt:#1e2040;--mut:#5a6080;--gold:#c8820a;--line:#dde2f0;
+    --c1:#e8401a;--c2:#0f9e56;--c3:#2a5bd8;--c4:#7c2ee0;--c5:#d45c0a;--c6:#0899b0;--c7:#b35700;--c8:#cc7200;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Heebo',sans-serif;color:var(--txt);line-height:1.7;min-height:100vh;padding:0 0 60px;
+    background:
+      radial-gradient(ellipse 110% 70% at 50% -8%,rgba(200,130,10,.11) 0%,transparent 55%),
+      radial-gradient(ellipse 55% 65% at -8% 65%,rgba(42,91,216,.07),transparent 65%),
+      radial-gradient(ellipse 55% 65% at 108% 35%,rgba(124,46,224,.06),transparent 65%),
+      var(--paper);
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 16px}
+
+  /* ===== HERO ===== */
+  .hero{text-align:center;padding:64px 20px 44px;position:relative;overflow:hidden}
+  .hero::before{
+    content:'';position:absolute;top:50%;left:50%;width:500px;height:500px;
+    transform:translate(-50%,-60%);border-radius:50%;
+    background:radial-gradient(circle,rgba(200,130,10,.09) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .hero-eq{position:absolute;inset:0;pointer-events:none;opacity:.06;font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;color:var(--ink)}
+  .hero-eq span{position:absolute;animation:float 14s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(4deg)}}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;letter-spacing:2px;
+    color:var(--gold);font-weight:700;
+    background:rgba(200,130,10,.1);
+    border:1.5px solid rgba(200,130,10,.3);border-radius:99px;
+    padding:7px 22px;margin-bottom:22px;position:relative;
+    box-shadow:0 2px 18px rgba(200,130,10,.12)}
+  .badge::before{content:'✦';font-size:.7rem;opacity:.7}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:3.2rem;font-weight:900;margin-bottom:10px;position:relative;line-height:1.15;background:linear-gradient(135deg,var(--ink) 0%,var(--ink) 40%,var(--gold) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p{color:var(--mut);font-size:1.05rem;position:relative;max-width:540px;margin:0 auto;line-height:1.8}
+  .stats{display:flex;gap:14px;justify-content:center;margin-top:30px;position:relative;flex-wrap:wrap}
+  .stat{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 26px;box-shadow:0 2px 18px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s}
+  .stat:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.09)}
+  .stat .n{font-family:'Frank Ruhl Libre',serif;font-size:2.1rem;font-weight:900;color:var(--gold);line-height:1.1}
+  .stat .l{font-size:.75rem;color:var(--mut);margin-top:3px}
+
+  /* progress bar of whole course */
+  .course-prog{max-width:480px;margin:28px auto 0;position:relative}
+  .course-prog .lbl{display:flex;justify-content:space-between;font-size:.8rem;color:var(--mut);margin-bottom:8px;font-weight:500}
+  .course-prog .track{height:12px;background:var(--card2);border-radius:99px;overflow:hidden;border:1px solid var(--line);box-shadow:inset 0 2px 4px rgba(0,0,0,.04)}
+  .course-prog .fill{height:100%;width:0;background:linear-gradient(90deg,var(--c2),var(--c3),var(--gold));border-radius:99px;transition:width 1.4s cubic-bezier(.2,.8,.2,1);position:relative}
+  .course-prog .fill::after{content:'';position:absolute;top:0;bottom:0;right:0;width:24px;background:rgba(255,255,255,.35);filter:blur(4px)}
+
+  /* ===== SECTION TITLES ===== */
+  .sec-title{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:700;margin:44px 6px 18px;display:flex;align-items:center;gap:12px}
+  .sec-title::before{content:"";width:5px;height:28px;border-radius:3px;background:linear-gradient(180deg,var(--gold),rgba(200,130,10,.25))}
+  .sec-sub{color:var(--mut);font-size:.78rem;font-weight:400;margin-right:auto;background:var(--card2);border-radius:99px;padding:3px 12px}
+
+  /* ===== TILES ===== */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;text-decoration:none;color:var(--txt);position:relative;overflow:hidden;transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .25s;display:flex;flex-direction:column;min-height:230px;box-shadow:0 2px 14px rgba(0,0,0,.04)}
+  .tile::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);border-radius:20px 20px 0 0;transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+  .tile:hover::after{transform:scaleX(1)}
+  .tile:hover{transform:translateY(-7px);border-color:var(--accent);box-shadow:0 18px 44px rgba(0,0,0,.1),0 0 0 1px var(--accent) inset}
+  .tile .glow{position:absolute;top:-40px;left:-40px;width:120px;height:120px;border-radius:50%;filter:blur(40px);opacity:.2;background:var(--accent);transition:opacity .25s}
+  .tile:hover .glow{opacity:.38}
+  .tile .num{font-family:'Frank Ruhl Libre',serif;font-size:.9rem;font-weight:800;color:var(--accent);position:relative;letter-spacing:.5px}
+  .tile h3{font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:900;margin:4px 0 6px;position:relative;line-height:1.25}
+  .tile .desc{font-size:.85rem;color:var(--mut);position:relative;margin-bottom:12px;line-height:1.6}
+
+  /* mini animation stage inside each tile */
+  .mini{position:relative;flex:1;display:flex;align-items:center;justify-content:center;min-height:64px;font-family:'Frank Ruhl Libre',serif;direction:ltr;margin-bottom:10px}
+  .tile .go{font-size:.85rem;font-weight:700;color:var(--accent);position:relative;display:flex;align-items:center;gap:6px;margin-top:auto}
+  .tile .go .arr{transition:transform .25s}
+  .tile:hover .go .arr{transform:translateX(-5px)}
+
+  /* tip badge */
+  .tip{position:relative;background:rgba(200,130,10,.07);border:1px solid rgba(200,130,10,.2);border-radius:12px;padding:9px 13px;font-size:.8rem;margin-bottom:12px;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+  .tip .ico{flex-shrink:0}
+  .tip b{color:var(--gold)}
+
+  /* exam tile - wide */
+  .exam-tile{background:linear-gradient(135deg,#1d2038,#16182e);border:1px solid var(--gold);border-radius:20px;padding:28px;text-decoration:none;color:#ecedf8;display:flex;align-items:center;gap:24px;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
+  .exam-tile:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(240,193,75,.18)}
+  .exam-tile .trophy{font-size:3.4rem;flex-shrink:0;animation:bob 3s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(4deg)}}
+  .exam-tile h3{font-family:'Frank Ruhl Libre',serif;font-size:1.7rem;font-weight:900;color:var(--gold);margin-bottom:4px}
+  .exam-tile p{color:#abaecf;font-size:.9rem}
+
+  footer{text-align:center;font-size:.8rem;color:var(--mut);margin-top:60px;padding:24px 16px;border-top:1px solid var(--line);opacity:.8;letter-spacing:.5px}
+
+  /* back to main nav */
+  .top-nav{background:rgba(244,246,255,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);padding:12px 20px;
+    display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;
+    box-shadow:0 2px 16px rgba(0,0,0,.04)}
+  .top-nav a{color:var(--gold);text-decoration:none;font-size:.85rem;font-weight:700;
+    display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;
+    transition:background .18s,color .18s}
+  .top-nav a:hover{background:rgba(200,130,10,.1);color:var(--ink)}
+  .top-nav .sep{width:1px;height:16px;background:var(--line)}
+  .top-nav .current{color:var(--mut);font-size:.82rem}
+
+  /* mini-anim element styles */
+  .pulse{animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.05)}}
+  .factor-mini{display:inline-block;color:var(--c1);font-weight:900;font-size:1.6rem;opacity:0;animation:popmini 3s infinite}
+  @keyframes popmini{0%,80%,100%{opacity:0}10%,70%{opacity:1}}
+  .big-num{font-size:2.2rem;font-weight:900}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="../index.html">🏠 מרכז ראשי</a>
+  <div class="sep"></div>
+  <span class="current">מרכז הלמידה — פרק א׳ + ב׳</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-eq">
+    <span style="top:10%;right:12%">x²</span>
+    <span style="top:30%;left:8%;animation-delay:-3s">√16</span>
+    <span style="top:60%;right:18%;animation-delay:-6s">(a+b)</span>
+    <span style="top:75%;left:14%;animation-delay:-2s">−2⁵</span>
+    <span style="top:18%;left:30%;animation-delay:-8s">3a+2b</span>
+    <span style="top:50%;right:40%;animation-delay:-5s">5·3</span>
+  </div>
+  <div class="badge">מכינה טכנולוגית · יחידה 1 · טכניקה אלגברית</div>
+  <h1>מרכז הלמידה</h1>
+  <p>כל הבסיס של האלגברה במקום אחד — הסבר פשוט, אנימציה לכל רעיון, ומשחק על כל נושא. לחצו על כרטיס כדי להתחיל.</p>
+  <div class="stats">
+    <div class="stat"><div class="n">7</div><div class="l">נושאים</div></div>
+    <div class="stat"><div class="n">21</div><div class="l">אנימציות ומשחקים</div></div>
+    <div class="stat"><div class="n">∞</div><div class="l">תרגול</div></div>
+  </div>
+  <div class="course-prog">
+    <div class="lbl"><span>המסע שלך בחומר</span><span>פרק א' + פרק ב'</span></div>
+    <div class="track"><div class="fill" id="courseFill"></div></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- PEREK A -->
+  <div class="sec-title">פרק א' — חזרה לפעולות החשבון <span class="sec-sub">הבסיס של הכל</span></div>
+  <div class="grid">
+
+    <a class="tile" href="chazakot.html" style="--accent:var(--c1)">
+      <div class="glow"></div>
+      <div class="num">נושא 1</div>
+      <h3>חזקות</h3>
+      <div class="desc">הכפלת מספר בעצמו כמה פעמים</div>
+      <div class="tip"><span class="ico">💡</span><span><b>טיפ:</b> המעריך אומר כמה פעמים לכפול. 2³ = 2·2·2</span></div>
+      <div class="mini"><span class="big-num" style="color:var(--c1)">2<sup>3</sup></span><span style="margin:0 10px;color:var(--mut)">=</span><span class="big-num pulse" style="color:var(--gold)">8</span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="shorashim.html" style="--accent:var(--c2)">
+      <div class="glow"></div>
+      <div class="num">נושא 2</div>
+      <h3>שורשים</h3>
+      <div class="desc">הפעולה ההפוכה לחזקה</div>
+      <div class="tip"><span class="ico">💡</span><span><b>טיפ:</b> √ שואל "איזה מספר בריבוע נותן את זה?"</span></div>
+      <div class="mini"><span class="big-num" style="color:var(--c2)">√16</span><span style="margin:0 10px;color:var(--mut)">→</span><span class="big-num pulse" style="color:var(--gold)">4</span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="seder_peulot.html" style="--accent:var(--c3)">
+      <div class="glow"></div>
+      <div class="num">נושא 3</div>
+      <h3>סדר פעולות</h3>
+      <div class="desc">מה מחשבים קודם?</div>
+      <div class="tip"><span class="ico">💡</span><span><b>טיפ:</b> כפל לפני חיבור! לכן 5+3·2 = 11 ולא 16</span></div>
+      <div class="mini"><span style="font-size:1.4rem">5 + <span style="color:var(--c3);font-weight:900">3·2</span> = <span class="pulse" style="color:var(--gold);font-weight:900">11</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="shliliyim.html" style="--accent:var(--c4)">
+      <div class="glow"></div>
+      <div class="num">נושא 4</div>
+      <h3>מספרים שליליים</h3>
+      <div class="desc">חיבור, חיסור וכלל הסימנים</div>
+      <div class="tip"><span class="ico">💡</span><span><b>טיפ:</b> מינוס כפול מינוס = פלוס. שני מינוסים מבטלים</span></div>
+      <div class="mini"><span style="font-size:1.5rem;color:var(--c4);font-weight:900">−·−</span><span style="margin:0 10px;color:var(--mut)">=</span><span class="big-num pulse" style="color:var(--gold)">+</span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+  </div>
+
+  <!-- PEREK B -->
+  <div class="sec-title">פרק ב' — פעולות בביטויים אלגבריים <span class="sec-sub">עובדים עם אותיות</span></div>
+  <div class="grid">
+
+    <a class="tile" href="chazaka_shlili.html" style="--accent:var(--c5)">
+      <div class="glow"></div>
+      <div class="num">נושא 5</div>
+      <h3>חזקה של שלילי</h3>
+      <div class="desc">מתי יוצא חיובי ומתי שלילי</div>
+      <div class="tip"><span class="ico">⚠️</span><span><b>זהירות:</b> (−2)² = 4 אבל −2² = −4. הסוגריים משנים!</span></div>
+      <div class="mini"><span style="font-size:1.3rem;color:var(--c2);font-weight:900">(−2)²=4</span><span style="margin:0 8px;color:var(--mut)">|</span><span style="font-size:1.3rem;color:var(--c1);font-weight:900">−2²=−4</span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="kinus_evarim.html" style="--accent:var(--c6)">
+      <div class="glow"></div>
+      <div class="num">נושא 6</div>
+      <h3>כינוס איברים</h3>
+      <div class="desc">מהו פרמטר ואיך מחברים</div>
+      <div class="tip"><span class="ico">💡</span><span><b>טיפ:</b> מחברים רק "דומים" — אותה אות, אותה חזקה</span></div>
+      <div class="mini"><span style="font-size:1.4rem"><span style="color:var(--c6);font-weight:900">3a+2a</span> = <span class="pulse" style="color:var(--gold);font-weight:900">5a</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="kefel_sograyim.html" style="--accent:var(--c7)">
+      <div class="glow"></div>
+      <div class="num">נושא 7</div>
+      <h3>כפל וסוגריים</h3>
+      <div class="desc">פתיחת סוגריים וחוק הפילוג</div>
+      <div class="tip"><span class="ico">💡</span><span><b>טיפ:</b> a(b+c) = ab+ac — כופלים בכל איבר בפנים</span></div>
+      <div class="mini"><span style="font-size:1.25rem"><span style="color:var(--c7);font-weight:900">5(x−2)</span> = <span class="pulse" style="color:var(--gold);font-weight:900">5x−10</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+  </div>
+
+  <!-- BAGRUT 3 YAD -->
+  <div class="sec-title">בגרות 3 יחידות <span class="sec-sub">הצעד הבא</span></div>
+  <div class="grid">
+
+    <a class="tile" href="mishvaot.html" style="--accent:var(--c3)">
+      <div class="glow"></div>
+      <div class="num">נושא 8</div>
+      <h3>משוואות ממעלה ראשונה</h3>
+      <div class="desc">איך למצוא את x — שיטת המאזניים</div>
+      <div class="tip"><span class="ico">⚖️</span><span><b>טיפ:</b> מה שעושים לצד אחד — חייבים לעשות גם לשני</span></div>
+      <div class="mini"><span style="font-size:1.3rem"><span style="color:var(--c3);font-weight:900">2x+5=13</span> → <span class="pulse" style="color:var(--gold);font-weight:900">x=4</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="beayot_miluliyot.html" style="--accent:var(--c4)">
+      <div class="glow"></div>
+      <div class="num">נושא 9</div>
+      <h3>בעיות מילוליות</h3>
+      <div class="desc">איך הופכים סיפור למשוואה</div>
+      <div class="tip"><span class="ico">🔄</span><span><b>טיפ:</b> מסמנים ב-x את מה שלא יודעים, ומתרגמים מילים למתמטיקה</span></div>
+      <div class="mini"><span style="font-size:1rem;color:var(--c4)">"סכום ופי 3"</span><span style="margin:0 8px;color:var(--mut)">→</span><span class="pulse" style="font-size:1.2rem;color:var(--gold);font-weight:900">x+3x=24</span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="achuzim.html" style="--accent:var(--c2)">
+      <div class="glow"></div>
+      <div class="num">נושא 10</div>
+      <h3>אחוזים</h3>
+      <div class="desc">הנחות, מע"מ, רווח וריבית</div>
+      <div class="tip"><span class="ico">🥧</span><span><b>טיפ:</b> חלק = שלם · אחוז/100. שלוש שאלות בלבד באחוזים</span></div>
+      <div class="mini"><span style="font-size:1.2rem"><span style="color:var(--c2);font-weight:900">25% מ-200</span> = <span class="pulse" style="color:var(--gold);font-weight:900">50</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="funktziot.html" style="--accent:var(--c8)">
+      <div class="glow"></div>
+      <div class="num">נושא 11</div>
+      <h3>פונקציות וגרפים</h3>
+      <div class="desc">קו ישר, שיפוע וחיתוכים</div>
+      <div class="tip"><span class="ico">📊</span><span><b>טיפ:</b> ב-y=mx+b — m הוא השיפוע, b הוא חיתוך עם ציר y</span></div>
+      <div class="mini"><span style="font-size:1.3rem"><span style="color:var(--c8);font-weight:900">y = </span><span style="color:var(--c1);font-weight:900">2</span><span style="color:var(--c8);font-weight:900">x + </span><span class="pulse" style="color:var(--gold);font-weight:900">3</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="mishvaa_ribuit.html" style="--accent:var(--c4)">
+      <div class="glow"></div>
+      <div class="num">נושא 12</div>
+      <h3>משוואה ריבועית</h3>
+      <div class="desc">נוסחת השורשים — חייבים לדעת!</div>
+      <div class="tip"><span class="ico">🧮</span><span><b>טיפ:</b> x = (−b ± √(b²−4ac)) / 2a — הנוסחה הכי חשובה לבגרות</span></div>
+      <div class="mini"><span style="font-size:1.2rem"><span style="color:var(--c4);font-weight:900">x²−5x+6=0</span> → <span class="pulse" style="color:var(--gold);font-weight:900">x=2,3</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="trigo.html" style="--accent:var(--c3)">
+      <div class="glow"></div>
+      <div class="num">נושא 13</div>
+      <h3>טריגונומטריה</h3>
+      <div class="desc">sin, cos, tan במשולש ישר-זווית</div>
+      <div class="tip"><span class="ico">📐</span><span><b>טיפ:</b> SOH-CAH-TOA — דרך הזכירה הקלאסית של 3 הנוסחאות</span></div>
+      <div class="mini"><span style="font-size:1.2rem"><span style="color:var(--c3);font-weight:900">sin 30°</span> = <span class="pulse" style="color:var(--gold);font-weight:900">1/2</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="maarechet.html" style="--accent:var(--c5)">
+      <div class="glow"></div>
+      <div class="num">נושא 14</div>
+      <h3>מערכת משוואות</h3>
+      <div class="desc">שתי משוואות, שני נעלמים</div>
+      <div class="tip"><span class="ico">🎯</span><span><b>טיפ:</b> הפתרון = נקודת המפגש של שני הקווים בגרף</span></div>
+      <div class="mini"><span style="font-size:1.05rem"><span style="color:var(--c5);font-weight:900">x+y=7, 2x−y=5</span> → <span class="pulse" style="color:var(--gold);font-weight:900">(4,3)</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="geo_analytit.html" style="--accent:var(--c4)">
+      <div class="glow"></div>
+      <div class="num">נושא 15</div>
+      <h3>גיאומטריה אנליטית</h3>
+      <div class="desc">מרחק, אמצע, ושיפוע בין נקודות</div>
+      <div class="tip"><span class="ico">📏</span><span><b>טיפ:</b> נוסחת המרחק = פיתגורס במסווה. אמצע = ממוצע של x ושל y</span></div>
+      <div class="mini"><span style="font-size:1.05rem"><span style="color:var(--c4);font-weight:900">A(1,2)→B(4,6)</span> → <span class="pulse" style="color:var(--gold);font-weight:900">d=5</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="meshulashim.html" style="--accent:var(--c1)">
+      <div class="glow"></div>
+      <div class="num">נושא 16</div>
+      <h3>משולשים</h3>
+      <div class="desc">שו"ש, שווה-צלעות, ישר-זווית, פיתגורס</div>
+      <div class="tip"><span class="ico">🔺</span><span><b>טיפ:</b> סכום הזוויות תמיד 180°. פיתגורס תקף רק בישר-זווית!</span></div>
+      <div class="mini"><span style="font-size:1.2rem"><span style="color:var(--c1);font-weight:900">3² + 4²</span> = <span class="pulse" style="color:var(--gold);font-weight:900">5²</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+    <a class="tile" href="kefel_mekutzar.html" style="--accent:var(--c2)">
+      <div class="glow"></div>
+      <div class="num">נושא 17</div>
+      <h3>נוסחאות הכפל המקוצר</h3>
+      <div class="desc">(a±b)² ו-(a+b)(a−b) — חובה לדעת!</div>
+      <div class="tip"><span class="ico">🟦</span><span><b>טיפ:</b> אל תשכחו את 2ab באמצע ב-(a+b)². זאת הטעות הכי נפוצה</span></div>
+      <div class="mini"><span style="font-size:1.15rem"><span style="color:var(--c2);font-weight:900">(x+3)²</span> = <span class="pulse" style="color:var(--gold);font-weight:900">x²+6x+9</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה לנושא</span>
+    </a>
+
+  </div>
+
+  <!-- HELPER PAGES -->
+  <div class="sec-title">כלי עזר ללמידה <span class="sec-sub">משאבים מועילים</span></div>
+  <div class="grid">
+
+    <a class="tile" href="noschaot.html" style="--accent:var(--c3)">
+      <div class="glow"></div>
+      <div class="num">∑ נוסחאות</div>
+      <h3>דף הנוסחאות</h3>
+      <div class="desc">כל הנוסחאות לבגרות עם הסבר</div>
+      <div class="tip"><span class="ico">📖</span><span><b>איך זה עובד:</b> לחיצה על כל נוסחה פותחת הסבר, דוגמה, ומתי להשתמש</span></div>
+      <div class="mini"><span style="font-size:1.2rem;color:var(--c3);font-weight:900">x = (−b ± √Δ) / 2a</span></div>
+      <span class="go"><span class="arr">←</span> כניסה</span>
+    </a>
+
+    <a class="tile" href="tipim.html" style="--accent:var(--c8)">
+      <div class="glow"></div>
+      <div class="num">💡 טיפים</div>
+      <h3>טיפים וטריקים</h3>
+      <div class="desc">24 טיפים לחישוב מהיר וחכם</div>
+      <div class="tip"><span class="ico">⚡</span><span><b>למשל:</b> איך להכפיל ב-11 בראש, או למצוא ריבוע מספר ב-5 בשנייה</span></div>
+      <div class="mini"><span style="font-size:1.3rem;color:var(--c8);font-weight:900">35² = 12·100+25 = <span style="color:var(--gold)">1225</span></span></div>
+      <span class="go"><span class="arr">←</span> כניסה</span>
+    </a>
+
+    <a class="tile" href="mivchanim.html" style="--accent:var(--c4)">
+      <div class="glow"></div>
+      <div class="num">📝 מבחנים</div>
+      <h3>מבחני מה"ט לדוגמה</h3>
+      <div class="desc">מבחן רנדומלי + שאלות לדוגמה עם פתרון</div>
+      <div class="tip"><span class="ico">🎯</span><span><b>כולל:</b> מבנה הבגרות, מחולל מבחן אקראי, ו-10 שאלות שכיחות עם פתרון מלא</span></div>
+      <div class="mini"><span style="font-size:1.1rem;color:var(--c4);font-weight:900">10 שאלות · ציון מיידי · ניתוח לפי נושא</span></div>
+      <span class="go"><span class="arr">←</span> כניסה</span>
+    </a>
+
+    <a class="tile" href="sippurim.html" style="--accent:var(--c6)">
+      <div class="glow"></div>
+      <div class="num">∞ השראה</div>
+      <h3>סיפורים ומוטיבציה</h3>
+      <div class="desc">איפה מתמטיקה פוגשת אותנו בחיים</div>
+      <div class="tip"><span class="ico">🌍</span><span><b>תכנים:</b> ציטוטים מפורסמים, איפה משתמשים במתמטיקה (מהמכולת ועד טילים), וסיפורים מההיסטוריה</span></div>
+      <div class="mini"><span style="font-size:1rem;color:var(--c6);font-weight:600">🛒 🏦 🚗 🎵 🚀 ⚕️ ⚽ 🎨</span></div>
+      <span class="go"><span class="arr">←</span> כניסה</span>
+    </a>
+
+  </div>
+
+  <!-- TIRGUL PEREK B -->
+  <div class="sec-title">תרגול מסכם <span class="sec-sub">חיזוק לפני הבגרות</span></div>
+  <a class="exam-tile" href="tirgul_perek_b.html" style="border-color:var(--c7)">
+    <div class="trophy" style="animation:none">📝</div>
+    <div>
+      <h3 style="color:var(--c7)">תרגול מסכם לפרק ב'</h3>
+      <p>עשרות תרגילים חדשים בכינוס איברים, פתיחת סוגריים, וסוגריים כפול סוגריים. אפשר לבחור נושא ספציפי לחיזוק או הכל מעורבב. עם רצף "🔥" שמתעד עד כמה אתם בפלואו.</p>
+    </div>
+  </a>
+
+  <!-- EXAM -->
+  <div class="sec-title">המבחן הגדול <span class="sec-sub">בדקו את עצמכם</span></div>
+  <a class="exam-tile" href="mivchan_sikum.html">
+    <div class="trophy">🏆</div>
+    <div>
+      <h3>מבחן סיכום</h3>
+      <p>שאלות אקראיות מכל 7 הנושאים, ציון בסוף, ופירוט מדויק של איפה אתם חזקים ואיפה כדאי לחזור. אפשר לבד, נגד המחשב, או נגד חבר.</p>
+    </div>
+  </a>
+
+  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 — טכניקה אלגברית · נבנה ללמידה בקצב שלך</footer>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    // Real progress based on visit data
+    var links = document.querySelectorAll('a.tile, a.exam-tile');
+    var total = links.length, visited = 0;
+    links.forEach(link => {
+      var href = link.getAttribute('href');
+      if (!href) return;
+      var parts = href.replace(/^\.\//, '').split('/').filter(Boolean);
+      // Files in learn/ are referenced as just "filename.html" from learn/index.html
+      var key = 'visited:learn/' + parts[parts.length - 1];
+      if (localStorage.getItem(key)) {
+        visited++;
+        if (!link.querySelector('.vck')) {
+          var ck = document.createElement('div');
+          ck.className = 'vck';
+          ck.textContent = '✓';
+          link.appendChild(ck);
+        }
+      }
+    });
+    var pct = total > 0 ? Math.round(visited / total * 100) : 0;
+    setTimeout(() => {
+      document.getElementById('courseFill').style.width = pct + '%';
+    }, 300);
+  });
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

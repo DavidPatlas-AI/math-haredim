@@ -1,0 +1,459 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>משולשים</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#3d2817;--paper:#f4ede4;--accent:#b85c2c;--accent2:#7a1a1a;--gold:#c9a227;--line:#e0d4c4;--shadow:0 10px 30px rgba(61,40,23,.12);--pos:#2d6a4f;--neg:#c0392b;--side:#b85c2c;--angle:#1d6e9e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(184,92,44,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"△";position:absolute;font-size:170px;font-weight:900;color:rgba(61,40,23,.05);top:0;left:30px;line-height:1}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.3rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#74604d;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .note{background:rgba(184,92,44,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .gold-box{background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:12px;padding:16px;margin-top:14px}
+  .gold-box .title{font-weight:800;color:#8a6f0e;margin-bottom:6px}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:1.6rem;margin:14px 0;padding:14px;background:var(--paper);border-radius:12px;direction:ltr;font-weight:900;color:var(--accent)}
+
+  /* Triangle types grid */
+  .types-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  @media (max-width:560px){.types-grid{grid-template-columns:1fr}}
+  .type-card{background:linear-gradient(135deg,#fff,var(--paper));border-radius:14px;padding:16px;border:2px solid var(--accent);text-align:center}
+  .type-card h3{font-family:'Frank Ruhl Libre',serif;font-size:1.15rem;font-weight:900;color:var(--accent);margin-bottom:6px}
+  .type-card svg{width:120px;height:90px;display:block;margin:0 auto 8px}
+  .type-card ul{text-align:right;font-size:.9rem;list-style:none;margin-top:8px}
+  .type-card ul li{padding:3px 0;display:flex;gap:6px;align-items:start}
+  .type-card ul li::before{content:"✓";color:var(--pos);font-weight:900;flex-shrink:0}
+
+  /* INTERACTIVE TRIANGLE */
+  .anim-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .anim-pick button{font-family:'Heebo';font-weight:600;font-size:.9rem;border:2px solid var(--ink);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer}
+  .anim-pick button.active{background:var(--ink);color:#fff}
+  .tri-wrap{padding:14px;background:var(--paper);border-radius:14px;margin-top:14px}
+  .tri-svg{width:100%;height:auto;display:block;background:#fff;border-radius:12px;border:1px solid var(--line)}
+  .tri-info{margin-top:14px;background:#fff;border-radius:12px;padding:14px}
+  .tri-info .ttl{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:900;color:var(--accent);margin-bottom:8px;text-align:center}
+  .props-list{display:grid;gap:6px}
+  .props-list .prop{background:var(--paper);border-radius:8px;padding:8px 12px;font-size:.95rem;border-right:3px solid var(--accent)}
+  .props-list .prop b{color:var(--accent)}
+
+  /* angles sum demo */
+  .sum-demo{margin-top:14px;background:#fff;border-radius:12px;padding:14px;text-align:center}
+  .sum-demo .row{display:flex;justify-content:center;align-items:center;gap:8px;font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:900;direction:ltr;flex-wrap:wrap}
+  .sum-demo .ang{padding:6px 12px;border-radius:8px;background:var(--paper);border:2px solid var(--angle);color:var(--angle)}
+  .sum-demo .result{padding:6px 14px;border-radius:8px;background:var(--gold);color:#fff}
+
+  /* pythagoras */
+  .pyth-box{background:linear-gradient(135deg,#fff,var(--paper));border:2px solid var(--accent);border-radius:14px;padding:16px;margin-top:14px;text-align:center}
+  .pyth-box .pf{font-family:'Frank Ruhl Libre',serif;font-size:2rem;font-weight:900;color:var(--accent);direction:ltr;margin:8px 0}
+
+  /* GAME */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#74604d}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Heebo';font-size:1rem;line-height:1.6;padding:18px;background:var(--paper);border-radius:14px;margin-bottom:14px;font-weight:600}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--pos);color:#fff;border-color:var(--pos)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#8c7563;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">בגרות · גיאומטריה</div>
+    <h1>משולשים</h1>
+    <div class="sub">שלושת סוגי המשולשים והתכונות שלהם</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🔺 מסווג משולשים</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>הכלל הזהוב <span class="tag">חוק יסוד</span></h2>
+      <p>בכל משולש בעולם — לא משנה איזה — סכום הזוויות הוא <b>תמיד 180°</b>:</p>
+      <div class="formula">α + β + γ = 180°</div>
+      <div class="sum-demo">
+        <div class="row">
+          <span class="ang">60°</span>
+          <span>+</span>
+          <span class="ang">70°</span>
+          <span>+</span>
+          <span class="ang">50°</span>
+          <span>=</span>
+          <span class="result">180°</span>
+        </div>
+      </div>
+      <div class="gold-box">
+        <div class="title">💡 שימוש מעשי</div>
+        אם יודעים שתי זוויות במשולש — תמיד אפשר למצוא את השלישית: <b>γ = 180° − α − β</b>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שלושת הסוגים המיוחדים <span class="tag">להכיר היטב</span></h2>
+      <div class="types-grid">
+        <div class="type-card">
+          <h3>שווה-שוקיים</h3>
+          <svg viewBox="0 0 120 90">
+            <polygon points="60,10 20,80 100,80" fill="rgba(184,92,44,.12)" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="40" y1="45" x2="45" y2="48" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="38" y1="48" x2="43" y2="51" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="80" y1="45" x2="75" y2="48" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="82" y1="48" x2="77" y2="51" stroke="var(--accent)" stroke-width="2"/>
+            <path d="M 32 75 A 12 12 0 0 0 38 67" fill="none" stroke="var(--angle)" stroke-width="1.5"/>
+            <path d="M 82 67 A 12 12 0 0 0 88 75" fill="none" stroke="var(--angle)" stroke-width="1.5"/>
+          </svg>
+          <ul>
+            <li><b>2 צלעות שוות</b> (שוקיים)</li>
+            <li><b>2 זוויות בסיס</b> שוות</li>
+            <li>זווית הראש שונה</li>
+          </ul>
+        </div>
+        <div class="type-card">
+          <h3>שווה-צלעות</h3>
+          <svg viewBox="0 0 120 90">
+            <polygon points="60,10 18,82 102,82" fill="rgba(184,92,44,.12)" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="38" y1="45" x2="43" y2="48" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="82" y1="45" x2="77" y2="48" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="58" y1="82" x2="62" y2="82" stroke="var(--accent)" stroke-width="2"/>
+            <text x="60" y="55" font-size="10" fill="var(--angle)" text-anchor="middle" font-weight="800">60°</text>
+            <text x="32" y="76" font-size="9" fill="var(--angle)" font-weight="800">60°</text>
+            <text x="78" y="76" font-size="9" fill="var(--angle)" font-weight="800">60°</text>
+          </svg>
+          <ul>
+            <li><b>כל 3 הצלעות</b> שוות</li>
+            <li><b>כל הזוויות 60°</b></li>
+            <li>סימטרי מכל הכיוונים</li>
+          </ul>
+        </div>
+        <div class="type-card">
+          <h3>ישר-זווית</h3>
+          <svg viewBox="0 0 120 90">
+            <polygon points="20,80 100,80 100,15" fill="rgba(184,92,44,.12)" stroke="var(--accent)" stroke-width="2"/>
+            <rect x="88" y="68" width="12" height="12" fill="none" stroke="var(--angle)" stroke-width="1.5"/>
+            <text x="50" y="76" font-size="9" fill="var(--accent)" font-weight="800">ניצב</text>
+            <text x="68" y="48" font-size="9" fill="var(--accent)" font-weight="800" transform="rotate(-40 68 48)">יתר</text>
+          </svg>
+          <ul>
+            <li>זווית אחת = <b>90°</b></li>
+            <li>שתי הצלעות הקטנות = <b>ניצבים</b></li>
+            <li>הצלע מול 90° = <b>יתר</b></li>
+          </ul>
+        </div>
+        <div class="type-card">
+          <h3>שווה-שוקיים וישר-זווית</h3>
+          <svg viewBox="0 0 120 90">
+            <polygon points="20,80 100,80 20,15" fill="rgba(184,92,44,.12)" stroke="var(--accent)" stroke-width="2"/>
+            <rect x="20" y="68" width="12" height="12" fill="none" stroke="var(--angle)" stroke-width="1.5"/>
+            <text x="50" y="76" font-size="9" fill="var(--angle)" font-weight="800">45°</text>
+            <text x="84" y="76" font-size="9" fill="var(--angle)" font-weight="800">45°</text>
+          </svg>
+          <ul>
+            <li>זווית 90° + שני ניצבים שווים</li>
+            <li><b>שתי הזוויות החדות = 45°</b></li>
+            <li>פופולרי בבגרות!</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>משפט פיתגורס <span class="tag">חובה לדעת</span></h2>
+      <p>במשולש <b>ישר-זווית</b> בלבד — קיים קשר מיוחד בין הצלעות:</p>
+      <div class="pyth-box">
+        <div class="pf">a² + b² = c²</div>
+        <div style="font-size:.95rem;color:#74604d">סכום ריבועי הניצבים = ריבוע היתר</div>
+      </div>
+      <div class="note">
+        <b>דוגמה קלאסית:</b> ניצבים 3 ו-4 → יתר = √(9+16) = √25 = 5<br>
+        זה המשולש המפורסם <b>3-4-5</b>. כדאי לזכור גם 5-12-13 ו-8-15-17.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>תכונה חשובה: גובה במשולש שו"ש <span class="tag">טריק יפה</span></h2>
+      <p>במשולש שווה-שוקיים, ה<b>גובה לבסיס</b> מקיים שלוש תכונות חשובות:</p>
+      <div style="background:var(--paper);border-radius:10px;padding:14px;margin-top:8px">
+        <div style="display:grid;gap:6px;font-size:.95rem">
+          <div>✓ הוא <b>חוצה את הבסיס</b> לשני חלקים שווים</div>
+          <div>✓ הוא <b>חוצה את זווית הראש</b> לשתי זוויות שוות</div>
+          <div>✓ הוא <b>ניצב לבסיס</b> (יוצר זווית 90°)</div>
+        </div>
+      </div>
+      <div class="note"><b>טיפ:</b> זה הופך משולש שו"ש לשני משולשים ישרי-זווית זהים → אפשר להשתמש בפיתגורס!</div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> פיתגורס פועל <b>רק במשולש ישר-זווית!</b> לא בכל משולש.<br><br>
+        <b>2.</b> במשולש שו"ש — <b>זווית הראש לא תמיד 60°</b>. רק במשולש שווה-צלעות הכל 60°.<br><br>
+        <b>3.</b> סכום שתי צלעות במשולש <b>חייב להיות גדול מהצלע השלישית</b>. אי-שוויון המשולש: a + b &gt; c.
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE TRIANGLE -->
+  <section id="anim">
+    <div class="card">
+      <h2>מסווג המשולשים 🔺</h2>
+      <p>בחרו סוג משולש — תראו אותו מצויר עם כל התכונות מודגשות.</p>
+      <div class="anim-pick" id="typePick"></div>
+      <div class="tri-wrap">
+        <svg class="tri-svg" id="triSvg" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tri-info">
+          <div class="ttl" id="typeTitle">משולש שווה-שוקיים</div>
+          <div class="props-list" id="propsList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק המשולשים 🎮</h2>
+      <p style="text-align:center;font-size:.9rem;color:#74604d;margin-bottom:14px">זוויות, צלעות, סוגי משולשים, ופיתגורס.</p>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>בסיס לבגרות · משולשים</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+/* ===== INTERACTIVE TRIANGLE CLASSIFIER ===== */
+const TYPES=[
+  {
+    name:'שווה-שוקיים',
+    title:'משולש שווה-שוקיים',
+    draw:function(){
+      // apex top, isoceles
+      return {Ax:200, Ay:60, Bx:90, By:260, Cx:310, Cy:260, marks:'iso'};
+    },
+    props:[
+      'שתי צלעות (השוקיים) <b>שוות באורך</b>',
+      'שתי זוויות הבסיס <b>שוות זו לזו</b>',
+      '<b>הגובה לבסיס</b> חוצה גם את הבסיס וגם את זווית הראש',
+      'סימטריה ביחס לציר הגובה'
+    ]
+  },
+  {
+    name:'שווה-צלעות',
+    title:'משולש שווה-צלעות',
+    draw:function(){
+      return {Ax:200, Ay:60, Bx:104, By:260, Cx:296, Cy:260, marks:'equi'};
+    },
+    props:[
+      '<b>כל שלוש הצלעות שוות</b> זו לזו',
+      '<b>כל הזוויות שוות ל-60°</b>',
+      'כל גובה הוא גם תיכון, גם חוצה זווית, וגם אנך אמצעי',
+      'הסימטרי ביותר — מסתובב ב-120° וחוזר על עצמו'
+    ]
+  },
+  {
+    name:'ישר-זווית',
+    title:'משולש ישר-זווית',
+    draw:function(){
+      return {Ax:80, Ay:260, Bx:320, By:260, Cx:320, Cy:80, marks:'right'};
+    },
+    props:[
+      'זווית אחת <b>שווה ל-90°</b> (זווית ישרה)',
+      'הצלעות בצמוד לזווית הישרה נקראות <b>ניצבים</b>',
+      'הצלע מול הזווית הישרה נקראת <b>יתר</b> — הצלע הארוכה ביותר',
+      '<b>משפט פיתגורס</b>: ניצב² + ניצב² = יתר²'
+    ]
+  },
+  {
+    name:'שו"ש ישר-זווית',
+    title:'שווה-שוקיים וישר-זווית (45-45-90)',
+    draw:function(){
+      return {Ax:80, Ay:260, Bx:300, By:260, Cx:80, Cy:40, marks:'iso-right'};
+    },
+    props:[
+      'שילוב של שווה-שוקיים וישר-זווית',
+      'הזווית הישרה היא בין שני <b>הניצבים השווים</b>',
+      'שתי הזוויות החדות <b>שוות ל-45°</b>',
+      'אם הניצבים = a, אז היתר = a·√2'
+    ]
+  },
+  {
+    name:'משולש כללי',
+    title:'משולש כללי (שונה-צלעות)',
+    draw:function(){
+      return {Ax:140, Ay:60, Bx:60, By:260, Cx:340, Cy:240, marks:'none'};
+    },
+    props:[
+      'כל הצלעות באורכים <b>שונים</b>',
+      'כל הזוויות בגדלים <b>שונים</b>',
+      'אין סימטריה',
+      '<b>סכום הזוויות עדיין 180°</b> — זה כלל אוניברסלי'
+    ]
+  }
+];
+
+let curT=0;
+const tp=document.getElementById('typePick');
+TYPES.forEach((t,i)=>{const b=document.createElement('button');b.textContent=t.name;b.onclick=()=>{curT=i;markT();drawTri();};tp.appendChild(b);});
+function markT(){[...tp.children].forEach((b,i)=>b.classList.toggle('active',i===curT));}
+
+const SVG=document.getElementById('triSvg');
+function tickMark(x1,y1,x2,y2,offset){
+  // perpendicular short mark at midpoint
+  const mx=(x1+x2)/2, my=(y1+y2)/2;
+  const dx=x2-x1, dy=y2-y1;
+  const L=Math.sqrt(dx*dx+dy*dy);
+  const px=-dy/L, py=dx/L;
+  const len=6;
+  const cx=mx+(offset||0)*(dx/L), cy=my+(offset||0)*(dy/L);
+  return '<line x1="'+(cx-px*len)+'" y1="'+(cy-py*len)+'" x2="'+(cx+px*len)+'" y2="'+(cy+py*len)+'" stroke="var(--accent)" stroke-width="2"/>';
+}
+function drawTri(){
+  const t=TYPES[curT];
+  const T=t.draw();
+  let svg='';
+  // triangle
+  svg+='<polygon points="'+T.Ax+','+T.Ay+' '+T.Bx+','+T.By+' '+T.Cx+','+T.Cy+'" fill="rgba(184,92,44,.10)" stroke="var(--ink)" stroke-width="2"/>';
+  // vertex dots
+  svg+='<circle cx="'+T.Ax+'" cy="'+T.Ay+'" r="4" fill="var(--ink)"/>';
+  svg+='<circle cx="'+T.Bx+'" cy="'+T.By+'" r="4" fill="var(--ink)"/>';
+  svg+='<circle cx="'+T.Cx+'" cy="'+T.Cy+'" r="4" fill="var(--ink)"/>';
+  // marks
+  if(T.marks==='iso'){
+    svg+=tickMark(T.Ax,T.Ay,T.Bx,T.By);
+    svg+=tickMark(T.Ax,T.Ay,T.Cx,T.Cy);
+    // angle arcs at B and C
+    svg+='<path d="M '+(T.Bx+18)+' '+T.By+' A 18 18 0 0 0 '+(T.Bx+13)+' '+(T.By-12)+'" fill="none" stroke="var(--angle)" stroke-width="2"/>';
+    svg+='<path d="M '+(T.Cx-18)+' '+T.Cy+' A 18 18 0 0 1 '+(T.Cx-13)+' '+(T.Cy-12)+'" fill="none" stroke="var(--angle)" stroke-width="2"/>';
+    svg+='<text x="'+(T.Bx+24)+'" y="'+(T.By-4)+'" font-size="14" fill="var(--angle)" font-weight="800" font-family="Frank Ruhl Libre">α</text>';
+    svg+='<text x="'+(T.Cx-32)+'" y="'+(T.Cy-4)+'" font-size="14" fill="var(--angle)" font-weight="800" font-family="Frank Ruhl Libre">α</text>';
+  }
+  if(T.marks==='equi'){
+    svg+=tickMark(T.Ax,T.Ay,T.Bx,T.By);
+    svg+=tickMark(T.Ax,T.Ay,T.Cx,T.Cy);
+    svg+=tickMark(T.Bx,T.By,T.Cx,T.Cy);
+    // 60° labels
+    svg+='<text x="'+T.Ax+'" y="'+(T.Ay+22)+'" font-size="14" fill="var(--angle)" font-weight="800" font-family="Frank Ruhl Libre" text-anchor="middle">60°</text>';
+    svg+='<text x="'+(T.Bx+20)+'" y="'+(T.By-6)+'" font-size="14" fill="var(--angle)" font-weight="800" font-family="Frank Ruhl Libre">60°</text>';
+    svg+='<text x="'+(T.Cx-30)+'" y="'+(T.Cy-6)+'" font-size="14" fill="var(--angle)" font-weight="800" font-family="Frank Ruhl Libre">60°</text>';
+  }
+  if(T.marks==='right'){
+    // right angle square at C (top-right vertex of right angle is at (Cx,By)... let's just mark at Bx,By
+    const rx=T.Bx, ry=T.By;
+    svg+='<rect x="'+(rx-16)+'" y="'+(ry-16)+'" width="16" height="16" fill="none" stroke="var(--angle)" stroke-width="2"/>';
+    // labels
+    svg+='<text x="'+((T.Ax+T.Bx)/2)+'" y="'+(T.By+22)+'" font-size="12" fill="var(--accent)" font-weight="800" font-family="Frank Ruhl Libre" text-anchor="middle">ניצב</text>';
+    svg+='<text x="'+(T.Bx+18)+'" y="'+((T.By+T.Cy)/2)+'" font-size="12" fill="var(--accent)" font-weight="800" font-family="Frank Ruhl Libre">ניצב</text>';
+    const midX=(T.Ax+T.Cx)/2, midY=(T.Ay+T.Cy)/2;
+    svg+='<text x="'+(midX-30)+'" y="'+(midY)+'" font-size="13" fill="var(--accent)" font-weight="800" font-family="Frank Ruhl Libre" transform="rotate(-35 '+(midX-30)+' '+midY+')">יתר</text>';
+  }
+  if(T.marks==='iso-right'){
+    const rx=T.Ax, ry=T.By;
+    svg+='<rect x="'+(rx)+'" y="'+(ry-16)+'" width="16" height="16" fill="none" stroke="var(--angle)" stroke-width="2"/>';
+    svg+=tickMark(T.Ax,T.Ay,T.Bx,T.By);
+    svg+=tickMark(T.Ax,T.Ay,T.Cx,T.Cy);
+    // 45° labels
+    svg+='<text x="'+(T.Bx-30)+'" y="'+(T.By-8)+'" font-size="14" fill="var(--angle)" font-weight="800" font-family="Frank Ruhl Libre">45°</text>';
+    svg+='<text x="'+(T.Cx+18)+'" y="'+(T.Cy+12)+'" font-size="14" fill="var(--angle)" font-weight="800" font-family="Frank Ruhl Libre">45°</text>';
+  }
+  if(T.marks==='none'){
+    // generic - show angle sum
+    svg+='<text x="'+T.Ax+'" y="'+(T.Ay+20)+'" font-size="14" fill="var(--angle)" font-weight="800" font-family="Frank Ruhl Libre" text-anchor="middle">α</text>';
+    svg+='<text x="'+(T.Bx+18)+'" y="'+(T.By-6)+'" font-size="14" fill="var(--angle)" font-weight="800" font-family="Frank Ruhl Libre">β</text>';
+    svg+='<text x="'+(T.Cx-22)+'" y="'+(T.Cy-6)+'" font-size="14" fill="var(--angle)" font-weight="800" font-family="Frank Ruhl Libre">γ</text>';
+    svg+='<text x="200" y="20" font-size="13" fill="var(--gold)" font-weight="900" font-family="Frank Ruhl Libre" text-anchor="middle">α + β + γ = 180°</text>';
+  }
+  SVG.innerHTML=svg;
+  document.getElementById('typeTitle').textContent=t.title;
+  const PL=document.getElementById('propsList');PL.innerHTML='';
+  t.props.forEach(p=>{const d=document.createElement('div');d.className='prop';d.innerHTML=p;PL.appendChild(d);});
+}
+markT();drawTri();
+
+/* ===== GAME ===== */
+const POOL=[
+  {q:'מה סכום הזוויות בכל משולש?',ans:'180°',wrong:['360°','90°','120°']},
+  {q:'במשולש שווה-צלעות, כל זווית היא:',ans:'60°',wrong:['90°','45°','30°']},
+  {q:'במשולש שווה-שוקיים, כמה זוויות שוות?',ans:'2',wrong:['3','1','0']},
+  {q:'אם זווית במשולש = 50° וזווית שנייה = 70°, השלישית היא:',ans:'60°',wrong:['50°','70°','40°']},
+  {q:'אם זווית במשולש = 90° וזווית שנייה = 30°, השלישית היא:',ans:'60°',wrong:['90°','30°','120°']},
+  {q:'במשולש ישר-זווית, סכום שתי הזוויות החדות הוא:',ans:'90°',wrong:['180°','60°','45°']},
+  {q:'במשולש שו"ש וישר-זווית, הזוויות החדות הן:',ans:'45°',wrong:['60°','30°','90°']},
+  {q:'במשולש ישר-זווית עם ניצבים 3 ו-4, מהו היתר?',ans:'5',wrong:['7','12','25']},
+  {q:'במשולש ישר-זווית עם ניצבים 6 ו-8, מהו היתר?',ans:'10',wrong:['14','48','100']},
+  {q:'במשולש ישר-זווית עם יתר 13 וניצב 5, הניצב השני =',ans:'12',wrong:['18','8','144']},
+  {q:'איזו צלע במשולש ישר-זווית הכי ארוכה?',ans:'היתר',wrong:['הניצב הקטן','הניצב הגדול','תלוי במשולש']},
+  {q:'משפט פיתגורס תקף ב:',ans:'משולש ישר-זווית בלבד',wrong:['כל משולש','משולש שו"ש בלבד','משולש שוו"ש בלבד']},
+  {q:'במשולש שו"ש, גובה לבסיס:',ans:'חוצה את הבסיס',wrong:['שווה לבסיס','כפול מהבסיס','אינו ניצב']},
+  {q:'משולש עם זוויות 90°, 45°, 45° נקרא:',ans:'שו"ש ישר-זווית',wrong:['שווה-צלעות','כללי','קהה-זווית']},
+  {q:'משולש עם זוויות 60°, 60°, 60° הוא:',ans:'שווה-צלעות',wrong:['שווה-שוקיים בלבד','ישר-זווית','כללי']},
+  {q:'אם משולש שו"ש עם זווית ראש 80°, זוויות הבסיס הן:',ans:'50°',wrong:['80°','40°','100°']},
+  {q:'אם משולש שו"ש עם זווית בסיס 70°, זווית הראש היא:',ans:'40°',wrong:['70°','110°','20°']}
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;document.getElementById('turn').textContent='תורו של: '+name;}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  cur=POOL[Math.floor(Math.random()*POOL.length)];
+  document.getElementById('question').textContent=cur.q;
+  const opts=shuffle([cur.ans,...cur.wrong]);
+  const O=document.getElementById('opts');O.innerHTML='';
+  opts.forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.7?btns.find(x=>x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,pick.textContent);},2000);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.ans;fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='✗ התשובה: '+cur.ans;fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

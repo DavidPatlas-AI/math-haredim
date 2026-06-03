@@ -1,0 +1,702 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מבוא לאלגברה - מושגי יסוד</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+        :root {
+            --ink: #1a1a2e;
+            --paper: #f8f6f0;
+            --accent: #16213e;
+            --accent2: #c0392b;
+            --gold: #c9a227;
+            --line: #d5d0c8;
+            --shadow: 0 10px 30px rgba(26, 26, 46, .10);
+            --pos: #2d6a4f;
+            --neg: #c0392b;
+            --blue: #1e6091;
+            --orange: #d97706;
+            --purple: #6b3fa0;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Heebo', sans-serif;
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 24px 16px 60px;
+            background: radial-gradient(circle at 12% 8%, rgba(30, 96, 145, .05), transparent 40%),
+                radial-gradient(circle at 88% 92%, rgba(201, 162, 39, .06), transparent 40%),
+                var(--paper);
+        }
+        .wrap {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 30px 20px 26px;
+            border: 2px solid var(--ink);
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: "x=?";
+            position: absolute;
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 130px;
+            font-weight: 900;
+            color: rgba(26, 26, 46, .03);
+            top: 10px;
+            left: 25px;
+        }
+        .eyebrow {
+            font-size: .85rem;
+            letter-spacing: 3px;
+            color: var(--blue);
+            font-weight: 600;
+            position: relative;
+        }
+        h1 {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin: 6px 0 2px;
+            position: relative;
+        }
+        .sub {
+            font-size: 1rem;
+            color: #5a5a6e;
+            position: relative;
+        }
+        nav {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 22px 0;
+            flex-wrap: wrap;
+        }
+        nav button {
+            font-family: 'Heebo';
+            font-size: .95rem;
+            font-weight: 600;
+            border: 2px solid var(--ink);
+            background: #fff;
+            color: var(--ink);
+            padding: 9px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: .2s;
+        }
+        nav button:hover {
+            transform: translateY(-2px);
+        }
+        nav button.active {
+            background: var(--ink);
+            color: #fff;
+        }
+        section {
+            display: none;
+            animation: fade .4s ease;
+        }
+        section.show {
+            display: block;
+        }
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+        .card {
+            background: #fff;
+            border: 1.5px solid var(--line);
+            border-radius: 16px;
+            padding: 26px 24px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow);
+        }
+        .card h2 {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            background: var(--gold);
+            color: #fff;
+            font-size: .75rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-family: 'Heebo';
+        }
+        .tag.blue {
+            background: var(--blue);
+        }
+        .tag.orange {
+            background: var(--orange);
+        }
+        .tag.purple {
+            background: var(--purple);
+        }
+        .note {
+            background: rgba(30, 96, 145, .07);
+            border-right: 4px solid var(--blue);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 14px;
+            font-size: .97rem;
+        }
+        .warn {
+            background: rgba(192, 57, 43, .07);
+            border-right: 4px solid var(--accent2);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 14px;
+            font-size: .97rem;
+        }
+        .gold-box {
+            background: rgba(201, 162, 39, .10);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 14px;
+        }
+        .gold-box .title {
+            font-weight: 800;
+            color: #8a6f0e;
+            margin-bottom: 6px;
+        }
+        .examples {
+            display: grid;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .examples div {
+            background: var(--paper);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.05rem;
+            direction: ltr;
+            text-align: left;
+            line-height: 1.8;
+        }
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        @media (max-width: 500px) {
+            .vocab-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .vocab-item {
+            background: var(--paper);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+        .vocab-item .heb {
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+        .vocab-item .eng {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--blue);
+            direction: ltr;
+        }
+        .vocab-item .meaning {
+            font-size: .85rem;
+            color: #555;
+            margin-top: 4px;
+        }
+        .big-emoji {
+            font-size: 3rem;
+            text-align: center;
+            margin: 8px 0;
+        }
+        .scale-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 14px 0;
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            direction: ltr;
+        }
+        .scale-visual .pan {
+            font-size: 2.5rem;
+        }
+
+        /* GAME */
+        .mode-pick {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .mode-pick button {
+            font-family: 'Heebo';
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 2px solid var(--ink);
+            background: #fff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            transition: .2s;
+        }
+        .mode-pick button.active {
+            background: var(--blue);
+            color: #fff;
+            border-color: var(--blue);
+        }
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .scoreboard .box {
+            flex: 1;
+        }
+        .scoreboard .who {
+            font-size: .85rem;
+            color: #5a5a6e;
+        }
+        .scoreboard .pts {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 2rem;
+            font-weight: 900;
+        }
+        .turn-banner {
+            text-align: center;
+            font-weight: 700;
+            padding: 8px;
+            border-radius: 10px;
+            background: var(--paper);
+            margin-bottom: 14px;
+        }
+        .q-box {
+            text-align: center;
+            font-family: 'Heebo', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 22px;
+            background: var(--paper);
+            border-radius: 14px;
+            margin-bottom: 14px;
+        }
+        .q-box .math {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            direction: ltr;
+            display: block;
+            margin-top: 6px;
+        }
+        .opts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .opts button {
+            font-family: 'Heebo', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 2px solid var(--ink);
+            background: #fff;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: .15s;
+        }
+        .opts button:hover {
+            transform: translateY(-2px);
+        }
+        .opts button.right {
+            background: var(--pos);
+            color: #fff;
+            border-color: var(--pos);
+        }
+        .opts button.wrong {
+            background: var(--neg);
+            color: #fff;
+            border-color: var(--neg);
+        }
+        .feedback {
+            text-align: center;
+            font-weight: 700;
+            min-height: 28px;
+            margin-top: 14px;
+        }
+        .next-btn {
+            display: none;
+            margin: 14px auto 0;
+            font-family: 'Heebo';
+            font-weight: 700;
+            border: none;
+            background: var(--ink);
+            color: #fff;
+            padding: 11px 26px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        footer {
+            text-align: center;
+            font-size: .8rem;
+            color: #7d9285;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="eyebrow">אלגברה — הצעד הראשון</div>
+            <h1>מה זה כל האיקסים האלה?</h1>
+            <div class="sub">משתנה, משוואה, אגפים, הצבה — כל המושגים שצריך לפני שמתחילים</div>
+        </header>
+
+        <nav>
+            <button class="active" data-t="learn">📘 מושגי יסוד</button>
+            <button data-t="game">🎮 משחק זיהוי</button>
+        </nav>
+
+        <!-- LEARN -->
+        <section id="learn" class="show">
+            <div class="card">
+                <h2>מה זה משתנה? (x, y, a, b...) <span class="tag blue">מושג 1</span></h2>
+                <p><b>משתנה</b> (או <b>נעלם</b>) הוא פשוט <b>מקום-סָמָן למספר שאנחנו עדיין לא יודעים</b>. במקום לכתוב "המספר שאני מחפש", כותבים אות — בדרך כלל <b>x</b>.</p>
+                <div class="big-emoji">❓ ➡️ x</div>
+                <div class="examples">
+                    <div>"יש לי מספר, ואם אני מוסיף לו 3 אני מקבל 8" → x + 3 = 8</div>
+                    <div>"פי שניים ממספר ועוד 5 שווה 13" → 2x + 5 = 13</div>
+                </div>
+                <div class="note">
+                    <b>למה דווקא x?</b> פשוט כי ככה קרה. אפשר להשתמש בכל אות — y, a, t, n. באלגברה, אות = מספר לא ידוע.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>מהו ביטוי אלגברי? <span class="tag orange">מושג 2</span></h2>
+                <p><b>ביטוי אלגברי</b> הוא שילוב של מספרים, משתנים ופעולות חשבון — <b>בלי סימן שוויון</b>.</p>
+                <div class="examples">
+                    <div>3x + 2 &nbsp;— ביטוי</div>
+                    <div>5y² − 4y + 1 &nbsp;— ביטוי</div>
+                    <div>3x + 2 = 8 &nbsp;— <b>זה כבר משוואה!</b> (יש =)</div>
+                </div>
+                <div class="gold-box">
+                    <div class="title">💡 איך זוכרים?</div>
+                    <b>ביטוי</b> = כמו "ביטוי במילים" — זה פשוט תיאור של משהו. <b>משוואה</b> = שתי קבוצות ששוות זו לזו.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>מהי משוואה? <span class="tag purple">מושג 3</span></h2>
+                <p><b>משוואה</b> היא משפט מתמטי שאומר: <b>שני דברים שווים זה לזה</b>. יש בה סימן <b>=</b> באמצע, ואגף ימין ואגף שמאל.</p>
+                <div class="scale-visual">
+                    <span>2x + 1</span>
+                    <span class="pan">⚖️</span>
+                    <span>7</span>
+                </div>
+                <p style="text-align:center;margin-top:8px"><b>אגף שמאל &nbsp; = &nbsp; אגף ימין</b></p>
+                <p style="text-align:center">המאזניים מאוזנים — שני הצדדים שווים.</p>
+                <div class="note">
+                    <b>פתרון משוואה</b> = למצוא איזה מספר x הופך את המשוואה לנכונה. מציבים את x במשוואה ובודקים אם שני האגפים באמת שווים.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>אוצר מילים — מושגים שצריך להכיר <span class="tag">מילון</span></h2>
+                <div class="vocab-grid">
+                    <div class="vocab-item">
+                        <div class="heb">משתנה / נעלם</div>
+                        <div class="eng">variable</div>
+                        <div class="meaning">אות שמייצגת מספר לא ידוע, לרוב x</div>
+                    </div>
+                    <div class="vocab-item">
+                        <div class="heb">מקדם</div>
+                        <div class="eng">coefficient</div>
+                        <div class="meaning">המספר שכופל את המשתנה. ב-3x, המקדם הוא 3</div>
+                    </div>
+                    <div class="vocab-item">
+                        <div class="heb">איבר</div>
+                        <div class="eng">term</div>
+                        <div class="meaning">חלק בביטוי שמופרד בפלוס או מינוס. ב-3x+2 יש שני איברים</div>
+                    </div>
+                    <div class="vocab-item">
+                        <div class="heb">קבוע</div>
+                        <div class="eng">constant</div>
+                        <div class="meaning">מספר רגיל, בלי משתנה. ב-3x+5, הקבוע הוא 5</div>
+                    </div>
+                    <div class="vocab-item">
+                        <div class="heb">אגף</div>
+                        <div class="eng">side</div>
+                        <div class="meaning">צד במשוואה — מה שמשמאל ל-= ומה שמימין ל-=</div>
+                    </div>
+                    <div class="vocab-item">
+                        <div class="heb">הצבה</div>
+                        <div class="eng">substitution</div>
+                        <div class="meaning">לקחת מספר ולשים אותו במקום x</div>
+                    </div>
+                    <div class="vocab-item">
+                        <div class="heb">פתרון</div>
+                        <div class="eng">solution</div>
+                        <div class="meaning">המספר שהופך את המשוואה לנכונה</div>
+                    </div>
+                    <div class="vocab-item">
+                        <div class="heb">לבדוק פתרון</div>
+                        <div class="eng">check</div>
+                        <div class="meaning">להציב את הפתרון במשוואה המקורית ולוודא שיוצא שוויון</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>מה זה "לפתור משוואה"? <span class="tag blue">הסבר</span></h2>
+                <p>לפתור משוואה זה כמו לשחק <b>בלש</b> — אנחנו מחפשים את המספר המסתורי (x) שגורם למשוואה "להסתדר".</p>
+                <div class="examples">
+                    <div>המשוואה: 2x + 3 = 7</div>
+                    <div>ננחש: x = 1 → 2·1 + 3 = 5 &nbsp;✗ (לא 7)</div>
+                    <div>ננחש: x = 2 → 2·2 + 3 = 7 &nbsp;✓ (בדיוק 7!)</div>
+                    <div>הפתרון: <b>x = 2</b></div>
+                </div>
+                <div class="note">
+                    <b>למה לא תמיד מנחשים?</b> בניחוש קל למצוא x=2. אבל מה אם x = 473/18? בשביל זה לומדים לפתור משוואות בצורה מסודרת — להעביר אגפים, לבודד את x.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>מה זו "הצבה"? <span class="tag orange">פעולה</span></h2>
+                <p><b>הצבה</b> = לקחת ערך מסוים ולשים אותו במקום x, ואז לחשב את הביטוי.</p>
+                <div class="examples">
+                    <div>נתון הביטוי: 3x + 5. הציבו x = 4:</div>
+                    <div>3·4 + 5 = 12 + 5 = 17</div>
+                    <div>נתון הביטוי: x² − 2x. הציבו x = 3:</div>
+                    <div>3² − 2·3 = 9 − 6 = 3</div>
+                </div>
+                <div class="gold-box">
+                    <div class="title">💡 הצבה = החלפה</div>
+                    בכל מקום שרואים x — מחליפים אותו במספר הנתון. <b>שימו לב:</b> 3x זה 3 כפול x, לא 3 ועוד x!
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>אגפים — המאזניים של המשוואה <span class="tag purple">מושג 4</span></h2>
+                <p>במשוואה יש <b>שני אגפים</b> — מה שמשמאל לשוויון ומה שמימין. אפשר לחשוב על זה כמו מאזניים:</p>
+                <div class="scale-visual">
+                    <span>🧱 x+3 🧱</span>
+                    <span class="pan">⚖️</span>
+                    <span>🧱🧱 7 🧱</span>
+                </div>
+                <p style="text-align:center;margin-top:10px"><b>חוק הזהב:</b> כל מה שעושים לאגף אחד — <b>חייבים</b> לעשות גם לאגף השני. אחרת המאזניים יוצאים מאיזון.</p>
+                <div class="examples">
+                    <div>x + 3 = 7 &nbsp;→&nbsp; x + 3 <b>− 3</b> = 7 <b>− 3</b> &nbsp;→&nbsp; x = 4</div>
+                    <div>2x = 10 &nbsp;→&nbsp; 2x <b>÷ 2</b> = 10 <b>÷ 2</b> &nbsp;→&nbsp; x = 5</div>
+                </div>
+                <div class="warn">
+                    <b>טעות נפוצה:</b> "אני אעביר את ה-3 לצד השני ואשנה סימן." זה עובד, אבל עדיף לחשוב: <b>אני עושה את אותה פעולה בשני האגפים</b>. ככה לא טועים.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>סיכום — איך נראית בעיה באלגברה? <span class="tag">זרימה</span></h2>
+                <div style="background:var(--paper);border-radius:12px;padding:18px;margin-top:10px;line-height:2.2">
+                    <b>1.</b> יש בעיה במילים — "איזה מספר ועוד 5 נותן 12?"<br>
+                    <b>2.</b> מתרגמים לאלגברה — <span dir="ltr">x + 5 = 12</span><br>
+                    <b>3.</b> הביטוי <span dir="ltr">x + 5</span> הוא <b>אגף שמאל</b>; 12 הוא <b>אגף ימין</b>.<br>
+                    <b>4.</b> <b>פותרים</b> — מחסרים 5 משני האגפים: <span dir="ltr">x = 7</span><br>
+                    <b>5.</b> <b>בודקים</b> בהצבה: <span dir="ltr">7 + 5 = 12</span> ✓
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME -->
+        <section id="game">
+            <div class="card">
+                <h2>משחק — זיהוי מושגים 🎮</h2>
+                <p style="text-align:center;font-size:.9rem;color:#5a5a6e;margin-bottom:14px">קראו את התיאור — מהו המושג המתאים?</p>
+                <div class="mode-pick">
+                    <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+                    <button data-m="duo">שני שחקנים 👥</button>
+                </div>
+                <div class="scoreboard">
+                    <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+                    <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+                </div>
+                <div class="turn-banner" id="turn">תורו של: שחקן</div>
+                <div class="q-box" id="question">—</div>
+                <div class="opts" id="opts"></div>
+                <div class="feedback" id="feedback"></div>
+                <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+            </div>
+        </section>
+
+        <footer>בסיס לבגרות · מבוא לאלגברה</footer>
+    </div>
+
+    <script>
+        // TABS
+        document.querySelectorAll('nav button').forEach(b => {
+            b.onclick = () => {
+                document.querySelectorAll('nav button').forEach(x => x.classList.remove('active'));
+                document.querySelectorAll('section').forEach(s => s.classList.remove('show'));
+                b.classList.add('active');
+                document.getElementById(b.dataset.t).classList.add('show');
+            };
+        });
+
+        // ========================
+        // GAME
+        // ========================
+        const POOL = [
+            { q: 'אות שמייצגת מספר לא ידוע (למשל x)', ans: 'משתנה / נעלם', wrong: ['מקדם', 'קבוע', 'אגף'] },
+            { q: 'המספר שכופל את המשתנה (ב-4x זה 4)', ans: 'מקדם', wrong: ['קבוע', 'נעלם', 'פתרון'] },
+            { q: 'מספר רגיל בלי משתנה (ב-3x+7 זה 7)', ans: 'קבוע', wrong: ['מקדם', 'משתנה', 'אגף'] },
+            { q: 'צד במשוואה — מה שמשמאל או מימין ל-=', ans: 'אגף', wrong: ['איבר', 'ביטוי', 'קבוע'] },
+            { q: 'לקחת מספר ולשים אותו במקום x', ans: 'הצבה', wrong: ['פתרון', 'משוואה', 'מקדם'] },
+            { q: 'המספר שהופך את המשוואה לנכונה', ans: 'פתרון', wrong: ['נעלם', 'מקדם', 'ביטוי'] },
+            { q: 'שני דברים ששווים זה לזה, עם סימן = באמצע', ans: 'משוואה', wrong: ['ביטוי', 'הצבה', 'אגף'] },
+            { q: 'שילוב של מספרים, משתנים ופעולות — בלי סימן =', ans: 'ביטוי אלגברי', wrong: ['משוואה', 'פתרון', 'אגף'] },
+            { q: 'ב-5x² + 3x − 7, כמה איברים יש?', ans: 'שלושה איברים', wrong: ['שני איברים', 'ארבעה איברים', 'איבר אחד'] },
+            { q: 'למה קוראים לפעולה: x+5=9 → x=4?', ans: 'פתרון משוואה', wrong: ['הצבה', 'כינוס איברים', 'בדיקה'] },
+            { q: 'מהו החוק: "מה שעושים לאגף אחד עושים גם לשני"?', ans: 'חוק המאזניים / שמירה על שוויון', wrong: ['חוק הפילוג', 'חוק הקיבוץ', 'חוק הצמצום'] },
+            { q: 'ב-2x+3=7, מהו אגף ימין?', ans: '7', wrong: ['2x+3', 'x', '2x'] },
+        ];
+
+        let mode = 'cpu';
+        let s1 = 0,
+            s2 = 0,
+            turn = 1,
+            cur = null;
+
+        const modeButtons = document.querySelectorAll('.mode-pick button');
+        modeButtons.forEach(b => {
+            b.onclick = () => {
+                modeButtons.forEach(x => x.classList.remove('active'));
+                b.classList.add('active');
+                mode = b.dataset.m;
+                document.getElementById('n2').textContent = mode === 'cpu' ? 'מחשב' : 'שחקן 2';
+                document.getElementById('n1').textContent = mode === 'cpu' ? 'שחקן' : 'שחקן 1';
+                s1 = s2 = 0;
+                turn = 1;
+                updateScore();
+                newQ();
+            };
+        });
+
+        function updateScore() {
+            document.getElementById('s1').textContent = s1;
+            document.getElementById('s2').textContent = s2;
+            const name = turn === 1 ? document.getElementById('n1').textContent : document.getElementById('n2')
+                .textContent;
+            document.getElementById('turn').textContent = 'תורו של: ' + name;
+        }
+
+        function shuffle(a) { return a.sort(() => Math.random() - .5); }
+
+        function newQ() {
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('nextBtn').style.display = 'none';
+            cur = POOL[Math.floor(Math.random() * POOL.length)];
+            document.getElementById('question').textContent = cur.q;
+            const opts = shuffle([cur.ans, ...cur.wrong]);
+            const O = document.getElementById('opts');
+            O.innerHTML = '';
+            opts.forEach(v => {
+                const btn = document.createElement('button');
+                btn.textContent = v;
+                btn.onclick = () => answer(btn, v);
+                O.appendChild(btn);
+            });
+            updateScore();
+            if (mode === 'cpu' && turn === 2) {
+                O.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    const btns = [...O.children];
+                    let pick = Math.random() < 0.65 ?
+                        btns.find(x => x.textContent === cur.ans) :
+                        btns[Math.floor(Math.random() * btns.length)];
+                    cpuAnswer(pick, pick.textContent);
+                }, 1400);
+            } else {
+                O.style.pointerEvents = 'auto';
+            }
+        }
+
+        function lock() { document.getElementById('opts').style.pointerEvents = 'none'; }
+
+        function answer(btn, v) {
+            lock();
+            const fb = document.getElementById('feedback');
+            if (v === cur.ans) {
+                btn.classList.add('right');
+                if (turn === 1) s1++;
+                else s2++;
+                fb.textContent = '✓ נכון! ' + cur.ans;
+                fb.style.color = 'var(--pos)';
+            } else {
+                btn.classList.add('wrong');
+                [...document.getElementById('opts').children].find(x => x.textContent === cur.ans)?.classList.add(
+                    'right');
+                fb.textContent = '✗ התשובה: ' + cur.ans;
+                fb.style.color = 'var(--neg)';
+            }
+            endTurn();
+        }
+
+        function cpuAnswer(btn, v) {
+            const fb = document.getElementById('feedback');
+            if (v === cur.ans) {
+                btn.classList.add('right');
+                s2++;
+                fb.textContent = '🤖 המחשב ענה נכון: ' + cur.ans;
+            } else {
+                btn.classList.add('wrong');
+                [...document.getElementById('opts').children].find(x => x.textContent === cur.ans)?.classList.add('right');
+                fb.textContent = '🤖 המחשב טעה! התשובה: ' + cur.ans;
+            }
+            fb.style.color = 'var(--ink)';
+            endTurn();
+        }
+
+        function endTurn() {
+            updateScore();
+            turn = turn === 1 ? 2 : 1;
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+
+        document.getElementById('nextBtn').onclick = newQ;
+        document.getElementById('n2').textContent = 'מחשב';
+        newQ();
+    </script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

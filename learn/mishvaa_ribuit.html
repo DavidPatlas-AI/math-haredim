@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>משוואה ריבועית</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#3d1f4a;--paper:#efebf3;--accent:#7c3aa8;--accent2:#c0392b;--gold:#c9a227;--line:#dcd2e4;--shadow:0 10px 30px rgba(61,31,74,.12);--pos:#2d6a4f;--neg:#c0392b;--ca:#e0533d;--cb:#3aa66f;--cc:#c9a227}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(124,58,168,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"ax²";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:140px;font-weight:900;color:rgba(61,31,74,.05);top:20px;left:20px}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.3rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#6e5878;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .note{background:rgba(124,58,168,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .gold-box{background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:12px;padding:16px;margin-top:14px}
+  .gold-box .title{font-weight:800;color:#8a6f0e;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:1.7rem;margin:14px 0;padding:16px;background:var(--paper);border-radius:12px;direction:ltr}
+  .formula .a{color:var(--ca);font-weight:900}.formula .b{color:var(--cb);font-weight:900}.formula .c{color:var(--cc);font-weight:900}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;direction:ltr;text-align:left}
+  /* The big formula */
+  .big-formula{font-family:'Frank Ruhl Libre',serif;text-align:center;font-size:1.5rem;background:linear-gradient(135deg,#fff,var(--paper));border:2px solid var(--accent);border-radius:14px;padding:22px;margin-top:14px;direction:ltr}
+  .frac{display:inline-block;text-align:center;vertical-align:middle;font-size:1.3rem;margin:0 4px}
+  .frac .top{display:block;border-bottom:2px solid var(--ink);padding:0 8px 2px;font-weight:800}
+  .frac .bot{display:block;padding:2px 8px;font-weight:800}
+  /* discriminant */
+  .disc-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}
+  .disc-card{background:var(--paper);border-radius:12px;padding:14px;text-align:center}
+  .disc-card .sym{font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:1.4rem;color:var(--accent);direction:ltr}
+  .disc-card .lbl{font-size:.78rem;color:#6e5878;margin-top:4px}
+  /* CALCULATOR */
+  .calc-wrap{background:var(--paper);border-radius:14px;padding:16px;margin-top:14px}
+  .calc-eq{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:1.9rem;font-weight:900;direction:ltr;background:#fff;border-radius:12px;padding:14px;border:2px dashed var(--accent);margin-bottom:14px}
+  .calc-inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+  .inp-group{background:#fff;border-radius:12px;padding:12px;text-align:center}
+  .inp-group label{display:block;font-size:.85rem;font-weight:700;margin-bottom:4px}
+  .inp-group input{width:100%;font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:800;text-align:center;border:2px solid var(--ink);background:#fff;padding:6px;border-radius:8px;direction:ltr}
+  .inp-group input:focus{outline:none;border-color:var(--accent)}
+  .inp-group.a{border-top:4px solid var(--ca)}.inp-group.a label{color:var(--ca)}
+  .inp-group.b{border-top:4px solid var(--cb)}.inp-group.b label{color:var(--cb)}
+  .inp-group.c{border-top:4px solid var(--cc)}.inp-group.c label{color:var(--cc)}
+  .preset-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .preset-row button{font-family:'Frank Ruhl Libre',serif;font-size:.9rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:6px 12px;border-radius:8px;cursor:pointer;direction:ltr}
+  .preset-row button:hover{background:var(--ink);color:#fff}
+  .calc-steps{display:flex;flex-direction:column;gap:8px}
+  .cstep{background:#fff;border-radius:10px;padding:10px 14px;display:flex;gap:10px;align-items:center}
+  .cstep .lbl{font-size:.8rem;color:#6e5878;font-weight:600;min-width:110px}
+  .cstep .val{font-family:'Frank Ruhl Libre',serif;font-weight:900;direction:ltr;flex:1;text-align:left;font-size:1.05rem}
+  .cstep.result{background:linear-gradient(135deg,var(--accent),#5d2a85);color:#fff}
+  .cstep.result .lbl{color:rgba(255,255,255,.8)}
+  .cstep.result .val{color:#fff;font-size:1.3rem}
+  .cstep.warn-no{background:rgba(192,57,43,.1);border:1px solid var(--accent2)}
+  /* GAME */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#6e5878}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:2rem;font-weight:900;direction:ltr;padding:22px;background:var(--paper);border-radius:14px;margin-bottom:14px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--pos);color:#fff;border-color:var(--pos)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#8e7a98;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">3 יחידות · בגרות · נוסחת השורשים</div>
+    <h1>משוואה ריבועית</h1>
+    <div class="sub">פתרון משוואות עם x² — הנוסחה שצריך לשנן</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🧮 מחשבון שורשים</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>מה זו משוואה ריבועית? <span class="tag">בסיס</span></h2>
+      <p>משוואה <b>ריבועית</b> היא משוואה שבה ה-x מופיע בחזקה 2. הצורה הכללית:</p>
+      <div class="formula"><span class="a">a</span>x² + <span class="b">b</span>x + <span class="c">c</span> = 0</div>
+      <p>שלושת המספרים <b style="color:var(--ca)">a</b>, <b style="color:var(--cb)">b</b>, <b style="color:var(--cc)">c</b> הם המקדמים. <b style="color:var(--ca)">a</b> חייב להיות שונה מאפס (אחרת אין x²).</p>
+      <div class="examples">
+        <div>2x² + 3x − 5 = 0  → a=2, b=3, c=−5</div>
+        <div>x² − 7x + 12 = 0  → a=1, b=−7, c=12</div>
+        <div>3x² + 6 = 0  → a=3, b=0, c=6</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>נוסחת השורשים <span class="tag">הנוסחה המרכזית</span></h2>
+      <p>זו הנוסחה הכי חשובה בבגרות — <b>חייבים לשנן בעל-פה!</b></p>
+      <div class="big-formula">
+        x<sub>1,2</sub> = <span class="frac"><span class="top">−<span style="color:var(--cb)">b</span> ± √(<span style="color:var(--cb)">b</span>² − 4<span style="color:var(--ca)">a</span><span style="color:var(--cc)">c</span>)</span><span class="bot">2<span style="color:var(--ca)">a</span></span></span>
+      </div>
+      <p style="text-align:center;margin-top:6px">הסימן ± אומר ש<b>יש שני פתרונות</b>: אחד עם פלוס, אחד עם מינוס.</p>
+    </div>
+
+    <div class="card">
+      <h2>הדיסקרימיננטה <span class="tag">קובעת כמה פתרונות יהיו</span></h2>
+      <p>הביטוי שבתוך השורש — <b style="direction:ltr;display:inline-block">b² − 4ac</b> — נקרא <b>דיסקרימיננטה</b> (סימן: Δ). הוא קובע כמה פתרונות יש למשוואה:</p>
+      <div class="disc-row">
+        <div class="disc-card" style="border-top:4px solid var(--pos)">
+          <div class="sym">Δ &gt; 0</div>
+          <div class="lbl"><b>שני פתרונות</b> שונים</div>
+        </div>
+        <div class="disc-card" style="border-top:4px solid var(--gold)">
+          <div class="sym">Δ = 0</div>
+          <div class="lbl"><b>פתרון אחד</b> בלבד</div>
+        </div>
+        <div class="disc-card" style="border-top:4px solid var(--neg)">
+          <div class="sym">Δ &lt; 0</div>
+          <div class="lbl"><b>אין פתרון</b> (במספרים ממשיים)</div>
+        </div>
+      </div>
+      <div class="gold-box">
+        <div class="title">💡 למה זה?</div>
+        אי אפשר להוציא שורש ממספר שלילי. אם הדיסקרימיננטה שלילית — אין מה לחשב. בבגרות, אם יוצא לכם √שלילי — תכתבו "אין פתרון".
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>צעדי פתרון <span class="tag">תהליך</span></h2>
+      <div class="examples">
+        <div><b>1.</b> מסדרים את המשוואה לצורה ax² + bx + c = 0</div>
+        <div><b>2.</b> מזהים את a, b, c</div>
+        <div><b>3.</b> מחשבים את הדיסקרימיננטה: Δ = b² − 4ac</div>
+        <div><b>4.</b> מציבים בנוסחה ומקבלים את x₁ ו-x₂</div>
+        <div><b>5.</b> בודקים ע"י הצבה</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>דוגמה מלאה</h2>
+      <p>פתרו: <b style="direction:ltr;display:inline-block">x² − 5x + 6 = 0</b></p>
+      <div class="examples">
+        <div>a=1, b=−5, c=6</div>
+        <div>Δ = (−5)² − 4·1·6 = 25 − 24 = 1</div>
+        <div>√Δ = √1 = 1</div>
+        <div>x₁ = (5 + 1) / 2 = 3</div>
+        <div>x₂ = (5 − 1) / 2 = 2</div>
+      </div>
+      <div class="note"><b>בדיקה:</b> 3² − 5·3 + 6 = 9 − 15 + 6 = 0 ✓ &nbsp; 2² − 5·2 + 6 = 4 − 10 + 6 = 0 ✓</div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> שימו לב לסימן של b! אם המשוואה x²−5x+6, אז <b>b=−5</b> (לא 5). וב-(−b) זה כבר ייצא +5.<br><br>
+        <b>2.</b> <b>אל תשכחו לחלק ב-2a</b> את כל המונה — לא רק את −b.<br><br>
+        <b>3.</b> √שלילי = <b>אין פתרון</b>. אל תכתבו "0" — כתבו "אין פתרון ממשי".
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section id="anim">
+    <div class="card">
+      <h2>מחשבון נוסחת השורשים 🧮</h2>
+      <p>שנו את <b style="color:var(--ca)">a</b>, <b style="color:var(--cb)">b</b>, <b style="color:var(--cc)">c</b> — ותראו את כל החישוב צעד-אחר-צעד.</p>
+      <div class="calc-wrap">
+        <div class="calc-eq" id="calcEq">x² − 5x + 6 = 0</div>
+        <div class="calc-inputs">
+          <div class="inp-group a"><label>a</label><input type="number" id="inA" value="1" step="1"></div>
+          <div class="inp-group b"><label>b</label><input type="number" id="inB" value="-5" step="1"></div>
+          <div class="inp-group c"><label>c</label><input type="number" id="inC" value="6" step="1"></div>
+        </div>
+        <div class="preset-row">
+          <button data-a="1" data-b="-5" data-c="6">x²−5x+6</button>
+          <button data-a="1" data-b="2" data-c="-8">x²+2x−8</button>
+          <button data-a="2" data-b="-3" data-c="-2">2x²−3x−2</button>
+          <button data-a="1" data-b="-4" data-c="4">x²−4x+4</button>
+          <button data-a="1" data-b="0" data-c="-9">x²−9</button>
+          <button data-a="1" data-b="1" data-c="5">x²+x+5</button>
+        </div>
+        <div class="calc-steps" id="calcSteps"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק המשוואות הריבועיות 🎮</h2>
+      <p style="text-align:center;font-size:.9rem;color:#6e5878;margin-bottom:14px">מה הפתרונות של המשוואה? (כשיש שני פתרונות — סדרו מהקטן לגדול)</p>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>בסיס לבגרות 3 יח"ל · משוואה ריבועית</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+/* ===== CALCULATOR ===== */
+function fmtSign(n){if(n===0)return'';return n>0?' + '+n:' − '+Math.abs(n);}
+function fmtCoef(n,suffix){if(n===0)return'';if(n===1)return ' + '+suffix;if(n===-1)return ' − '+suffix;return (n>0?' + '+n:' − '+Math.abs(n))+suffix;}
+
+function buildEq(a,b,c){
+  let s='';
+  if(a===1)s='x²';else if(a===-1)s='−x²';else s=a+'x²';
+  s+=fmtCoef(b,'x');
+  s+=fmtSign(c);
+  s+=' = 0';
+  return s;
+}
+
+function updateCalc(){
+  const a=parseFloat(document.getElementById('inA').value)||0;
+  const b=parseFloat(document.getElementById('inB').value)||0;
+  const c=parseFloat(document.getElementById('inC').value)||0;
+  document.getElementById('calcEq').textContent=buildEq(a,b,c);
+  const S=document.getElementById('calcSteps');S.innerHTML='';
+  function addStep(lbl,val,cls){
+    const d=document.createElement('div');d.className='cstep'+(cls?' '+cls:'');
+    d.innerHTML='<span class="lbl">'+lbl+'</span><span class="val">'+val+'</span>';S.appendChild(d);
+  }
+  if(a===0){addStep('שגיאה','a לא יכול להיות 0 (זו לא משוואה ריבועית)','warn-no');return;}
+  addStep('מקדמים','a='+a+', b='+b+', c='+c);
+  const disc=b*b-4*a*c;
+  addStep('דיסקרימיננטה Δ', 'b² − 4ac = ('+b+')² − 4·('+a+')·('+c+') = '+disc);
+  if(disc<0){addStep('תוצאה','Δ &lt; 0 → אין פתרון ממשי','warn-no');return;}
+  const sq=Math.sqrt(disc);
+  addStep('√Δ', '√'+disc+' = '+(sq%1===0?sq:sq.toFixed(3)));
+  if(disc===0){
+    const x=-b/(2*a);
+    addStep('x','(−b) / (2a) = ('+(-b)+') / '+(2*a)+' = '+(x%1===0?x:x.toFixed(3)));
+    addStep('פתרון יחיד','x = '+(x%1===0?x:x.toFixed(3)),'result');return;
+  }
+  const x1=(-b+sq)/(2*a),x2=(-b-sq)/(2*a);
+  const x1s=x1%1===0?x1:x1.toFixed(3),x2s=x2%1===0?x2:x2.toFixed(3);
+  addStep('x₁ (עם +)','('+(-b)+' + '+(sq%1===0?sq:sq.toFixed(3))+') / '+(2*a)+' = '+x1s);
+  addStep('x₂ (עם −)','('+(-b)+' − '+(sq%1===0?sq:sq.toFixed(3))+') / '+(2*a)+' = '+x2s);
+  addStep('פתרונות','x₁ = '+x1s+',  x₂ = '+x2s,'result');
+}
+document.getElementById('inA').addEventListener('input',updateCalc);
+document.getElementById('inB').addEventListener('input',updateCalc);
+document.getElementById('inC').addEventListener('input',updateCalc);
+document.querySelectorAll('.preset-row button').forEach(b=>b.onclick=()=>{
+  document.getElementById('inA').value=b.dataset.a;
+  document.getElementById('inB').value=b.dataset.b;
+  document.getElementById('inC').value=b.dataset.c;
+  updateCalc();
+});
+updateCalc();
+
+/* ===== GAME ===== */
+const POOL=[
+  {eq:'x² − 5x + 6 = 0',ans:'x=2, x=3',wrong:['x=−2, x=−3','x=1, x=6','x=2, x=−3']},
+  {eq:'x² + 2x − 8 = 0',ans:'x=−4, x=2',wrong:['x=4, x=−2','x=−2, x=4','x=2, x=8']},
+  {eq:'x² − 7x + 12 = 0',ans:'x=3, x=4',wrong:['x=−3, x=−4','x=2, x=6','x=1, x=12']},
+  {eq:'x² + x − 12 = 0',ans:'x=−4, x=3',wrong:['x=4, x=−3','x=−3, x=4','x=2, x=−6']},
+  {eq:'x² − 4x + 4 = 0',ans:'x=2 (יחיד)',wrong:['x=−2','x=4','אין פתרון']},
+  {eq:'x² − 9 = 0',ans:'x=−3, x=3',wrong:['x=9','x=3 (יחיד)','x=−9, x=9']},
+  {eq:'x² − 16 = 0',ans:'x=−4, x=4',wrong:['x=16','x=4 (יחיד)','x=8']},
+  {eq:'x² + 5 = 0',ans:'אין פתרון',wrong:['x=−5, x=5','x=√5','x=0']},
+  {eq:'2x² − 8 = 0',ans:'x=−2, x=2',wrong:['x=4','x=−4, x=4','x=8']},
+  {eq:'x² − x − 6 = 0',ans:'x=−2, x=3',wrong:['x=2, x=−3','x=−3, x=2','x=1, x=6']},
+  {eq:'x² + 6x + 9 = 0',ans:'x=−3 (יחיד)',wrong:['x=3','x=−3, x=3','x=9']},
+  {eq:'x² − 10x + 25 = 0',ans:'x=5 (יחיד)',wrong:['x=−5','x=10','x=−5, x=5']},
+  {eq:'x² + 3x = 0',ans:'x=−3, x=0',wrong:['x=0, x=3','x=3','אין פתרון']}
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;document.getElementById('turn').textContent='תורו של: '+name;}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  cur=POOL[Math.floor(Math.random()*POOL.length)];
+  document.getElementById('question').textContent=cur.eq;
+  const opts=shuffle([cur.ans,...cur.wrong]);
+  const O=document.getElementById('opts');O.innerHTML='';
+  opts.forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.65?btns.find(x=>x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,pick.textContent);},2000);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.ans;fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='✗ התשובה: '+cur.ans;fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

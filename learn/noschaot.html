@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>דף נוסחאות לבגרות</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#0f2027;--paper:#e8f0f3;--accent:#0d6e8c;--accent2:#c0392b;--gold:#c9a227;--line:#c5d6dc;--shadow:0 10px 30px rgba(15,32,39,.12);--pos:#2d6a4f;--neg:#c0392b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(13,110,140,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  .back{display:inline-block;margin-bottom:14px;color:var(--accent);text-decoration:none;font-weight:700}
+  .back:hover{text-decoration:underline}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"∑";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:200px;color:rgba(15,32,39,.05);top:-20px;left:30px;line-height:1;font-weight:900}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.3rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#4a6671;position:relative}
+  .intro{background:#fff;border:2px solid var(--gold);border-radius:14px;padding:14px 16px;margin:22px 0;text-align:center;font-size:.95rem}
+  .intro b{color:var(--accent)}
+  .cat-nav{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:22px 0 18px}
+  .cat-nav button{font-family:'Heebo';font-weight:600;font-size:.88rem;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer;transition:.2s}
+  .cat-nav button:hover{transform:translateY(-2px)}
+  .cat-nav button.active{background:var(--ink);color:var(--paper)}
+  .section-title{font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:900;color:var(--accent);margin:24px 0 10px;display:flex;align-items:center;gap:10px;padding-bottom:6px;border-bottom:2px solid var(--accent)}
+  .section-title .ico{font-size:1.5rem}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:560px){.formula-grid{grid-template-columns:1fr}}
+  .formula-card{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;transition:.25s;position:relative;overflow:hidden}
+  .formula-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent)}
+  .formula-card.open{grid-column:1/-1;cursor:default;border-color:var(--accent);background:linear-gradient(135deg,#fff,var(--paper))}
+  .formula-card .lbl{font-size:.78rem;color:#7a8a92;font-weight:700;margin-bottom:4px}
+  .formula-card .eq{font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:900;direction:ltr;text-align:center;color:var(--ink);padding:6px 0}
+  .formula-card .hint{font-size:.78rem;color:var(--accent);text-align:center;margin-top:4px;font-style:italic}
+  .formula-card.open .hint{display:none}
+  .formula-card .body{display:none;margin-top:12px;padding-top:12px;border-top:2px dashed var(--accent)}
+  .formula-card.open .body{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .formula-card .body p{margin-bottom:8px;line-height:1.7;font-size:.95rem}
+  .formula-card .body p b{color:var(--accent)}
+  .formula-card .body .example{background:#fff;border-radius:8px;padding:10px;margin-top:8px;font-family:'Frank Ruhl Libre',serif;font-size:1rem;direction:ltr;text-align:left;border-right:3px solid var(--gold)}
+  .formula-card .body .when{background:rgba(201,162,39,.12);border-radius:8px;padding:10px;margin-top:8px;font-size:.88rem}
+  .formula-card .body .when b{color:#8a6f0e}
+  .formula-card .close-x{margin-top:10px;text-align:center;font-size:.82rem;color:var(--accent);font-weight:700;cursor:pointer;padding:4px}
+  .formula-card .close-x:hover{text-decoration:underline}
+  footer{text-align:center;font-size:.8rem;color:#7a8a92;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" class="back">← חזרה לעמוד הבית</a>
+  <header>
+    <div class="eyebrow">∑ דף נוסחאות אינטראקטיבי</div>
+    <h1>דף הנוסחאות</h1>
+    <div class="sub">כל הנוסחאות שצריך לדעת לבגרות — עם הסבר ודוגמה</div>
+  </header>
+
+  <div class="intro">
+    <b>איך משתמשים?</b> לחצו על כל נוסחה כדי לראות הסבר קצר, דוגמה, ומתי משתמשים בה. לעבור בין קטגוריות בעזרת הכפתורים.
+  </div>
+
+  <div class="cat-nav">
+    <button class="active" data-c="all">הכל</button>
+    <button data-c="algebra">אלגברה</button>
+    <button data-c="geometry">גיאומטריה</button>
+    <button data-c="trig">טריגונומטריה</button>
+    <button data-c="analytic">גיאו' אנליטית</button>
+    <button data-c="stats">סטטיסטיקה</button>
+  </div>
+
+  <div id="content"></div>
+
+  <footer>אתר תרגול מתמטיקה · דף נוסחאות מלא לבגרות 3 יח"ל</footer>
+</div>
+
+<script>
+const FORMULAS={
+  algebra:{title:'אלגברה',icon:'∑',items:[
+    {lbl:'נוסחת השורשים',eq:'x = (−b ± √(b²−4ac)) / 2a',
+     explain:'<p>פותרת כל <b>משוואה ריבועית</b> בצורה ax²+bx+c=0. הנוסחה החשובה ביותר בבגרות.</p><p><b>הביטוי בתוך השורש (Δ=b²−4ac)</b> נקרא דיסקרימיננטה. אם הוא חיובי — 2 פתרונות. אם 0 — פתרון אחד. אם שלילי — אין פתרון.</p>',
+     example:'x² − 5x + 6 = 0<br>x = (5 ± √(25−24)) / 2 = (5 ± 1)/2<br>x = 3 או x = 2',
+     when:'משוואה עם x² (ריבוע). תמיד אחרי שיש 0 בצד אחד.'},
+
+    {lbl:'ריבוע סכום',eq:'(a + b)² = a² + 2ab + b²',
+     explain:'<p>נוסחת הכפל המקוצר הראשונה. <b>אסור לשכוח את 2ab באמצע</b>!</p>',
+     example:'(x + 3)² = x² + 6x + 9<br>(2x + 1)² = 4x² + 4x + 1',
+     when:'כל פעם שמרבעים סוגריים עם +. גם בכיוון הפוך — לפירוק לגורמים.'},
+
+    {lbl:'ריבוע הפרש',eq:'(a − b)² = a² − 2ab + b²',
+     explain:'<p>דומה לנוסחה הקודמת, אבל הסימן באמצע מינוס. <b>שימו לב</b>: b² עדיין חיובי!</p>',
+     example:'(x − 4)² = x² − 8x + 16<br>(3x − 2)² = 9x² − 12x + 4',
+     when:'כל פעם שמרבעים סוגריים עם −.'},
+
+    {lbl:'הפרש ריבועים',eq:'(a + b)(a − b) = a² − b²',
+     explain:'<p>כששני סוגריים זהים חוץ מהסימן — מקבלים <b>הפרש ריבועים</b> בלי איבר אמצעי.</p><p>גם בכיוון הפוך: x²−9 = (x+3)(x−3). שימושית מאוד לפירוק לגורמים.</p>',
+     example:'(x + 5)(x − 5) = x² − 25<br>x² − 16 = (x + 4)(x − 4)',
+     when:'ביטוי בצורה a² − b² (הפרש ריבועים).'},
+
+    {lbl:'חוקי חזקות',eq:'aᵐ · aⁿ = aᵐ⁺ⁿ<br>aᵐ : aⁿ = aᵐ⁻ⁿ<br>(aᵐ)ⁿ = aᵐ·ⁿ',
+     explain:'<p>שלוש הנוסחאות המרכזיות של חזקות:<br>1. <b>כפל</b> חזקות עם אותו בסיס → <b>מחברים מעריכים</b><br>2. <b>חילוק</b> חזקות עם אותו בסיס → <b>מחסרים מעריכים</b><br>3. <b>חזקה של חזקה</b> → <b>מכפילים מעריכים</b></p>',
+     example:'2³ · 2⁴ = 2⁷ = 128<br>3⁵ : 3² = 3³ = 27<br>(2²)³ = 2⁶ = 64',
+     when:'בכל פעולה עם חזקות.'},
+
+    {lbl:'חזקה שלילית',eq:'a⁻ⁿ = 1 / aⁿ',
+     explain:'<p>חזקה <b>שלילית</b> = הופך לשבר עם 1 למעלה.</p>',
+     example:'2⁻³ = 1/2³ = 1/8<br>5⁻² = 1/25',
+     when:'כשרואים מעריך שלילי.'},
+
+    {lbl:'חזקת שורש',eq:'a^(1/n) = ⁿ√a',
+     explain:'<p>חזקה של <b>1/2</b> = שורש ריבועי. חזקה של <b>1/3</b> = שורש מעוקב.</p>',
+     example:'9^(1/2) = √9 = 3<br>8^(1/3) = ³√8 = 2',
+     when:'כשמתעסקים בשורשים — אפשר להמיר לחזקה.'},
+
+    {lbl:'אחוזים',eq:'חלק = שלם × (אחוז / 100)',
+     explain:'<p>הנוסחה הבסיסית לאחוזים. <b>שלוש שאלות</b> נגזרות ממנה:<br>1. חלק = שלם × אחוז/100<br>2. אחוז = (חלק / שלם) × 100<br>3. שלם = חלק × 100 / אחוז</p>',
+     example:'20% מ-150 = 150 × 20/100 = 30<br>30 מתוך 150 הם (30/150)×100 = 20%',
+     when:'בעיות אחוזים, הנחות, ריבית, מע"מ.'}
+  ]},
+
+  geometry:{title:'גיאומטריה',icon:'△',items:[
+    {lbl:'משפט פיתגורס',eq:'a² + b² = c²',
+     explain:'<p>במשולש <b>ישר-זווית בלבד</b> — סכום ריבועי הניצבים = ריבוע היתר.</p><p><b>שלשות פיתגוריות:</b> 3-4-5, 5-12-13, 8-15-17 — כדאי לזכור.</p>',
+     example:'ניצבים 3 ו-4:<br>c² = 9 + 16 = 25 → c = 5',
+     when:'משולש ישר-זווית — חישוב צלע שלישית.'},
+
+    {lbl:'סכום זוויות במשולש',eq:'α + β + γ = 180°',
+     explain:'<p>בכל משולש בעולם, סכום שלוש הזוויות = 180°. תמיד.</p>',
+     example:'משולש עם זוויות 50° ו-70°:<br>הזווית השלישית = 180 − 50 − 70 = 60°',
+     when:'בכל בעיה גיאומטרית עם משולש.'},
+
+    {lbl:'שטח משולש',eq:'S = (בסיס × גובה) / 2',
+     explain:'<p>הנוסחה הבסיסית. <b>הגובה חייב להיות מאונך לבסיס</b>.</p>',
+     example:'בסיס 6, גובה 4:<br>S = (6 × 4) / 2 = 12',
+     when:'חישוב שטח של כל משולש.'},
+
+    {lbl:'שטח מלבן',eq:'S = אורך × רוחב',
+     explain:'<p>שטח מלבן = הכפלת שתי הצלעות הצמודות.</p>',
+     example:'אורך 5, רוחב 3:<br>S = 5 × 3 = 15',
+     when:'חישוב שטח מלבן או ריבוע.'},
+
+    {lbl:'היקף מלבן',eq:'P = 2(אורך + רוחב)',
+     explain:'<p>שני אורכים + שני רוחבים.</p>',
+     example:'אורך 5, רוחב 3:<br>P = 2(5+3) = 16',
+     when:'חישוב היקף מלבן.'},
+
+    {lbl:'שטח מעגל',eq:'S = π × r²',
+     explain:'<p>r = רדיוס (מרכז עד היקף). π ≈ 3.14.</p>',
+     example:'רדיוס 5:<br>S = π × 25 ≈ 78.5',
+     when:'חישוב שטח עיגול/מעגל.'},
+
+    {lbl:'היקף מעגל',eq:'P = 2 × π × r',
+     explain:'<p>או P = πd, כש-d=קוטר (2r).</p>',
+     example:'רדיוס 5:<br>P = 2 × π × 5 ≈ 31.4',
+     when:'חישוב היקף מעגל.'}
+  ]},
+
+  trig:{title:'טריגונומטריה',icon:'∠',items:[
+    {lbl:'סינוס',eq:'sin θ = נגדית / יתר',
+     explain:'<p>במשולש ישר-זווית — היחס בין הצלע <b>שמול הזווית</b> לבין <b>היתר</b>.</p><p>חלק מ"SOH-CAH-TOA".</p>',
+     example:'זווית 30°, יתר 10:<br>נגדית = 10 × sin(30°) = 10 × 0.5 = 5',
+     when:'מחפשים נגדית או יתר ויודעים זווית.'},
+
+    {lbl:'קוסינוס',eq:'cos θ = סמוכה / יתר',
+     explain:'<p>היחס בין הצלע <b>הצמודה לזווית</b> לבין <b>היתר</b>.</p>',
+     example:'זווית 60°, יתר 10:<br>סמוכה = 10 × cos(60°) = 10 × 0.5 = 5',
+     when:'מחפשים סמוכה או יתר ויודעים זווית.'},
+
+    {lbl:'טנגנס',eq:'tan θ = נגדית / סמוכה',
+     explain:'<p>היחס בין הנגדית לבין הסמוכה — בלי קשר ליתר.</p>',
+     example:'זווית 45°: tan = 1 (כי הצלעות שוות)<br>זווית 60°: tan = √3',
+     when:'יודעים זווית וצלע, מחפשים את הצלע השנייה.'},
+
+    {lbl:'ערכים מיוחדים',eq:'sin 30° = 1/2<br>cos 60° = 1/2<br>tan 45° = 1',
+     explain:'<p>חמש זוויות שכדאי לזכור בעל-פה:</p><p>0°, 30°, 45°, 60°, 90°. הן חוזרות בבגרות שוב ושוב.</p>',
+     example:'sin 0° = 0,  sin 90° = 1<br>cos 0° = 1,  cos 90° = 0<br>sin 30° = ½,  cos 60° = ½',
+     when:'תמיד שכדאי להציב בלי מחשבון.'}
+  ]},
+
+  analytic:{title:'גיאומטריה אנליטית',icon:'📍',items:[
+    {lbl:'מרחק בין שתי נקודות',eq:'d = √((x₂−x₁)² + (y₂−y₁)²)',
+     explain:'<p>למעשה זה <b>משפט פיתגורס במסווה</b> — ההפרשים בx ובy הם הניצבים, והמרחק הוא היתר.</p>',
+     example:'A(1,2), B(4,6):<br>d = √(9 + 16) = √25 = 5',
+     when:'מחפשים אורך קטע.'},
+
+    {lbl:'אמצע קטע',eq:'M = ((x₁+x₂)/2, (y₁+y₂)/2)',
+     explain:'<p>הכי קל: <b>ממוצע של ה-x-ים, וממוצע של ה-y-ים</b>.</p>',
+     example:'A(2,4), B(6,8):<br>M = ((2+6)/2, (4+8)/2) = (4, 6)',
+     when:'מחפשים את אמצע הקטע.'},
+
+    {lbl:'שיפוע קו',eq:'m = (y₂−y₁) / (x₂−x₁)',
+     explain:'<p>בנייה: <b>y תמיד למעלה, x למטה</b>. אם הסדר מתחלף בשתי המנות — התוצאה אותה.</p>',
+     example:'A(1,2), B(4,8):<br>m = (8−2)/(4−1) = 6/3 = 2',
+     when:'מחפשים את השיפוע ויש שתי נקודות.'},
+
+    {lbl:'משוואת קו ישר',eq:'y = mx + b',
+     explain:'<p>m = שיפוע, b = חיתוך עם ציר y.</p><p>אם השיפוע 2 והקו עובר ב-(0,3): y = 2x + 3.</p>',
+     example:'שיפוע 2, חוצה y ב-(0,3):<br>y = 2x + 3',
+     when:'מתאר קו בצורה אלגברית.'},
+
+    {lbl:'קווים מקבילים',eq:'m₁ = m₂',
+     explain:'<p>שני קווים מקבילים יש להם <b>אותו שיפוע</b>. החיתוך עם y שונה.</p>',
+     example:'y = 2x + 3 מקביל ל-y = 2x − 5',
+     when:'בעיות על קווים מקבילים.'},
+
+    {lbl:'קווים מאונכים',eq:'m₁ · m₂ = −1',
+     explain:'<p>מכפלת השיפועים של שני קווים מאונכים = −1. אחד הפוך של השני וגם הופכי בסימן.</p>',
+     example:'קו עם שיפוע 2 מאונך לקו עם שיפוע −½',
+     when:'בעיות על קווים מאונכים, גובה במשולש.'}
+  ]},
+
+  stats:{title:'סטטיסטיקה',icon:'📊',items:[
+    {lbl:'ממוצע חשבוני',eq:'x̄ = (סכום הערכים) / (מספר הערכים)',
+     explain:'<p>מחברים את כל המספרים, מחלקים בכמה מספרים יש.</p>',
+     example:'נתונים: 4, 7, 10:<br>ממוצע = (4+7+10)/3 = 7',
+     when:'חישוב ממוצע נתונים.'},
+
+    {lbl:'הסתברות',eq:'P(A) = מספר מקרים נוחים / סך הכל',
+     explain:'<p>ההסתברות לאירוע = כמה מקרים שאנו רוצים, חלקי כל המקרים האפשריים.</p>',
+     example:'הסתברות לגלגל 6 בקובייה:<br>P = 1/6',
+     when:'בעיות הסתברות.'},
+
+    {lbl:'הסתברות משלימה',eq:'P(לא A) = 1 − P(A)',
+     explain:'<p>אם ההסתברות לאירוע היא p, ההסתברות שהאירוע <b>לא יקרה</b> היא 1−p.</p>',
+     example:'הסתברות לגלגל 6 = 1/6<br>הסתברות לא לגלגל 6 = 5/6',
+     when:'כשקל יותר לחשב את ההפך.'}
+  ]}
+};
+
+let curCat='all';
+function render(){
+  const C=document.getElementById('content');C.innerHTML='';
+  Object.entries(FORMULAS).forEach(([k,v])=>{
+    if(curCat!=='all'&&curCat!==k)return;
+    const h=document.createElement('div');h.className='section-title';h.innerHTML='<span class="ico">'+v.icon+'</span> '+v.title;C.appendChild(h);
+    const G=document.createElement('div');G.className='formula-grid';
+    v.items.forEach(f=>{
+      const c=document.createElement('div');c.className='formula-card';
+      c.innerHTML='<div class="lbl">'+f.lbl+'</div><div class="eq">'+f.eq+'</div><div class="hint">לחצו להסבר ↓</div><div class="body"><p>'+f.explain+'</p><div class="example">'+f.example+'</div><div class="when"><b>מתי להשתמש:</b> '+f.when+'</div><div class="close-x">▲ סגור</div></div>';
+      c.onclick=function(e){
+        if(e.target.classList.contains('close-x')){c.classList.remove('open');return;}
+        if(!c.classList.contains('open')){
+          document.querySelectorAll('.formula-card.open').forEach(x=>x.classList.remove('open'));
+          c.classList.add('open');
+          setTimeout(()=>c.scrollIntoView({behavior:'smooth',block:'center'}),50);
+        }
+      };
+      G.appendChild(c);
+    });
+    C.appendChild(G);
+  });
+}
+document.querySelectorAll('.cat-nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.cat-nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');curCat=b.dataset.c;render();};});
+render();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

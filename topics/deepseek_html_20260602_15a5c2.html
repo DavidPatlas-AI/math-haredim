@@ -1,0 +1,320 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מוטיבציה למתמטיקה</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+        :root {
+            --ink: #1a1a2e;
+            --paper: #fdfaf3;
+            --warm: #c0392b;
+            --gold: #c9a227;
+            --hope: #1e6091;
+            --line: #d5d0c8;
+            --shadow: 0 10px 30px rgba(26, 26, 46, .10);
+            --bg-warm: rgba(192, 57, 43, .04);
+            --bg-gold: rgba(201, 162, 39, .08);
+            --bg-hope: rgba(30, 96, 145, .04);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Heebo', sans-serif;
+            color: var(--ink);
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 24px 16px 60px;
+            background: radial-gradient(circle at 12% 8%, var(--bg-gold), transparent 40%),
+                radial-gradient(circle at 88% 92%, var(--bg-hope), transparent 40%),
+                var(--paper);
+        }
+        .wrap {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 40px 24px 32px;
+            border: 2px solid var(--ink);
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: "🚀";
+            position: absolute;
+            font-size: 100px;
+            top: -10px;
+            left: 20px;
+            opacity: .05;
+        }
+        .eyebrow {
+            font-size: .85rem;
+            letter-spacing: 3px;
+            color: var(--warm);
+            font-weight: 600;
+            position: relative;
+        }
+        h1 {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin: 6px 0 2px;
+            position: relative;
+        }
+        .sub {
+            font-size: 1rem;
+            color: #5a5a6e;
+            position: relative;
+        }
+        .card {
+            background: #fff;
+            border: 1.5px solid var(--line);
+            border-radius: 16px;
+            padding: 26px 24px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow);
+        }
+        .card h2 {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .quote-box {
+            background: linear-gradient(135deg, rgba(201, 162, 39, .12), rgba(201, 162, 39, .04));
+            border: 2px solid var(--gold);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin: 10px 0;
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.9;
+        }
+        .quote-box .author {
+            font-family: 'Heebo', sans-serif;
+            font-size: .85rem;
+            font-weight: 400;
+            color: #8a6f0e;
+            margin-top: 4px;
+        }
+        .path-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--line);
+            flex-wrap: wrap;
+        }
+        .path-row:last-child {
+            border-bottom: none;
+        }
+        .path-emoji {
+            font-size: 1.6rem;
+            min-width: 36px;
+            text-align: center;
+        }
+        .path-text {
+            flex: 1;
+            min-width: 200px;
+        }
+        .path-text b {
+            color: var(--hope);
+        }
+        .story-card {
+            background: linear-gradient(135deg, #fff, var(--bg-gold));
+            border: 2px solid var(--gold);
+            border-radius: 14px;
+            padding: 18px;
+            margin: 10px 0;
+        }
+        .story-card .name {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: #8a6f0e;
+        }
+        .story-card .story {
+            margin-top: 6px;
+        }
+        .warn-box {
+            background: rgba(192, 57, 43, .06);
+            border-right: 4px solid var(--warm);
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: .97rem;
+        }
+        .hope-box {
+            background: rgba(30, 96, 145, .06);
+            border-right: 4px solid var(--hope);
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: .97rem;
+        }
+        .two-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 14px;
+        }
+        @media (max-width: 550px) {
+            .two-cols {
+                grid-template-columns: 1fr;
+            }
+        }
+        .big-number {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--gold);
+            text-align: center;
+        }
+        footer {
+            text-align: center;
+            font-size: .85rem;
+            color: #7d9285;
+            margin-top: 30px;
+            line-height: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="eyebrow">❤️ בשבילכם — כן, גם בשבילכם</div>
+            <h1>למה מתמטיקה?</h1>
+            <div class="sub">מהמכולת ועד לירח — מסע קצר שיראה לכם שזה שווה את זה</div>
+        </header>
+
+        <!-- ============ פתיחה ============ -->
+        <div class="card">
+            <h2>🙋 אם חשבתם ש"אני לא טוב במתמטיקה"...</h2>
+            <p>אתם לא לבד. כמעט כל מי שטוב במתמטיקה היום — <b>התחיל מזה שהוא לא הבין כלום</b>.</p>
+            <p style="margin-top:8px">מתמטיקה היא לא כישרון. היא <b>הרגל</b>. כמו ללכת, כמו לדבר, כמו לנהוג. בהתחלה קשה, לאט-לאט הגוף (והמוח) לומדים.</p>
+            <div class="hope-box">
+                <b>האמת?</b> מתמטיקה היא פשוט <b>שפה</b>. וכמו כל שפה — צריך ללמוד את האותיות, המילים, המשפטים. ואז פתאום — הכל ברור.
+            </div>
+        </div>
+
+        <!-- ============ ציטוטים ============ -->
+        <div class="card">
+            <h2>💬 משפטים ששווה לקרוא — ולהאמין</h2>
+            <div class="quote-box">
+                "האם אני לא טוב במתמטיקה, או שפשוט עוד לא השקעתי בה מספיק זמן?"
+                <div class="author">— שאלה שכל תלמיד צריך לשאול את עצמו</div>
+            </div>
+            <div class="quote-box">
+                "אף פעם לא נכשלתי. פשוט גיליתי 10,000 דרכים שלא עובדות."
+                <div class="author">— תומס אדיסון</div>
+            </div>
+            <div class="quote-box">
+                "אל תגידו שאתם לא יכולים. תגידו שאתם עדיין לא יכולים."
+                <div class="author">— מורה למתמטיקה, אלמוני</div>
+            </div>
+            <div class="quote-box">
+                "מתמטיקה לא עוסקת במספרים, משוואות או נוסחאות. היא עוסקת בהבנה."
+                <div class="author">— ויליאם ת'רסטון</div>
+            </div>
+            <div class="quote-box">
+                "ההבדל בין מי שיודע מתמטיקה למי שלא — הוא לא IQ. הוא התמדה."
+                <div class="author">— מחקר של אוניברסיטת סטנפורד</div>
+            </div>
+        </div>
+
+        <!-- ============ למה כדאי ============ -->
+        <div class="card">
+            <h2>🎯 למה כדאי ללמוד מתמטיקה?</h2>
+            <div class="path-row"><span class="path-emoji">🧠</span><span class="path-text"><b>מתמטיקה מאמנת את המוח לחשוב.</b> כמו שחדר כושר מאמן את הגוף — מתמטיקה מאמנת את היכולת לנתח, להסיק מסקנות, לפתור בעיות. זה נשאר לכל החיים.</span></div>
+            <div class="path-row"><span class="path-emoji">💼</span><span class="path-text"><b>פותחת דלתות לתעסוקה.</b> הייטק, הנדסה, רפואה, כלכלה, אדריכלות, טיס — כל מקצוע טכנולוגי דורש מתמטיקה. בלי זה — האפשרויות מצטמצמות.</span></div>
+            <div class="path-row"><span class="path-emoji">💰</span><span class="path-text"><b>משכורת.</b> ממוצע השכר של בוגרי מקצועות טכנולוגיים גבוה משמעותית. מתמטיקה = כרטיס כניסה לעולם השכר הגבוה.</span></div>
+            <div class="path-row"><span class="path-emoji">🔐</span><span class="path-text"><b>ביטחון עצמי.</b> כל פעם שאתם פותרים תרגיל — אתם מוכיחים לעצמכם שאתם יכולים. הביטחון הזה עובר גם לחיים עצמם.</span></div>
+        </div>
+
+        <!-- ============ איפה פוגשת ============ -->
+        <div class="card">
+            <h2>🌍 איפה המתמטיקה פוגשת אותנו — כל יום</h2>
+            <div class="path-row"><span class="path-emoji">🛒</span><span class="path-text"><b>במכולת.</b> השוואת מחירים לק"ג, חישוב עודף, מבצעים — הכול מתמטיקה. בלי זה — משלמים יותר.</span></div>
+            <div class="path-row"><span class="path-emoji">🏠</span><span class="path-text"><b>ניהול תקציב משפחתי.</b> הכנסות מול הוצאות, משכנתא, חיסכון, ריבית דריבית — מתמטיקה יומיומית.</span></div>
+            <div class="path-row"><span class="path-emoji">🏗️</span><span class="path-text"><b>בנייה ואדריכלות.</b> כל בניין שאתם רואים — מישהו חישב עומסים, זוויות, חומרים. בלי מתמטיקה — בניינים קורסים.</span></div>
+            <div class="path-row"><span class="path-emoji">💻</span><span class="path-text"><b>מחשבים ותוכנה.</b> כל אפליקציה, כל משחק, כל אתר — מאחורי הקלעים יש אלגוריתמים. אלגוריתם = מתמטיקה.</span></div>
+            <div class="path-row"><span class="path-emoji">🤖</span><span class="path-text"><b>בינה מלאכותית.</b> ChatGPT, זיהוי פנים, רכב אוטונומי — מבוססים על סטטיסטיקה, הסתברות, אלגברה לינארית.</span></div>
+            <div class="path-row"><span class="path-emoji">🚗</span><span class="path-text"><b>רכבים וניווט.</b> Waze, GPS — מחשבים מרחקים, זמני הגעה, מסלולים אופטימליים. הכול משוואות.</span></div>
+            <div class="path-row"><span class="path-emoji">🚀</span><span class="path-text"><b>טילים, לוויינים, חלל.</b> מסלול של לוויין, שיגור טיל, נחיתה על הירח — כל אלה מחושבים במתמטיקה מדויקת.</span></div>
+        </div>
+
+        <!-- ============ סיפורי הצלחה ============ -->
+        <div class="card">
+            <h2>🌟 סיפורים על אנשים שהתקשו — והצליחו</h2>
+            <div class="story-card">
+                <div class="name">אלברט איינשטיין</div>
+                <div class="story">נכשל בבחינת הכניסה לאוניברסיטה. המורים שלו אמרו שהוא "לא יגיע לכלום". היום — השם הכי מזוהה עם גאונות.</div>
+            </div>
+            <div class="story-card">
+                <div class="name">סטיב ג'ובס</div>
+                <div class="story">נשר מהקולג'. לא היה תלמיד מצטיין. בנה את אפל במוסך. כל מוצר שאתם מכירים — התחיל ממישהו שלא היה "טוב בלמידה".</div>
+            </div>
+            <div class="story-card">
+                <div class="name">תלמיד אמיתי — כיתה י"ב</div>
+                <div class="story">קיבל 40 בבגרות במתמטיקה בכיתה י'. המורה אמרה לו "תוותר, לך ל-2 יחידות". הוא סירב. מצא מורה טוב, התאמן כל יום. קיבל 85 ב-3 יחידות. היום הוא מהנדס.</div>
+            </div>
+            <div class="story-card">
+                <div class="name">תלמידה אמיתית — כיתה י"א</div>
+                <div class="story">חרדת מתמטיקה אמיתית. בכי לפני כל מבחן. התחילה ללמוד בקצב שלה, עם דפים פשוטים. גילתה שהיא דווקא <b>כן</b> מבינה. קיבלה 90. היום היא מורה.</div>
+            </div>
+            <div class="hope-box" style="margin-top:12px">
+                <b>המשותף לכולם?</b> הם לא ויתרו. הם הבינו שמתמטיקה זה לא כישרון — זה <b>תהליך</b>. ליפול, לקום, להמשיך.
+            </div>
+        </div>
+
+        <!-- ============ מקצועות ============ -->
+        <div class="card">
+            <h2>💼 כל מקצוע טכנולוגי — מבוסס על מתמטיקה</h2>
+            <div class="two-cols">
+                <div style="background:var(--bg-hope);border-radius:12px;padding:14px"><b>🧑‍💻 מתכנת</b><br>לוגיקה, אלגוריתמים, מבני נתונים — כולם מתמטיקה שימושית.</div>
+                <div style="background:var(--bg-hope);border-radius:12px;padding:14px"><b>🧑‍🔬 מהנדס</b><br>פיזיקה, חשמל, מבנים — הכול משוואות דיפרנציאליות.</div>
+                <div style="background:var(--bg-hope);border-radius:12px;padding:14px"><b>🧑‍⚕️ רופא</b><br>סטטיסטיקה רפואית, מינוני תרופות, בדיקות.</div>
+                <div style="background:var(--bg-hope);border-radius:12px;padding:14px"><b>🧑‍✈️ טייס</b><br>ניווט, זוויות, מרחקים, דלק — הכול מספרים.</div>
+                <div style="background:var(--bg-hope);border-radius:12px;padding:14px"><b>🧑‍🎨 אדריכל</b><br>גיאומטריה, פרופורציות, חישובי עומס.</div>
+                <div style="background:var(--bg-hope);border-radius:12px;padding:14px"><b>🧑‍💼 כלכלן</b><br>מודלים מתמטיים, תחזיות, ריביות.</div>
+            </div>
+            <div class="warn-box" style="margin-top:12px">
+                <b>בלי מתמטיקה?</b> אי אפשר להיכנס לאף אחד מהמקצועות האלה. מתמטיקה היא <b>המפתח</b>. לא היעד — הכלי.
+            </div>
+        </div>
+
+        <!-- ============ סיכום ============ -->
+        <div class="card" style="text-align:center">
+            <div class="big-number">🏁</div>
+            <h2 style="justify-content:center">אז מה עכשיו?</h2>
+            <p>אתם לא צריכים להיות גאונים. אתם צריכים להיות <b>עקביים</b>.</p>
+            <p style="margin-top:4px">רבע שעה ביום. דף אחד ביום. תרגיל אחד.</p>
+            <p style="margin-top:4px">תנו למוח שלכם זמן להתרגל. כמו שריר — הוא מתחזק לאט.</p>
+            <div class="quote-box" style="margin-top:14px">
+                "המתמטיקה לא מחפשת תלמידים גאונים. היא מחפשת תלמידים שלא מוותרים."
+                <div class="author">— ואתם יכולים להיות התלמידים האלה</div>
+            </div>
+            <p style="margin-top:12px;font-weight:600">הדפים האלה נבנו במיוחד בשבילכם. תשתמשו בהם. הם בחינם. הם שלכם.</p>
+        </div>
+
+        <footer>
+            ❤️ נבנה באהבה — כדי שתבינו, כדי שתצליחו, כדי שתאמינו<br>
+            <span style="font-size:.75rem">כי מתמטיקה היא לא בשביל גאונים. מתמטיקה היא בשביל מי שמתאמן.</span>
+        </footer>
+    </div>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>נוסחאות הכפל המקוצר</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{--ink:#1b3a2e;--paper:#e7efe9;--accent:#2d6a4f;--accent2:#c0392b;--gold:#c9a227;--line:#c5d4cc;--shadow:0 10px 30px rgba(27,58,46,.12);--pos:#2d6a4f;--neg:#c0392b;
+    --ca:#2d6a4f;--cb:#c9a227;--cab:#d97706;--cbb:#7a1a1a}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(45,106,79,.08),transparent 40%),var(--paper)}
+  .wrap{max-width:760px;margin:0 auto}
+  header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header::before{content:"(a+b)²";position:absolute;font-family:'Frank Ruhl Libre',serif;font-size:120px;font-weight:900;color:rgba(27,58,46,.05);top:20px;left:20px}
+  .eyebrow{font-size:.85rem;letter-spacing:3px;color:var(--accent);font-weight:600;position:relative}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900;margin:6px 0 2px;position:relative}
+  .sub{font-size:1rem;color:#456b5b;position:relative}
+  nav{display:flex;gap:8px;justify-content:center;margin:22px 0;flex-wrap:wrap}
+  nav button{font-family:'Heebo';font-size:.95rem;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  nav button:hover{transform:translateY(-2px)}
+  nav button.active{background:var(--ink);color:var(--paper)}
+  section{display:none;animation:fade .4s ease}section.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tag{background:var(--gold);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:'Heebo'}
+  .note{background:rgba(45,106,79,.08);border-right:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .warn{background:rgba(192,57,43,.08);border-right:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:.97rem}
+  .gold-box{background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:12px;padding:16px;margin-top:14px}
+  .gold-box .title{font-weight:800;color:#8a6f0e;margin-bottom:6px}
+  .examples{display:grid;gap:8px;margin-top:8px}
+  .examples div{background:var(--paper);border-radius:10px;padding:10px 14px;font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;direction:ltr;text-align:left}
+
+  /* Three formula display */
+  .formulas-main{display:grid;gap:12px;margin-top:14px}
+  .fbox{border-radius:14px;padding:18px;background:linear-gradient(135deg,#fff,var(--paper));border:2px solid;text-align:center}
+  .fbox.f1{border-color:var(--ca)}
+  .fbox.f2{border-color:var(--cbb)}
+  .fbox.f3{border-color:var(--cb)}
+  .fbox .label{font-size:.85rem;font-weight:700;letter-spacing:1px}
+  .fbox.f1 .label{color:var(--ca)}
+  .fbox.f2 .label{color:var(--cbb)}
+  .fbox.f3 .label{color:#8a6f0e}
+  .fbox .eq{font-family:'Frank Ruhl Libre',serif;font-size:1.7rem;font-weight:900;direction:ltr;margin-top:8px;color:var(--ink)}
+  .fbox .ca{color:var(--ca)}
+  .fbox .cb{color:var(--cb)}
+  .fbox .cab{color:var(--cab)}
+
+  /* VISUAL PROOF */
+  .proof-pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .proof-pick button{font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:1rem;border:2px solid var(--ink);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;direction:ltr}
+  .proof-pick button.active{background:var(--ink);color:#fff}
+  .proof-wrap{padding:14px;background:var(--paper);border-radius:14px;margin-top:14px}
+  .proof-eq{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:1.6rem;font-weight:900;direction:ltr;background:#fff;border:2px dashed var(--accent);border-radius:12px;padding:14px;margin-bottom:14px}
+  .proof-svg{width:100%;height:auto;display:block;background:#fff;border-radius:12px;border:1px solid var(--line)}
+  .proof-explain{background:#fff;border-radius:12px;padding:14px;margin-top:14px;font-size:.95rem;line-height:1.8}
+  .proof-explain b{color:var(--accent)}
+  .sliders{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .slider-box{background:#fff;border-radius:12px;padding:10px 12px}
+  .slider-box .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .slider-box .name{font-weight:700;font-family:'Frank Ruhl Libre',serif;font-size:1.1rem}
+  .slider-box .val{font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;font-weight:900;direction:ltr}
+  .slider-box.a .name,.slider-box.a .val{color:var(--ca)}
+  .slider-box.b .name,.slider-box.b .val{color:var(--cb)}
+  .slider-box input[type=range]{width:100%;accent-color:var(--accent)}
+
+  /* GAME */
+  .mode-pick{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+  .mode-pick button{font-family:'Heebo';font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:12px 20px;border-radius:12px;transition:.2s}
+  .mode-pick button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .scoreboard{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px}
+  .scoreboard .box{flex:1}.scoreboard .who{font-size:.85rem;color:#456b5b}
+  .scoreboard .pts{font-family:'Frank Ruhl Libre',serif;font-size:2rem;font-weight:900}
+  .turn-banner{text-align:center;font-weight:700;padding:8px;border-radius:10px;background:var(--paper);margin-bottom:14px}
+  .q-box{text-align:center;font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:900;direction:ltr;padding:22px;background:var(--paper);border-radius:14px;margin-bottom:14px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{font-family:'Frank Ruhl Libre',serif;font-size:1.15rem;font-weight:700;border:2px solid var(--ink);background:#fff;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;direction:ltr}
+  .opts button:hover{transform:translateY(-2px)}
+  .opts button.right{background:var(--pos);color:#fff;border-color:var(--pos)}
+  .opts button.wrong{background:var(--neg);color:#fff;border-color:var(--neg)}
+  .feedback{text-align:center;font-weight:700;min-height:28px;margin-top:14px}
+  .next-btn{display:none;margin:14px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:11px 26px;border-radius:12px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;font-size:.8rem;color:#7d9285;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">בגרות · אלגברה מרכזית</div>
+    <h1>נוסחאות הכפל המקוצר</h1>
+    <div class="sub">שלוש נוסחאות שחוסכות עבודה — חובה לדעת בעל-פה</div>
+  </header>
+
+  <nav>
+    <button data-t="learn">📘 הסבר</button>
+    <button data-t="anim">🟦 הוכחה ויזואלית</button>
+    <button class="active" data-t="game">🎮 משחק</button>
+  </nav>
+
+  <!-- LEARN -->
+  <section id="learn">
+    <div class="card">
+      <h2>למה צריך אותן? <span class="tag">בגרות חובה</span></h2>
+      <p>במקום לפתוח סוגריים בכפל ארוך — שלוש נוסחאות נותנות לכם <b>קיצור מיידי</b>. הן חוזרות בכל שאלה כמעט: ריבועיות, פירוק לגורמים, שורשים — בכל מקום.</p>
+      <div class="gold-box">
+        <div class="title">💡 הסוד</div>
+        תלמיד שזוכר את 3 הנוסחאות בעל-פה — חוסך לעצמו 30 שניות בכל שאלה, ופחות טעויות. שווה את ההשקעה!
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שלוש הנוסחאות <span class="tag">לשנן</span></h2>
+      <div class="formulas-main">
+        <div class="fbox f1">
+          <div class="label">נוסחה 1 — ריבוע סכום</div>
+          <div class="eq">(<span class="ca">a</span> + <span class="cb">b</span>)² = <span class="ca">a</span>² + 2<span class="cab">ab</span> + <span class="cb">b</span>²</div>
+        </div>
+        <div class="fbox f2">
+          <div class="label">נוסחה 2 — ריבוע הפרש</div>
+          <div class="eq">(<span class="ca">a</span> − <span class="cb">b</span>)² = <span class="ca">a</span>² − 2<span class="cab">ab</span> + <span class="cb">b</span>²</div>
+        </div>
+        <div class="fbox f3">
+          <div class="label">נוסחה 3 — הפרש ריבועים</div>
+          <div class="eq">(<span class="ca">a</span> + <span class="cb">b</span>)(<span class="ca">a</span> − <span class="cb">b</span>) = <span class="ca">a</span>² − <span class="cb">b</span>²</div>
+        </div>
+      </div>
+      <div class="note">
+        <b>שימו לב לדפוס:</b> ב-2 הראשונות הסימן באמצע הוא מה שמשתנה (+ או −). בנוסחה 3 — שני סוגריים הופכיים נותנים <b>הפרש ריבועים</b> בלי איבר אמצעי.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>דוגמאות מספריות <span class="tag">להתחיל קל</span></h2>
+      <div class="examples">
+        <div>(x + 3)² = x² + 2·x·3 + 9 = x² + 6x + 9</div>
+        <div>(x − 5)² = x² − 2·x·5 + 25 = x² − 10x + 25</div>
+        <div>(x + 4)(x − 4) = x² − 16</div>
+        <div>(2x + 1)² = 4x² + 4x + 1</div>
+        <div>(3x − 2)² = 9x² − 12x + 4</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>איך לזהות איזו נוסחה להפעיל? <span class="tag">טיפ פרקטי</span></h2>
+      <div style="background:var(--paper);border-radius:10px;padding:14px;margin-top:8px">
+        <div style="display:grid;gap:8px;font-size:.95rem">
+          <div>✓ רואים <b>(משהו)²</b> עם <b>+</b> בפנים → נוסחה 1</div>
+          <div>✓ רואים <b>(משהו)²</b> עם <b>−</b> בפנים → נוסחה 2</div>
+          <div>✓ רואים <b>שני סוגריים</b> זהים חוץ מהסימן (+ ו-−) → נוסחה 3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>טיפ זהב: גם בכיוון הפוך! <span class="tag">פירוק לגורמים</span></h2>
+      <p>הנוסחאות עובדות בשני הכיוונים. אם רואים ביטוי כמו <b style="direction:ltr;display:inline-block">x² − 9</b>, מזהים <b>הפרש ריבועים</b> (3²=9) ופותחים: <b style="direction:ltr;display:inline-block">(x+3)(x−3)</b>.</p>
+      <div class="examples">
+        <div>x² − 25 = (x + 5)(x − 5)</div>
+        <div>x² + 10x + 25 = (x + 5)²</div>
+        <div>x² − 6x + 9 = (x − 3)²</div>
+        <div>4x² − 1 = (2x + 1)(2x − 1)</div>
+      </div>
+      <div class="note">זה השימוש המרכזי לפירוק לגורמים — נושא שיש לו עמוד נפרד.</div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> <b>אסור</b> לכתוב (a+b)² = a² + b². <b>חייבים</b> את 2ab באמצע!<br><br>
+        <b>2.</b> בנוסחה 2 — <b>האיבר האמצעי שלילי</b> (−2ab), אבל ה-b² <b>חיובי</b> (כי שלילי בריבוע = חיובי).<br><br>
+        <b>3.</b> כשיש מקדם כמו (2x+3)² — צריך לרבע גם את ה-2: <b>(2x)² = 4x²</b>, לא 2x².<br><br>
+        <b>4.</b> ב-2ab — אם a או b שליליים, שימו לב לסימן הכולל.
+      </div>
+    </div>
+  </section>
+
+  <!-- VISUAL PROOF -->
+  <section id="anim">
+    <div class="card">
+      <h2>הוכחה ויזואלית 🟦</h2>
+      <p>בחרו נוסחה — תראו אותה <b>מצוירת כשטחים</b> של ריבועים ומלבנים. ככה תבינו <i>למה</i> הנוסחה עובדת.</p>
+      <div class="proof-pick" id="proofPick"></div>
+      <div class="proof-wrap">
+        <div class="proof-eq" id="proofEq">(a + b)² = a² + 2ab + b²</div>
+        <svg class="proof-svg" id="proofSvg" viewBox="0 0 400 340" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="sliders">
+          <div class="slider-box a">
+            <div class="row"><span class="name">a</span><span class="val" id="aVal">4</span></div>
+            <input type="range" id="aSlider" min="2" max="6" step="1" value="4">
+          </div>
+          <div class="slider-box b">
+            <div class="row"><span class="name">b</span><span class="val" id="bVal">2</span></div>
+            <input type="range" id="bSlider" min="1" max="4" step="1" value="2">
+          </div>
+        </div>
+        <div class="proof-explain" id="proofExplain">—</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="show">
+    <div class="card">
+      <h2>משחק הנוסחאות 🎮</h2>
+      <p style="text-align:center;font-size:.9rem;color:#456b5b;margin-bottom:14px">פתחו את הסוגריים — מהי התוצאה הנכונה?</p>
+      <div class="mode-pick">
+        <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+        <button data-m="duo">שני שחקנים 👥</button>
+      </div>
+      <div class="scoreboard">
+        <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+        <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+      </div>
+      <div class="turn-banner" id="turn">תורו של: שחקן</div>
+      <div class="q-box" id="question">—</div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+    </div>
+  </section>
+
+  <footer>בסיס לבגרות · נוסחאות הכפל המקוצר</footer>
+</div>
+
+<script>
+document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));b.classList.add('active');document.getElementById(b.dataset.t).classList.add('show');};});
+
+/* ===== VISUAL PROOF ANIMATION ===== */
+const FORMS=[
+  {label:'(a+b)²', key:'plus'},
+  {label:'(a−b)²', key:'minus'},
+  {label:'(a+b)(a−b)', key:'diff'}
+];
+let curF=0;
+const pp=document.getElementById('proofPick');
+FORMS.forEach((f,i)=>{const b=document.createElement('button');b.textContent=f.label;b.onclick=()=>{curF=i;markF();draw();};pp.appendChild(b);});
+function markF(){[...pp.children].forEach((b,i)=>b.classList.toggle('active',i===curF));}
+
+const SVG=document.getElementById('proofSvg');
+function draw(){
+  const a=parseInt(document.getElementById('aSlider').value);
+  const b=parseInt(document.getElementById('bSlider').value);
+  document.getElementById('aVal').textContent=a;
+  document.getElementById('bVal').textContent=b;
+  const k=FORMS[curF].key;
+  // Scale: max (a+b) maps to 280 px
+  const SCALE=260/(a+b);
+  const sA=a*SCALE, sB=b*SCALE;
+  const OX=60, OY=40;
+  let svg='';
+  let eqHtml='', explainHtml='';
+
+  if(k==='plus'){
+    // Big square (a+b) x (a+b)
+    // Divided into: a² (top-left), ab (top-right), ab (bottom-left), b² (bottom-right)
+    // top-left
+    svg+='<rect x="'+OX+'" y="'+OY+'" width="'+sA+'" height="'+sA+'" fill="rgba(45,106,79,.35)" stroke="var(--ink)" stroke-width="1.5"/>';
+    // top-right
+    svg+='<rect x="'+(OX+sA)+'" y="'+OY+'" width="'+sB+'" height="'+sA+'" fill="rgba(217,119,6,.35)" stroke="var(--ink)" stroke-width="1.5"/>';
+    // bottom-left
+    svg+='<rect x="'+OX+'" y="'+(OY+sA)+'" width="'+sA+'" height="'+sB+'" fill="rgba(217,119,6,.35)" stroke="var(--ink)" stroke-width="1.5"/>';
+    // bottom-right
+    svg+='<rect x="'+(OX+sA)+'" y="'+(OY+sA)+'" width="'+sB+'" height="'+sB+'" fill="rgba(201,162,39,.45)" stroke="var(--ink)" stroke-width="1.5"/>';
+    // labels in each part
+    svg+='<text x="'+(OX+sA/2)+'" y="'+(OY+sA/2+6)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="22" font-weight="900" fill="var(--ca)">a² = '+(a*a)+'</text>';
+    svg+='<text x="'+(OX+sA+sB/2)+'" y="'+(OY+sA/2+6)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="14" font-weight="900" fill="var(--cab)">ab = '+(a*b)+'</text>';
+    svg+='<text x="'+(OX+sA/2)+'" y="'+(OY+sA+sB/2+5)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="14" font-weight="900" fill="var(--cab)">ab = '+(a*b)+'</text>';
+    svg+='<text x="'+(OX+sA+sB/2)+'" y="'+(OY+sA+sB/2+5)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="14" font-weight="900" fill="#8a6f0e">b² = '+(b*b)+'</text>';
+    // dimension labels
+    svg+='<text x="'+(OX+sA/2)+'" y="'+(OY-8)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="13" font-weight="800" fill="var(--ca)">a='+a+'</text>';
+    svg+='<text x="'+(OX+sA+sB/2)+'" y="'+(OY-8)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="13" font-weight="800" fill="var(--cb)">b='+b+'</text>';
+    svg+='<text x="'+(OX-10)+'" y="'+(OY+sA/2+5)+'" text-anchor="end" font-family="Frank Ruhl Libre" font-size="13" font-weight="800" fill="var(--ca)">a='+a+'</text>';
+    svg+='<text x="'+(OX-10)+'" y="'+(OY+sA+sB/2+5)+'" text-anchor="end" font-family="Frank Ruhl Libre" font-size="13" font-weight="800" fill="var(--cb)">b='+b+'</text>';
+    // total label below
+    svg+='<text x="200" y="'+(OY+(sA+sB)+30)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="16" font-weight="900" fill="var(--ink)">סך הכל: '+(a*a)+' + '+(a*b)+' + '+(a*b)+' + '+(b*b)+' = '+((a+b)*(a+b))+'</text>';
+    eqHtml='('+a+' + '+b+')² = '+(a*a)+' + 2·'+(a*b)+' + '+(b*b)+' = '+((a+b)*(a+b));
+    explainHtml='<b>הריבוע הגדול</b> הוא בצלע (a+b). שטחו = (a+b)². <b>חלקנו אותו ל-4 חלקים:</b><br>'+
+      '🟩 <b>ריבוע ירוק</b> בצלע a → שטח <b>a²</b><br>'+
+      '🟧 <b>שני מלבנים כתומים</b> בצלעות a·b → שטח <b>2·ab</b><br>'+
+      '🟨 <b>ריבוע צהוב</b> בצלע b → שטח <b>b²</b><br>'+
+      'סכום ארבעת השטחים = שטח הריבוע הגדול → <b>(a+b)² = a² + 2ab + b²</b>';
+  }
+  else if(k==='minus'){
+    // (a-b)² = a² - 2ab + b²
+    // Show big square of side a; then remove two rectangles of ab; what's left + b² gives (a-b)²
+    if(b>=a){b=a-1;document.getElementById('bSlider').value=b;document.getElementById('bVal').textContent=b;}
+    const ab=a-b;
+    const sAB=ab*SCALE;
+    // Big square a x a
+    svg+='<rect x="'+OX+'" y="'+OY+'" width="'+sA+'" height="'+sA+'" fill="rgba(45,106,79,.15)" stroke="var(--ink)" stroke-width="1.5"/>';
+    // inner small square (a-b)²
+    svg+='<rect x="'+OX+'" y="'+OY+'" width="'+sAB+'" height="'+sAB+'" fill="rgba(122,26,26,.35)" stroke="var(--ink)" stroke-width="1.5"/>';
+    // overlap b² square
+    svg+='<rect x="'+(OX+sAB)+'" y="'+(OY+sAB)+'" width="'+sB+'" height="'+sB+'" fill="rgba(201,162,39,.45)" stroke="var(--ink)" stroke-width="1.5"/>';
+    // the two ab rectangles (overlap area)
+    svg+='<rect x="'+(OX+sAB)+'" y="'+OY+'" width="'+sB+'" height="'+sA+'" fill="rgba(217,119,6,.25)" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 3"/>';
+    svg+='<rect x="'+OX+'" y="'+(OY+sAB)+'" width="'+sA+'" height="'+sB+'" fill="rgba(217,119,6,.25)" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 3"/>';
+    // re-draw inner (a-b)² on top
+    svg+='<rect x="'+OX+'" y="'+OY+'" width="'+sAB+'" height="'+sAB+'" fill="rgba(122,26,26,.55)" stroke="var(--ink)" stroke-width="2"/>';
+    svg+='<rect x="'+(OX+sAB)+'" y="'+(OY+sAB)+'" width="'+sB+'" height="'+sB+'" fill="rgba(201,162,39,.6)" stroke="var(--ink)" stroke-width="2"/>';
+    // labels
+    svg+='<text x="'+(OX+sAB/2)+'" y="'+(OY+sAB/2+6)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="18" font-weight="900" fill="#fff">(a−b)²</text>';
+    svg+='<text x="'+(OX+sAB/2)+'" y="'+(OY+sAB/2+22)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="13" font-weight="800" fill="#fff">= '+(ab*ab)+'</text>';
+    svg+='<text x="'+(OX+sAB+sB/2)+'" y="'+(OY+sAB+sB/2+5)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="13" font-weight="900" fill="#8a6f0e">b² = '+(b*b)+'</text>';
+    // dimensions
+    svg+='<text x="'+(OX+sA/2)+'" y="'+(OY-8)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="13" font-weight="800" fill="var(--ca)">a='+a+'</text>';
+    svg+='<text x="'+(OX-10)+'" y="'+(OY+sA/2+5)+'" text-anchor="end" font-family="Frank Ruhl Libre" font-size="13" font-weight="800" fill="var(--ca)">a='+a+'</text>';
+    svg+='<text x="200" y="'+(OY+sA+30)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="16" font-weight="900" fill="var(--ink)">a² − 2ab + b² = '+(a*a)+' − '+(2*a*b)+' + '+(b*b)+' = '+(ab*ab)+'</text>';
+    eqHtml='('+a+' − '+b+')² = '+(a*a)+' − 2·'+(a*b)+' + '+(b*b)+' = '+(ab*ab);
+    explainHtml='<b>נתחיל מריבוע גדול בצלע a</b>, שטחו a². כעת <b>חוסכים פעמיים את שטח ab</b> (האזורים הכתומים — כל אחד הוא a·b), אבל ככה <b>חיסרנו פעמיים</b> את הריבוע הקטן בפינה. כדי לתקן — <b>מוסיפים בחזרה b²</b>. התוצאה היא הריבוע האדום (a−b)².<br><br><b>(a−b)² = a² − 2ab + b²</b>';
+  }
+  else if(k==='diff'){
+    // (a+b)(a-b) = a² - b²
+    // Show: big square a² minus small square b² = rectangle (a+b)(a-b)
+    if(b>=a){b=a-1;document.getElementById('bSlider').value=b;document.getElementById('bVal').textContent=b;}
+    // Left side: big square minus small corner
+    // Big a² square outline
+    svg+='<rect x="'+OX+'" y="'+OY+'" width="'+sA+'" height="'+sA+'" fill="rgba(45,106,79,.30)" stroke="var(--ink)" stroke-width="1.5"/>';
+    // Small b² removed (top-right corner)
+    svg+='<rect x="'+(OX+sA-sB)+'" y="'+OY+'" width="'+sB+'" height="'+sB+'" fill="#fff" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 3"/>';
+    svg+='<text x="'+(OX+sA-sB+sB/2)+'" y="'+(OY+sB/2+5)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="13" font-weight="900" fill="var(--cbb)">−b²</text>';
+    svg+='<text x="'+(OX+sA/2-sB/2)+'" y="'+(OY+sA/2+8)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="20" font-weight="900" fill="var(--ca)">a² − b²</text>';
+    svg+='<text x="'+(OX+sA/2-sB/2)+'" y="'+(OY+sA/2+28)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="13" font-weight="800" fill="var(--ink)">= '+(a*a)+' − '+(b*b)+' = '+(a*a-b*b)+'</text>';
+    // dimensions
+    svg+='<text x="'+(OX+sA/2)+'" y="'+(OY-8)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="13" font-weight="800" fill="var(--ca)">a='+a+'</text>';
+    svg+='<text x="'+(OX-10)+'" y="'+(OY+sA/2+5)+'" text-anchor="end" font-family="Frank Ruhl Libre" font-size="13" font-weight="800" fill="var(--ca)">a='+a+'</text>';
+    svg+='<text x="200" y="'+(OY+sA+30)+'" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="16" font-weight="900" fill="var(--ink)">(a+b)(a−b) = '+(a+b)+' · '+(a-b)+' = '+((a+b)*(a-b))+'</text>';
+    eqHtml='('+a+' + '+b+')('+a+' − '+b+') = '+(a*a)+' − '+(b*b)+' = '+(a*a-b*b);
+    explainHtml='<b>הצורה החסרה</b> היא ריבוע a² פחות ריבוע b² בפינה. אפשר לחתוך מחדש את הצורה הזאת ולהרכיב <b>מלבן</b> בצלעות (a+b) ו-(a−b) — אותו שטח. לכן: <b>(a+b)(a−b) = a² − b²</b>.<br><br>זו הסיבה שהביטוי הזה נקרא <b>"הפרש ריבועים"</b>.';
+  }
+  SVG.innerHTML=svg;
+  document.getElementById('proofEq').innerHTML=eqHtml;
+  document.getElementById('proofExplain').innerHTML=explainHtml;
+}
+document.getElementById('aSlider').addEventListener('input',draw);
+document.getElementById('bSlider').addEventListener('input',draw);
+markF();draw();
+
+/* ===== GAME ===== */
+const POOL=[
+  {q:'(x + 3)² = ?',ans:'x² + 6x + 9',wrong:['x² + 9','x² − 6x + 9','x² + 3x + 9']},
+  {q:'(x + 5)² = ?',ans:'x² + 10x + 25',wrong:['x² + 25','x² + 5x + 25','x² − 10x + 25']},
+  {q:'(x − 4)² = ?',ans:'x² − 8x + 16',wrong:['x² + 8x + 16','x² − 16','x² − 8x − 16']},
+  {q:'(x − 7)² = ?',ans:'x² − 14x + 49',wrong:['x² − 49','x² + 14x + 49','x² − 14x − 49']},
+  {q:'(x + 6)(x − 6) = ?',ans:'x² − 36',wrong:['x² + 36','x² − 12x + 36','(x − 6)²']},
+  {q:'(x + 2)(x − 2) = ?',ans:'x² − 4',wrong:['x² + 4','x² − 4x + 4','x² − 4x − 4']},
+  {q:'(2x + 1)² = ?',ans:'4x² + 4x + 1',wrong:['2x² + 4x + 1','4x² + 1','4x² + 2x + 1']},
+  {q:'(3x − 2)² = ?',ans:'9x² − 12x + 4',wrong:['9x² + 12x + 4','9x² − 4','3x² − 12x + 4']},
+  {q:'(2x + 3)(2x − 3) = ?',ans:'4x² − 9',wrong:['4x² + 9','2x² − 9','4x² − 12x + 9']},
+  {q:'איזו נוסחה: x² − 25 = ?',ans:'(x + 5)(x − 5)',wrong:['(x − 5)²','(x + 5)²','(x + 25)(x − 1)']},
+  {q:'איזו נוסחה: x² + 8x + 16 = ?',ans:'(x + 4)²',wrong:['(x − 4)²','(x + 4)(x − 4)','(x + 8)²']},
+  {q:'איזו נוסחה: x² − 10x + 25 = ?',ans:'(x − 5)²',wrong:['(x + 5)²','(x − 5)(x + 5)','(x − 25)²']},
+  {q:'איזו נוסחה: x² − 100 = ?',ans:'(x + 10)(x − 10)',wrong:['(x − 10)²','(x + 10)²','x(x − 100)']},
+  {q:'(x + 1)² = ?',ans:'x² + 2x + 1',wrong:['x² + 1','x² − 2x + 1','x² + x + 1']}
+];
+let mode='cpu',s1=0,s2=0,turn=1,cur=null;
+document.querySelectorAll('.mode-pick button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('.mode-pick button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.m;document.getElementById('n2').textContent=mode==='cpu'?'מחשב':'שחקן 2';document.getElementById('n1').textContent=mode==='cpu'?'שחקן':'שחקן 1';s1=s2=0;turn=1;updateScore();newQ();};});
+function updateScore(){document.getElementById('s1').textContent=s1;document.getElementById('s2').textContent=s2;const name=turn===1?document.getElementById('n1').textContent:document.getElementById('n2').textContent;document.getElementById('turn').textContent='תורו של: '+name;}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function newQ(){
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').style.display='none';
+  cur=POOL[Math.floor(Math.random()*POOL.length)];
+  document.getElementById('question').textContent=cur.q;
+  const opts=shuffle([cur.ans,...cur.wrong]);
+  const O=document.getElementById('opts');O.innerHTML='';
+  opts.forEach(v=>{const btn=document.createElement('button');btn.textContent=v;btn.onclick=()=>answer(btn,v);O.appendChild(btn);});
+  updateScore();
+  if(mode==='cpu'&&turn===2){O.style.pointerEvents='none';document.getElementById('feedback').textContent='🤖 חושב...';setTimeout(()=>{const btns=[...O.children];let pick=Math.random()<0.7?btns.find(x=>x.textContent===cur.ans):btns[Math.floor(Math.random()*btns.length)];cpuAnswer(pick,pick.textContent);},2000);}else O.style.pointerEvents='auto';
+}
+function lock(){document.getElementById('opts').style.pointerEvents='none';}
+function answer(btn,v){lock();const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');if(turn===1)s1++;else s2++;fb.textContent='✓ נכון! '+cur.ans;fb.style.color='var(--pos)';}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='✗ התשובה: '+cur.ans;fb.style.color='var(--neg)';}endTurn();}
+function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cur.ans){btn.classList.add('right');s2++;fb.textContent='🤖 המחשב ענה נכון: '+cur.ans;}else{btn.classList.add('wrong');[...document.getElementById('opts').children].find(x=>x.textContent===cur.ans).classList.add('right');fb.textContent='🤖 המחשב טעה! התשובה: '+cur.ans;}fb.style.color='var(--ink)';endTurn();}
+function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
+document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
+</script>
+<script src="../shared/nav.js"></script>
+</body>
+</html>

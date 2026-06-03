@@ -1,0 +1,1051 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מתמטיקה לחרדים — מרכז ראשי</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+  :root{
+    --ink:#12142a;--paper:#f4f6ff;--card:#ffffff;--card2:#eef1fb;
+    --txt:#1e2040;--mut:#5a6080;--gold:#c8820a;--line:#dde2f0;
+    --c1:#e8401a;--c2:#0f9e56;--c3:#2a5bd8;--c4:#7c2ee0;--c5:#d45c0a;
+    --c6:#0899b0;--c7:#b35700;--c8:#cc7200;--c9:#be185d;--c10:#1d4ed8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Heebo',sans-serif;color:var(--txt);line-height:1.7;
+    min-height:100vh;padding:0 0 80px;
+    background:
+      radial-gradient(ellipse 110% 70% at 50% -8%,rgba(200,130,10,.13) 0%,transparent 55%),
+      radial-gradient(ellipse 55% 65% at -8% 65%,rgba(42,91,216,.08),transparent 65%),
+      radial-gradient(ellipse 55% 65% at 108% 35%,rgba(124,46,224,.07),transparent 65%),
+      radial-gradient(ellipse 40% 30% at 50% 100%,rgba(15,158,86,.05),transparent 70%),
+      var(--paper);
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 16px}
+
+  /* HERO */
+  .hero{text-align:center;padding:60px 20px 44px;position:relative;overflow:hidden}
+  .hero::before{
+    content:'';position:absolute;top:50%;left:50%;width:560px;height:560px;
+    transform:translate(-50%,-60%);border-radius:50%;
+    background:radial-gradient(circle,rgba(200,130,10,.08) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .hero-eq{position:absolute;inset:0;pointer-events:none;opacity:.06;
+    font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;color:var(--ink)}
+  .hero-eq span{position:absolute;animation:float 14s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(4deg)}}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;letter-spacing:2px;
+    color:var(--gold);font-weight:700;
+    background:rgba(200,130,10,.1);
+    border:1.5px solid rgba(200,130,10,.3);border-radius:99px;
+    padding:7px 22px;margin-bottom:22px;position:relative;
+    box-shadow:0 2px 18px rgba(200,130,10,.12)}
+  .badge::before{content:'✦';font-size:.7rem;opacity:.7}
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:3.3rem;font-weight:900;
+    margin-bottom:10px;position:relative;line-height:1.15;
+    background:linear-gradient(135deg,var(--ink) 0%,var(--ink) 40%,var(--gold) 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p{color:var(--mut);font-size:1.05rem;position:relative;
+    max-width:560px;margin:0 auto;line-height:1.8}
+  .stats{display:flex;gap:14px;justify-content:center;margin-top:32px;position:relative;flex-wrap:wrap}
+  .stat{
+    text-align:center;background:var(--card);
+    border:1px solid var(--line);border-radius:18px;
+    padding:16px 26px;
+    box-shadow:0 2px 18px rgba(0,0,0,.05);
+    transition:transform .2s,box-shadow .2s;
+  }
+  .stat:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.09)}
+  .stat .n{font-family:'Frank Ruhl Libre',serif;font-size:2.1rem;font-weight:900;color:var(--gold);line-height:1.1}
+  .stat .l{font-size:.75rem;color:var(--mut);margin-top:3px}
+
+  /* SECTION TITLES */
+  .sec-title{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:700;
+    margin:48px 6px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .sec-title::before{content:"";width:5px;height:28px;border-radius:3px;
+    background:linear-gradient(180deg,var(--gold),rgba(200,130,10,.25))}
+  .sec-sub{color:var(--mut);font-size:.88rem;font-weight:400;margin-right:auto;
+    background:var(--card2);border-radius:99px;padding:3px 12px;font-size:.78rem}
+
+  /* FEATURED CARD */
+  .featured{
+    background:var(--card);
+    border:1.5px solid rgba(200,130,10,.4);border-radius:22px;
+    padding:28px 32px;margin-bottom:20px;
+    display:flex;align-items:center;gap:24px;
+    text-decoration:none;color:var(--txt);
+    box-shadow:0 4px 24px rgba(0,0,0,.07),0 1px 0 rgba(200,130,10,.15) inset;
+    transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s;
+    position:relative;overflow:hidden}
+  .featured::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent 0%,var(--gold) 40%,transparent 100%);
+    opacity:0;transition:opacity .28s;
+  }
+  .featured:hover::before{opacity:1}
+  .featured:hover{
+    transform:translateY(-5px);
+    box-shadow:0 20px 52px rgba(200,130,10,.16),0 0 0 1px rgba(200,130,10,.2);
+  }
+  .featured .ico{font-size:3.6rem;flex-shrink:0;animation:bob 3.5s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+  .featured h3{font-family:'Frank Ruhl Libre',serif;font-size:1.7rem;font-weight:900;color:var(--gold);margin-bottom:6px}
+  .featured p{color:var(--mut);font-size:.93rem;line-height:1.7}
+  .featured .arr{color:var(--gold);font-size:1rem;margin-top:10px;display:inline-flex;align-items:center;gap:6px;font-weight:700;
+    transition:gap .2s}
+  .featured:hover .arr{gap:10px}
+
+  /* GRID */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+
+  /* TILE */
+  .tile{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:20px 22px;text-decoration:none;color:var(--txt);
+    position:relative;overflow:hidden;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .25s;
+    display:flex;flex-direction:column;min-height:140px;
+    box-shadow:0 2px 12px rgba(0,0,0,.04);}
+  .tile::after{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:var(--accent);border-radius:18px 18px 0 0;
+    transform:scaleX(0);transform-origin:left;
+    transition:transform .28s cubic-bezier(.2,.8,.2,1);
+  }
+  .tile:hover::after{transform:scaleX(1)}
+  .tile:hover{transform:translateY(-6px);border-color:var(--accent);
+    box-shadow:0 16px 40px rgba(0,0,0,.1),0 0 0 1px var(--accent) inset;}
+  .tile .glow{position:absolute;top:-30px;left:-30px;width:120px;height:120px;
+    border-radius:50%;filter:blur(40px);opacity:.2;background:var(--accent);
+    transition:opacity .25s}
+  .tile:hover .glow{opacity:.35}
+  .tile .tag{font-size:.68rem;font-weight:800;letter-spacing:1.5px;
+    color:var(--accent);position:relative;margin-bottom:6px;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:4px}
+  .tile h3{font-family:'Frank Ruhl Libre',serif;font-size:1.22rem;font-weight:900;
+    margin-bottom:5px;position:relative;line-height:1.3}
+  .tile .desc{font-size:.82rem;color:var(--mut);position:relative;flex:1;line-height:1.6}
+  .tile .go{font-size:.82rem;font-weight:700;color:var(--accent);
+    position:relative;display:flex;align-items:center;gap:5px;margin-top:12px}
+  .tile .go .arr{transition:transform .22s}
+  .tile:hover .go .arr{transform:translateX(-5px)}
+  .tile .src{font-size:.7rem;color:var(--mut);position:relative;
+    margin-top:4px;opacity:.7;font-style:italic}
+
+  /* SOURCE BADGES */
+  .badge-claude,.badge-deep,.badge-calc{
+    border-radius:99px;padding:2px 10px;
+    font-size:.65rem;font-weight:800;letter-spacing:.8px;
+    margin-left:6px;display:inline-block;
+    vertical-align:middle;position:relative;
+  }
+  .badge-claude{background:rgba(42,91,216,.12);color:#2a5bd8;border:1px solid rgba(42,91,216,.2)}
+  .badge-deep{background:rgba(15,158,86,.12);color:#0f7a44;border:1px solid rgba(15,158,86,.2)}
+  .badge-calc{background:rgba(179,87,0,.12);color:#b35700;border:1px solid rgba(179,87,0,.2)}
+
+  /* SEPARATOR */
+  .sep{height:1px;background:var(--line);margin:12px 0}
+
+  /* CALC ROW */
+  .calc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+
+  footer{text-align:center;font-size:.8rem;color:var(--mut);margin-top:60px;
+    padding:24px 16px;border-top:1px solid var(--line);opacity:.8;letter-spacing:.5px}
+
+  /* pulse */
+  .pulse{animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.05)}}
+
+  @media(max-width:600px){
+    h1{font-size:2.1rem}
+    .featured{flex-direction:column;text-align:center}
+    .featured .ico{animation:none}
+  }
+
+  /* ── DISMISSIBLE BANNER POPUP ── */
+  #banner-pop{
+    position:fixed;bottom:24px;right:24px;z-index:99990;
+    width:320px;max-width:calc(100vw - 32px);
+    background:#071e45;border-radius:18px;
+    box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 0 2px rgba(255,196,74,.35);
+    overflow:hidden;
+    animation:slideUp .4s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+  #banner-pop img{width:100%;display:block;border-radius:0 0 16px 16px}
+  #banner-pop a{display:block;text-decoration:none}
+  #banner-x{
+    position:absolute;top:10px;right:10px;
+    width:30px;height:30px;border-radius:50%;
+    background:rgba(0,0,0,.55);border:none;
+    color:#fff;font-size:1rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    z-index:1;transition:.15s;font-weight:700;
+  }
+  #banner-x:hover{background:rgba(0,0,0,.85);transform:scale(1.1)}
+
+  #srch:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(200,130,10,.1),0 4px 24px rgba(200,130,10,.12);outline:none}
+  #srch::placeholder{color:var(--mut);opacity:.7}
+  #srch{transition:border-color .2s,box-shadow .2s}
+
+  /* VISITED CHECKMARK */
+  .vck{position:absolute;top:10px;left:10px;width:22px;height:22px;border-radius:50%;
+    background:linear-gradient(135deg,#0db870,#0ea87e);color:#fff;font-size:.75rem;font-weight:900;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 12px rgba(13,184,112,.4);
+    animation:vckpop .4s cubic-bezier(.2,.8,.2,1)}
+  @keyframes vckpop{0%{transform:scale(0) rotate(-30deg)}70%{transform:scale(1.1) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
+
+  /* PROMO BANNER STRIP */
+  .promo-strip{
+    width:100%;background:linear-gradient(135deg,#071e45 0%,#0b3060 50%,#071e45 100%);
+    border-bottom:2px solid rgba(255,194,74,.35);
+    padding:0;position:relative;overflow:hidden;display:block;text-decoration:none;
+  }
+  .promo-strip:hover .promo-btn{background:linear-gradient(180deg,#ffd25a,#f59e0b)}
+  .promo-inner{
+    max-width:1100px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:24px;padding:18px 24px;flex-wrap:wrap;
+  }
+  .promo-left{display:flex;align-items:center;gap:16px}
+  .promo-logo{
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+    border-radius:12px;padding:8px 14px;font-weight:800;font-size:.9rem;
+    color:#fff;white-space:nowrap;flex-shrink:0;
+  }
+  .promo-txt h3{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:900;
+    color:#fff;margin-bottom:2px}
+  .promo-txt p{font-size:.82rem;color:rgba(255,255,255,.65);margin:0}
+  .promo-btn{
+    background:linear-gradient(180deg,#ffc24a,#f59e0b);
+    color:#071e45;font-weight:900;font-size:.95rem;
+    padding:11px 26px;border-radius:40px;white-space:nowrap;
+    box-shadow:0 8px 22px rgba(245,158,11,.4);transition:.2s;flex-shrink:0;
+  }
+  @media(max-width:600px){
+    .promo-inner{flex-direction:column;text-align:center;padding:14px 16px}
+    .promo-left{flex-direction:column;gap:8px}
+  }
+</style>
+</head>
+<body>
+
+<!-- PROMO STRIP -->
+<a class="promo-strip" href="landing.html">
+  <div class="promo-inner">
+    <div class="promo-left">
+      <div class="promo-logo">🚗 פרויקט יואב · מסלול רכב</div>
+      <div class="promo-txt">
+        <h3>קורס הכנה למבחני מה"ט במתמטיקה</h3>
+        <p>הסברים, תרגולים, נוסחאות ומבחני דוגמה — במקום אחד. לחרדים, בסגנון שלנו.</p>
+      </div>
+    </div>
+    <div class="promo-btn">מידע על הקורס ←</div>
+  </div>
+</a>
+
+<!-- FLOATING MATH SYMBOLS -->
+<div class="hero">
+  <div class="hero-eq">
+    <span style="top:8%;right:10%">x²</span>
+    <span style="top:28%;left:7%;animation-delay:-3s">√16</span>
+    <span style="top:58%;right:16%;animation-delay:-6s">(a+b)</span>
+    <span style="top:72%;left:12%;animation-delay:-2s">−2⁵</span>
+    <span style="top:16%;left:28%;animation-delay:-8s">3a+2b</span>
+    <span style="top:48%;right:38%;animation-delay:-5s">∫</span>
+    <span style="top:38%;left:50%;animation-delay:-1s">π</span>
+    <span style="top:65%;right:44%;animation-delay:-7s">Σ</span>
+  </div>
+  <div class="badge">מתמטיקה לחרדים · בגרות 3 יחידות · מרכז ראשי</div>
+  <h1>מרכז הלמידה המלא</h1>
+  <p>כל החומר, כל הנושאים, כל הכלים — מסודר במקום אחד. לחצו על כרטיס כדי להתחיל.</p>
+  <div class="stats">
+    <div class="stat"><div class="n" id="stat-pages">50+</div><div class="l">עמודי תוכן</div></div>
+    <div class="stat"><div class="n">20+</div><div class="l">נושאים</div></div>
+    <div class="stat"><div class="n" id="stat-visited" style="color:var(--c2)">0</div><div class="l">נושאים שביקרת</div></div>
+    <div class="stat"><div class="n">∞</div><div class="l">תרגול</div></div>
+  </div>
+
+  <!-- SEARCH -->
+  <div style="margin-top:28px;position:relative;max-width:480px;margin-inline:auto">
+    <input id="srch" type="text" placeholder="🔍  חפש נושא..." dir="rtl"
+      style="width:100%;padding:15px 24px;border-radius:50px;border:2px solid var(--line);
+      background:var(--card);color:var(--txt);font-family:'Heebo',sans-serif;font-size:1rem;
+      box-shadow:0 4px 24px rgba(0,0,0,.06)">
+    <div id="no-results" style="display:none;color:var(--mut);margin-top:12px;font-size:.9rem">לא נמצאו תוצאות</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ══════════════════════════════════════
+     FEATURED: MAIN HUB & PRIVATE TUTOR
+══════════════════════════════════════ -->
+<div class="sec-title">כניסה ראשית <span class="sec-sub">התחילו כאן</span></div>
+<div class="grid-3">
+
+  <a class="featured" href="learn/index.html" style="min-height:auto">
+    <div class="ico" style="animation:none">📚</div>
+    <div>
+      <h3>מרכז הלמידה — פרק א׳ + ב׳</h3>
+      <p>17 נושאים, אנימציות, משחקים ומבחן סיכום — הכל בממשק אחד מסודר</p>
+      <span class="arr">← כניסה למרכז הקלוד</span>
+    </div>
+  </a>
+
+  <a class="featured" href="topics/deepseek_html_20260602_505a28.html" style="min-height:auto;border-color:var(--c2)">
+    <div class="ico" style="animation:none">🎯</div>
+    <div>
+      <h3 style="color:var(--c2)">מורה פרטי — תוכנית לימוד אישית</h3>
+      <p>ענה על 2 שאלות — וקבל תוכנית לימוד ממוקדת לפי הזמן שיש לך ומה שעוד לא שולט בו</p>
+      <span class="arr" style="color:var(--c2)">← כניסה לתוכנית האישית</span>
+    </div>
+  </a>
+
+  <a class="featured" href="topics/deepseek_html_20260602_c3455e.html" style="min-height:auto;border-color:var(--c1)">
+    <div class="ico" style="animation:none">⏰</div>
+    <div>
+      <h3 style="color:var(--c1)">יום לפני המבחן</h3>
+      <p>סיכום מרוכז וחכם לכל מי שיש לו מבחן מחר — כל מה שצריך לדעת בפורמט קצר</p>
+      <span class="arr" style="color:var(--c1)">← כניסה</span>
+    </div>
+  </a>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     PEREK A — יסודות
+══════════════════════════════════════ -->
+<div class="sec-title">פרק א׳ — יסודות החשבון <span class="sec-sub">הבסיס של הכל</span></div>
+<div class="grid">
+
+  <a class="tile" href="learn/chazakot.html" style="--accent:var(--c1)">
+    <div class="glow"></div>
+    <div class="tag">נושא 1</div>
+    <h3>חזקות</h3>
+    <div class="desc">2³, כללי חזקות, כפל וחילוק עם חזקות</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_b09cfa.html" style="--accent:var(--c8)">
+    <div class="glow"></div>
+    <div class="tag">נושא 1 — פרימיום</div>
+    <h3>חזקות | לימוד חרד"י</h3>
+    <div class="desc">הסבר, דוגמאות ומשחק — גרסה מורחבת בסגנון הקהילה</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/shorashim.html" style="--accent:var(--c2)">
+    <div class="glow"></div>
+    <div class="tag">נושא 2</div>
+    <h3>שורשים</h3>
+    <div class="desc">√, שורשים ריבועיים, פישוט וחישוב</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/seder_peulot.html" style="--accent:var(--c3)">
+    <div class="glow"></div>
+    <div class="tag">נושא 3</div>
+    <h3>סדר פעולות</h3>
+    <div class="desc">מה מחשבים קודם — כפל, חזקה, סוגריים</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/shliliyim.html" style="--accent:var(--c4)">
+    <div class="glow"></div>
+    <div class="tag">נושא 4</div>
+    <h3>מספרים שליליים</h3>
+    <div class="desc">חיבור, חיסור, כפל וכלל הסימנים</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/chazaka_shlili.html" style="--accent:var(--c5)">
+    <div class="glow"></div>
+    <div class="tag">נושא 5</div>
+    <h3>חזקה של שלילי</h3>
+    <div class="desc">(−2)² vs −2² — ההבדל החשוב</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_441fb1.html" style="--accent:var(--c6)">
+    <div class="glow"></div>
+    <div class="tag">מבוא</div>
+    <h3>מבוא לאלגברה</h3>
+    <div class="desc">מושגי יסוד: משתנה, ביטוי, שוויון</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     SHVARIM — שברים
+══════════════════════════════════════ -->
+<div class="sec-title">שברים <span class="sec-sub">רגילים ואלגבריים</span></div>
+<div class="grid">
+
+  <a class="tile" href="topics/fraction_addition_subtraction_html.html" style="--accent:var(--c3)">
+    <div class="glow"></div>
+    <div class="tag">שברים 1</div>
+    <h3>חיבור וחיסור שברים</h3>
+    <div class="desc">מכנה משותף, הרחבה וצמצום</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/advanced_fractions_operations_html.html" style="--accent:var(--c7)">
+    <div class="glow"></div>
+    <div class="tag">שברים 2</div>
+    <h3>כפל וחילוק שברים</h3>
+    <div class="desc">צמצום, כפל, חילוק והרחבה</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/fractions_algebra_html.html" style="--accent:var(--c8)">
+    <div class="glow"></div>
+    <div class="tag">שברים 3</div>
+    <h3>שברים אלגבריים</h3>
+    <div class="desc">צמצום שברים עם אותיות — פירוק לגורמים קודם</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_356791.html" style="--accent:var(--c9)">
+    <div class="glow"></div>
+    <div class="tag">שברים 4</div>
+    <h3>מכנה משותף ומשוואות</h3>
+    <div class="desc">משוואות עם שברים — כפל במכנה משותף</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     PEREK B — אלגברה
+══════════════════════════════════════ -->
+<div class="sec-title">פרק ב׳ — אלגברה <span class="sec-sub">עובדים עם אותיות</span></div>
+<div class="grid">
+
+  <a class="tile" href="learn/kinus_evarim.html" style="--accent:var(--c6)">
+    <div class="glow"></div>
+    <div class="tag">נושא 6</div>
+    <h3>כינוס איברים</h3>
+    <div class="desc">מה זה פרמטר ואיך מחברים איברים דומים</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/kefel_sograyim.html" style="--accent:var(--c7)">
+    <div class="glow"></div>
+    <div class="tag">נושא 7</div>
+    <h3>כפל ופתיחת סוגריים</h3>
+    <div class="desc">חוק הפילוג, סוגריים כפול סוגריים</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/kefel_mekutzar.html" style="--accent:var(--c2)">
+    <div class="glow"></div>
+    <div class="tag">נושא 8</div>
+    <h3>נוסחאות כפל מקוצר</h3>
+    <div class="desc">(a±b)², (a+b)(a−b) — חובה לדעת!</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260528_715a66.html" style="--accent:var(--c10)">
+    <div class="glow"></div>
+    <div class="tag">תרגול</div>
+    <h3>תרגול לפי נושאים</h3>
+    <div class="desc">תרגול ממוקד לפרקים א׳ ו-ב׳ — בחרו נושא</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/tirgul_perek_b.html" style="--accent:var(--c5)">
+    <div class="glow"></div>
+    <div class="tag">תרגול</div>
+    <h3>תרגול מסכם פרק ב׳</h3>
+    <div class="desc">עשרות תרגילים, רצף 🔥 והתקדמות</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     PIRUK LEGORMIN — פירוק לגורמים
+══════════════════════════════════════ -->
+<div class="sec-title">פירוק לגורמים <span class="sec-sub">לחלק ולפשט</span></div>
+<div class="grid">
+
+  <a class="tile" href="topics/common_factor_standalone_html.html" style="--accent:var(--c1)">
+    <div class="glow"></div>
+    <div class="tag">פירוק 1</div>
+    <h3>גורם משותף</h3>
+    <div class="desc">הוצאת גורם משותף מביטוי — השיטה הבסיסית</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/factoring_difference_squares_html.html" style="--accent:var(--c4)">
+    <div class="glow"></div>
+    <div class="tag">פירוק 2</div>
+    <h3>הפרש ריבועים</h3>
+    <div class="desc">a²−b² = (a+b)(a−b) + גורם משותף משולב</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_bf43d9.html" style="--accent:var(--c3)">
+    <div class="glow"></div>
+    <div class="tag">פירוק 3</div>
+    <h3>פירוק לגורמים — מלא</h3>
+    <div class="desc">כל השיטות יחד — תרגול מקיף</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     MISHVAOT & FUNCTIONS
+══════════════════════════════════════ -->
+<div class="sec-title">משוואות ופונקציות <span class="sec-sub">בגרות 3 יחידות</span></div>
+<div class="grid">
+
+  <a class="tile" href="learn/mishvaot.html" style="--accent:var(--c3)">
+    <div class="glow"></div>
+    <div class="tag">נושא 9</div>
+    <h3>משוואות ממעלה ראשונה</h3>
+    <div class="desc">שיטת המאזניים, x בשני צדדים</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_23b3bf.html" style="--accent:var(--c9)">
+    <div class="glow"></div>
+    <div class="tag">נושא</div>
+    <h3>אי-שוויונות</h3>
+    <div class="desc">>, <, ≥, ≤ — כאשר הופכים את הסימן</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/beayot_miluliyot.html" style="--accent:var(--c4)">
+    <div class="glow"></div>
+    <div class="tag">נושא 10</div>
+    <h3>בעיות מילוליות</h3>
+    <div class="desc">מסיפור למשוואה — בשיטה</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_75ba47.html" style="--accent:var(--c6)">
+    <div class="glow"></div>
+    <div class="tag">נושא</div>
+    <h3>בעיות תערובת</h3>
+    <div class="desc">ריכוז, תמיסות, ושאלות תערובת</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/achuzim.html" style="--accent:var(--c2)">
+    <div class="glow"></div>
+    <div class="tag">נושא 11</div>
+    <h3>אחוזים</h3>
+    <div class="desc">הנחות, מע"מ, ריבית וגידול</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/funktziot.html" style="--accent:var(--c8)">
+    <div class="glow"></div>
+    <div class="tag">נושא 12</div>
+    <h3>פונקציות וגרפים</h3>
+    <div class="desc">y=mx+b, שיפוע וחיתוכים</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_ae4bc8.html" style="--accent:var(--c10)">
+    <div class="glow"></div>
+    <div class="tag">נושא</div>
+    <h3>תחום הגדרה</h3>
+    <div class="desc">מה מותר לשים ב-x — שורש ומכנה</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/mishvaa_ribuit.html" style="--accent:var(--c4)">
+    <div class="glow"></div>
+    <div class="tag">נושא 13</div>
+    <h3>משוואה ריבועית</h3>
+    <div class="desc">נוסחת השורשים x=(−b±√Δ)/2a</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_e9dc5e.html" style="--accent:var(--c1)">
+    <div class="glow"></div>
+    <div class="tag">נושא</div>
+    <h3>משוואות דו-ריבועיות</h3>
+    <div class="desc">ax⁴+bx²+c=0 — פתרון בהחלפת t=x²</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_92fdbb.html" style="--accent:var(--c5)">
+    <div class="glow"></div>
+    <div class="tag">נושא</div>
+    <h3>פונקציית שורש</h3>
+    <div class="desc">√x, משוואות עם שורשים וגרף</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/maarechet.html" style="--accent:var(--c5)">
+    <div class="glow"></div>
+    <div class="tag">נושא 14</div>
+    <h3>מערכת משוואות</h3>
+    <div class="desc">שתי משוואות, שני נעלמים</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_66cc81.html" style="--accent:var(--c7)">
+    <div class="glow"></div>
+    <div class="tag">נושא</div>
+    <h3>טור חשבוני</h3>
+    <div class="desc">סדרה חשבונית, סכום טור וסדרה הנדסית</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     GEOMETRY
+══════════════════════════════════════ -->
+<div class="sec-title">גיאומטריה <span class="sec-sub">צורות, זוויות ומרחקים</span></div>
+<div class="grid">
+
+  <a class="tile" href="learn/meshulashim.html" style="--accent:var(--c1)">
+    <div class="glow"></div>
+    <div class="tag">גיאומטריה 1</div>
+    <h3>משולשים</h3>
+    <div class="desc">פיתגורס, שו"ש, ישר-זווית</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_b7ec69.html" style="--accent:var(--c3)">
+    <div class="glow"></div>
+    <div class="tag">גיאומטריה 2</div>
+    <h3>זוויות במשולש</h3>
+    <div class="desc">סכום זוויות 180°, חיצוניות ושוות</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_79661e.html" style="--accent:var(--c2)">
+    <div class="glow"></div>
+    <div class="tag">גיאומטריה 3</div>
+    <h3>חפיפת משולשים</h3>
+    <div class="desc">צלע-זווית-צלע, זווית-צלע-זווית וכו'</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_550ee5.html" style="--accent:var(--c4)">
+    <div class="glow"></div>
+    <div class="tag">גיאומטריה 4</div>
+    <h3>מרובעים</h3>
+    <div class="desc">ריבוע, מלבן, מקבילית, טרפז</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_e6719b.html" style="--accent:var(--c6)">
+    <div class="glow"></div>
+    <div class="tag">גיאומטריה 5</div>
+    <h3>שטחים והיקפים</h3>
+    <div class="desc">נוסחאות שטח: משולש, מלבן, טרפז, עיגול</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_f16235.html" style="--accent:var(--c9)">
+    <div class="glow"></div>
+    <div class="tag">גיאומטריה 6</div>
+    <h3>מעגל</h3>
+    <div class="desc">היקף, שטח, משיק, קשת ומיתר</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/geo_analytit.html" style="--accent:var(--c4)">
+    <div class="glow"></div>
+    <div class="tag">גיאומטריה 7</div>
+    <h3>גיאומטריה אנליטית</h3>
+    <div class="desc">מרחק, אמצע, שיפוע בין נקודות</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="learn/trigo.html" style="--accent:var(--c3)">
+    <div class="glow"></div>
+    <div class="tag">גיאומטריה 8</div>
+    <h3>טריגונומטריה</h3>
+    <div class="desc">sin, cos, tan — SOH-CAH-TOA</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     STATISTICS & PROBABILITY
+══════════════════════════════════════ -->
+<div class="sec-title">סטטיסטיקה והסתברות <span class="sec-sub">מספרים על נתונים</span></div>
+<div class="grid">
+
+  <a class="tile" href="topics/deepseek_html_20260602_f39e64.html" style="--accent:var(--c7)">
+    <div class="glow"></div>
+    <div class="tag">סטטיסטיקה</div>
+    <h3>ממוצע, חציון, שכיח</h3>
+    <div class="desc">מדדי מרכז, פיזור וטבלאות תדירות</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_7ef9c4.html" style="--accent:var(--c8)">
+    <div class="glow"></div>
+    <div class="tag">הסתברות</div>
+    <h3>הסתברות</h3>
+    <div class="desc">אירועים, הסתברות בסיסית, הסתברות מותנית</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנושא</span>
+  </a>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     CALCULATOR
+══════════════════════════════════════ -->
+<div class="sec-title">מחשבון Casio fx-991EX <span class="sec-sub">כלי מספר 1 לבגרות</span></div>
+<div class="calc-grid">
+
+  <a class="featured" href="calculator/casio-v8.html" style="border-color:var(--c8);min-height:auto">
+    <div class="ico" style="font-size:2.8rem;animation:none">🔢</div>
+    <div>
+      <h3 style="color:var(--c8)">סימולטור מחשבון — גרסה מלאה</h3>
+      <p>המחשבון האמיתי בדפדפן — כפתורים, תצוגה ופעולות אמיתיות</p>
+      <span class="arr" style="color:var(--c8)">← לסימולטור</span>
+    </div>
+  </a>
+
+  <a class="tile" href="calculator/casio-tutorial.html" style="--accent:var(--c6)">
+    <div class="glow"></div>
+    <div class="tag">מדריך</div>
+    <h3>מדריך מחשבון</h3>
+    <div class="desc">איך משתמשים במחשבון — טיפים, פונקציות ומקשים</div>
+    <span class="badge-calc">מחשבון</span>
+    <span class="go"><span class="arr">←</span> למדריך</span>
+  </a>
+
+  <a class="tile" href="calculator/calculator-lesson.html" style="--accent:var(--c5)">
+    <div class="glow"></div>
+    <div class="tag">שיעור</div>
+    <h3>שיעור מחשבון</h3>
+    <div class="desc">לימוד שימוש במחשבון לפי נושאי הבגרות</div>
+    <span class="badge-calc">מחשבון</span>
+    <span class="go"><span class="arr">←</span> לשיעור</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_5c6112.html" style="--accent:var(--c10)">
+    <div class="glow"></div>
+    <div class="tag">סימולטור 2</div>
+    <h3>סימולטור fx-991ES</h3>
+    <div class="desc">גרסה חלופית + אימון שאלות בגרות</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לסימולטור</span>
+  </a>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     EXAMS & GAMES
+══════════════════════════════════════ -->
+<div class="sec-title">מבחנים ומשחקים <span class="sec-sub">בדקו את עצמכם</span></div>
+
+<a class="featured" href="learn/mivchan_sikum.html" style="margin-bottom:14px">
+  <div class="ico">🏆</div>
+  <div>
+    <h3>מבחן סיכום — כל הנושאים</h3>
+    <p>שאלות אקראיות מכל פרקי הקורס, ציון בסוף ופירוט לפי נושא. אפשר נגד המחשב או נגד חבר!</p>
+    <span class="arr">← למבחן הגדול</span>
+  </div>
+</a>
+
+<div class="grid">
+
+  <a class="tile" href="learn/mivchanim.html" style="--accent:var(--c4)">
+    <div class="glow"></div>
+    <div class="tag">מבחן</div>
+    <h3>מבחני מה"ט לדוגמה</h3>
+    <div class="desc">10 שאלות שכיחות + מבחן רנדומלי + פתרונות</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> למבחנים</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260528_2cedb4.html" style="--accent:var(--c3)">
+    <div class="glow"></div>
+    <div class="tag">מבחן</div>
+    <h3>מבחן פרק א׳+ב׳ פרימיום</h3>
+    <div class="desc">מבחן סיכום מקיף לפרקים א׳ ו-ב׳</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> למבחן</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_b61549.html" style="--accent:var(--c9)">
+    <div class="glow"></div>
+    <div class="tag">משחק</div>
+    <h3>קרב מתמטיקה כיתתי</h3>
+    <div class="desc">תחרות בין שחקנים — מי יסיים ראשון?</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> למשחק</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_56a3ad.html" style="--accent:var(--c7)">
+    <div class="glow"></div>
+    <div class="tag">כלי</div>
+    <h3>מפת החומר</h3>
+    <div class="desc">בדיקת כיסוי — כל נושאי הבגרות ברשימה</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> למפה</span>
+  </a>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     TOOLS & REFERENCE
+══════════════════════════════════════ -->
+<div class="sec-title">כלי עזר ועיון <span class="sec-sub">משאבים ותמיכה</span></div>
+<div class="grid">
+
+  <a class="tile" href="learn/noschaot.html" style="--accent:var(--c3)">
+    <div class="glow"></div>
+    <div class="tag">נוסחאות</div>
+    <h3>דף הנוסחאות</h3>
+    <div class="desc">כל נוסחאות הבגרות עם הסבר ודוגמה</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לנוסחאות</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_6d57a7.html" style="--accent:var(--c10)">
+    <div class="glow"></div>
+    <div class="tag">נוסחאות</div>
+    <h3>נוסחאות אינטראקטיביות</h3>
+    <div class="desc">לחצו על נוסחה לקבל הסבר חי</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לנוסחאות</span>
+  </a>
+
+  <a class="tile" href="learn/tipim.html" style="--accent:var(--c8)">
+    <div class="glow"></div>
+    <div class="tag">טיפים</div>
+    <h3>טיפים וטריקים</h3>
+    <div class="desc">24 טיפים לחישוב מהיר וחכם בראש</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לטיפים</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_3e4a4a.html" style="--accent:var(--c5)">
+    <div class="glow"></div>
+    <div class="tag">טיפים</div>
+    <h3>טיפים למתמטיקה</h3>
+    <div class="desc">עצות ושיטות ממוקדות לבגרות</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לטיפים</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_292133.html" style="--accent:var(--c6)">
+    <div class="glow"></div>
+    <div class="tag">עברית</div>
+    <h3>שם המספר בעברית</h3>
+    <div class="desc">מדריך דקדוק לכתיבת מספרים — זכר ונקבה</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> למדריך</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260601_4e663f.html" style="--accent:var(--c2)">
+    <div class="glow"></div>
+    <div class="tag">אנגלית</div>
+    <h3>אנגלית לחרדים</h3>
+    <div class="desc">3 יחידות אנגלית — בסיס לבגרות</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> לאנגלית</span>
+  </a>
+
+  <a class="tile" href="topics/deepseek_html_20260602_15a5c2.html" style="--accent:var(--c7)">
+    <div class="glow"></div>
+    <div class="tag">מוטיבציה</div>
+    <h3>מוטיבציה למתמטיקה</h3>
+    <div class="desc">למה כדאי ללמוד? עידוד ומוטיבציה</div>
+    <span class="badge-deep">דיפסיק</span>
+    <span class="go"><span class="arr">←</span> למוטיבציה</span>
+  </a>
+
+  <a class="tile" href="learn/sippurim.html" style="--accent:var(--c6)">
+    <div class="glow"></div>
+    <div class="tag">השראה</div>
+    <h3>סיפורים ומוטיבציה</h3>
+    <div class="desc">איפה מתמטיקה פוגשת אותנו בחיים</div>
+    <span class="badge-claude">קלוד</span>
+    <span class="go"><span class="arr">←</span> לסיפורים</span>
+  </a>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     LEGEND
+══════════════════════════════════════ -->
+<div style="margin-top:40px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 24px">
+  <div style="font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;font-weight:700;margin-bottom:12px;color:var(--gold)">מקרא</div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;color:var(--mut)">
+    <span><span class="badge-claude">קלוד</span> — עמודי קלוד (מרכז הלמידה הראשי)</span>
+    <span><span class="badge-deep">דיפסיק</span> — עמודי דיפסיק (נושאים נוספים)</span>
+    <span><span class="badge-calc">מחשבון</span> — כלי מחשבון</span>
+  </div>
+</div>
+
+<footer style="margin-top:40px">
+  מתמטיקה לחרדים · בגרות 3 יחידות · מרכז ראשי · כל הזכויות שמורות
+</footer>
+
+</div><!-- /wrap -->
+
+<!-- DISMISSIBLE BANNER POPUP -->
+<div id="banner-pop" style="display:none">
+  <button id="banner-x" onclick="closeBanner()">✕</button>
+  <a href="landing.html" onclick="closeBanner()">
+    <img id="banner-img" src="banners/banner-1.png" alt="פרויקט יואב - מסלול רכב" style="width:100%;display:block">
+  </a>
+</div>
+
+<script>
+// Smooth entrance animation for tiles
+document.addEventListener('DOMContentLoaded', () => {
+  const tiles = document.querySelectorAll('.tile, .featured');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '0';
+        entry.target.style.transform = entry.target.classList.contains('featured')
+          ? 'translateY(20px)' : 'translateY(16px)';
+        entry.target.style.transition = 'opacity .4s ease, transform .4s ease';
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = '';
+        }, 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  tiles.forEach(t => observer.observe(t));
+
+  // ── Search / filter tiles ──
+  const srch = document.getElementById('srch');
+  const allTiles = document.querySelectorAll('.tile, .featured');
+  const noRes = document.getElementById('no-results');
+
+  srch.addEventListener('input', () => {
+    const q = srch.value.trim().toLowerCase();
+    let visible = 0;
+    allTiles.forEach(t => {
+      const text = t.textContent.toLowerCase();
+      const show = !q || text.includes(q);
+      t.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    // Hide/show section titles when all tiles in section are hidden
+    document.querySelectorAll('.sec-title').forEach(sec => {
+      let next = sec.nextElementSibling;
+      let hasVisible = false;
+      while (next && !next.classList.contains('sec-title')) {
+        if (next.querySelector('.tile, .featured') || next.classList.contains('tile')) {
+          const tiles = next.querySelectorAll('.tile, .featured');
+          if (tiles.length === 0 && (next.classList.contains('tile') || next.classList.contains('featured'))) {
+            hasVisible = hasVisible || next.style.display !== 'none';
+          }
+          tiles.forEach(t => { if (t.style.display !== 'none') hasVisible = true; });
+        }
+        next = next.nextElementSibling;
+      }
+      sec.style.display = (!q || hasVisible) ? '' : 'none';
+    });
+    noRes.style.display = visible === 0 && q ? 'block' : 'none';
+  });
+
+  // ── Progress tracking: visited checkmarks ──
+  function applyProgress() {
+    let visitedCount = 0;
+    allTiles.forEach(tile => {
+      const href = tile.getAttribute('href');
+      if (!href) return;
+      const parts = href.replace(/^\.\//, '').split('/').filter(Boolean);
+      const key = 'visited:' + parts.join('/');
+      if (localStorage.getItem(key)) {
+        visitedCount++;
+        if (!tile.querySelector('.vck')) {
+          const ck = document.createElement('div');
+          ck.className = 'vck';
+          ck.textContent = '✓';
+          tile.appendChild(ck);
+        }
+      }
+    });
+    const el = document.getElementById('stat-visited');
+    if (el) el.textContent = visitedCount;
+  }
+  applyProgress();
+  window.addEventListener('storage', applyProgress);
+
+  // Banner popup: show after 1.8s if not dismissed recently
+  var KEY = 'bannerDismissed', COOLDOWN = 3 * 24 * 3600 * 1000;
+  var ts = localStorage.getItem(KEY);
+  if (!ts || (Date.now() - parseInt(ts)) > COOLDOWN) {
+    var banners = ['banners/banner-1.png','banners/banner-2.png','banners/banner-3.png',
+                   'banners/banner-4.png','banners/banner-5.png'];
+    var pick = banners[Math.floor(Math.random() * banners.length)];
+    document.getElementById('banner-img').src = pick;
+    setTimeout(() => {
+      var pop = document.getElementById('banner-pop');
+      pop.style.display = 'block';
+      pop.style.animation = 'slideUp .4s cubic-bezier(.2,.8,.2,1)';
+    }, 1800);
+  }
+});
+
+function closeBanner() {
+  document.getElementById('banner-pop').style.display = 'none';
+  try { localStorage.setItem('bannerDismissed', Date.now()); } catch(e){}
+}
+</script>
+
+</body>
+</html>
