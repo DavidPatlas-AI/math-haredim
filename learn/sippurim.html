@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="סיפורי מתמטיקה ומוטיבציה — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>סיפורי מתמטיקה ומוטיבציה</title>
 <style>
@@ -90,7 +94,7 @@
       <div class="author">— ג'יימס ג'וזף סילבסטר</div>
     </div>
     <div class="quote-card">
-      <div class="text">דאגתי תמיד הייתה לא שלא אוכל לפתור בעיה, אלא שלא אבין אותה.</div>
+      <div class="text">הדאגה שלי הייתה תמיד לא שלא אוכל לפתור בעיה, אלא שלא אבין אותה.</div>
       <div class="author">— ברטראנד ראסל</div>
     </div>
     <div class="quote-card">
@@ -133,7 +137,7 @@
     <div class="story-card">
       <div class="when">המאה ה-6 לפנה"ס</div>
       <h3>פיתגורס והמשפט שכולם מכירים</h3>
-      <p>פיתגורס היווני גילה שבמשולש ישר-זווית: a² + b² = c². זה גרם להפיכה בגיאומטריה — לראשונה אפשר היה לחשב מרחקים בלי למדוד פיזית.</p>
+      <p>פיתגורס היווני גילה שבמשולש ישר-זווית: <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">a² + b² = c²</span>. זה גרם להפיכה בגיאומטריה — לראשונה אפשר היה לחשב מרחקים בלי למדוד פיזית.</p>
       <p>אבל הסיפור המעניין: פיתגורס גילה גם את <b>המספרים האי-רציונליים</b> (כמו √2), וזה הפחיד את התלמידים שלו עד כדי כך שהם ניסו להסתיר את זה. אחד מהם, היפסוס, נטבע (לפי האגדה) על שגילה את הסוד!</p>
       <div class="lesson"><b>השיעור:</b> כל "טריק" שאתם לומדים היום — מישהו בעבר נאבק שעות כדי לגלות אותו. אתם מקבלים אלפי שנות חוכמה בחינם.</div>
     </div>
@@ -278,5 +282,10 @@ function renderLife(){
 renderLife();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

@@ -1,0 +1,273 @@
+/*
+ * ================================================
+ *  Design System v1 — מתמטיקה לחרדים
+ *  shared/style.css
+ *  loaded by every page via <link> in <head>
+ * ================================================
+ */
+
+/* === FONTS ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+
+/* === DESIGN TOKENS ================================= */
+:root {
+  /* ── Blackboard palette ── */
+  --ds-board:       #2b3a32;
+  --ds-board-dark:  #1e2b23;
+  --ds-board-light: #374d3e;
+  --ds-chalk:       #f4f1ea;
+  --ds-chalk-dim:   rgba(244,241,234,.6);
+  --ds-chalk-faint: rgba(244,241,234,.18);
+  --ds-chalk-y:     #ffe66d;
+  --ds-chalk-r:     #ff7675;
+  --ds-chalk-b:     #74b9ff;
+  --ds-chalk-g:     #55efc4;
+  --ds-chalk-p:     #a29bfe;
+  --ds-wood:        #7a5410;
+  --ds-wood-hi:     #c4922a;
+
+  /* ── Light-page palette (learn / topics) ── */
+  --ds-paper:  #f4f6ff;
+  --ds-card:   #ffffff;
+  --ds-card2:  #eef1fb;
+  --ds-ink:    #12142a;
+  --ds-txt:    #1e2040;
+  --ds-mut:    #5a6080;
+  --ds-gold:   #c8820a;
+  --ds-line:   #dde2f0;
+  --ds-blue:   #2a5bd8;
+  --ds-green:  #0f9e56;
+  --ds-pos:    #0db870;
+  --ds-neg:    #e02020;
+
+  /* ── Chapter accent palette (shared across site) ── */
+  --ds-c1:#e8401a; --ds-c2:#0f9e56; --ds-c3:#2a5bd8; --ds-c4:#7c2ee0;
+  --ds-c5:#d45c0a; --ds-c6:#0899b0; --ds-c7:#b35700; --ds-c8:#cc7200;
+  --ds-c9:#be185d; --ds-c10:#1d4ed8;
+
+  /* ── Typography ── */
+  --ds-font:         'Heebo', sans-serif;
+  --ds-font-display: 'Frank Ruhl Libre', serif;
+
+  /* ── Spacing & radius ── */
+  --ds-r-sm:   8px;
+  --ds-r-md:   12px;
+  --ds-r-lg:   16px;
+  --ds-r-xl:   20px;
+  --ds-r-pill: 999px;
+
+  /* ── Shadows ── */
+  --ds-shadow-sm: 0 2px 14px rgba(0,0,0,.05);
+  --ds-shadow-md: 0 4px 24px rgba(0,0,0,.08);
+  --ds-shadow-lg: 0 8px 36px rgba(0,0,0,.14);
+}
+
+/* === BASE RESET ==================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ds-font);
+  direction: rtl;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* === FORMULA / MATH ================================ */
+/* All math expressions stay LTR and use the display font */
+.formula, .formula-highlight, .eq, .math-expr,
+.formula-card .eq, .step-expr, .q-box {
+  font-family: var(--ds-font-display), serif;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Inline math isolation — applies to any inline math span inside RTL text */
+.math-inline {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+}
+
+/* Examples and game options are always LTR */
+.examples div,
+.opts button,
+.q-box,
+.sg,
+.formula-card .example {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Note/warn boxes that contain math: isolate their math spans */
+.note .math-inline,
+.warn .math-inline,
+.ds-note .math-inline,
+.ds-tip .math-inline {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+}
+
+/* === CHALK BUTTON =================================
+   Use: <a class="btn-chalk" href="...">…</a>
+   Works on both dark (board) and light pages.     */
+.btn-chalk {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 22px;
+  border-radius: var(--ds-r-md);
+  border: 2px solid currentColor;
+  background: transparent;
+  font-family: var(--ds-font);
+  font-weight: 700;
+  font-size: .92rem;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.4;
+  transition: background .18s, color .18s, transform .15s;
+}
+.btn-chalk:hover { transform: translateY(-2px); }
+.btn-chalk-y { color: var(--ds-chalk-y); }
+.btn-chalk-y:hover { background: var(--ds-chalk-y); color: var(--ds-board); }
+.btn-chalk-b { color: var(--ds-chalk-b); }
+.btn-chalk-b:hover { background: var(--ds-chalk-b); color: var(--ds-board); }
+.btn-chalk-g { color: var(--ds-chalk-g); }
+.btn-chalk-g:hover { background: var(--ds-chalk-g); color: var(--ds-board); }
+
+/* === UNIFORM CARD =================================
+   .ds-card — clean white card for light pages      */
+.ds-card {
+  background: var(--ds-card);
+  border: 1.5px solid var(--ds-line);
+  border-radius: var(--ds-r-lg);
+  padding: 22px 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--ds-shadow-sm);
+}
+
+/* === SECTION TITLE (light pages) ================== */
+.ds-sec {
+  font-family: var(--ds-font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ds-ink);
+  margin: 36px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ds-sec::before {
+  content: '';
+  width: 4px; height: 22px;
+  border-radius: 2px;
+  background: var(--ds-gold);
+  flex-shrink: 0;
+}
+
+/* === CANONICAL FOOTER ==============================
+   Every page's <footer> gets consistent styling.   */
+footer {
+  text-align: center;
+  font-family: var(--ds-font);
+  font-size: .78rem;
+  color: var(--ds-mut, #5a6080);
+  margin-top: 32px;
+  padding: 16px 16px 36px;
+  border-top: 1px solid var(--ds-line, #dde2f0);
+  letter-spacing: .4px;
+  direction: rtl;
+}
+
+/* === NOTE / HINT BOX ============================== */
+.ds-note {
+  background: rgba(200,130,10,.08);
+  border-inline-start: 4px solid var(--ds-gold);
+  padding: 12px 16px;
+  border-radius: var(--ds-r-sm);
+  margin: 12px 0;
+  font-size: .93rem;
+}
+.ds-tip {
+  background: rgba(42,91,216,.07);
+  border-inline-start: 4px solid var(--ds-blue);
+  padding: 12px 16px;
+  border-radius: var(--ds-r-sm);
+  margin: 12px 0;
+  font-size: .93rem;
+}
+
+/* === RESPONSIVE WRAP ============================== */
+.ds-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* === MOBILE BASICS ================================ */
+@media (max-width: 600px) {
+  body { font-size: .97rem; }
+  footer { padding-bottom: 70px; } /* space for sticky mobile CTA */
+}
+
+/* === ACCESSIBILITY ================================ */
+:focus-visible {
+  outline: 2px solid var(--ds-gold, #c8820a);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* === SKELETON LOADER (chalk style) ================ */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(244,241,234,.08) 0%,
+    rgba(244,241,234,.18) 50%,
+    rgba(244,241,234,.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shine 1.5s ease infinite;
+  border-radius: 6px;
+  display: block;
+}
+.skeleton-light {
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,.06) 0%,
+    rgba(0,0,0,.12) 50%,
+    rgba(0,0,0,.06) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shine 1.5s ease infinite;
+  border-radius: 6px;
+  display: block;
+}
+@keyframes skeleton-shine {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* === BENTO GRID (for "כל הנושאים") ================ */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.bento-wide  { grid-column: span 2; }
+.bento-tall  { grid-row:    span 2; }
+@media (max-width: 480px) {
+  .bento-wide { grid-column: span 1; }
+}
+
+/* === KATEX OVERRIDES ============================== */
+/* Make KaTeX formulas match the page color */
+.katex { font-size: 1.1em; }
+.formula .katex, .eq .katex {
+  color: inherit;
+  direction: ltr;
+}
+/* Light pages */
+.formula-card .eq .katex { color: var(--ds-ink, #12142a); }
+/* Dark (board) pages */
+.tile .katex, .acc-body .katex { color: var(--ds-chalk, #f4f1ea); }

@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="תרגול מסכם — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>תרגול מסכם — פרק ב'</title>
 <style>
@@ -58,7 +62,7 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">יחידה 1 · טכניקה אלגברית · פרק ב'</div>
+    <div class="eyebrow">תרגול מסכם — פרק ב׳</div>
     <h1>תרגול מסכם</h1>
     <div class="sub">כל התרגילים של פרק ב' במקום אחד — בחרו נושא ותתחילו</div>
   </header>
@@ -89,7 +93,7 @@
     <div class="scoreboard" id="sb"><div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div><div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div></div>
     <div class="turn-banner" id="turn">תורו של: שחקן</div>
     <div class="streak" id="streak"></div>
-    <div class="q-box" id="question">—</div>
+    <div class="q-box" id="question">לחצו כדי להתחיל</div>
     <div class="opts" id="opts"></div>
     <div class="feedback" id="feedback"></div>
     <button class="next-btn" id="nextBtn">הבא ←</button>
@@ -105,7 +109,7 @@
     <a class="back-link" href="index.html">→ חזרה לעמוד הבית</a>
   </div>
 
-  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 · פרק ב' · תרגול מסכם</footer>
+  <footer>מתמטיקה לחרדים · הכנה למה״ט ולבגרות 3 יח״ל · כל הזכויות שמורות</footer>
 </div>
 
 <script>
@@ -237,5 +241,10 @@ function showResults(){
 document.getElementById('againBtn').onclick=()=>{document.getElementById('results').classList.add('hidden');document.getElementById('setup').classList.remove('hidden');};
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

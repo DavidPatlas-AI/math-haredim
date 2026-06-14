@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="כפל ופתיחת סוגריים — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>כפל ופתיחת סוגריים</title>
 <style>
@@ -111,6 +115,40 @@
       </div>
       <div class="note">כשיש מספר/מינוס לפני — קודם פותחים את הסוגריים, ורק אז מכפילים במספר או מפעילים את המינוס.</div>
     </div>
+
+    <div class="card">
+      <h2>פתיחת סוגריים עם שלושה איברים <span class="tag">הרחבה</span></h2>
+      <p>כשיש שלושה איברים בסוגריים — כופלים את כולם:</p>
+      <div class="formula" style="direction:ltr">a(b + c + d) = ab + ac + ad</div>
+      <div class="examples">
+        <div>3(x + 2y − 5) = 3x + 6y − 15</div>
+        <div>−2(a − b + 4) = −2a + 2b − 8</div>
+        <div>x(x² + 3x − 1) = x³ + 3x² − x</div>
+      </div>
+      <div class="note"><b>כלל:</b> כל איבר בתוך הסוגריים מקבל כפל. לא לדלג אף איבר — גם האחרון!</div>
+    </div>
+
+    <div class="card">
+      <h2>מינוס לפני סוגריים הופך הכל <span class="tag">לזכור</span></h2>
+      <p>מינוס לפני סוגריים = כפל ב-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(−1)</span>. <b>כל הסימנים מתהפכים</b>:</p>
+      <div class="examples">
+        <div>−(x + 5) = −x − 5</div>
+        <div>−(3a − 2b + 1) = −3a + 2b − 1</div>
+        <div>7 − (x − 4) = 7 − x + 4 = 11 − x</div>
+      </div>
+      <div class="warn"><b>טעות נפוצה:</b> לשכוח להפוך את האיבר האחרון בסוגריים. ב-−(a − b − c) צריך לקבל −a + b + c, לא −a + b − c.</div>
+    </div>
+
+    <div class="card">
+      <h2>פתיחה ואחר כך כינוס <span class="tag">שלב שלם</span></h2>
+      <p>בדרך כלל אחרי פתיחת סוגריים — מכנסים איברים דומים:</p>
+      <div class="examples">
+        <div>2(x + 3) + 3(x − 1) = 2x + 6 + 3x − 3 = 5x + 3</div>
+        <div>4(a − 2) − (a + 1) = 4a − 8 − a − 1 = 3a − 9</div>
+        <div>x(x + 2) − 2(x + 1) = x² + 2x − 2x − 2 = x² − 2</div>
+      </div>
+      <div class="note"><b>הטריק:</b> קודם פותחים את כל הסוגריים, אחר כך מסדרים ומכנסים. לא לנסות לעשות הכל בצעד אחד.</div>
+    </div>
   </section>
 
   <section id="anim">
@@ -135,14 +173,14 @@
         <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
       </div>
       <div class="turn-banner" id="turn">תורו של: שחקן</div>
-      <div class="q-box" id="question">—</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
     </div>
   </section>
 
-  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 · פרק ב' · כפל ופתיחת סוגריים</footer>
+  <footer>מתמטיקה לחרדים · הכנה למה״ט ולבגרות 3 יח״ל · כל הזכויות שמורות</footer>
 </div>
 
 <script>
@@ -181,5 +219,10 @@ function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('next
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

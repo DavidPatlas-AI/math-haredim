@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="משוואות ממעלה ראשונה — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>משוואות ממעלה ראשונה</title>
 <style>
@@ -134,10 +138,43 @@
     <div class="card">
       <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
       <div class="warn">
-        <b>1.</b> כשמעבירים אגף — <b>מחליפים סימן!</b> אם 2x + 7 = 15, אז 2x = 15−7 (לא +7).<br><br>
-        <b>2.</b> כשמכפילים במספר — <b>כופלים את כל הצד, לא רק חלק.</b> אם 2(x+3) = 10, פתחו לפני שחילקתם.<br><br>
-        <b>3.</b> מינוס לפני סוגריים — <b>הופך את כל הסימנים</b>: −(x−5) = −x+5
+        <b>1.</b> כשמעבירים אגף — <b>מחליפים סימן!</b> אם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">2x + 7 = 15</span>, אז <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">2x = 15−7</span> (לא <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">+7</span>).<br><br>
+        <b>2.</b> כשמכפילים במספר — <b>כופלים את כל הצד, לא רק חלק.</b> אם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">2(x+3) = 10</span>, פתחו לפני שחילקתם.<br><br>
+        <b>3.</b> מינוס לפני סוגריים — <b>הופך את כל הסימנים</b>: <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">−(x−5) = −x+5</span>
       </div>
+    </div>
+
+    <div class="card">
+      <h2>משוואות עם שברים <span class="tag">שיטה</span></h2>
+      <p>כשיש שבר — <b>כופלים את שני הצדדים במכנה</b> כדי להיפטר ממנו:</p>
+      <div class="examples">
+        <div>x/3 = 5 &nbsp; |·3 &nbsp; → x = 15</div>
+        <div>x/4 + 2 = 7 &nbsp; |·4 &nbsp; → x + 8 = 28 → x = 20</div>
+        <div>(2x−1)/5 = 3 &nbsp; |·5 &nbsp; → 2x − 1 = 15 → x = 8</div>
+      </div>
+      <div class="note"><b>כלל:</b> כשמכפילים כל הצד במכנה — כל האגף מוכפל, לא רק מה שבשבר. לדוגמה x/4 + 2 = 7: כופלים ב-4 → x + 8 = 28.</div>
+    </div>
+
+    <div class="card">
+      <h2>משוואות עם סוגריים <span class="tag">קודם פותחים</span></h2>
+      <p>כשיש סוגריים — קודם פותחים אותם, אחר כך מכנסים איברים דומים:</p>
+      <div class="examples">
+        <div>2(x + 3) = 14 → 2x + 6 = 14 → 2x = 8 → x = 4</div>
+        <div>3(x − 1) = 2(x + 2) → 3x − 3 = 2x + 4 → x = 7</div>
+        <div>4(x + 1) − 2(x − 3) = 18 → 4x + 4 − 2x + 6 = 18 → 2x = 8 → x = 4</div>
+      </div>
+      <div class="note"><b>הטריק:</b> אחרי פתיחת סוגריים — כינסו את כל ה-x לצד אחד ואת כל המספרים לצד השני.</div>
+    </div>
+
+    <div class="card">
+      <h2>בדיקה ע"י הצבה <span class="tag">חובה</span></h2>
+      <p>אחרי שמצאתם את x — <b>הציבו בחזרה במשוואה המקורית</b> ובדקו שיוצא שוויון:</p>
+      <div class="examples">
+        <div>פתרנו: 3x + 7 = x + 15 → x = 4</div>
+        <div>בדיקה צד שמאל: 3·4 + 7 = 19</div>
+        <div>בדיקה צד ימין: 4 + 15 = 19 ✓ שני הצדדים שווים!</div>
+      </div>
+      <div class="note"><b>כלל:</b> בבגרות — הבדיקה שווה נקודות. אם יוצא אי-שוויון, חפשו את הטעות. אם יוצא שוויון — יישר כוח!</div>
     </div>
   </section>
 
@@ -176,7 +213,7 @@
       </div>
       <div class="turn-banner" id="turn">תורו של: שחקן</div>
       <div style="text-align:center;color:#566c80;font-size:.9rem;margin-bottom:8px">פתרו: מה הערך של x?</div>
-      <div class="q-box" id="question">—</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
@@ -291,5 +328,10 @@ function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('next
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="משוואות עם שני נעלמים — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>משוואות עם שני נעלמים</title>
 <style>
@@ -106,7 +110,7 @@
         <div class="e1">2x + y = 10</div>
         <div class="e2">x − y = 2</div>
       </div>
-      <p style="text-align:center">הסוגריים המסולסלים מציינים שמדובר במערכת — שתי המשוואות חייבות להתקיים יחד.</p>
+      <p style="text-align:center">הסוגר המסולסל מציין שמדובר במערכת — שתי המשוואות חייבות להתקיים יחד.</p>
       <div class="gold-box">
         <div class="title">💡 משמעות גרפית</div>
         כל משוואה מציירת קו ישר במישור. הפתרון = <b>נקודת המפגש</b> של שני הקווים. אם הם נחתכים — יש פתרון אחד. אם הם מקבילים — אין פתרון.
@@ -169,6 +173,41 @@
         <b>4.</b> <b>תמיד מאמתים</b> ע"י הצבת שני הערכים בשתי המשוואות המקוריות.
       </div>
     </div>
+
+    <div class="card">
+      <h2>שיטת השוואה — כשצריך לכפול קודם <span class="tag">שלב שלם</span></h2>
+      <p>לא תמיד מקדמי הנעלמים מוכנים — לפעמים צריך לכפול <b>שתי המשוואות</b> לפני חיסור:</p>
+      <div class="note" style="direction:ltr;text-align:left">
+        <b>דוגמה:</b> {2x + 3y = 16 ; x + y = 6}<br>
+        כופלים משוואה 2 ב-3: → 3x + 3y = 18<br>
+        מחסרים: (3x+3y) − (2x+3y) = 18−16 → x = 2<br>
+        מציבים: 2 + y = 6 → y = 4 ✓
+      </div>
+      <div class="note"><b>כלל:</b> בוחרים לבטל את הנעלם שקל יותר לאזן את המקדמים שלו — לרוב זה ה-y.</div>
+    </div>
+
+    <div class="card">
+      <h2>מערכת ללא פתרון — קווים מקבילים <span class="tag">מקרה מיוחד</span></h2>
+      <p>אם שני הקווים <b>מקבילים</b> — אין נקודת חיתוך. המערכת <b>אין לה פתרון</b>:</p>
+      <div class="examples">
+        <div>{x + y = 5 ; x + y = 8} → אותה משוואה, תוצאות שונות</div>
+        <div>אם נחסר: 0·x + 0·y = −3 → 0 = −3 — סתירה!</div>
+        <div>מסקנה: אין פתרון, הקווים מקבילים ואינם נחתכים</div>
+      </div>
+      <div class="note"><b>שימו לב:</b> בבגרות אם מגיעים לסתירה (כמו 0=−3) — כותבים "המערכת אין לה פתרון" וזה תשובה מלאה.</div>
+    </div>
+
+    <div class="card">
+      <h2>שיטת הצבה — שלב אחר שלב <span class="tag">לאט לאט</span></h2>
+      <p>הנה הצבה מלאה עם כל השלבים כתובים:</p>
+      <div class="examples">
+        <div>מערכת: {3x + 2y = 12 ; x − y = 1}</div>
+        <div>שלב 1 — מבודדים: x = y + 1 (מהמשוואה השנייה)</div>
+        <div>שלב 2 — מציבים: 3(y+1) + 2y = 12 → 3y+3+2y=12 → 5y=9 → y=9/5</div>
+        <div>שלב 3 — מוצאים x: x = 9/5 + 1 = 14/5</div>
+        <div>שלב 4 — בדיקה: 3·(14/5) + 2·(9/5) = 42/5 + 18/5 = 60/5 = 12 ✓</div>
+      </div>
+    </div>
   </section>
 
   <!-- GRAPH -->
@@ -205,7 +244,7 @@
         <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
       </div>
       <div class="turn-banner" id="turn">תורו של: שחקן</div>
-      <div class="q-box" id="question">—</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
@@ -311,5 +350,10 @@ function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('next
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

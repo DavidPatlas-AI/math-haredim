@@ -1,0 +1,25 @@
+{
+  "name": "מתמטיקה לחרדים — בגרות 3 יחידות",
+  "short_name": "מת׳ לחרדים",
+  "description": "כל חומר הבגרות במתמטיקה 3 יחידות — הסברים, אנימציות ומשחקים",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4f6ff",
+  "theme_color": "#12142a",
+  "lang": "he",
+  "dir": "rtl",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["education"],
+  "screenshots": [
+    {
+      "src": "/banners/banner-1.png",
+      "type": "image/png",
+      "label": "מרכז הלמידה המלא"
+    }
+  ]
+}

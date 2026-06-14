@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="כינוס איברים דומים — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>כינוס איברים דומים</title>
 <style>
@@ -97,7 +101,7 @@
         <div>x² + 2x² = 3x²</div>
         <div>3a + 2b + 2a + 3b = 5a + 5b</div>
       </div>
-      <div class="note">לא ניתן לחבר פרמטרים שאינם זהים: a ו-a² הם איברים שונים, וכך גם a ו-b.</div>
+      <div class="note">לא ניתן לחבר פרמטרים שאינם זהים: <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">a</span> ו-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">a²</span> הם איברים שונים, וכך גם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">a</span> ו-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">b</span>.</div>
     </div>
 
     <div class="card">
@@ -108,6 +112,39 @@
         <div>3x − 4xy − 5x + 11xy = −2x + 7xy</div>
       </div>
       <div class="note">הטריק: סמנו כל סוג איבר בסימון משלו (קו תחתון, שני קווים...) כדי לא להתבלבל.</div>
+    </div>
+
+    <div class="card">
+      <h2>מה נחשב "איבר דומה"? <span class="tag">הגדרה מדויקת</span></h2>
+      <p>שני איברים דומים = <b>אותה אות ואותה חזקה בדיוק</b>. שינוי קטן → כבר לא דומים:</p>
+      <div class="examples">
+        <div>3a² ו-7a² → דומים ✓ &nbsp; (a בריבוע בשניהם)</div>
+        <div>3a² ו-7a → לא דומים ✗ &nbsp; (חזקות שונות)</div>
+        <div>5xy ו-3xy → דומים ✓ &nbsp; (אותן אותיות)</div>
+        <div>5xy ו-3x²y → לא דומים ✗ &nbsp; (חזקת x שונה)</div>
+      </div>
+      <div class="note"><b>כלל:</b> כדי לכנס — חייב להיות זהה לחלוטין: אותן אותיות, אותן חזקות. המקדם (המספר שלפני) לא משנה.</div>
+    </div>
+
+    <div class="card">
+      <h2>כינוס עם כמה משתנים <span class="tag">מסובך יותר</span></h2>
+      <p>כשיש a, b, ו-ab — כל אחד נכנס בנפרד:</p>
+      <div class="examples">
+        <div>4a + 2b − ab + 3a − 5b + 2ab = 7a − 3b + ab</div>
+        <div>x² + 2xy − 3x + x² − xy + 5x = 2x² + xy + 2x</div>
+      </div>
+      <div class="note"><b>שימו לב:</b> ab ו-a ו-b הם שלושה סוגים שונים. לא מחברים ביניהם.</div>
+    </div>
+
+    <div class="card">
+      <h2>כינוס עם איברים שליליים <span class="tag">זהירות</span></h2>
+      <p>כשיש מינוסים — שימו לב לסימן של כל איבר לפני הכינוס:</p>
+      <div class="examples">
+        <div>5a − (−3a) = 5a + 3a = 8a &nbsp; (מינוס על מינוס = פלוס)</div>
+        <div>−4x − 2x + 7x = (−4 − 2 + 7)x = x</div>
+        <div>3b − 6b + b = (3 − 6 + 1)b = −2b</div>
+      </div>
+      <div class="warn"><b>טעות נפוצה:</b> כשיש מינוס לפני ביטוי בסוגריים, הוא הופך את כל הסימנים. −(3a − 2b) = −3a + 2b.</div>
     </div>
   </section>
 
@@ -136,14 +173,14 @@
         <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
       </div>
       <div class="turn-banner" id="turn">תורו של: שחקן</div>
-      <div class="q-box" id="question">—</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
     </div>
   </section>
 
-  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 · פרק ב' · כינוס איברים דומים</footer>
+  <footer>מתמטיקה לחרדים · הכנה למה״ט ולבגרות 3 יח״ל · כל הזכויות שמורות</footer>
 </div>
 
 <script>
@@ -186,5 +223,10 @@ function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('next
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

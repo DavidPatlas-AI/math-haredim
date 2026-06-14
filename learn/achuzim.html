@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="אחוזים — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>אחוזים</title>
 <style>
@@ -135,7 +139,7 @@
         <div>שיטה 1: ההנחה = 200 · 30/100 = 60. המחיר החדש = 200 − 60 = 140</div>
         <div>שיטה 2 (קצרה): משלמים 70% מהמחיר → 200 · 70/100 = 140</div>
       </div>
-      <div class="note"><b>טיפ זהב:</b> כשיש הנחה של X% — משלמים (100−X)%. כשיש העלאה של X% — משלמים (100+X)%.</div>
+      <div class="note"><b>טיפ זהב:</b> כשיש הנחה של X% — משלמים <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(100−X)%</span>. כשיש העלאה של X% — משלמים <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(100+X)%</span>.</div>
     </div>
 
     <div class="card">
@@ -155,6 +159,39 @@
         <b>2.</b> 30% מ-200 הוא לא 30. צריך לחשב: 200·30/100 = 60.<br><br>
         <b>3.</b> "5% הוסיפו" זה <b>5% מהמחיר המקורי</b> — לא 5 ש"ח.
       </div>
+    </div>
+
+    <div class="card">
+      <h2>חישוב מע"מ — להוסיף 18% <span class="tag">חיים אמיתיים</span></h2>
+      <p>מע"מ הוא מס ערך מוסף. מוסיפים אחוז מסוים על המחיר. בישראל כיום 18%:</p>
+      <div class="examples">
+        <div>שיטה 1: מע"מ = 200 · 18/100 = 36. מחיר סופי = 200 + 36 = 236</div>
+        <div>שיטה 2 (קצרה): 200 · 1.18 = 236</div>
+        <div>מחיר כולל מע"מ = מחיר × 1.18</div>
+      </div>
+      <div class="note"><b>טיפ:</b> לחשב מחיר לפני מע"מ מהמחיר כולל: <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">מחיר לפני = מחיר אחרי ÷ 1.18</b>. למשל 236 ÷ 1.18 = 200.</div>
+    </div>
+
+    <div class="card">
+      <h2>הנחה ואחריה הוספה <span class="tag">שני שלבים</span></h2>
+      <p>כשיש שני שינויים רצופים — לא מחברים את האחוזים!</p>
+      <div class="examples">
+        <div>מחיר 100. ירד 20% → נשאר 80. עלה 20% → 80 · 1.2 = 96 (לא 100!)</div>
+        <div>הנחה 30% ואז תוספת 10%: 100 → 70 → 70 · 1.1 = 77</div>
+      </div>
+      <div class="warn"><b>שימו לב:</b> 20% הנחה ואחר כך 20% הוספה <b>לא מחזיר למחיר המקורי</b>. כי ה-20% מחושב על מחירים שונים בכל פעם.</div>
+    </div>
+
+    <div class="card">
+      <h2>ריבית דריבית — בסיס <span class="tag">בנק</span></h2>
+      <p>כשריבית מצטברת כל שנה — כל שנה מחשבים על הסכום הכולל כולל הריבית שצברנו:</p>
+      <div class="examples">
+        <div>הפקדתי 1000 ש"ח, ריבית שנתית 5%</div>
+        <div>אחרי שנה 1: 1000 · 1.05 = 1050</div>
+        <div>אחרי שנה 2: 1050 · 1.05 = 1102.5</div>
+        <div>אחרי n שנים: 1000 · (1.05)ⁿ</div>
+      </div>
+      <div class="note"><b>כלל:</b> ריבית דריבית = הכפלה חוזרת. אחרי n שנים: <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">קרן · (1 + ריבית/100)ⁿ</b>.</div>
     </div>
   </section>
 
@@ -206,7 +243,7 @@
         <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
       </div>
       <div class="turn-banner" id="turn">תורו של: שחקן</div>
-      <div class="q-box" id="question">—</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
@@ -278,5 +315,10 @@ function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('next
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

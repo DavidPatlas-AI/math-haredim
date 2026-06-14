@@ -1,287 +1,712 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#2b3a32"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מתמטיקה לחרדים — מרכז ראשי</title>
+<title>מתמטיקה לחרדים — הכנה למה״ט ולבגרות 3 יח״ל | מתמטיקה ואנגלית</title>
+<meta name="description" content="הכנה למה״ט ולבגרות 3 יח״ל — מתמטיקה ואנגלית. הסברים, אנימציות, משחקים ומבחנים. מותאם לקהילה החרדית.">
+<meta property="og:title" content="מתמטיקה לחרדים — הכנה למה״ט ולבגרות 3 יח״ל">
+<meta property="og:description" content="הכנה למה״ט ולבגרות 3 יח״ל — מתמטיקה ואנגלית במקום אחד. הסברים, אנימציות, משחקים ומבחנים.">
+<meta property="og:image" content="https://math-haredim.netlify.app/banners/banner-1.png">
+<meta property="og:url" content="https://math-haredim.netlify.app">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="מתמטיקה לחרדים">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="מתמטיקה לחרדים — הכנה למה״ט ולבגרות 3 יח״ל">
+<meta name="twitter:description" content="הכנה למה״ט ולבגרות 3 יח״ל — מתמטיקה ואנגלית. מותאם לקהילה החרדית.">
+<meta name="twitter:image" content="https://math-haredim.netlify.app/banners/banner-1.png">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
-  :root{
-    --ink:#12142a;--paper:#f4f6ff;--card:#ffffff;--card2:#eef1fb;
-    --txt:#1e2040;--mut:#5a6080;--gold:#c8820a;--line:#dde2f0;
-    --c1:#e8401a;--c2:#0f9e56;--c3:#2a5bd8;--c4:#7c2ee0;--c5:#d45c0a;
-    --c6:#0899b0;--c7:#b35700;--c8:#cc7200;--c9:#be185d;--c10:#1d4ed8;
+
+  :root {
+    --board:#2b3a32; --board-dark:#1e2b23; --board-light:#374d3e;
+    --chalk:#f4f1ea; --chalk-dim:rgba(244,241,234,.6); --chalk-faint:rgba(244,241,234,.18);
+    --chalk-y:#ffe66d; --chalk-r:#ff7675; --chalk-b:#74b9ff; --chalk-g:#55efc4; --chalk-p:#a29bfe;
+    --wood:#7a5410; --wood-hi:#c4922a; --wood-dk:#4a3008;
+    --c1:#ff7675;--c2:#55efc4;--c3:#74b9ff;--c4:#a29bfe;--c5:#fd79a8;
+    --c6:#00cec9;--c7:#e17055;--c8:#fdcb6e;--c9:#e84393;--c10:#0984e3;
+    --gold:#ffe66d; --mut:rgba(244,241,234,.55); --line:rgba(244,241,234,.12);
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    font-family:'Heebo',sans-serif;color:var(--txt);line-height:1.7;
-    min-height:100vh;padding:0 0 80px;
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    font-family:'Heebo',sans-serif;
+    color:var(--chalk);
+    min-height:100vh; line-height:1.7; overflow-x:hidden;
+    /* Rich multi-layer board background */
     background:
-      radial-gradient(ellipse 110% 70% at 50% -8%,rgba(200,130,10,.13) 0%,transparent 55%),
-      radial-gradient(ellipse 55% 65% at -8% 65%,rgba(42,91,216,.08),transparent 65%),
-      radial-gradient(ellipse 55% 65% at 108% 35%,rgba(124,46,224,.07),transparent 65%),
-      radial-gradient(ellipse 40% 30% at 50% 100%,rgba(15,158,86,.05),transparent 70%),
-      var(--paper);
+      radial-gradient(ellipse 80% 50% at 20% 0%,   rgba(255,230,109,.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 100%,  rgba(116,185,255,.05) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 60% at 50% 50%,  rgba(85,239,196,.03)  0%, transparent 70%),
+      var(--board);
+    background-attachment:fixed;
+    /* chalk grain */
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse 80% 50% at 20% 0%, rgba(255,230,109,.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(116,185,255,.05) 0%, transparent 60%),
+      var(--board);
   }
-  .wrap{max-width:980px;margin:0 auto;padding:0 16px}
 
-  /* HERO */
-  .hero{text-align:center;padding:60px 20px 44px;position:relative;overflow:hidden}
-  .hero::before{
-    content:'';position:absolute;top:50%;left:50%;width:560px;height:560px;
-    transform:translate(-50%,-60%);border-radius:50%;
-    background:radial-gradient(circle,rgba(200,130,10,.08) 0%,transparent 70%);
-    pointer-events:none;
+  /* Wood frame — thinner, more refined */
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:9998;
+    border:10px solid var(--wood);
+    box-shadow:
+      inset 0 0 0 1px var(--wood-hi),
+      inset 0 0 0 3px rgba(0,0,0,.45),
+      inset 0 0 40px rgba(0,0,0,.15);
   }
-  .hero-eq{position:absolute;inset:0;pointer-events:none;opacity:.06;
-    font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;color:var(--ink)}
-  .hero-eq span{position:absolute;animation:float 14s ease-in-out infinite}
-  @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(4deg)}}
-  .badge{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;letter-spacing:2px;
-    color:var(--gold);font-weight:700;
-    background:rgba(200,130,10,.1);
-    border:1.5px solid rgba(200,130,10,.3);border-radius:99px;
-    padding:7px 22px;margin-bottom:22px;position:relative;
-    box-shadow:0 2px 18px rgba(200,130,10,.12)}
-  .badge::before{content:'✦';font-size:.7rem;opacity:.7}
-  h1{font-family:'Frank Ruhl Libre',serif;font-size:3.3rem;font-weight:900;
-    margin-bottom:10px;position:relative;line-height:1.15;
-    background:linear-gradient(135deg,var(--ink) 0%,var(--ink) 40%,var(--gold) 100%);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .hero p{color:var(--mut);font-size:1.05rem;position:relative;
-    max-width:560px;margin:0 auto;line-height:1.8}
-  .stats{display:flex;gap:14px;justify-content:center;margin-top:32px;position:relative;flex-wrap:wrap}
-  .stat{
-    text-align:center;background:var(--card);
-    border:1px solid var(--line);border-radius:18px;
-    padding:16px 26px;
-    box-shadow:0 2px 18px rgba(0,0,0,.05);
-    transition:transform .2s,box-shadow .2s;
-  }
-  .stat:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.09)}
-  .stat .n{font-family:'Frank Ruhl Libre',serif;font-size:2.1rem;font-weight:900;color:var(--gold);line-height:1.1}
-  .stat .l{font-size:.75rem;color:var(--mut);margin-top:3px}
 
-  /* SECTION TITLES */
-  .sec-title{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:700;
-    margin:48px 6px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-  .sec-title::before{content:"";width:5px;height:28px;border-radius:3px;
-    background:linear-gradient(180deg,var(--gold),rgba(200,130,10,.25))}
-  .sec-sub{color:var(--mut);font-size:.88rem;font-weight:400;margin-right:auto;
-    background:var(--card2);border-radius:99px;padding:3px 12px;font-size:.78rem}
+  .wrap { max-width:960px; margin:0 auto; padding:0 24px; }
 
-  /* FEATURED CARD */
-  .featured{
-    background:var(--card);
-    border:1.5px solid rgba(200,130,10,.4);border-radius:22px;
-    padding:28px 32px;margin-bottom:20px;
-    display:flex;align-items:center;gap:24px;
-    text-decoration:none;color:var(--txt);
-    box-shadow:0 4px 24px rgba(0,0,0,.07),0 1px 0 rgba(200,130,10,.15) inset;
-    transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s;
-    position:relative;overflow:hidden}
-  .featured::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,transparent 0%,var(--gold) 40%,transparent 100%);
-    opacity:0;transition:opacity .28s;
+  /* ── TOP BAR ── */
+  .topbar {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px;
+    position:sticky; top:0; z-index:100;
+    background:rgba(27,40,31,.88);
+    backdrop-filter:blur(20px) saturate(1.4);
+    -webkit-backdrop-filter:blur(20px) saturate(1.4);
+    border-bottom:1px solid rgba(255,230,109,.12);
+    box-shadow:0 1px 0 rgba(255,230,109,.06), 0 4px 24px rgba(0,0,0,.3);
   }
-  .featured:hover::before{opacity:1}
-  .featured:hover{
+  .brand { display:flex; flex-direction:column; gap:1px; }
+  .brand-chalk {
+    font-family:'Frank Ruhl Libre',serif; font-size:1.2rem; font-weight:900;
+    color:var(--chalk); letter-spacing:.3px;
+    background:linear-gradient(90deg,var(--chalk) 0%,rgba(255,230,109,.9) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .brand-sub { font-size:.68rem; color:var(--chalk-dim); letter-spacing:.3px; }
+  .topbar-actions { display:flex; gap:8px; align-items:center; }
+  .tb-btn {
+    background:rgba(255,230,109,.1);
+    border:1px solid rgba(255,230,109,.2);
+    color:var(--chalk-y);
+    padding:8px 16px; border-radius:20px;
+    font-family:'Heebo',sans-serif; font-size:.82rem; font-weight:700;
+    cursor:pointer; transition:.2s; letter-spacing:.3px;
+  }
+  .tb-btn:hover { background:rgba(255,230,109,.18); transform:translateY(-1px); }
+
+  /* ── SEARCH ── */
+  .search-panel {
+    padding:16px 0; border-bottom:1px solid var(--line);
+    background:rgba(20,32,25,.95);
+  }
+  .chalk-input {
+    width:100%; padding:13px 20px; border-radius:12px;
+    border:1.5px solid rgba(255,230,109,.2);
+    background:rgba(255,255,255,.04);
+    color:var(--chalk); font-family:'Heebo',sans-serif; font-size:1rem;
+    direction:rtl; outline:none;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .chalk-input:focus {
+    border-color:var(--chalk-y);
+    box-shadow:0 0 0 3px rgba(255,230,109,.12), 0 2px 16px rgba(255,230,109,.08);
+  }
+  .chalk-input::placeholder { color:rgba(244,241,234,.35); }
+
+  /* ── HERO ── */
+  .hero-board {
+    padding:clamp(44px,7vw,80px) 0 clamp(28px,4vw,44px);
+    text-align:center; position:relative;
+  }
+
+  /* ── MAIN CTA ── */
+  .main-cta-wrap { margin-bottom:32px; }
+  .main-cta-btn {
+    display:inline-flex; align-items:center; gap:14px;
+    font-family:'Frank Ruhl Libre',serif;
+    font-size:clamp(1.7rem,5vw,2.6rem); font-weight:900;
+    color:var(--board-dark); text-decoration:none;
+    background:linear-gradient(135deg, var(--chalk-y) 0%, #ffd233 100%);
+    padding:16px 36px; border-radius:16px;
+    box-shadow:0 8px 32px rgba(255,230,109,.25), 0 2px 0 rgba(255,255,255,.15) inset;
+    transition:transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s, gap .2s;
+    position:relative; overflow:hidden;
+  }
+  .main-cta-btn::before {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg,rgba(255,255,255,.14) 0%,transparent 60%);
+    border-radius:inherit; pointer-events:none;
+  }
+  .main-cta-btn:hover {
+    transform:translateY(-3px) scale(1.02);
+    box-shadow:0 14px 44px rgba(255,230,109,.35), 0 2px 0 rgba(255,255,255,.2) inset;
+    gap:20px;
+  }
+  .cta-arrow { font-size:1.8rem; transition:transform .2s; }
+  .main-cta-btn:hover .cta-arrow { transform:translateX(-5px); }
+  .next-topic-line {
+    color:var(--chalk-dim); font-size:.95rem; margin-top:14px;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .next-topic-line::before { content:'←'; color:var(--chalk-y); font-weight:700; }
+  .next-topic-line strong { color:var(--chalk); font-weight:700; }
+
+  /* ── READINESS METER ── */
+  .readiness-wrap { max-width:440px; margin:0 auto 36px; padding:0 16px; }
+  .readiness-label {
+    display:flex; justify-content:space-between;
+    color:var(--chalk-dim); font-size:.83rem; margin-bottom:10px; font-weight:600;
+  }
+  .readiness-num {
+    color:var(--chalk-y); font-family:'Frank Ruhl Libre',serif; font-size:1.1rem; font-weight:900;
+  }
+  .chalk-meter-track {
+    height:10px; background:rgba(244,241,234,.08); border-radius:99px;
+    position:relative; overflow:hidden;
+    border:1px solid rgba(244,241,234,.1);
+  }
+  .chalk-meter-fill {
+    height:100%; border-radius:99px;
+    background:linear-gradient(90deg, var(--chalk-g) 0%, var(--chalk-y) 100%);
+    transition:width 1.5s cubic-bezier(.2,.8,.2,1);
+    box-shadow:0 0 12px rgba(255,230,109,.3);
+  }
+  .meter-marks {
+    position:absolute; top:-22px; left:0; right:0;
+    display:flex; justify-content:space-around;
+    font-size:.62rem; color:rgba(244,241,234,.25); pointer-events:none;
+  }
+
+  /* ── EXAM DAY BUTTON ── */
+  .exam-day-btn {
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    padding:15px 40px;
+    border:2px dashed rgba(255,118,117,.7);
+    border-radius:50px;
+    color:var(--chalk-r);
+    font-family:'Frank Ruhl Libre',serif; font-size:1.2rem; font-weight:900;
+    text-decoration:none; letter-spacing:.4px;
+    margin:0 auto 32px;
+    background:rgba(255,118,117,.06);
+    transition:all .25s cubic-bezier(.2,.8,.2,1);
+    box-shadow:0 0 0 0 rgba(255,118,117,0), inset 0 0 0 0 rgba(255,118,117,0);
+  }
+  .exam-day-btn:hover {
+    background:var(--chalk-r);
+    color:#1e0a0a;
+    border-color:var(--chalk-r);
+    border-style:solid;
+    transform:translateY(-2px) scale(1.03);
+    box-shadow:0 8px 28px rgba(255,118,117,.35);
+  }
+
+  /* ── TRACKS ── */
+  .tracks-row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:18px; }
+  .track-btn {
+    display:inline-flex; align-items:center; gap:9px;
+    padding:13px 28px; border-radius:12px;
+    border:1.5px solid rgba(244,241,234,.15);
+    color:var(--chalk); text-decoration:none;
+    font-weight:700; font-size:.95rem;
+    background:rgba(244,241,234,.06);
+    transition:all .22s cubic-bezier(.2,.8,.2,1);
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+  }
+  .track-icon { font-size:1.15rem; }
+  .track-math:hover {
+    border-color:var(--chalk-y); color:var(--board-dark);
+    background:var(--chalk-y);
+    transform:translateY(-3px);
+    box-shadow:0 8px 24px rgba(255,230,109,.25);
+  }
+  .track-english:hover {
+    border-color:var(--chalk-b); color:var(--board-dark);
+    background:var(--chalk-b);
+    transform:translateY(-3px);
+    box-shadow:0 8px 24px rgba(116,185,255,.25);
+  }
+
+  /* ── ACCORDION ── */
+  .topics-accordion {
+    margin:20px 0; border-radius:14px; overflow:hidden;
+    border:1px solid rgba(255,230,109,.15);
+    box-shadow:0 4px 24px rgba(0,0,0,.2);
+  }
+  .acc-header {
+    width:100%; display:flex; justify-content:space-between; align-items:center;
+    padding:18px 24px;
+    background:rgba(255,230,109,.07);
+    font-family:'Frank Ruhl Libre',serif; font-size:1.15rem; font-weight:700;
+    color:var(--chalk-y); border:none; cursor:pointer;
+    text-align:right; direction:rtl; transition:background .2s;
+    letter-spacing:.2px;
+  }
+  .acc-header:hover { background:rgba(255,230,109,.12); }
+  .acc-arrow { transition:transform .3s; font-size:.85rem; color:rgba(255,230,109,.6); }
+  .acc-arrow.open { transform:rotate(180deg); }
+  .acc-body { padding:20px 16px; border-top:1px solid rgba(255,230,109,.1); }
+
+  /* ── SECTION TITLES ── */
+  .sec-title {
+    font-family:'Frank Ruhl Libre',serif; font-size:1.3rem; font-weight:700;
+    color:var(--chalk); margin:40px 6px 18px;
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  .sec-title::before {
+    content:""; width:4px; height:22px; border-radius:3px;
+    background:linear-gradient(180deg,var(--chalk-y),rgba(255,230,109,.3));
+    flex-shrink:0;
+  }
+  .sec-sub {
+    color:var(--chalk-dim); font-size:.75rem; font-weight:400; margin-right:auto;
+    background:rgba(244,241,234,.07); border-radius:99px; padding:3px 12px;
+    border:1px solid rgba(244,241,234,.1);
+  }
+
+  /* ── FEATURED CARD ── */
+  .featured {
+    background:rgba(255,230,109,.05);
+    border:1px solid rgba(255,230,109,.2);
+    border-radius:16px; padding:22px 26px; margin-bottom:14px;
+    display:flex; align-items:center; gap:20px;
+    text-decoration:none; color:var(--chalk);
+    position:relative; overflow:hidden;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, background .25s;
+    box-shadow:0 2px 16px rgba(0,0,0,.15);
+  }
+  .featured::before {
+    content:''; position:absolute; top:0; right:0; left:0; height:1px;
+    background:linear-gradient(90deg, transparent, rgba(255,230,109,.35), transparent);
+  }
+  .featured:hover {
     transform:translateY(-5px);
-    box-shadow:0 20px 52px rgba(200,130,10,.16),0 0 0 1px rgba(200,130,10,.2);
+    background:rgba(255,230,109,.08);
+    border-color:rgba(255,230,109,.4);
+    box-shadow:0 12px 36px rgba(0,0,0,.25), 0 0 0 1px rgba(255,230,109,.2);
   }
-  .featured .ico{font-size:3.6rem;flex-shrink:0;animation:bob 3.5s ease-in-out infinite}
-  @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
-  .featured h3{font-family:'Frank Ruhl Libre',serif;font-size:1.7rem;font-weight:900;color:var(--gold);margin-bottom:6px}
-  .featured p{color:var(--mut);font-size:.93rem;line-height:1.7}
-  .featured .arr{color:var(--gold);font-size:1rem;margin-top:10px;display:inline-flex;align-items:center;gap:6px;font-weight:700;
-    transition:gap .2s}
-  .featured:hover .arr{gap:10px}
-
-  /* GRID */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-  .grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
-
-  /* TILE */
-  .tile{
-    background:var(--card);border:1px solid var(--line);border-radius:18px;
-    padding:20px 22px;text-decoration:none;color:var(--txt);
-    position:relative;overflow:hidden;
-    transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .25s;
-    display:flex;flex-direction:column;min-height:140px;
-    box-shadow:0 2px 12px rgba(0,0,0,.04);}
-  .tile::after{
-    content:'';position:absolute;top:0;left:0;right:0;height:3px;
-    background:var(--accent);border-radius:18px 18px 0 0;
-    transform:scaleX(0);transform-origin:left;
-    transition:transform .28s cubic-bezier(.2,.8,.2,1);
+  .featured .ico { font-size:2.8rem; flex-shrink:0; }
+  .featured h3 {
+    font-family:'Frank Ruhl Libre',serif; font-size:1.4rem; font-weight:900;
+    color:var(--chalk-y); margin-bottom:5px;
   }
-  .tile:hover::after{transform:scaleX(1)}
-  .tile:hover{transform:translateY(-6px);border-color:var(--accent);
-    box-shadow:0 16px 40px rgba(0,0,0,.1),0 0 0 1px var(--accent) inset;}
-  .tile .glow{position:absolute;top:-30px;left:-30px;width:120px;height:120px;
-    border-radius:50%;filter:blur(40px);opacity:.2;background:var(--accent);
-    transition:opacity .25s}
-  .tile:hover .glow{opacity:.35}
-  .tile .tag{font-size:.68rem;font-weight:800;letter-spacing:1.5px;
-    color:var(--accent);position:relative;margin-bottom:6px;text-transform:uppercase;
-    display:inline-flex;align-items:center;gap:4px}
-  .tile h3{font-family:'Frank Ruhl Libre',serif;font-size:1.22rem;font-weight:900;
-    margin-bottom:5px;position:relative;line-height:1.3}
-  .tile .desc{font-size:.82rem;color:var(--mut);position:relative;flex:1;line-height:1.6}
-  .tile .go{font-size:.82rem;font-weight:700;color:var(--accent);
-    position:relative;display:flex;align-items:center;gap:5px;margin-top:12px}
-  .tile .go .arr{transition:transform .22s}
-  .tile:hover .go .arr{transform:translateX(-5px)}
-  .tile .src{font-size:.7rem;color:var(--mut);position:relative;
-    margin-top:4px;opacity:.7;font-style:italic}
-
-  /* SOURCE BADGES */
-  .badge-claude,.badge-deep,.badge-calc{
-    border-radius:99px;padding:2px 10px;
-    font-size:.65rem;font-weight:800;letter-spacing:.8px;
-    margin-left:6px;display:inline-block;
-    vertical-align:middle;position:relative;
+  .featured p { color:var(--chalk-dim); font-size:.87rem; line-height:1.65; }
+  .featured .arr {
+    color:var(--chalk-y); font-size:.88rem; margin-top:9px;
+    display:inline-flex; align-items:center; gap:5px; font-weight:700;
   }
-  .badge-claude{background:rgba(42,91,216,.12);color:#2a5bd8;border:1px solid rgba(42,91,216,.2)}
-  .badge-deep{background:rgba(15,158,86,.12);color:#0f7a44;border:1px solid rgba(15,158,86,.2)}
-  .badge-calc{background:rgba(179,87,0,.12);color:#b35700;border:1px solid rgba(179,87,0,.2)}
 
-  /* SEPARATOR */
-  .sep{height:1px;background:var(--line);margin:12px 0}
+  /* ── TILES GRID ── */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(228px,1fr)); gap:12px; }
+  .grid-3 { display:grid; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); gap:12px; }
+  .calc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; }
 
-  /* CALC ROW */
-  .calc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  /* ── TILE ── */
+  .tile {
+    background:rgba(244,241,234,.045);
+    border:1px solid rgba(244,241,234,.1);
+    border-radius:12px; padding:18px 18px 16px;
+    text-decoration:none; color:var(--chalk);
+    position:relative; overflow:hidden;
+    display:flex; flex-direction:column; min-height:126px;
+    transition:transform .22s cubic-bezier(.2,.8,.2,1), border-color .22s, background .22s, box-shadow .22s;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+  }
+  /* left accent bar */
+  .tile::before {
+    content:''; position:absolute; top:0; right:0; width:3px; height:100%;
+    background:var(--accent); border-radius:0 12px 12px 0;
+    transform:scaleY(0); transform-origin:bottom; transition:transform .25s;
+  }
+  .tile:hover {
+    transform:translateY(-6px);
+    background:rgba(244,241,234,.09);
+    border-color:var(--accent);
+    box-shadow:0 12px 32px rgba(0,0,0,.2);
+  }
+  .tile:hover::before { transform:scaleY(1); }
+  /* top shimmer on hover */
+  .tile::after {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+    opacity:0; transition:opacity .25s;
+  }
+  .tile:hover::after { opacity:.6; }
+  .tile .glow {
+    position:absolute; top:-30px; left:-30px; width:110px; height:110px;
+    border-radius:50%; background:var(--accent); opacity:.06; filter:blur(30px);
+  }
+  .tile .tag {
+    font-size:.63rem; font-weight:800; letter-spacing:1.8px;
+    color:var(--accent); margin-bottom:6px; text-transform:uppercase;
+    opacity:.9;
+  }
+  .tile h3 {
+    font-family:'Frank Ruhl Libre',serif; font-size:1.1rem; font-weight:900;
+    color:var(--chalk); margin-bottom:4px; line-height:1.3;
+  }
+  .tile .desc { font-size:.79rem; color:var(--chalk-dim); flex:1; line-height:1.55; }
+  .tile .go {
+    font-size:.79rem; font-weight:700; color:var(--accent);
+    display:flex; align-items:center; gap:4px; margin-top:10px;
+  }
+  .tile .arr { transition:transform .2s; }
+  .tile:hover .go .arr { transform:translateX(-4px); }
+  .badge-calc {
+    border-radius:99px; padding:2px 8px; font-size:.6rem; font-weight:800;
+    letter-spacing:.5px; margin-left:5px; display:inline-block; vertical-align:middle;
+    background:rgba(253,203,110,.12); color:var(--chalk-y);
+    border:1px solid rgba(253,203,110,.2);
+  }
 
-  footer{text-align:center;font-size:.8rem;color:var(--mut);margin-top:60px;
-    padding:24px 16px;border-top:1px solid var(--line);opacity:.8;letter-spacing:.5px}
+  /* ── VISITED CHECK ── */
+  .vck {
+    position:absolute; top:10px; left:10px;
+    width:20px; height:20px; border-radius:50%;
+    background:var(--chalk-g); color:#0d2118;
+    font-size:.68rem; font-weight:900;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 2px 10px rgba(85,239,196,.45);
+    animation:vckpop .35s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes vckpop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
 
-  /* pulse */
-  .pulse{animation:pulse 2.4s ease-in-out infinite}
-  @keyframes pulse{0%,100%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.05)}}
+  /* ── MASTERY STATE ── */
+  .tile.t-fresh{border-color:rgba(85,239,196,.4)!important;background:rgba(85,239,196,.06)!important;box-shadow:0 0 0 1px rgba(85,239,196,.15) inset!important}
+  .tile.t-fresh .tag{color:var(--chalk-g)!important}
+  .tile.t-stale{border-color:rgba(255,230,109,.4)!important;background:rgba(255,230,109,.06)!important;box-shadow:0 0 0 1px rgba(255,230,109,.12) inset!important}
+  .tile.t-stale .tag{color:var(--chalk-y)!important}
+
+  /* ── MASTERY LEGEND ── */
+  .mastery-legend{
+    display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
+    margin:16px auto 0;max-width:480px;font-size:.73rem;color:var(--chalk-dim);
+  }
+  .ml-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:5px;vertical-align:middle}
+  .ml-fresh .ml-dot{background:var(--chalk-g);box-shadow:0 0 5px rgba(85,239,196,.5)}
+  .ml-stale .ml-dot{background:var(--chalk-y);box-shadow:0 0 5px rgba(255,230,109,.5)}
+  .ml-none .ml-dot{background:rgba(244,241,234,.25)}
+
+  /* ── TOOLS ROW ── */
+  .tools-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:28px 0}
+  .tool-card{
+    display:inline-flex;align-items:center;gap:8px;padding:11px 22px;
+    border:1px solid rgba(116,185,255,.18);border-radius:10px;
+    text-decoration:none;color:rgba(116,185,255,.8);
+    background:rgba(116,185,255,.06);
+    font-size:.86rem;font-weight:600;transition:all .2s;
+  }
+  .tool-card:hover{
+    border-color:var(--chalk-b);color:var(--chalk-b);
+    background:rgba(116,185,255,.12);transform:translateY(-2px);
+    box-shadow:0 6px 18px rgba(116,185,255,.15);
+  }
+  .tool-icon{font-size:1.15rem}
+
+  /* ══════════════════════════════
+     CHALK TRAY & ERASER
+  ══════════════════════════════ */
+  .chalk-tray-wrap{text-align:center;margin:0 0 10px}
+  .chalk-tray-label{font-size:.68rem;color:var(--chalk-dim);letter-spacing:2.5px;
+    text-transform:uppercase;font-weight:700;margin-bottom:10px}
+
+  /* wooden tray */
+  .chalk-tray{
+    display:inline-flex;align-items:flex-end;gap:12px;
+    background:linear-gradient(180deg,#8b5e3c 0%,#5c3a10 100%);
+    padding:18px 28px 12px;
+    border-radius:6px;
+    box-shadow:
+      0 6px 20px rgba(0,0,0,.55),
+      inset 0 2px 0 rgba(255,255,255,.15),
+      inset 0 -3px 8px rgba(0,0,0,.4);
+    position:relative;
+  }
+  /* tray groove */
+  .chalk-tray::before{
+    content:'';position:absolute;top:12px;left:22px;right:22px;
+    height:4px;background:rgba(0,0,0,.35);border-radius:2px;
+    box-shadow:inset 0 2px 3px rgba(0,0,0,.5);
+  }
+
+  /* individual chalk stick */
+  .chalk-stick{
+    display:flex;flex-direction:column;align-items:center;gap:5px;
+    background:none;border:none;cursor:pointer;padding:0;
+    transform-origin:bottom center;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1);
+  }
+  .chalk-stick:hover{transform:translateY(-12px) rotate(-4deg)}
+  .chalk-stick.active{transform:translateY(-18px) rotate(-6deg)}
+
+  /* chalk body */
+  .cs-body{
+    width:13px;height:52px;
+    background:linear-gradient(90deg,
+      rgba(255,255,255,.25) 0%,var(--cc) 20%,var(--cc) 80%,rgba(0,0,0,.2) 100%);
+    border-radius:2px 2px 3px 3px;
+    position:relative;
+    box-shadow:
+      inset -3px 0 5px rgba(0,0,0,.25),
+      inset 2px 0 3px rgba(255,255,255,.15),
+      1px 2px 4px rgba(0,0,0,.35);
+  }
+  /* chalk tip */
+  .cs-body::after{
+    content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
+    border-left:6px solid transparent;border-right:6px solid transparent;
+    border-top:5px solid var(--cc);filter:brightness(.75);
+  }
+  /* chalk dust at base */
+  .cs-body::before{
+    content:'';position:absolute;bottom:-8px;left:-6px;right:-6px;height:6px;
+    background:radial-gradient(ellipse at 50% 0%,rgba(244,241,234,.35) 0%,transparent 70%);
+    filter:blur(2px);
+  }
+  /* active glow */
+  .chalk-stick.active .cs-body{
+    box-shadow:inset -3px 0 5px rgba(0,0,0,.25),0 0 18px var(--cc),1px 2px 4px rgba(0,0,0,.35);
+  }
+  .cs-label{
+    font-size:.6rem;color:rgba(244,241,234,.6);font-weight:700;
+    letter-spacing:.4px;white-space:nowrap;font-family:'Heebo',sans-serif;
+    transition:color .2s;
+  }
+  .chalk-stick.active .cs-label{color:var(--cc);text-shadow:0 0 8px var(--cc)}
+  .chalk-stick:hover .cs-label{color:rgba(244,241,234,.9)}
+
+  /* tray divider */
+  .tray-sep{
+    width:1px;height:44px;
+    background:linear-gradient(180deg,transparent,rgba(255,255,255,.2),transparent);
+    align-self:center;margin:0 4px;
+  }
+
+  /* eraser */
+  .chalk-eraser{
+    display:flex;flex-direction:column;align-items:center;gap:5px;
+    background:none;border:none;cursor:pointer;padding:0;
+    transform-origin:bottom center;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1);
+  }
+  .chalk-eraser:hover{transform:translateY(-8px) rotate(3deg)}
+  .chalk-eraser.active .eraser-body{filter:brightness(.85)}
+
+  .eraser-body{
+    width:42px;height:22px;
+    background:linear-gradient(180deg,#e8c8a8 0%,#c8986a 100%);
+    border-radius:3px;position:relative;overflow:hidden;
+    box-shadow:inset 0 -3px 5px rgba(0,0,0,.25),0 3px 8px rgba(0,0,0,.4);
+  }
+  /* eraser stripes */
+  .eraser-body::before{
+    content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg,
+      rgba(255,255,255,.2) 0,rgba(255,255,255,.2) 2px,transparent 2px,transparent 7px);
+  }
+  /* eraser top shine */
+  .eraser-body::after{
+    content:'';position:absolute;top:0;left:0;right:0;height:7px;
+    background:linear-gradient(180deg,rgba(255,255,255,.3),transparent);
+    border-radius:3px 3px 0 0;
+  }
+  /* chalk dust on eraser */
+  .eraser-dust{
+    position:absolute;bottom:0;left:0;right:0;height:4px;
+    background:radial-gradient(ellipse,rgba(244,241,234,.4) 0%,transparent 70%);
+    filter:blur(1px);
+  }
+
+  /* eraser wipe animation */
+  @keyframes eraser-sweep{
+    0%{transform:translateX(110%);opacity:.4}
+    40%{opacity:.25}
+    100%{transform:translateX(-110%);opacity:0}
+  }
+  .eraser-sweep-fx{
+    position:fixed;inset:0;z-index:9500;pointer-events:none;
+    background:linear-gradient(90deg,transparent 0%,rgba(200,180,160,.12) 30%,rgba(200,180,160,.12) 70%,transparent 100%);
+    animation:eraser-sweep .55s cubic-bezier(.4,0,.2,1) forwards;
+  }
+
+  /* active chalk: board tint */
+  .board-tinted{
+    transition:background .3s;
+  }
+
+  /* ── FOOTER ── */
+  .chalk-footer{
+    text-align:center;font-size:.76rem;color:rgba(244,241,234,.35);
+    margin-top:24px;padding:20px 16px 44px;
+    border-top:1px solid rgba(244,241,234,.07);letter-spacing:.4px;
+  }
+
+  /* ── MOBILE STICKY ── */
+  .sticky-mobile{
+    position:fixed;bottom:0;left:0;right:0;z-index:9990;
+    background:rgba(20,32,25,.96);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-top:1px solid rgba(255,230,109,.15);
+    padding:13px 20px;text-align:center;display:none;
+    box-shadow:0 -4px 20px rgba(0,0,0,.3);
+  }
+  .sticky-btn{
+    color:var(--chalk-y);font-weight:900;font-size:1rem;
+    text-decoration:none;font-family:'Frank Ruhl Libre',serif;
+  }
 
   @media(max-width:600px){
-    h1{font-size:2.1rem}
-    .featured{flex-direction:column;text-align:center}
-    .featured .ico{animation:none}
-  }
-
-  /* ── DISMISSIBLE BANNER POPUP ── */
-  #banner-pop{
-    position:fixed;bottom:24px;right:24px;z-index:99990;
-    width:320px;max-width:calc(100vw - 32px);
-    background:#071e45;border-radius:18px;
-    box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 0 2px rgba(255,196,74,.35);
-    overflow:hidden;
-    animation:slideUp .4s cubic-bezier(.2,.8,.2,1);
-  }
-  @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
-  #banner-pop img{width:100%;display:block;border-radius:0 0 16px 16px}
-  #banner-pop a{display:block;text-decoration:none}
-  #banner-x{
-    position:absolute;top:10px;right:10px;
-    width:30px;height:30px;border-radius:50%;
-    background:rgba(0,0,0,.55);border:none;
-    color:#fff;font-size:1rem;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;
-    z-index:1;transition:.15s;font-weight:700;
-  }
-  #banner-x:hover{background:rgba(0,0,0,.85);transform:scale(1.1)}
-
-  #srch:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(200,130,10,.1),0 4px 24px rgba(200,130,10,.12);outline:none}
-  #srch::placeholder{color:var(--mut);opacity:.7}
-  #srch{transition:border-color .2s,box-shadow .2s}
-
-  /* VISITED CHECKMARK */
-  .vck{position:absolute;top:10px;left:10px;width:22px;height:22px;border-radius:50%;
-    background:linear-gradient(135deg,#0db870,#0ea87e);color:#fff;font-size:.75rem;font-weight:900;
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:0 2px 12px rgba(13,184,112,.4);
-    animation:vckpop .4s cubic-bezier(.2,.8,.2,1)}
-  @keyframes vckpop{0%{transform:scale(0) rotate(-30deg)}70%{transform:scale(1.1) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
-
-  /* PROMO BANNER STRIP */
-  .promo-strip{
-    width:100%;background:linear-gradient(135deg,#071e45 0%,#0b3060 50%,#071e45 100%);
-    border-bottom:2px solid rgba(255,194,74,.35);
-    padding:0;position:relative;overflow:hidden;display:block;text-decoration:none;
-  }
-  .promo-strip:hover .promo-btn{background:linear-gradient(180deg,#ffd25a,#f59e0b)}
-  .promo-inner{
-    max-width:1100px;margin:0 auto;
-    display:flex;align-items:center;justify-content:space-between;
-    gap:24px;padding:18px 24px;flex-wrap:wrap;
-  }
-  .promo-left{display:flex;align-items:center;gap:16px}
-  .promo-logo{
-    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
-    border-radius:12px;padding:8px 14px;font-weight:800;font-size:.9rem;
-    color:#fff;white-space:nowrap;flex-shrink:0;
-  }
-  .promo-txt h3{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:900;
-    color:#fff;margin-bottom:2px}
-  .promo-txt p{font-size:.82rem;color:rgba(255,255,255,.65);margin:0}
-  .promo-btn{
-    background:linear-gradient(180deg,#ffc24a,#f59e0b);
-    color:#071e45;font-weight:900;font-size:.95rem;
-    padding:11px 26px;border-radius:40px;white-space:nowrap;
-    box-shadow:0 8px 22px rgba(245,158,11,.4);transition:.2s;flex-shrink:0;
-  }
-  @media(max-width:600px){
-    .promo-inner{flex-direction:column;text-align:center;padding:14px 16px}
-    .promo-left{flex-direction:column;gap:8px}
+    .sticky-mobile{display:block}
+    body{padding-bottom:58px}
+    .featured{flex-direction:column;gap:12px}
+    .hero-board{padding:28px 0 20px}
+    .main-cta-btn{padding:13px 26px;font-size:1.5rem}
+    .tracks-row{gap:10px}
+    .track-btn{padding:11px 20px;font-size:.9rem}
   }
 </style>
 </head>
 <body>
 
-<!-- PROMO STRIP -->
-<a class="promo-strip" href="landing.html">
-  <div class="promo-inner">
-    <div class="promo-left">
-      <div class="promo-logo">🚗 פרויקט יואב · מסלול רכב</div>
-      <div class="promo-txt">
-        <h3>קורס הכנה למבחני מה"ט במתמטיקה</h3>
-        <p>הסברים, תרגולים, נוסחאות ומבחני דוגמה — במקום אחד. לחרדים, בסגנון שלנו.</p>
-      </div>
-    </div>
-    <div class="promo-btn">מידע על הקורס ←</div>
-  </div>
-</a>
+<!-- chalk corner doodles -->
+<div class="chalk-bg" aria-hidden="true">
+  <span style="position:fixed;top:18px;right:18px;font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;opacity:.1;color:var(--chalk);transform:rotate(-8deg)">√</span>
+  <span style="position:fixed;top:60px;left:22px;font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;opacity:.09;color:var(--chalk);transform:rotate(5deg)">π</span>
+  <span style="position:fixed;bottom:80px;right:24px;font-family:'Frank Ruhl Libre',serif;font-size:1rem;opacity:.08;color:var(--chalk);transform:rotate(-4deg)">Σ</span>
+  <span style="position:fixed;bottom:120px;left:20px;font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;opacity:.09;color:var(--chalk);transform:rotate(3deg)">∫</span>
+</div>
 
-<!-- FLOATING MATH SYMBOLS -->
-<div class="hero">
-  <div class="hero-eq">
-    <span style="top:8%;right:10%">x²</span>
-    <span style="top:28%;left:7%;animation-delay:-3s">√16</span>
-    <span style="top:58%;right:16%;animation-delay:-6s">(a+b)</span>
-    <span style="top:72%;left:12%;animation-delay:-2s">−2⁵</span>
-    <span style="top:16%;left:28%;animation-delay:-8s">3a+2b</span>
-    <span style="top:48%;right:38%;animation-delay:-5s">∫</span>
-    <span style="top:38%;left:50%;animation-delay:-1s">π</span>
-    <span style="top:65%;right:44%;animation-delay:-7s">Σ</span>
+<!-- TOP BAR -->
+<nav class="topbar">
+  <div class="brand">
+    <span class="brand-chalk">מתמטיקה לחרדים</span>
+    <span class="brand-sub">הכנה למה״ט ולבגרות 3 יח״ל</span>
   </div>
-  <div class="badge">מתמטיקה לחרדים · בגרות 3 יחידות · מרכז ראשי</div>
-  <h1>מרכז הלמידה המלא</h1>
-  <p>כל החומר, כל הנושאים, כל הכלים — מסודר במקום אחד. לחצו על כרטיס כדי להתחיל.</p>
-  <div class="stats">
-    <div class="stat"><div class="n" id="stat-pages">50+</div><div class="l">עמודי תוכן</div></div>
-    <div class="stat"><div class="n">20+</div><div class="l">נושאים</div></div>
-    <div class="stat"><div class="n" id="stat-visited" style="color:var(--c2)">0</div><div class="l">נושאים שביקרת</div></div>
-    <div class="stat"><div class="n">∞</div><div class="l">תרגול</div></div>
+  <div class="topbar-actions">
+    <button class="tb-btn" id="search-toggle" title="חיפוש">🔍</button>
+    <button class="tb-btn acc-open-btn" id="topics-toggle">כל הנושאים ↓</button>
   </div>
+</nav>
 
-  <!-- SEARCH -->
-  <div style="margin-top:28px;position:relative;max-width:480px;margin-inline:auto">
-    <input id="srch" type="text" placeholder="🔍  חפש נושא..." dir="rtl"
-      style="width:100%;padding:15px 24px;border-radius:50px;border:2px solid var(--line);
-      background:var(--card);color:var(--txt);font-family:'Heebo',sans-serif;font-size:1rem;
-      box-shadow:0 4px 24px rgba(0,0,0,.06)">
-    <div id="no-results" style="display:none;color:var(--mut);margin-top:12px;font-size:.9rem">לא נמצאו תוצאות</div>
+<!-- SEARCH PANEL (hidden by default) -->
+<div id="search-panel" class="search-panel" style="display:none">
+  <div class="wrap">
+    <input id="srch" type="text" placeholder="חפשו נושא..." dir="rtl" class="chalk-input" autocomplete="off">
+    <div id="no-results" style="display:none;color:var(--chalk-dim);margin-top:10px;font-size:.9rem">לא נמצאו תוצאות</div>
   </div>
 </div>
 
+<!-- MAIN HERO -->
+<main class="hero-board">
+  <div class="wrap">
+
+    <!-- CONTINUE / START CTA -->
+    <div class="main-cta-wrap">
+      <a id="main-cta-btn" href="learn/index.html" class="main-cta-btn">
+        <span id="cta-arrow" class="cta-arrow">←</span>
+        <span id="cta-label">התחל ללמוד</span>
+      </a>
+      <div id="next-topic-line" class="next-topic-line" style="display:none">
+        הבא: <strong id="next-topic-name"></strong>
+      </div>
+    </div>
+
+    <!-- READINESS METER -->
+    <div class="readiness-wrap">
+      <div class="readiness-label">
+        <span>המוכנות שלך:</span>
+        <span id="readiness-pct" class="readiness-num">0%</span>
+      </div>
+      <div class="chalk-meter-track">
+        <div id="readiness-fill" class="chalk-meter-fill" style="width:0%"></div>
+        <!-- chalk marks at 25/50/75/100 -->
+        <div class="meter-marks">
+          <span>¼</span><span>½</span><span>¾</span><span>✓</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MASTERY LEGEND (shown only after first visit) -->
+    <div class="mastery-legend" id="mastery-legend" style="display:none">
+      <span class="ml-fresh"><span class="ml-dot"></span> שולט (ביקרת לאחרונה)</span>
+      <span class="ml-stale"><span class="ml-dot"></span> לחזרה (ביקרת לפני זמן)</span>
+      <span class="ml-none"><span class="ml-dot"></span> עוד לא</span>
+    </div>
+
+    <!-- DAY BEFORE EXAM -->
+    <a href="topics/yom-lifney-mivkhan.html" class="exam-day-btn">
+      ⏰ מסלול יום לפני המבחן
+    </a>
+
+    <!-- TRACK SELECTION -->
+    <div class="tracks-row">
+      <a href="learn/index.html" class="track-btn track-math">
+        <span class="track-icon">📐</span> מסלול מתמטיקה
+      </a>
+      <a href="topics/anglit.html" class="track-btn track-english">
+        <span class="track-icon">📖</span> מסלול אנגלית
+      </a>
+    </div>
+
+  </div><!-- /wrap -->
+</main>
+
+<!-- CHALK TRAY -->
 <div class="wrap">
+  <div class="chalk-tray-wrap" id="chalk-tray-wrap">
+    <div class="chalk-tray-label">סנן לפי פרק</div>
+    <div class="chalk-tray" id="chalkTray">
+
+      <button class="chalk-stick" data-chap="basics" style="--cc:#ff7675" title="פרק א׳ · שברים">
+        <div class="cs-body"></div>
+        <span class="cs-label">יסודות</span>
+      </button>
+
+      <button class="chalk-stick" data-chap="algebra" style="--cc:#ffe66d" title="פרק ב׳ · פירוק">
+        <div class="cs-body"></div>
+        <span class="cs-label">אלגברה</span>
+      </button>
+
+      <button class="chalk-stick" data-chap="equations" style="--cc:#74b9ff" title="משוואות · פונקציות">
+        <div class="cs-body"></div>
+        <span class="cs-label">משוואות</span>
+      </button>
+
+      <button class="chalk-stick" data-chap="geometry" style="--cc:#55efc4" title="גיאומטריה">
+        <div class="cs-body"></div>
+        <span class="cs-label">גיאו׳</span>
+      </button>
+
+      <button class="chalk-stick" data-chap="stats" style="--cc:#a29bfe" title="סטטיסטיקה">
+        <div class="cs-body"></div>
+        <span class="cs-label">סטטי׳</span>
+      </button>
+
+      <button class="chalk-stick" data-chap="tools" style="--cc:#f4f1ea" title="כלים · מבחנים">
+        <div class="cs-body"></div>
+        <span class="cs-label">כלים</span>
+      </button>
+
+      <div class="tray-sep"></div>
+
+      <!-- ERASER -->
+      <button class="chalk-eraser" id="chalkEraser" title="הצג הכל — נגב סינון">
+        <div class="eraser-body"><div class="eraser-dust"></div></div>
+        <span class="cs-label">הכל</span>
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- ALL TOPICS ACCORDION -->
+<div class="wrap">
+<div class="topics-accordion" id="acc-section">
+  <button class="acc-header" id="acc-toggle">
+    <span>📚 כל הנושאים</span>
+    <span class="acc-arrow" id="acc-arrow">▼</span>
+  </button>
+  <div class="acc-body" id="acc-body" style="display:none">
 
 <!-- ══════════════════════════════════════
      FEATURED: MAIN HUB & PRIVATE TUTOR
@@ -294,11 +719,11 @@
     <div>
       <h3>מרכז הלמידה — פרק א׳ + ב׳</h3>
       <p>17 נושאים, אנימציות, משחקים ומבחן סיכום — הכל בממשק אחד מסודר</p>
-      <span class="arr">← כניסה למרכז הקלוד</span>
+      <span class="arr">← כניסה למרכז הלימוד</span>
     </div>
   </a>
 
-  <a class="featured" href="topics/deepseek_html_20260602_505a28.html" style="min-height:auto;border-color:var(--c2)">
+  <a class="featured" href="topics/more-prati.html" style="min-height:auto;border-color:var(--c2)">
     <div class="ico" style="animation:none">🎯</div>
     <div>
       <h3 style="color:var(--c2)">מורה פרטי — תוכנית לימוד אישית</h3>
@@ -307,7 +732,7 @@
     </div>
   </a>
 
-  <a class="featured" href="topics/deepseek_html_20260602_c3455e.html" style="min-height:auto;border-color:var(--c1)">
+  <a class="featured" href="topics/yom-lifney-mivkhan.html" style="min-height:auto;border-color:var(--c1)">
     <div class="ico" style="animation:none">⏰</div>
     <div>
       <h3 style="color:var(--c1)">יום לפני המבחן</h3>
@@ -329,17 +754,7 @@
     <div class="tag">נושא 1</div>
     <h3>חזקות</h3>
     <div class="desc">2³, כללי חזקות, כפל וחילוק עם חזקות</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
-  </a>
-
-  <a class="tile" href="topics/deepseek_html_20260602_b09cfa.html" style="--accent:var(--c8)">
-    <div class="glow"></div>
-    <div class="tag">נושא 1 — פרימיום</div>
-    <h3>חזקות | לימוד חרד"י</h3>
-    <div class="desc">הסבר, דוגמאות ומשחק — גרסה מורחבת בסגנון הקהילה</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/shorashim.html" style="--accent:var(--c2)">
@@ -347,8 +762,7 @@
     <div class="tag">נושא 2</div>
     <h3>שורשים</h3>
     <div class="desc">√, שורשים ריבועיים, פישוט וחישוב</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/seder_peulot.html" style="--accent:var(--c3)">
@@ -356,8 +770,7 @@
     <div class="tag">נושא 3</div>
     <h3>סדר פעולות</h3>
     <div class="desc">מה מחשבים קודם — כפל, חזקה, סוגריים</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/shliliyim.html" style="--accent:var(--c4)">
@@ -365,26 +778,23 @@
     <div class="tag">נושא 4</div>
     <h3>מספרים שליליים</h3>
     <div class="desc">חיבור, חיסור, כפל וכלל הסימנים</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/chazaka_shlili.html" style="--accent:var(--c5)">
     <div class="glow"></div>
     <div class="tag">נושא 5</div>
     <h3>חזקה של שלילי</h3>
-    <div class="desc">(−2)² vs −2² — ההבדל החשוב</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+    <div class="desc"><span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(−2)² vs −2²</span> — ההבדל החשוב</div>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_441fb1.html" style="--accent:var(--c6)">
+  <a class="tile" href="topics/mavoa-algebra.html" style="--accent:var(--c6)">
     <div class="glow"></div>
     <div class="tag">מבוא</div>
     <h3>מבוא לאלגברה</h3>
     <div class="desc">מושגי יסוד: משתנה, ביטוי, שוויון</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
 </div>
@@ -400,8 +810,7 @@
     <div class="tag">שברים 1</div>
     <h3>חיבור וחיסור שברים</h3>
     <div class="desc">מכנה משותף, הרחבה וצמצום</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="topics/advanced_fractions_operations_html.html" style="--accent:var(--c7)">
@@ -409,8 +818,7 @@
     <div class="tag">שברים 2</div>
     <h3>כפל וחילוק שברים</h3>
     <div class="desc">צמצום, כפל, חילוק והרחבה</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="topics/fractions_algebra_html.html" style="--accent:var(--c8)">
@@ -418,17 +826,15 @@
     <div class="tag">שברים 3</div>
     <h3>שברים אלגבריים</h3>
     <div class="desc">צמצום שברים עם אותיות — פירוק לגורמים קודם</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_356791.html" style="--accent:var(--c9)">
+  <a class="tile" href="topics/mechane-meshutaf.html" style="--accent:var(--c9)">
     <div class="glow"></div>
     <div class="tag">שברים 4</div>
     <h3>מכנה משותף ומשוואות</h3>
     <div class="desc">משוואות עם שברים — כפל במכנה משותף</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
 </div>
@@ -444,8 +850,7 @@
     <div class="tag">נושא 6</div>
     <h3>כינוס איברים</h3>
     <div class="desc">מה זה פרמטר ואיך מחברים איברים דומים</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/kefel_sograyim.html" style="--accent:var(--c7)">
@@ -453,26 +858,23 @@
     <div class="tag">נושא 7</div>
     <h3>כפל ופתיחת סוגריים</h3>
     <div class="desc">חוק הפילוג, סוגריים כפול סוגריים</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/kefel_mekutzar.html" style="--accent:var(--c2)">
     <div class="glow"></div>
     <div class="tag">נושא 8</div>
     <h3>נוסחאות כפל מקוצר</h3>
-    <div class="desc">(a±b)², (a+b)(a−b) — חובה לדעת!</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+    <div class="desc"><span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(a±b)², (a+b)(a−b)</span> — חובה לדעת!</div>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260528_715a66.html" style="--accent:var(--c10)">
+  <a class="tile" href="topics/tirgul-noshaim.html" style="--accent:var(--c10)">
     <div class="glow"></div>
     <div class="tag">תרגול</div>
     <h3>תרגול לפי נושאים</h3>
     <div class="desc">תרגול ממוקד לפרקים א׳ ו-ב׳ — בחרו נושא</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/tirgul_perek_b.html" style="--accent:var(--c5)">
@@ -480,8 +882,7 @@
     <div class="tag">תרגול</div>
     <h3>תרגול מסכם פרק ב׳</h3>
     <div class="desc">עשרות תרגילים, רצף 🔥 והתקדמות</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
 </div>
@@ -497,26 +898,23 @@
     <div class="tag">פירוק 1</div>
     <h3>גורם משותף</h3>
     <div class="desc">הוצאת גורם משותף מביטוי — השיטה הבסיסית</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="topics/factoring_difference_squares_html.html" style="--accent:var(--c4)">
     <div class="glow"></div>
     <div class="tag">פירוק 2</div>
     <h3>הפרש ריבועים</h3>
-    <div class="desc">a²−b² = (a+b)(a−b) + גורם משותף משולב</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+    <div class="desc"><span style="direction:ltr;unicode-bidi:isolate;display:inline-block">a²−b² = (a+b)(a−b)</span> + גורם משותף משולב</div>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_bf43d9.html" style="--accent:var(--c3)">
+  <a class="tile" href="topics/piruk-legormim.html" style="--accent:var(--c3)">
     <div class="glow"></div>
     <div class="tag">פירוק 3</div>
     <h3>פירוק לגורמים — מלא</h3>
     <div class="desc">כל השיטות יחד — תרגול מקיף</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
 </div>
@@ -532,17 +930,15 @@
     <div class="tag">נושא 9</div>
     <h3>משוואות ממעלה ראשונה</h3>
     <div class="desc">שיטת המאזניים, x בשני צדדים</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_23b3bf.html" style="--accent:var(--c9)">
+  <a class="tile" href="topics/aishvayonot.html" style="--accent:var(--c9)">
     <div class="glow"></div>
     <div class="tag">נושא</div>
     <h3>אי-שוויונות</h3>
     <div class="desc">>, <, ≥, ≤ — כאשר הופכים את הסימן</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/beayot_miluliyot.html" style="--accent:var(--c4)">
@@ -550,17 +946,15 @@
     <div class="tag">נושא 10</div>
     <h3>בעיות מילוליות</h3>
     <div class="desc">מסיפור למשוואה — בשיטה</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_75ba47.html" style="--accent:var(--c6)">
+  <a class="tile" href="topics/beayot-taarovet.html" style="--accent:var(--c6)">
     <div class="glow"></div>
     <div class="tag">נושא</div>
     <h3>בעיות תערובת</h3>
     <div class="desc">ריכוז, תמיסות, ושאלות תערובת</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/achuzim.html" style="--accent:var(--c2)">
@@ -568,53 +962,47 @@
     <div class="tag">נושא 11</div>
     <h3>אחוזים</h3>
     <div class="desc">הנחות, מע"מ, ריבית וגידול</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/funktziot.html" style="--accent:var(--c8)">
     <div class="glow"></div>
     <div class="tag">נושא 12</div>
     <h3>פונקציות וגרפים</h3>
-    <div class="desc">y=mx+b, שיפוע וחיתוכים</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+    <div class="desc"><span style="direction:ltr;unicode-bidi:isolate;display:inline-block">y=mx+b</span>, שיפוע וחיתוכים</div>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_ae4bc8.html" style="--accent:var(--c10)">
+  <a class="tile" href="topics/tchum-hagdara.html" style="--accent:var(--c10)">
     <div class="glow"></div>
     <div class="tag">נושא</div>
     <h3>תחום הגדרה</h3>
     <div class="desc">מה מותר לשים ב-x — שורש ומכנה</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/mishvaa_ribuit.html" style="--accent:var(--c4)">
     <div class="glow"></div>
     <div class="tag">נושא 13</div>
     <h3>משוואה ריבועית</h3>
-    <div class="desc">נוסחת השורשים x=(−b±√Δ)/2a</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+    <div class="desc">נוסחת השורשים <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">x=(−b±√Δ)/2a</span></div>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_e9dc5e.html" style="--accent:var(--c1)">
+  <a class="tile" href="topics/mishvaot-du-riboiot.html" style="--accent:var(--c1)">
     <div class="glow"></div>
     <div class="tag">נושא</div>
     <h3>משוואות דו-ריבועיות</h3>
-    <div class="desc">ax⁴+bx²+c=0 — פתרון בהחלפת t=x²</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+    <div class="desc"><span style="direction:ltr;unicode-bidi:isolate;display:inline-block">ax⁴+bx²+c=0</span> — פתרון בהחלפת <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">t=x²</span></div>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_92fdbb.html" style="--accent:var(--c5)">
+  <a class="tile" href="topics/funktziat-shoresh.html" style="--accent:var(--c5)">
     <div class="glow"></div>
     <div class="tag">נושא</div>
     <h3>פונקציית שורש</h3>
     <div class="desc">√x, משוואות עם שורשים וגרף</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/maarechet.html" style="--accent:var(--c5)">
@@ -622,17 +1010,15 @@
     <div class="tag">נושא 14</div>
     <h3>מערכת משוואות</h3>
     <div class="desc">שתי משוואות, שני נעלמים</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_66cc81.html" style="--accent:var(--c7)">
+  <a class="tile" href="topics/tor-cheshboni.html" style="--accent:var(--c7)">
     <div class="glow"></div>
     <div class="tag">נושא</div>
     <h3>טור חשבוני</h3>
     <div class="desc">סדרה חשבונית, סכום טור וסדרה הנדסית</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
 </div>
@@ -648,53 +1034,47 @@
     <div class="tag">גיאומטריה 1</div>
     <h3>משולשים</h3>
     <div class="desc">פיתגורס, שו"ש, ישר-זווית</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_b7ec69.html" style="--accent:var(--c3)">
+  <a class="tile" href="topics/zaviyot-meshulash.html" style="--accent:var(--c3)">
     <div class="glow"></div>
     <div class="tag">גיאומטריה 2</div>
     <h3>זוויות במשולש</h3>
-    <div class="desc">סכום זוויות 180°, חיצוניות ושוות</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+    <div class="desc">סכום זוויות <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">180°</span>, חיצוניות ושוות</div>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_79661e.html" style="--accent:var(--c2)">
+  <a class="tile" href="topics/chafifast-meshulashim.html" style="--accent:var(--c2)">
     <div class="glow"></div>
     <div class="tag">גיאומטריה 3</div>
     <h3>חפיפת משולשים</h3>
     <div class="desc">צלע-זווית-צלע, זווית-צלע-זווית וכו'</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_550ee5.html" style="--accent:var(--c4)">
+  <a class="tile" href="topics/merubaot.html" style="--accent:var(--c4)">
     <div class="glow"></div>
     <div class="tag">גיאומטריה 4</div>
     <h3>מרובעים</h3>
     <div class="desc">ריבוע, מלבן, מקבילית, טרפז</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_e6719b.html" style="--accent:var(--c6)">
+  <a class="tile" href="topics/shtachim-vhikim.html" style="--accent:var(--c6)">
     <div class="glow"></div>
     <div class="tag">גיאומטריה 5</div>
     <h3>שטחים והיקפים</h3>
     <div class="desc">נוסחאות שטח: משולש, מלבן, טרפז, עיגול</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_f16235.html" style="--accent:var(--c9)">
+  <a class="tile" href="topics/maagal.html" style="--accent:var(--c9)">
     <div class="glow"></div>
     <div class="tag">גיאומטריה 6</div>
     <h3>מעגל</h3>
     <div class="desc">היקף, שטח, משיק, קשת ומיתר</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/geo_analytit.html" style="--accent:var(--c4)">
@@ -702,8 +1082,7 @@
     <div class="tag">גיאומטריה 7</div>
     <h3>גיאומטריה אנליטית</h3>
     <div class="desc">מרחק, אמצע, שיפוע בין נקודות</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
   <a class="tile" href="learn/trigo.html" style="--accent:var(--c3)">
@@ -711,8 +1090,7 @@
     <div class="tag">גיאומטריה 8</div>
     <h3>טריגונומטריה</h3>
     <div class="desc">sin, cos, tan — SOH-CAH-TOA</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
 </div>
@@ -723,22 +1101,20 @@
 <div class="sec-title">סטטיסטיקה והסתברות <span class="sec-sub">מספרים על נתונים</span></div>
 <div class="grid">
 
-  <a class="tile" href="topics/deepseek_html_20260602_f39e64.html" style="--accent:var(--c7)">
+  <a class="tile" href="topics/statistika.html" style="--accent:var(--c7)">
     <div class="glow"></div>
     <div class="tag">סטטיסטיקה</div>
     <h3>ממוצע, חציון, שכיח</h3>
     <div class="desc">מדדי מרכז, פיזור וטבלאות תדירות</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_7ef9c4.html" style="--accent:var(--c8)">
+  <a class="tile" href="topics/hasttabrut.html" style="--accent:var(--c8)">
     <div class="glow"></div>
     <div class="tag">הסתברות</div>
     <h3>הסתברות</h3>
     <div class="desc">אירועים, הסתברות בסיסית, הסתברות מותנית</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנושא</span>
+        <span class="go"><span class="arr">←</span> לנושא</span>
   </a>
 
 </div>
@@ -776,15 +1152,6 @@
     <span class="go"><span class="arr">←</span> לשיעור</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_5c6112.html" style="--accent:var(--c10)">
-    <div class="glow"></div>
-    <div class="tag">סימולטור 2</div>
-    <h3>סימולטור fx-991ES</h3>
-    <div class="desc">גרסה חלופית + אימון שאלות בגרות</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לסימולטור</span>
-  </a>
-
 </div>
 
 <!-- ══════════════════════════════════════
@@ -808,35 +1175,23 @@
     <div class="tag">מבחן</div>
     <h3>מבחני מה"ט לדוגמה</h3>
     <div class="desc">10 שאלות שכיחות + מבחן רנדומלי + פתרונות</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> למבחנים</span>
+        <span class="go"><span class="arr">←</span> למבחנים</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260528_2cedb4.html" style="--accent:var(--c3)">
+  <a class="tile" href="topics/mivchan-perek-ab.html" style="--accent:var(--c3)">
     <div class="glow"></div>
     <div class="tag">מבחן</div>
     <h3>מבחן פרק א׳+ב׳ פרימיום</h3>
     <div class="desc">מבחן סיכום מקיף לפרקים א׳ ו-ב׳</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> למבחן</span>
+        <span class="go"><span class="arr">←</span> למבחן</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_b61549.html" style="--accent:var(--c9)">
+  <a class="tile" href="topics/kerav-matematika.html" style="--accent:var(--c9)">
     <div class="glow"></div>
     <div class="tag">משחק</div>
     <h3>קרב מתמטיקה כיתתי</h3>
     <div class="desc">תחרות בין שחקנים — מי יסיים ראשון?</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> למשחק</span>
-  </a>
-
-  <a class="tile" href="topics/deepseek_html_20260602_56a3ad.html" style="--accent:var(--c7)">
-    <div class="glow"></div>
-    <div class="tag">כלי</div>
-    <h3>מפת החומר</h3>
-    <div class="desc">בדיקת כיסוי — כל נושאי הבגרות ברשימה</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> למפה</span>
+        <span class="go"><span class="arr">←</span> למשחק</span>
   </a>
 
 </div>
@@ -852,17 +1207,15 @@
     <div class="tag">נוסחאות</div>
     <h3>דף הנוסחאות</h3>
     <div class="desc">כל נוסחאות הבגרות עם הסבר ודוגמה</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לנוסחאות</span>
+        <span class="go"><span class="arr">←</span> לנוסחאות</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_6d57a7.html" style="--accent:var(--c10)">
+  <a class="tile" href="topics/noshaot-interaktiviot.html" style="--accent:var(--c10)">
     <div class="glow"></div>
     <div class="tag">נוסחאות</div>
     <h3>נוסחאות אינטראקטיביות</h3>
     <div class="desc">לחצו על נוסחה לקבל הסבר חי</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לנוסחאות</span>
+        <span class="go"><span class="arr">←</span> לנוסחאות</span>
   </a>
 
   <a class="tile" href="learn/tipim.html" style="--accent:var(--c8)">
@@ -870,182 +1223,312 @@
     <div class="tag">טיפים</div>
     <h3>טיפים וטריקים</h3>
     <div class="desc">24 טיפים לחישוב מהיר וחכם בראש</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לטיפים</span>
+        <span class="go"><span class="arr">←</span> לטיפים</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_3e4a4a.html" style="--accent:var(--c5)">
-    <div class="glow"></div>
-    <div class="tag">טיפים</div>
-    <h3>טיפים למתמטיקה</h3>
-    <div class="desc">עצות ושיטות ממוקדות לבגרות</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לטיפים</span>
-  </a>
-
-  <a class="tile" href="topics/deepseek_html_20260602_292133.html" style="--accent:var(--c6)">
+  <a class="tile" href="topics/shem-hamisphar.html" style="--accent:var(--c6)">
     <div class="glow"></div>
     <div class="tag">עברית</div>
     <h3>שם המספר בעברית</h3>
     <div class="desc">מדריך דקדוק לכתיבת מספרים — זכר ונקבה</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> למדריך</span>
+        <span class="go"><span class="arr">←</span> למדריך</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260601_4e663f.html" style="--accent:var(--c2)">
+  <a class="tile" href="topics/anglit.html" style="--accent:var(--c2)">
     <div class="glow"></div>
     <div class="tag">אנגלית</div>
     <h3>אנגלית לחרדים</h3>
     <div class="desc">3 יחידות אנגלית — בסיס לבגרות</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> לאנגלית</span>
+        <span class="go"><span class="arr">←</span> לאנגלית</span>
   </a>
 
-  <a class="tile" href="topics/deepseek_html_20260602_15a5c2.html" style="--accent:var(--c7)">
+  <a class="tile" href="topics/motivatzya.html" style="--accent:var(--c7)">
     <div class="glow"></div>
     <div class="tag">מוטיבציה</div>
     <h3>מוטיבציה למתמטיקה</h3>
     <div class="desc">למה כדאי ללמוד? עידוד ומוטיבציה</div>
-    <span class="badge-deep">דיפסיק</span>
-    <span class="go"><span class="arr">←</span> למוטיבציה</span>
+        <span class="go"><span class="arr">←</span> למוטיבציה</span>
   </a>
 
-  <a class="tile" href="learn/sippurim.html" style="--accent:var(--c6)">
+  <a class="tile" href="topics/geogebra.html" style="--accent:var(--c3)">
     <div class="glow"></div>
-    <div class="tag">השראה</div>
-    <h3>סיפורים ומוטיבציה</h3>
-    <div class="desc">איפה מתמטיקה פוגשת אותנו בחיים</div>
-    <span class="badge-claude">קלוד</span>
-    <span class="go"><span class="arr">←</span> לסיפורים</span>
+    <div class="tag">כלי גרפים</div>
+    <h3>כלי גרפים | GeoGebra</h3>
+    <div class="desc">ציירו גרפים, פונקציות וצורות — מחשבון גרפי חינמי</div>
+        <span class="go"><span class="arr">←</span> לכלי</span>
   </a>
 
 </div>
 
-<!-- ══════════════════════════════════════
-     LEGEND
-══════════════════════════════════════ -->
-<div style="margin-top:40px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 24px">
-  <div style="font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;font-weight:700;margin-bottom:12px;color:var(--gold)">מקרא</div>
-  <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;color:var(--mut)">
-    <span><span class="badge-claude">קלוד</span> — עמודי קלוד (מרכז הלמידה הראשי)</span>
-    <span><span class="badge-deep">דיפסיק</span> — עמודי דיפסיק (נושאים נוספים)</span>
-    <span><span class="badge-calc">מחשבון</span> — כלי מחשבון</span>
-  </div>
+  </div><!-- /acc-body -->
 </div>
 
-<footer style="margin-top:40px">
-  מתמטיקה לחרדים · בגרות 3 יחידות · מרכז ראשי · כל הזכויות שמורות
+<!-- TOOLS ROW -->
+<div class="tools-row">
+  <a href="calculator/casio-v8.html" class="tool-card">
+    <span class="tool-icon">🔢</span>
+    <span>מחשבון Casio</span>
+  </a>
+  <a href="learn/noschaot.html" class="tool-card">
+    <span class="tool-icon">📋</span>
+    <span>דף נוסחאות</span>
+  </a>
+  <a href="learn/tipim.html" class="tool-card">
+    <span class="tool-icon">💡</span>
+    <span>טיפים ותעלולים</span>
+  </a>
+</div>
+
+<footer class="chalk-footer">
+  מתמטיקה לחרדים · הכנה למה״ט ולבגרות 3 יח״ל — מתמטיקה ואנגלית · כל הזכויות שמורות
 </footer>
 
 </div><!-- /wrap -->
 
-<!-- DISMISSIBLE BANNER POPUP -->
-<div id="banner-pop" style="display:none">
-  <button id="banner-x" onclick="closeBanner()">✕</button>
-  <a href="landing.html" onclick="closeBanner()">
-    <img id="banner-img" src="banners/banner-1.png" alt="פרויקט יואב - מסלול רכב" style="width:100%;display:block">
+<!-- MOBILE STICKY CTA -->
+<div class="sticky-mobile" id="sticky-mobile">
+  <a id="sticky-link" href="learn/index.html" class="sticky-btn">
+    ← המשך מאיפה שעצרתי
   </a>
 </div>
 
 <script>
-// Smooth entrance animation for tiles
 document.addEventListener('DOMContentLoaded', () => {
-  const tiles = document.querySelectorAll('.tile, .featured');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '0';
-        entry.target.style.transform = entry.target.classList.contains('featured')
-          ? 'translateY(20px)' : 'translateY(16px)';
-        entry.target.style.transition = 'opacity .4s ease, transform .4s ease';
-        setTimeout(() => {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = '';
-        }, 60);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.08 });
-  tiles.forEach(t => observer.observe(t));
-
-  // ── Search / filter tiles ──
-  const srch = document.getElementById('srch');
   const allTiles = document.querySelectorAll('.tile, .featured');
+  const srch = document.getElementById('srch');
   const noRes = document.getElementById('no-results');
+  const accBody = document.getElementById('acc-body');
+  const accArrow = document.getElementById('acc-arrow');
 
-  srch.addEventListener('input', () => {
+  function openAcc() {
+    accBody.style.display = 'block';
+    accArrow && accArrow.classList.add('open');
+  }
+  function closeAcc() {
+    accBody.style.display = 'none';
+    accArrow && accArrow.classList.remove('open');
+  }
+
+  // Search
+  srch && srch.addEventListener('input', () => {
     const q = srch.value.trim().toLowerCase();
+    // Auto-open accordion when searching
+    if (q && accBody.style.display === 'none') openAcc();
     let visible = 0;
     allTiles.forEach(t => {
-      const text = t.textContent.toLowerCase();
-      const show = !q || text.includes(q);
+      const show = !q || t.textContent.toLowerCase().includes(q);
       t.style.display = show ? '' : 'none';
       if (show) visible++;
     });
-    // Hide/show section titles when all tiles in section are hidden
     document.querySelectorAll('.sec-title').forEach(sec => {
-      let next = sec.nextElementSibling;
-      let hasVisible = false;
+      let next = sec.nextElementSibling, has = false;
       while (next && !next.classList.contains('sec-title')) {
-        if (next.querySelector('.tile, .featured') || next.classList.contains('tile')) {
-          const tiles = next.querySelectorAll('.tile, .featured');
-          if (tiles.length === 0 && (next.classList.contains('tile') || next.classList.contains('featured'))) {
-            hasVisible = hasVisible || next.style.display !== 'none';
-          }
-          tiles.forEach(t => { if (t.style.display !== 'none') hasVisible = true; });
+        if (next.classList.contains('tile') || next.classList.contains('featured')) {
+          if (next.style.display !== 'none') has = true;
         }
+        next.querySelectorAll && next.querySelectorAll('.tile,.featured').forEach(t => {
+          if (t.style.display !== 'none') has = true;
+        });
         next = next.nextElementSibling;
       }
-      sec.style.display = (!q || hasVisible) ? '' : 'none';
+      sec.style.display = (!q || has) ? '' : 'none';
     });
     noRes.style.display = visible === 0 && q ? 'block' : 'none';
   });
 
-  // ── Progress tracking: visited checkmarks ──
+  // ══════════════════════════════════
+  //  CHALK TRAY — chapter filter
+  // ══════════════════════════════════
+  const CHAP_MAP = {
+    basics:    ['פרק א', 'שברים'],
+    algebra:   ['פרק ב', 'פירוק'],
+    equations: ['משוואות'],
+    geometry:  ['גיאומטריה'],
+    stats:     ['סטטיסטיקה'],
+    tools:     ['מחשבון', 'מבחנים', 'כלי עזר', 'כניסה ראשית'],
+  };
+
+  let activeChap = null;
+
+  function setSectionVisibility(chap) {
+    document.querySelectorAll('.sec-title').forEach(sec => {
+      const text = sec.textContent;
+      const show = !chap || CHAP_MAP[chap].some(k => text.includes(k));
+      sec.style.display = show ? '' : 'none';
+      // show/hide following sibling grid
+      let el = sec.nextElementSibling;
+      while (el && !el.classList.contains('sec-title')) {
+        el.style.display = show ? '' : 'none';
+        el = el.nextElementSibling;
+      }
+    });
+  }
+
+  function setActiveChalk(btn) {
+    document.querySelectorAll('.chalk-stick').forEach(b => b.classList.remove('active'));
+    document.getElementById('chalkEraser').classList.remove('active');
+    if (btn) btn.classList.add('active');
+  }
+
+  function eraserWipe(cb) {
+    const fx = document.createElement('div');
+    fx.className = 'eraser-sweep-fx';
+    document.body.appendChild(fx);
+    // add chalk dust to eraser
+    const eraser = document.getElementById('chalkEraser');
+    eraser.classList.add('active');
+    setTimeout(() => {
+      fx.remove();
+      eraser.classList.remove('active');
+      if (cb) cb();
+    }, 550);
+  }
+
+  // Chalk stick clicks
+  document.querySelectorAll('.chalk-stick').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const chap = btn.dataset.chap;
+      if (activeChap === chap) {
+        // deselect — show all
+        activeChap = null;
+        setActiveChalk(null);
+        setSectionVisibility(null);
+      } else {
+        activeChap = chap;
+        setActiveChalk(btn);
+        setSectionVisibility(chap);
+        // open accordion
+        if (accBody.style.display === 'none') openAcc();
+        // scroll to accordion
+        setTimeout(() => document.getElementById('acc-section').scrollIntoView({behavior:'smooth',block:'start'}), 80);
+      }
+    });
+  });
+
+  // Eraser click
+  document.getElementById('chalkEraser').addEventListener('click', () => {
+    if (activeChap === null) return; // nothing to erase
+    eraserWipe(() => {
+      activeChap = null;
+      setActiveChalk(null);
+      setSectionVisibility(null);
+    });
+  });
+
+  // Helper: read visit data (handles '1' legacy + JSON)
+  function getVisitData(key) {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    try { return JSON.parse(raw); }
+    catch(e) { return {count:1, lastVisit: Date.now()}; }
+  }
+
+  // Progress tracking with mastery coloring
   function applyProgress() {
-    let visitedCount = 0;
+    let visited = 0;
+    let firstUnvisited = null, lastVisitedTile = null;
+    const NOW = Date.now();
+    const FRESH_DAYS = 14;
+
     allTiles.forEach(tile => {
       const href = tile.getAttribute('href');
       if (!href) return;
       const parts = href.replace(/^\.\//, '').split('/').filter(Boolean);
       const key = 'visited:' + parts.join('/');
-      if (localStorage.getItem(key)) {
-        visitedCount++;
+      const data = getVisitData(key);
+
+      if (data) {
+        visited++;
+        lastVisitedTile = tile;
+        tile.classList.remove('t-fresh','t-stale');
+        const ageDays = (NOW - (data.lastVisit || NOW)) / 86400000;
+        tile.classList.add(ageDays < FRESH_DAYS ? 't-fresh' : 't-stale');
         if (!tile.querySelector('.vck')) {
           const ck = document.createElement('div');
-          ck.className = 'vck';
-          ck.textContent = '✓';
+          ck.className = 'vck'; ck.textContent = '✓';
           tile.appendChild(ck);
         }
+      } else {
+        tile.classList.remove('t-fresh','t-stale');
+        if (!firstUnvisited) firstUnvisited = tile;
       }
     });
-    const el = document.getElementById('stat-visited');
-    if (el) el.textContent = visitedCount;
+
+    // Show legend once user has visited at least one topic
+    const legend = document.getElementById('mastery-legend');
+    if (legend) legend.style.display = visited > 0 ? 'flex' : 'none';
+    const total = allTiles.length || 1;
+    const pct = Math.min(100, Math.round(visited / total * 100));
+
+    // Readiness
+    const rFill = document.getElementById('readiness-fill');
+    const rPct = document.getElementById('readiness-pct');
+    if (rFill) setTimeout(() => rFill.style.width = pct + '%', 200);
+    if (rPct) rPct.textContent = pct + '%';
+
+    // Main CTA
+    const ctaBtn = document.getElementById('main-cta-btn');
+    const ctaLabel = document.getElementById('cta-label');
+    const nextLine = document.getElementById('next-topic-line');
+    const nextName = document.getElementById('next-topic-name');
+    const stickyLink = document.getElementById('sticky-link');
+
+    const targetTile = lastVisitedTile || firstUnvisited;
+    if (targetTile) {
+      const href = targetTile.getAttribute('href');
+      if (ctaBtn) ctaBtn.href = href;
+      if (stickyLink) stickyLink.href = href;
+      if (visited > 0) {
+        if (ctaLabel) ctaLabel.textContent = 'המשך מאיפה שעצרת';
+        if (firstUnvisited && firstUnvisited !== lastVisitedTile) {
+          if (nextLine) nextLine.style.display = 'block';
+          if (nextName) nextName.textContent = firstUnvisited.querySelector('h3') ? firstUnvisited.querySelector('h3').textContent : '';
+        }
+      }
+    }
   }
   applyProgress();
   window.addEventListener('storage', applyProgress);
 
-  // Banner popup: show after 1.8s if not dismissed recently
-  var KEY = 'bannerDismissed', COOLDOWN = 3 * 24 * 3600 * 1000;
-  var ts = localStorage.getItem(KEY);
-  if (!ts || (Date.now() - parseInt(ts)) > COOLDOWN) {
-    var banners = ['banners/banner-1.png','banners/banner-2.png','banners/banner-3.png',
-                   'banners/banner-4.png','banners/banner-5.png'];
-    var pick = banners[Math.floor(Math.random() * banners.length)];
-    document.getElementById('banner-img').src = pick;
-    setTimeout(() => {
-      var pop = document.getElementById('banner-pop');
-      pop.style.display = 'block';
-      pop.style.animation = 'slideUp .4s cubic-bezier(.2,.8,.2,1)';
-    }, 1800);
-  }
-});
+  // Search toggle
+  const searchToggle = document.getElementById('search-toggle');
+  const searchPanel = document.getElementById('search-panel');
+  searchToggle && searchToggle.addEventListener('click', () => {
+    const isHidden = searchPanel.style.display === 'none';
+    searchPanel.style.display = isHidden ? 'block' : 'none';
+    if (isHidden) document.getElementById('srch').focus();
+  });
 
-function closeBanner() {
-  document.getElementById('banner-pop').style.display = 'none';
-  try { localStorage.setItem('bannerDismissed', Date.now()); } catch(e){}
-}
+  // Accordion
+  const accToggle = document.getElementById('acc-toggle');
+  const topicsToggle = document.getElementById('topics-toggle');
+
+  accToggle && accToggle.addEventListener('click', () => {
+    accBody.style.display === 'none' ? openAcc() : closeAcc();
+  });
+  topicsToggle && topicsToggle.addEventListener('click', () => {
+    openAcc();
+    const accSection = document.getElementById('acc-section');
+    accSection && accSection.scrollIntoView({behavior:'smooth'});
+  });
+
+  // Tile entrance animation
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '0';
+        e.target.style.transform = 'translateY(14px)';
+        e.target.style.transition = 'opacity .35s ease, transform .35s ease';
+        setTimeout(() => { e.target.style.opacity = '1'; e.target.style.transform = ''; }, 40);
+        observer.unobserve(e.target);
+      }
+    });
+  }, {threshold:.06});
+  allTiles.forEach(t => observer.observe(t));
+});
 </script>
 
+<script src="/shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>

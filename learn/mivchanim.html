@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="מבחני מה"ט לדוגמה — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>מבחני מה"ט לדוגמה</title>
 <style>
@@ -100,7 +104,7 @@
   <section id="info" class="show">
     <div class="card">
       <h2>מבנה הבגרות במתמטיקה — 3 יח"ל</h2>
-      <p>הבגרות מחולקת לשני שאלונים. כל אחד הוא מבחן נפרד, וציון הסופי הוא ממוצע משוקלל של שניהם.</p>
+      <p>הבגרות מחולקת לשני שאלונים. כל אחד הוא מבחן נפרד, והציון הסופי הוא ממוצע משוקלל של שניהם.</p>
       <div class="info-grid">
         <div class="info-cell"><div class="lbl">שאלון ראשון</div><div class="val">35381</div></div>
         <div class="info-cell"><div class="lbl">שאלון שני</div><div class="val">35382</div></div>
@@ -110,7 +114,7 @@
         <div class="info-cell"><div class="lbl">ערך כל שאלה</div><div class="val">20 נקודות</div></div>
       </div>
       <div style="background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:10px;padding:14px;margin-top:14px">
-        <b style="color:#8a6f0e">💡 טיפ:</b> אתם בוחרים <b>5 שאלות מתוך 6-8</b>. תקראו את כולן בהתחלה, ותתחילו מהקלה אליכם.
+        <b style="color:#8a6f0e">💡 טיפ:</b> אתם בוחרים <b>5 שאלות מתוך 6-8</b>. תקראו את כולן בהתחלה, ותתחילו מהשאלה הקלה לכם.
       </div>
     </div>
 
@@ -352,5 +356,10 @@ function renderSamples(){
 renderSamples();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

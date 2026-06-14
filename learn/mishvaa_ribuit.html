@@ -2,6 +2,15 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="description" content="נוסחת השורשים, אנימציה ומשחק אינטראקטיבי">
+<meta property="og:title" content="משוואה ריבועית">
+<meta property="og:description" content="נוסחת השורשים, אנימציה ומשחק אינטראקטיבי">
+<meta property="og:image" content="https://math-haredim.netlify.app/banners/banner-1.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>משוואה ריבועית</title>
 <style>
@@ -122,7 +131,7 @@
 
     <div class="card">
       <h2>הדיסקרימיננטה <span class="tag">קובעת כמה פתרונות יהיו</span></h2>
-      <p>הביטוי שבתוך השורש — <b style="direction:ltr;display:inline-block">b² − 4ac</b> — נקרא <b>דיסקרימיננטה</b> (סימן: Δ). הוא קובע כמה פתרונות יש למשוואה:</p>
+      <p>הביטוי שבתוך השורש — <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">b² − 4ac</b> — נקרא <b>דיסקרימיננטה</b> (סימן: Δ). הוא קובע כמה פתרונות יש למשוואה:</p>
       <div class="disc-row">
         <div class="disc-card" style="border-top:4px solid var(--pos)">
           <div class="sym">Δ &gt; 0</div>
@@ -170,10 +179,44 @@
     <div class="card">
       <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
       <div class="warn">
-        <b>1.</b> שימו לב לסימן של b! אם המשוואה x²−5x+6, אז <b>b=−5</b> (לא 5). וב-(−b) זה כבר ייצא +5.<br><br>
-        <b>2.</b> <b>אל תשכחו לחלק ב-2a</b> את כל המונה — לא רק את −b.<br><br>
+        <b>1.</b> שימו לב לסימן של b! אם המשוואה <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">x²−5x+6</span>, אז <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">b=−5</b> (לא 5). וב-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(−b)</span> זה כבר ייצא +5.<br><br>
+        <b>2.</b> <b>אל תשכחו לחלק ב-2a</b> את כל המונה — לא רק את <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">−b</span>.<br><br>
         <b>3.</b> √שלילי = <b>אין פתרון</b>. אל תכתבו "0" — כתבו "אין פתרון ממשי".
       </div>
+    </div>
+
+    <div class="card">
+      <h2>כשΔ שלילי — אין פתרון <span class="tag">מקרה 3</span></h2>
+      <p>כשהדיסקרימיננטה שלילית — <b>אי אפשר להוציא שורש</b>. המשוואה אין לה פתרון במספרים ממשיים:</p>
+      <div class="examples">
+        <div>x² + 2x + 5 = 0 → a=1, b=2, c=5</div>
+        <div>Δ = 4 − 4·1·5 = 4 − 20 = −16</div>
+        <div>Δ &lt; 0 → אין פתרון ממשי</div>
+      </div>
+      <div class="note"><b>בבגרות:</b> כשמגיעים לשורש שלילי — כותבים "Δ &lt; 0, אין פתרון במספרים ממשיים" וממשיכים הלאה. זה תשובה מלאה.</div>
+    </div>
+
+    <div class="card">
+      <h2>כשΔ = 0 — פתרון יחיד <span class="tag">מקרה 2</span></h2>
+      <p>כש-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">Δ = 0</span> — הביטוי <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">±√0 = 0</span>. שני הפתרונות זהים — מקבלים <b>פתרון אחד בלבד</b>:</p>
+      <div class="examples">
+        <div>x² − 6x + 9 = 0 → a=1, b=−6, c=9</div>
+        <div>Δ = 36 − 36 = 0</div>
+        <div>x = 6/2 = 3 &nbsp; (פתרון יחיד)</div>
+        <div>בדיקה: 3² − 6·3 + 9 = 9 − 18 + 9 = 0 ✓</div>
+      </div>
+      <div class="note"><b>שימו לב:</b> <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">x² − 6x + 9 = (x−3)²</span> — זה ריבוע סכום. כשיש ריבוע שלם — תמיד <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">Δ=0</span> ופתרון יחיד.</div>
+    </div>
+
+    <div class="card">
+      <h2>נוסחאות ויאטה — סכום ומכפלת השורשים <span class="tag">קיצור</span></h2>
+      <p>אם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">x₁</span> ו-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">x₂</span> הם שני שורשי המשוואה <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">ax² + bx + c = 0</span>, אז:</p>
+      <div class="formula" style="direction:ltr">x₁ + x₂ = −b/a &nbsp;&nbsp;&nbsp; x₁ · x₂ = c/a</div>
+      <div class="examples">
+        <div>x² − 5x + 6 = 0 → x₁+x₂ = 5, x₁·x₂ = 6 (ואכן 2+3=5, 2·3=6)</div>
+        <div>2x² + 3x − 2 = 0 → x₁+x₂ = −3/2, x₁·x₂ = −1</div>
+      </div>
+      <div class="note"><b>שימוש:</b> נוסחאות ויאטה מאפשרות לפעמים לבדוק תשובה מהר, בלי לחשב מחדש עם הנוסחה.</div>
     </div>
   </section>
 
@@ -216,7 +259,7 @@
         <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
       </div>
       <div class="turn-banner" id="turn">תורו של: שחקן</div>
-      <div class="q-box" id="question">—</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
@@ -319,5 +362,11 @@ function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('next
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+
+

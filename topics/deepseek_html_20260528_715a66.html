@@ -2,27 +2,31 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
+<meta name="description" content="תרגול אלגברה לפי נושאים — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>טכניקה אלגברית – תרגול לפי נושאים | מהדורת פרימיום</title>
+    <title>תרגול אלגברה לפי נושאים | מה״ט ובגרות 3 יח״ל</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800;900&display=swap');
 
         :root {
-            --bg: #0a0a0f;
-            --card: rgba(20, 16, 12, 0.85);
-            --card-solid: #14100c;
-            --glass: rgba(255, 255, 255, 0.03);
+            --bg: #f4f6ff;
+            --card: rgba(255, 255, 255, 0.92);
+            --card-solid: #ffffff;
+            --glass: rgba(0, 0, 0, 0.02);
             --gold: #c9a227;
-            --gold-light: #e9cc6e;
+            --gold-light: #b5880a;
             --gold-dark: #8b6914;
             --accent: #b5651d;
             --accent2: #2d6a4f;
-            --text: #e8e4dd;
-            --text-dim: #a09888;
-            --border: rgba(255, 255, 255, 0.08);
+            --text: #12142a;
+            --text-dim: #5a6080;
+            --border: rgba(0, 0, 0, 0.10);
             --border-gold: rgba(201, 162, 39, 0.35);
-            --shadow-3d: 0 20px 50px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.4);
-            --shadow-glow: 0 0 30px rgba(201,162,39,0.2), 0 0 60px rgba(201,162,39,0.06);
+            --shadow-3d: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+            --shadow-glow: 0 0 20px rgba(201,162,39,0.15);
             --pos: #3ddc84;
             --neg: #ff5e5b;
             --radius-xl: 24px;
@@ -195,14 +199,40 @@
         .tip-card p { font-size:0.85rem; color:var(--text-dim); }
 
         footer { text-align:center; font-size:0.8rem; color:#6a5a4a; margin-top:30px; letter-spacing:1px; }
-        .blessing { text-align:center; font-size:0.9rem; color:var(--gold-light); margin-top:8px; font-style:italic; }
+        .blessing { text-align:center; font-size:0.9rem; color:var(--gold-light); margin-top:8px; font-style:italic; }        /* ── LIGHT THEME OVERRIDE ── */
+        /* extra: fix hardcoded white text on now-white backgrounds */
+        .math, .formula-box, .topic-card h3, .topic-name,
+        .scoreboard .pts, .scoreboard .who, .scoreboard .box,
+        .brow .tname, .topbar, .progress-text,
+        .q-box, .question-text, .feedback,
+        .rule-box, .vocab-card .heb, .question-text { color: #12142a !important; }
+        .math, .formula { background: #eef1fb !important; border-color: rgba(0,0,0,0.12) !important; }
+        .grade-circle { background: linear-gradient(135deg, #2a5bd8, #1d4ed8) !important; color: #fff !important; }
+        .brow { background: #e8edf8 !important; border-color: rgba(0,0,0,0.1) !important; }
+        .topic-chip { background: rgba(201,162,39,0.18) !important; color: #8b6914 !important; }
+        .scoreboard { background: #f0f4ff !important; border-radius: 14px; padding: 12px; }
+        body { background: #f4f6ff !important; color: #12142a !important; }
+        .bg-particles { display: none !important; }
+        header { background: #fff !important; border-color: rgba(201,162,39,0.3) !important; }
+        h1 { -webkit-text-fill-color: unset !important; color: #12142a !important; background: linear-gradient(135deg,#12142a 0%,#c9a227 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        h2, h3, h4, .card h2, .card h3 { color: #12142a !important; }
+        .card { background: #fff !important; border-color: rgba(0,0,0,0.1) !important; }
+        .card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.1) !important; border-color: rgba(201,162,39,0.4) !important; }
+        nav button, .unit-nav button, .mode-pick button, .len-pick button { background: #f0f4ff !important; color: #12142a !important; border-color: rgba(0,0,0,0.15) !important; }
+        nav button.active, .unit-nav button.active, .mode-pick button.active, .len-pick button.active { background: linear-gradient(135deg,#2a5bd8,#1d4ed8) !important; color: #fff !important; }
+        .formula { background: #f0f4ff !important; color: #12142a !important; border-color: rgba(0,0,0,0.12) !important; }
+        .note { color: #12142a !important; background: rgba(200,130,10,0.06) !important; }
+        .start-btn { background: linear-gradient(135deg,#2a5bd8,#1d4ed8) !important; color: #fff !important; }
+        .tag { color: #12142a !important; }
+        .sub { color: #5a6080 !important; }
+        .eyebrow { color: #c9a227 !important; }
     </style>
 </head>
 <body>
     <div class="bg-particles" id="particles"></div>
     <div class="wrap">
         <header>
-            <div class="eyebrow">יחידה 1 · טכניקה אלגברית · פרק ב'</div>
+            <div class="eyebrow">תרגול לפי נושאים — פרק ב׳</div>
             <h1>תרגול אלגברה לפי נושאים</h1>
             <div class="sub">בעזרת השם — כל נושא בדף נפרד · הסבר קצר · תרגילים · תשובות · מעקב התקדמות</div>
         </header>
@@ -270,7 +300,7 @@
         </section>
 
         <footer>
-            <div>נלמד בשקידה ובחשק · טכניקה אלגברית · תרגול לפי נושאים</div>
+            <div>נלמד בשקידה ובחשק · תרגול לפי נושאים</div>
             <div class="blessing">בסייעתא דשמיא</div>
         </footer>
     </div>
@@ -404,5 +434,12 @@
         updateAllProgress();
     </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+
+
+

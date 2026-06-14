@@ -2,6 +2,15 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="description" content="17 נושאי אלגברה עם הסבר, אנימציה ומשחק">
+<meta property="og:title" content="מרכז הלמידה — פרק א׳+ב׳">
+<meta property="og:description" content="17 נושאי אלגברה עם הסבר, אנימציה ומשחק">
+<meta property="og:image" content="https://math-haredim.netlify.app/banners/banner-1.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>מרכז הלמידה — אלגברה יחידה 1</title>
 <style>
@@ -63,7 +72,7 @@
   /* ===== TILES ===== */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
   .tile{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;text-decoration:none;color:var(--txt);position:relative;overflow:hidden;transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .25s;display:flex;flex-direction:column;min-height:230px;box-shadow:0 2px 14px rgba(0,0,0,.04)}
-  .tile::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);border-radius:20px 20px 0 0;transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+  .tile::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);border-radius:20px 20px 0 0;transform:scaleX(0);transform-origin:right;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
   .tile:hover::after{transform:scaleX(1)}
   .tile:hover{transform:translateY(-7px);border-color:var(--accent);box-shadow:0 18px 44px rgba(0,0,0,.1),0 0 0 1px var(--accent) inset}
   .tile .glow{position:absolute;top:-40px;left:-40px;width:120px;height:120px;border-radius:50%;filter:blur(40px);opacity:.2;background:var(--accent);transition:opacity .25s}
@@ -130,12 +139,12 @@
     <span style="top:18%;left:30%;animation-delay:-8s">3a+2b</span>
     <span style="top:50%;right:40%;animation-delay:-5s">5·3</span>
   </div>
-  <div class="badge">מכינה טכנולוגית · יחידה 1 · טכניקה אלגברית</div>
+  <div class="badge">מתמטיקה לחרדים · הכנה למה״ט ולבגרות 3 יח״ל</div>
   <h1>מרכז הלמידה</h1>
   <p>כל הבסיס של האלגברה במקום אחד — הסבר פשוט, אנימציה לכל רעיון, ומשחק על כל נושא. לחצו על כרטיס כדי להתחיל.</p>
   <div class="stats">
-    <div class="stat"><div class="n">7</div><div class="l">נושאים</div></div>
-    <div class="stat"><div class="n">21</div><div class="l">אנימציות ומשחקים</div></div>
+    <div class="stat"><div class="n">17</div><div class="l">נושאים</div></div>
+    <div class="stat"><div class="n">51</div><div class="l">אנימציות ומשחקים</div></div>
     <div class="stat"><div class="n">∞</div><div class="l">תרגול</div></div>
   </div>
   <div class="course-prog">
@@ -155,7 +164,7 @@
       <div class="num">נושא 1</div>
       <h3>חזקות</h3>
       <div class="desc">הכפלת מספר בעצמו כמה פעמים</div>
-      <div class="tip"><span class="ico">💡</span><span><b>טיפ:</b> המעריך אומר כמה פעמים לכפול. 2³ = 2·2·2</span></div>
+      <div class="tip"><span class="ico">💡</span><span><b>טיפ:</b> המעריך אומר כמה פעמים לכפול. <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">2³ = 2·2·2</span></span></div>
       <div class="mini"><span class="big-num" style="color:var(--c1)">2<sup>3</sup></span><span style="margin:0 10px;color:var(--mut)">=</span><span class="big-num pulse" style="color:var(--gold)">8</span></div>
       <span class="go"><span class="arr">←</span> כניסה לנושא</span>
     </a>
@@ -175,7 +184,7 @@
       <div class="num">נושא 3</div>
       <h3>סדר פעולות</h3>
       <div class="desc">מה מחשבים קודם?</div>
-      <div class="tip"><span class="ico">💡</span><span><b>טיפ:</b> כפל לפני חיבור! לכן 5+3·2 = 11 ולא 16</span></div>
+      <div class="tip"><span class="ico">💡</span><span><b>טיפ:</b> כפל לפני חיבור! לכן <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">5+3·2 = 11</span> ולא 16</span></div>
       <div class="mini"><span style="font-size:1.4rem">5 + <span style="color:var(--c3);font-weight:900">3·2</span> = <span class="pulse" style="color:var(--gold);font-weight:900">11</span></span></div>
       <span class="go"><span class="arr">←</span> כניסה לנושא</span>
     </a>
@@ -201,7 +210,7 @@
       <div class="num">נושא 5</div>
       <h3>חזקה של שלילי</h3>
       <div class="desc">מתי יוצא חיובי ומתי שלילי</div>
-      <div class="tip"><span class="ico">⚠️</span><span><b>זהירות:</b> (−2)² = 4 אבל −2² = −4. הסוגריים משנים!</span></div>
+      <div class="tip"><span class="ico">⚠️</span><span><b>זהירות:</b> <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(−2)² = 4</span> אבל <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">−2² = −4</span>. הסוגריים משנים!</span></div>
       <div class="mini"><span style="font-size:1.3rem;color:var(--c2);font-weight:900">(−2)²=4</span><span style="margin:0 8px;color:var(--mut)">|</span><span style="font-size:1.3rem;color:var(--c1);font-weight:900">−2²=−4</span></div>
       <span class="go"><span class="arr">←</span> כניסה לנושא</span>
     </a>
@@ -267,7 +276,7 @@
       <div class="num">נושא 11</div>
       <h3>פונקציות וגרפים</h3>
       <div class="desc">קו ישר, שיפוע וחיתוכים</div>
-      <div class="tip"><span class="ico">📊</span><span><b>טיפ:</b> ב-y=mx+b — m הוא השיפוע, b הוא חיתוך עם ציר y</span></div>
+      <div class="tip"><span class="ico">📊</span><span><b>טיפ:</b> ב-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">y=mx+b</span> — m הוא השיפוע, b הוא נקודת החיתוך עם ציר y</span></div>
       <div class="mini"><span style="font-size:1.3rem"><span style="color:var(--c8);font-weight:900">y = </span><span style="color:var(--c1);font-weight:900">2</span><span style="color:var(--c8);font-weight:900">x + </span><span class="pulse" style="color:var(--gold);font-weight:900">3</span></span></div>
       <span class="go"><span class="arr">←</span> כניסה לנושא</span>
     </a>
@@ -277,7 +286,7 @@
       <div class="num">נושא 12</div>
       <h3>משוואה ריבועית</h3>
       <div class="desc">נוסחת השורשים — חייבים לדעת!</div>
-      <div class="tip"><span class="ico">🧮</span><span><b>טיפ:</b> x = (−b ± √(b²−4ac)) / 2a — הנוסחה הכי חשובה לבגרות</span></div>
+      <div class="tip"><span class="ico">🧮</span><span><b>טיפ:</b> <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">x = (−b ± √(b²−4ac)) / 2a</span> — הנוסחה הכי חשובה לבגרות</span></div>
       <div class="mini"><span style="font-size:1.2rem"><span style="color:var(--c4);font-weight:900">x²−5x+6=0</span> → <span class="pulse" style="color:var(--gold);font-weight:900">x=2,3</span></span></div>
       <span class="go"><span class="arr">←</span> כניסה לנושא</span>
     </a>
@@ -400,7 +409,7 @@
     </div>
   </a>
 
-  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 — טכניקה אלגברית · נבנה ללמידה בקצב שלך</footer>
+  <footer>מתמטיקה לחרדים · הכנה למה״ט ולבגרות 3 יח״ל · כל הזכויות שמורות</footer>
 </div>
 
 <script>
@@ -431,5 +440,11 @@
   });
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+
+

@@ -2,6 +2,15 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="description" content="sin cos tan עם גרף חי ומשחק">
+<meta property="og:title" content="טריגונומטריה">
+<meta property="og:description" content="sin cos tan עם גרף חי ומשחק">
+<meta property="og:image" content="https://math-haredim.netlify.app/banners/banner-1.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>טריגונומטריה</title>
 <style>
@@ -186,12 +195,12 @@
           <b>T</b>an = <b style="color:var(--opp)">O</b>pposite / <b style="color:var(--adj)">A</b>djacent
         </div>
       </div>
-      <div class="note">תלמידים בכל העולם זוכרים את ה-3 נוסחאות באמצעות "SOH-CAH-TOA". פשוט אומרים את זה בקול 20 פעם — וזה נשאר לכל החיים.</div>
+      <div class="note">תלמידים בכל העולם זוכרים את ה-3 נוסחאות באמצעות "SOH-CAH-TOA". פשוט אומרים את זה בקול 20 פעמים — וזה נשאר לכל החיים.</div>
     </div>
 
     <div class="card">
       <h2>דוגמה מלאה</h2>
-      <p>במשולש ישר-זווית, היתר = 10 ס"מ, וזווית אחת = 30°. מצאו את הנגדית.</p>
+      <p>במשולש ישר-זווית, היתר = <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">10 ס"מ</span>, וזווית אחת = <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">30°</span>. מצאו את הנגדית.</p>
       <div style="background:var(--paper);border-radius:10px;padding:12px;font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;direction:ltr">
         sin 30° = נגדית / יתר<br>
         sin 30° = נגדית / 10<br>
@@ -224,6 +233,40 @@
         <b>2.</b> <b>היתר תמיד הצלע הארוכה</b>, ותמיד מול הזווית הישרה. היא לא משתנה לפי הזווית.<br><br>
         <b>3.</b> שימו לב למחשבון — לעבוד ב-<b>מצב DEG</b> (מעלות), לא ברדיאנים. אחרת תקבלו תשובות שגויות.
       </div>
+    </div>
+
+    <div class="card">
+      <h2>שימוש במחשבון — איך נכון <span class="tag">מחשבון</span></h2>
+      <p>רוב השאלות בבגרות <b>מרשות מחשבון</b>. הנה הצעדים:</p>
+      <div class="examples">
+        <div>1. וודאו שהמחשבון במצב DEG (לא RAD, לא GRAD)</div>
+        <div>2. sin 37° → לחצו: sin → 37 → = → מקבלים 0.602</div>
+        <div>3. cos 52° → לחצו: cos → 52 → = → מקבלים 0.616</div>
+        <div>4. tan 71° → לחצו: tan → 71 → = → מקבלים 2.904</div>
+      </div>
+      <div class="note"><b>שלב שלם:</b> יתר=8, זווית=40°, מצאו נגדית.<br><span style="direction:ltr;unicode-bidi:isolate;display:inline-block">sin 40° = נגדית / 8 → נגדית = 8 · sin 40° = 8 · 0.643 ≈ 5.14</span></div>
+    </div>
+
+    <div class="card">
+      <h2>למצוא זווית כשיודעים את היחס <span class="tag">הפוך</span></h2>
+      <p>אם יודעים את <b>היחס בין הצלעות</b> — אפשר למצוא את הזווית עם <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">arcsin / arccos / arctan</b> (זה ה"הפוך" של sin/cos/tan):</p>
+      <div class="examples">
+        <div>sin θ = 0.5 → θ = arcsin(0.5) = 30°</div>
+        <div>cos θ = √3/2 → θ = arccos(0.866) = 30°</div>
+        <div>tan θ = 1 → θ = arctan(1) = 45°</div>
+      </div>
+      <div class="note"><b>במחשבון:</b> לחצו על <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">sin⁻¹</b> (או SHIFT+sin) ואז את המספר. זה arcsin. בגרות 3 יח"ל בודקת את זה!</div>
+    </div>
+
+    <div class="card">
+      <h2>בעיה מילולית — מגדל ולתו <span class="tag">יישום</span></h2>
+      <p>שאלה טיפוסית: מגדל גבוה <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">20 מ'</span>, זווית הראייה מהקרקע = <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">60°</span>. מה המרחק האופקי מהמגדל?</p>
+      <div class="examples">
+        <div>tan 60° = נגדית / סמוכה = 20 / מרחק</div>
+        <div>√3 = 20 / מרחק</div>
+        <div>מרחק = 20 / √3 = 20√3/3 ≈ 11.55 מ'</div>
+      </div>
+      <div class="note"><b>הכלל:</b> מזהים מה "נגדית", מה "סמוכה", מה "יתר" — ובוחרים sin/cos/tan בהתאם. SOH-CAH-TOA!</div>
     </div>
   </section>
 
@@ -268,7 +311,7 @@
         <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
       </div>
       <div class="turn-banner" id="turn">תורו של: שחקן</div>
-      <div class="q-box" id="question">—</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
@@ -377,5 +420,11 @@ function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('next
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+
+

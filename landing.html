@@ -1,233 +1,735 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#070b1c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="מת׳ לחרדים">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>קורס הכנה למבחני מה״ט במתמטיקה | פרויקט יואב · מסלול רכב</title>
+<title>הכנה למה״ט ולבגרות 3 יח״ל — מתמטיקה ואנגלית | פרויקט יואב</title>
+<meta name="description" content="קורס הכנה המלא למה״ט ולבגרות 3 יח״ל — מתמטיקה ואנגלית. הסברים, אנימציות, מבחנים ומחשבון. מותאם לקהילה החרדית.">
+<meta property="og:title" content="קורס הכנה למה״ט ולבגרות 3 יח״ל — פרויקט יואב">
+<meta property="og:description" content="הכנה ברורה ומסודרת למה״ט ולבגרות. הסברים שלב אחר שלב, 500+ תרגילים, מבחנים לדוגמה, מחשבון Casio ועוד.">
+<meta property="og:image" content="https://math-haredim.netlify.app/banners/banner-5.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://math-haredim.netlify.app/landing.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://math-haredim.netlify.app/banners/banner-5.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Secular+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#070b1c;--bg2:#0c1430;--ink:#eaf0ff;--muted:#9fb0d6;
-  --cyan:#35d0ff;--blue:#3b82f6;--amber:#ffc24a;--amber-deep:#f59e0b;--green:#25d366;
-  --glass:rgba(255,255,255,.055);--glass-line:rgba(255,255,255,.12);--r:22px;
+  --bg:#07091a; --bg2:#0c1130; --bg3:#101628;
+  --ink:#eaf0ff; --muted:#8fa0cc;
+  --gold:#ffc24a; --gold2:#f59e0b;
+  --cyan:#38d9ff; --blue:#4f8ef7;
+  --green:#22c45a; --red:#f25252;
+  --glass:rgba(255,255,255,.055);
+  --gline:rgba(255,255,255,.1);
+  --r:18px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--ink);direction:rtl;overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.65}
-.display{font-family:'Secular One',sans-serif;font-weight:400;letter-spacing:-.5px}
+body{
+  font-family:'Heebo',sans-serif;
+  background:var(--bg);color:var(--ink);
+  direction:rtl;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;line-height:1.7;
+}
 
+/* ── BG LAYERS ── */
 .mesh{position:fixed;inset:-20%;z-index:-3;pointer-events:none;
-  background:radial-gradient(40vw 40vw at 80% 8%,rgba(53,208,255,.20),transparent 60%),radial-gradient(45vw 45vw at 12% 18%,rgba(59,130,246,.22),transparent 60%),radial-gradient(50vw 50vw at 70% 95%,rgba(255,194,74,.12),transparent 60%),linear-gradient(160deg,var(--bg2),var(--bg) 70%);
-  animation:meshfloat 18s ease-in-out infinite alternate}
-@keyframes meshfloat{to{transform:translate3d(2%,-2%,0) scale(1.05)}}
-.grid-tex{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.5;
-  background-image:linear-gradient(rgba(120,160,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(120,160,255,.06) 1px,transparent 1px);
-  background-size:54px 54px;mask-image:radial-gradient(ellipse 80% 70% at 50% 30%,#000 30%,transparent 85%)}
-.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.05;
+  background:
+    radial-gradient(45vw 45vw at 85% 5%,  rgba(56,217,255,.16),transparent 65%),
+    radial-gradient(50vw 50vw at 8% 25%,   rgba(79,142,247,.2),transparent 65%),
+    radial-gradient(40vw 40vw at 60% 95%,  rgba(255,194,74,.1),transparent 65%),
+    linear-gradient(160deg,var(--bg2),var(--bg));
+  animation:meshfloat 20s ease-in-out infinite alternate}
+@keyframes meshfloat{to{transform:translate3d(2%,-2%,0) scale(1.04)}}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.04;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .float-math{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
-.float-math span{position:absolute;font-family:'Heebo';font-weight:700;color:rgba(150,180,255,.14);animation:drift linear infinite;white-space:nowrap}
-@keyframes drift{from{transform:translateY(110vh) rotate(-4deg)}to{transform:translateY(-20vh) rotate(4deg)}}
+.float-math span{position:absolute;font-family:'Heebo',sans-serif;font-weight:700;
+  color:rgba(150,180,255,.09);animation:drift linear infinite;white-space:nowrap}
+@keyframes drift{from{transform:translateY(110vh) rotate(-3deg)}to{transform:translateY(-15vh) rotate(3deg)}}
 
-nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px clamp(16px,4vw,48px);background:rgba(7,11,28,.6);backdrop-filter:blur(16px);border-bottom:1px solid var(--glass-line)}
-.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:1.02rem}
-.brand .logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(140deg,var(--cyan),var(--blue));display:grid;place-items:center;font-size:1.3rem;box-shadow:0 6px 20px rgba(53,208,255,.35)}
-.brand small{display:block;color:var(--muted);font-weight:500;font-size:.78rem;margin-top:-3px}
-.nav-cta{text-decoration:none;color:#06121f;font-weight:800;background:linear-gradient(180deg,var(--amber),var(--amber-deep));padding:11px 24px;border-radius:40px;font-size:.95rem;box-shadow:0 8px 22px rgba(245,158,11,.35);transition:.25s}
-.nav-cta:hover{transform:translateY(-2px)}
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px clamp(16px,4vw,48px);
+  background:rgba(7,9,26,.75);
+  backdrop-filter:blur(20px) saturate(1.5);
+  border-bottom:1px solid var(--gline);
+  box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-logo{width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(140deg,var(--cyan),var(--blue));
+  display:grid;place-items:center;font-size:1.25rem;
+  box-shadow:0 6px 18px rgba(56,217,255,.3)}
+.brand-txt{font-weight:800;font-size:1rem;line-height:1.2}
+.brand-txt small{display:block;color:var(--muted);font-weight:400;font-size:.75rem}
+.nav-cta{
+  text-decoration:none;color:#060d1f;font-weight:900;
+  background:linear-gradient(180deg,var(--gold),var(--gold2));
+  padding:11px 26px;border-radius:40px;font-size:.95rem;
+  box-shadow:0 8px 24px rgba(245,158,11,.4);transition:.25s;
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(245,158,11,.5)}
 
-.hero{max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(20px,5vw,48px) 40px;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
-.eyebrow{display:inline-flex;align-items:center;gap:9px;background:var(--glass);border:1px solid var(--glass-line);padding:8px 16px;border-radius:40px;font-weight:600;font-size:.92rem;color:#cfe0ff}
-.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
-h1.title{font-size:clamp(3rem,8vw,5.6rem);line-height:.95;margin:22px 0 6px}
-h1.title .grad{background:linear-gradient(100deg,var(--cyan),#8fd0ff 40%,var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
-.subt{font-family:'Secular One';font-size:clamp(1.4rem,3.6vw,2.1rem);color:var(--amber);margin-bottom:20px}
-.lead{font-size:clamp(1.05rem,2.2vw,1.22rem);color:var(--muted);max-width:520px;margin-bottom:30px}
-.hero-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
-.btn-primary{text-decoration:none;color:#06121f;font-weight:900;font-size:1.15rem;background:linear-gradient(180deg,var(--amber),var(--amber-deep));padding:16px 42px;border-radius:50px;box-shadow:0 14px 34px rgba(245,158,11,.4);transition:.25s}
-.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 20px 44px rgba(245,158,11,.55)}
-.btn-ghost{text-decoration:none;color:var(--ink);font-weight:700;font-size:1rem;padding:15px 26px;border-radius:50px;border:1px solid var(--glass-line);background:var(--glass);transition:.25s}
-.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
-.mini-stats{display:flex;gap:28px;margin-top:36px;flex-wrap:wrap}
-.mini-stats div b{font-family:'Secular One';font-size:1.7rem;color:#fff;display:block}
-.mini-stats div span{color:var(--muted);font-size:.9rem}
+/* ── HERO ── */
+.hero{
+  max-width:1160px;margin:0 auto;
+  padding:clamp(52px,9vw,100px) clamp(20px,5vw,48px) clamp(36px,6vw,60px);
+  display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:center;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  background:var(--glass);border:1px solid var(--gline);
+  padding:8px 16px;border-radius:40px;
+  font-weight:600;font-size:.88rem;color:#cfe0ff;margin-bottom:18px;
+}
+.eyebrow-dot{width:8px;height:8px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 10px var(--cyan);
+  animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 6px var(--cyan)}50%{box-shadow:0 0 16px var(--cyan),0 0 24px rgba(56,217,255,.4)}}
+h1.hero-title{
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:clamp(2.6rem,7vw,5rem);
+  line-height:1.05;margin-bottom:10px;
+  background:linear-gradient(100deg,#fff 0%,#c8e0ff 40%,var(--gold) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-sub{
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:clamp(1.3rem,3vw,1.85rem);
+  color:var(--gold);margin-bottom:18px;
+}
+.hero-lead{color:var(--muted);font-size:clamp(1rem,2vw,1.15rem);
+  max-width:500px;margin-bottom:30px;line-height:1.75}
+.hero-btns{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:36px}
+.btn-hero{
+  text-decoration:none;color:#060d1f;font-weight:900;font-size:1.1rem;
+  background:linear-gradient(180deg,var(--gold),var(--gold2));
+  padding:16px 44px;border-radius:50px;
+  box-shadow:0 12px 32px rgba(245,158,11,.4);transition:.25s;
+  position:relative;overflow:hidden;
+}
+.btn-hero::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.18),transparent);
+  border-radius:inherit;
+}
+.btn-hero:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 44px rgba(245,158,11,.55)}
+.btn-sec{
+  text-decoration:none;color:var(--ink);font-weight:700;font-size:1rem;
+  padding:15px 28px;border-radius:50px;
+  border:1px solid var(--gline);background:var(--glass);transition:.25s;
+}
+.btn-sec:hover{border-color:var(--cyan);color:var(--cyan)}
 
-.hero-visual{position:relative;perspective:1200px;min-height:380px}
-.card3d{position:relative;border-radius:26px;padding:30px;background:linear-gradient(160deg,rgba(20,30,66,.9),rgba(10,16,42,.92));border:1px solid var(--glass-line);box-shadow:0 40px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);transform:rotateY(-12deg) rotateX(6deg);animation:floaty 6s ease-in-out infinite alternate}
-@keyframes floaty{to{transform:rotateY(-8deg) rotateX(3deg) translateY(-10px)}}
-.card3d .tag{display:inline-block;background:rgba(53,208,255,.16);color:var(--cyan);font-weight:700;font-size:.82rem;padding:5px 14px;border-radius:30px;margin-bottom:16px}
-.card3d h4{font-family:'Secular One';font-size:1.4rem;margin-bottom:14px}
-.formula{background:rgba(0,0,0,.35);border:1px solid var(--glass-line);border-radius:14px;padding:18px;font-size:1.35rem;text-align:center;font-family:'Heebo';color:#dceaff;letter-spacing:1px;margin-bottom:12px;direction:ltr}
-.formula b{color:var(--amber)}
-.progress{height:9px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:18px}
-.progress i{display:block;height:100%;width:78%;border-radius:9px;background:linear-gradient(90deg,var(--cyan),var(--blue));animation:grow 2.4s ease forwards}
-@keyframes grow{from{width:0}}
-.pbadge{position:absolute;left:-18px;bottom:-18px;background:linear-gradient(160deg,var(--amber),var(--amber-deep));color:#06121f;font-weight:900;border-radius:18px;padding:14px 18px;box-shadow:0 16px 36px rgba(245,158,11,.45);transform:rotate(-4deg)}
-.pbadge b{font-family:'Secular One';display:block;font-size:1.4rem;line-height:1}
+/* mini stats */
+.mini-stats{display:flex;gap:32px;flex-wrap:wrap}
+.mstat b{font-family:'Frank Ruhl Libre',serif;font-size:1.9rem;font-weight:900;
+  color:#fff;display:block;line-height:1}
+.mstat span{color:var(--muted);font-size:.85rem;margin-top:2px;display:block}
 
-section.block{max-width:1160px;margin:0 auto;padding:clamp(50px,8vw,90px) clamp(20px,5vw,48px) 0}
-.kicker{color:var(--cyan);font-weight:700;letter-spacing:2px;font-size:.85rem;text-align:center;text-transform:uppercase}
-.h2{font-family:'Secular One';text-align:center;font-size:clamp(2rem,5vw,3rem);margin:10px 0 8px}
-.sub2{text-align:center;color:var(--muted);max-width:620px;margin:0 auto 40px}
+/* HERO VISUAL — floating card */
+.hero-visual{perspective:1200px;position:relative}
+.card3d{
+  border-radius:24px;padding:28px;
+  background:linear-gradient(155deg,rgba(30,42,100,.97),rgba(14,22,62,.97));
+  border:1px solid rgba(56,217,255,.45);
+  box-shadow:0 40px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.07),0 0 40px rgba(56,217,255,.1);
+  transform:rotateY(-10deg) rotateX(5deg);
+  animation:floaty 7s ease-in-out infinite alternate;
+  position:relative;
+}
+@keyframes floaty{
+  from{transform:rotateY(-10deg) rotateX(5deg)}
+  to{transform:rotateY(-6deg) rotateX(3deg) translateY(-12px)}
+}
+.c3-tag{display:inline-block;background:rgba(56,217,255,.15);color:var(--cyan);
+  font-weight:700;font-size:.78rem;padding:5px 13px;border-radius:30px;margin-bottom:14px}
+.c3-title{font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;font-weight:900;margin-bottom:14px}
+.formula-box{
+  background:rgba(0,0,0,.4);border:1px solid var(--gline);
+  border-radius:12px;padding:14px;
+  font-size:1.25rem;text-align:center;
+  color:#d8eaff;letter-spacing:1px;margin-bottom:10px;
+  direction:ltr;font-family:'Heebo',sans-serif;
+}
+.formula-box b{color:var(--gold)}
+.prog-bar{height:8px;border-radius:8px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:16px}
+.prog-fill{height:100%;width:82%;border-radius:8px;
+  background:linear-gradient(90deg,var(--cyan),var(--blue));
+  animation:grow-bar 2s ease forwards}
+@keyframes grow-bar{from{width:0}}
+.pbadge{
+  position:absolute;left:-20px;bottom:-20px;
+  background:linear-gradient(145deg,var(--gold),var(--gold2));
+  color:#060d1f;font-weight:900;border-radius:16px;
+  padding:12px 16px;
+  box-shadow:0 14px 32px rgba(245,158,11,.45);
+  transform:rotate(-4deg);
+}
+.pbadge b{font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;line-height:1;display:block}
+.pbadge span{font-size:.78rem;font-weight:600}
 
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.feat{background:var(--glass);border:1px solid var(--glass-line);border-radius:var(--r);padding:28px 24px;transition:.3s;position:relative;overflow:hidden}
-.feat::before{content:"";position:absolute;inset:0;background:radial-gradient(300px 120px at 80% -10%,rgba(53,208,255,.18),transparent);opacity:0;transition:.3s}
-.feat:hover{transform:translateY(-6px);border-color:rgba(53,208,255,.4)}
+/* ── SECTIONS COMMON ── */
+.section{max-width:1100px;margin:0 auto;padding:clamp(60px,9vw,100px) clamp(20px,5vw,48px) 0}
+.kicker{color:var(--cyan);font-weight:700;letter-spacing:2.5px;
+  font-size:.78rem;text-align:center;text-transform:uppercase;margin-bottom:10px}
+.sh2{font-family:'Frank Ruhl Libre',serif;text-align:center;
+  font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:900;margin-bottom:10px}
+.ssub{text-align:center;color:var(--muted);max-width:600px;
+  margin:0 auto 44px;font-size:1.05rem;line-height:1.7}
+
+/* ── FEATURES ── */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.feat{
+  background:var(--glass);border:1px solid var(--gline);
+  border-radius:var(--r);padding:26px 22px;
+  transition:transform .3s,border-color .3s;
+  position:relative;overflow:hidden;
+}
+.feat::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(200px 100px at 80% 0%,rgba(56,217,255,.12),transparent);
+  opacity:0;transition:.3s;
+}
+.feat:hover{transform:translateY(-6px);border-color:rgba(56,217,255,.35)}
 .feat:hover::before{opacity:1}
-.feat .ic{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;font-size:1.6rem;background:linear-gradient(150deg,rgba(53,208,255,.22),rgba(59,130,246,.22));border:1px solid var(--glass-line);margin-bottom:16px}
-.feat h3{font-size:1.18rem;margin-bottom:6px}
-.feat p{color:var(--muted);font-size:.96rem}
+.feat-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:grid;place-items:center;font-size:1.5rem;margin-bottom:16px;
+  background:linear-gradient(145deg,rgba(56,217,255,.2),rgba(79,142,247,.2));
+  border:1px solid var(--gline);
+}
+.feat h3{font-size:1.1rem;font-weight:800;margin-bottom:6px}
+.feat p{color:var(--muted);font-size:.92rem;line-height:1.6}
 
-.about{background:linear-gradient(150deg,rgba(20,30,66,.7),rgba(10,16,42,.7));border:1px solid var(--glass-line);border-radius:26px;padding:clamp(28px,5vw,46px);text-align:center;position:relative;overflow:hidden}
-.about::after{content:"∑";position:absolute;left:-10px;bottom:-40px;font-size:220px;font-family:'Secular One';color:rgba(255,255,255,.03)}
-.about .led{font-size:1.35rem;font-weight:800;margin-bottom:12px}
-.about p{color:var(--muted);max-width:740px;margin:0 auto;font-size:1.05rem;position:relative;z-index:2}
+/* ── CURRICULUM ── */
+.curr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.curr-card{
+  background:var(--glass);border:1px solid var(--gline);
+  border-radius:14px;padding:18px 20px;
+  display:flex;align-items:flex-start;gap:14px;
+  transition:.2s;
+}
+.curr-card:hover{border-color:rgba(255,194,74,.4);background:rgba(255,194,74,.04)}
+.curr-num{
+  width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(145deg,rgba(255,194,74,.2),rgba(245,158,11,.2));
+  border:1px solid rgba(255,194,74,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Frank Ruhl Libre',serif;font-size:1rem;font-weight:900;color:var(--gold);
+}
+.curr-info h4{font-size:.98rem;font-weight:800;margin-bottom:3px}
+.curr-info p{font-size:.8rem;color:var(--muted);line-height:1.5}
 
-.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.ccard{background:var(--glass);border:1px solid var(--glass-line);border-radius:20px;padding:26px 22px;text-align:center;transition:.3s}
-.ccard:hover{transform:translateY(-5px);border-color:var(--green)}
-.role{display:inline-block;background:rgba(255,255,255,.08);color:#cfe0ff;font-size:.8rem;font-weight:700;padding:5px 14px;border-radius:30px;margin-bottom:12px}
-.ccard h3{font-size:1.25rem;margin-bottom:14px}
-.wa{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:#fff;font-weight:800;font-size:1.05rem;background:linear-gradient(180deg,#2bdc6e,#11924c);padding:11px 22px;border-radius:40px;box-shadow:0 10px 24px rgba(18,140,75,.35);transition:.2s}
-.wa:hover{transform:scale(1.04)}
-.wa svg{width:18px;height:18px;fill:#fff}
-.update .role{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#06121f}
+/* ── HOW IT WORKS ── */
+.steps{display:flex;gap:0;position:relative;justify-content:center}
+.steps::before{
+  content:'';position:absolute;top:28px;right:17%;left:17%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--blue),transparent);
+  opacity:.3;
+}
+.step{flex:1;text-align:center;padding:0 16px;position:relative;max-width:260px}
+.step-num{
+  width:56px;height:56px;border-radius:50%;margin:0 auto 16px;
+  background:linear-gradient(145deg,var(--cyan),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;font-weight:900;color:#fff;
+  box-shadow:0 8px 24px rgba(56,217,255,.3);
+  position:relative;z-index:1;
+}
+.step h4{font-size:1.05rem;font-weight:800;margin-bottom:6px}
+.step p{color:var(--muted);font-size:.88rem;line-height:1.6}
 
-footer{margin-top:clamp(60px,10vw,110px);background:linear-gradient(180deg,transparent,rgba(0,0,0,.4));border-top:1px solid var(--glass-line);text-align:center;padding:50px 20px 44px}
-.f-strip{font-family:'Secular One';font-size:clamp(1.3rem,3.5vw,1.9rem);background:linear-gradient(100deg,var(--cyan),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:14px}
-footer p{color:var(--muted);max-width:640px;margin:0 auto 6px}
-footer .copy{margin-top:20px;color:#6a7aa3;font-size:.88rem}
+/* ── TRUST STRIP ── */
+.trust-strip{
+  background:linear-gradient(135deg,rgba(56,217,255,.08),rgba(79,142,247,.08));
+  border:1px solid var(--gline);border-radius:20px;
+  padding:28px 32px;
+  display:flex;gap:32px;justify-content:center;align-items:center;flex-wrap:wrap;
+  margin-top:60px;
+}
+.trust-item{text-align:center}
+.trust-num{
+  font-family:'Frank Ruhl Libre',serif;font-size:2.2rem;font-weight:900;
+  color:var(--cyan);line-height:1;display:block;
+}
+.trust-label{color:var(--muted);font-size:.82rem;margin-top:4px}
+.trust-sep{width:1px;height:44px;background:var(--gline)}
 
-.reveal{opacity:0;transform:translateY(22px);animation:rise .8s cubic-bezier(.2,.7,.2,1) forwards}
-.d1{animation-delay:.06s}.d2{animation-delay:.14s}.d3{animation-delay:.22s}.d4{animation-delay:.3s}
+/* ── CONTACT CARDS ── */
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.contact-card{
+  background:var(--glass);border:1px solid var(--gline);
+  border-radius:20px;padding:26px 20px;text-align:center;
+  transition:.3s;
+}
+.contact-card:hover{transform:translateY(-5px);border-color:var(--green)}
+.cc-role{
+  display:inline-block;background:rgba(255,255,255,.07);
+  color:#cfe0ff;font-size:.75rem;font-weight:700;
+  padding:5px 14px;border-radius:30px;margin-bottom:12px;letter-spacing:.5px;
+}
+.cc-role.buy{background:rgba(255,194,74,.15);color:var(--gold)}
+.cc-name{font-family:'Frank Ruhl Libre',serif;font-size:1.35rem;font-weight:900;margin-bottom:16px}
+.wa-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  text-decoration:none;color:#fff;font-weight:800;font-size:.95rem;
+  background:linear-gradient(180deg,#2bdc6e,#11924c);
+  padding:11px 22px;border-radius:40px;
+  box-shadow:0 10px 24px rgba(18,140,75,.35);transition:.2s;
+}
+.wa-btn:hover{transform:scale(1.04);box-shadow:0 14px 28px rgba(18,140,75,.45)}
+.wa-btn svg{width:18px;height:18px;fill:#fff;flex-shrink:0}
+
+/* ── FAQ ── */
+.faq-list{max-width:760px;margin:0 auto}
+.faq-item{
+  border:1px solid var(--gline);border-radius:14px;
+  margin-bottom:10px;overflow:hidden;
+}
+.faq-q{
+  width:100%;display:flex;justify-content:space-between;align-items:center;
+  padding:18px 22px;background:var(--glass);
+  font-weight:700;font-size:1rem;color:var(--ink);
+  border:none;cursor:pointer;text-align:right;direction:rtl;
+  transition:.2s;gap:12px;
+}
+.faq-q:hover{background:rgba(255,255,255,.08)}
+.faq-arrow{font-size:.8rem;color:var(--muted);transition:transform .3s;flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-a{display:none;padding:0 22px 18px;color:var(--muted);line-height:1.75;font-size:.97rem}
+.faq-item.open .faq-a{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+
+/* ── BIG CTA ── */
+.big-cta{
+  max-width:900px;margin:clamp(60px,9vw,100px) auto 0;
+  padding:clamp(40px,6vw,72px) clamp(28px,5vw,64px);
+  background:linear-gradient(145deg,rgba(12,20,56,.9),rgba(7,9,26,.95));
+  border:1px solid rgba(56,217,255,.2);border-radius:28px;
+  text-align:center;
+  box-shadow:0 40px 80px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06);
+  position:relative;overflow:hidden;
+}
+.big-cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(60% 40% at 50% 0%,rgba(56,217,255,.1),transparent);
+}
+.big-cta h2{
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;
+  margin-bottom:12px;position:relative;
+}
+.big-cta p{color:var(--muted);margin-bottom:30px;font-size:1.05rem;position:relative}
+.big-cta .btn-hero{font-size:1.2rem;padding:18px 52px}
+
+/* ── FOOTER ── */
+footer{
+  margin-top:clamp(60px,10vw,110px);
+  padding:48px 24px 36px;
+  border-top:1px solid var(--gline);
+  text-align:center;
+}
+.f-logo{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;font-weight:900;
+  background:linear-gradient(100deg,var(--cyan),var(--gold));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:8px;}
+footer p{color:var(--muted);font-size:.9rem;margin-bottom:18px}
+.f-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.f-links a{color:var(--muted);text-decoration:none;font-size:.88rem;transition:.2s}
+.f-links a:hover{color:var(--cyan)}
+footer .copy{color:#4a5578;font-size:.8rem}
+
+/* ── STICKY BOTTOM CTA (mobile) ── */
+.sticky-cta{
+  position:fixed;bottom:0;left:0;right:0;z-index:9990;
+  background:rgba(7,9,26,.95);backdrop-filter:blur(16px);
+  border-top:1px solid var(--gline);
+  padding:12px 20px;display:none;
+  align-items:center;justify-content:space-between;gap:12px;
+}
+.sticky-cta a.btn-hero{padding:12px 28px;font-size:.95rem}
+.sticky-cta-txt{font-size:.85rem;color:var(--muted)}
+.sticky-cta-txt b{color:var(--ink);display:block;font-size:.95rem}
+
+/* ── REVEAL ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(24px);animation:rise .75s cubic-bezier(.2,.7,.2,1) forwards}
+.d1{animation-delay:.08s}.d2{animation-delay:.16s}.d3{animation-delay:.24s}.d4{animation-delay:.32s}
 @keyframes rise{to{opacity:1;transform:none}}
 
+/* ── RESPONSIVE ── */
 @media(max-width:880px){
   .hero{grid-template-columns:1fr;gap:36px}
-  .hero-visual{order:-1;min-height:300px;margin-bottom:6px}
+  .hero-visual{order:-1}
   .card3d{transform:none;animation:none}
   .feat-grid{grid-template-columns:1fr 1fr}
-  .cgrid{grid-template-columns:1fr}
-  .brand small{display:none}
+  .curr-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .steps{flex-direction:column;align-items:center;gap:28px}
+  .steps::before{display:none}
+  .trust-strip{gap:20px}
+  .trust-sep{display:none}
+  .sticky-cta{display:flex}
+  body{padding-bottom:70px}
 }
-@media(max-width:520px){.feat-grid{grid-template-columns:1fr}.nav-cta{display:none}}
+@media(max-width:520px){
+  .feat-grid{grid-template-columns:1fr}
+  .nav-cta{display:none}
+}
 </style>
 </head>
 <body>
 
 <div class="mesh"></div>
-<div class="grid-tex"></div>
-<div class="float-math" id="fm"></div>
 <div class="grain"></div>
+<div class="float-math" id="fm"></div>
 
-<nav>
+<!-- NAV -->
+<nav class="nav">
   <div class="brand">
-    <div class="logo">🚗</div>
-    <div>פרויקט יואב <small>מסלול רכב · מה״ט מתמטיקה</small></div>
+    <div class="brand-logo">🚗</div>
+    <div class="brand-txt">
+      פרויקט יואב
+      <small>מסלול רכב · מה״ט מתמטיקה</small>
+    </div>
   </div>
-  <a href="index.html" class="nav-cta">כניסה לקורס</a>
+  <a href="index.html" class="nav-cta">כניסה לקורס ←</a>
 </nav>
 
+<!-- HERO -->
 <header class="hero">
   <div>
-    <span class="eyebrow reveal"><span class="dot"></span> הכנה ממוקדת למבחני מה״ט</span>
-    <h1 class="title display reveal d1">קורס הכנה <span class="grad">למתמטיקה</span></h1>
-    <div class="subt reveal d1">למבחני מה״ט במתמטיקה</div>
-    <p class="lead reveal d2">הכנה ברורה ומסודרת — הסברים שלב אחר שלב, נוסחאות מסודרות, תרגול לפי נושאים, מבחני דוגמה וטיפים להצלחה. כל החומר במערכת אחת.</p>
-    <div class="hero-actions reveal d3">
-      <a href="index.html" class="btn-primary">כניסה לקורס</a>
-      <a href="#about" class="btn-ghost">מה יש בקורס?</a>
+    <div class="eyebrow reveal">
+      <span class="eyebrow-dot"></span>
+      הכנה ממוקדת · מה״ט ובגרות 3 יח״ל
+    </div>
+    <h1 class="hero-title reveal d1">
+      קורס הכנה<br>למתמטיקה
+    </h1>
+    <div class="hero-sub reveal d1">כל החומר · כל הכלים · הצלחה במבחן</div>
+    <p class="hero-lead reveal d2">
+      הסברים שלב אחר שלב בשפה פשוטה, 500+ תרגילים, מבחני דוגמה מלאים,
+      סימולטור מחשבון Casio ועוד — הכל במקום אחד, מותאם לקהילה החרדית.
+    </p>
+    <div class="hero-btns reveal d3">
+      <a href="index.html" class="btn-hero">התחל ללמוד עכשיו ←</a>
+      <a href="#about" class="btn-sec">מה יש בקורס?</a>
+      <a href="https://maslul-rechev-2026.netlify.app/" class="btn-sec" target="_blank" rel="noopener">מסלול רכב</a>
     </div>
     <div class="mini-stats reveal d4">
-      <div><b>100+</b><span>נוסחאות</span></div>
-      <div><b>500+</b><span>שאלות תרגול</span></div>
-      <div><b>50+</b><span>מבחני דוגמה</span></div>
-      <div><b>24/7</b><span>זמין מכל מקום</span></div>
+      <div class="mstat"><b>60+</b><span>נושאי לימוד</span></div>
+      <div class="mstat"><b>500+</b><span>תרגילים</span></div>
+      <div class="mstat"><b>24/7</b><span>זמין חינם</span></div>
+      <div class="mstat"><b>100%</b><span>מותאם אישית</span></div>
     </div>
   </div>
   <div class="hero-visual reveal d2">
     <div class="card3d">
-      <span class="tag">נוסחאות מקוצרות הכפל</span>
-      <h4>שלב אחר שלב</h4>
-      <div class="formula">(a+b)<sup>2</sup> = a<sup>2</sup> + <b>2ab</b> + b<sup>2</sup></div>
-      <div class="formula">a<sup>2</sup> − b<sup>2</sup> = (a−b)(a+b)</div>
-      <div style="color:var(--muted);font-size:.92rem">התקדמות בנושא</div>
-      <div class="progress"><i></i></div>
-      <div class="pbadge"><b>הצלחה</b>במבחן מחר</div>
+      <span class="c3-tag">נוסחאות הכפל המקוצר</span>
+      <div class="c3-title">שלב אחר שלב</div>
+      <div class="formula-box">(a+b)<sup>2</sup> = a<sup>2</sup> + <b>2ab</b> + b<sup>2</sup></div>
+      <div class="formula-box">a<sup>2</sup> − b<sup>2</sup> = (a−b)(a+b)</div>
+      <div style="color:var(--muted);font-size:.85rem;margin-top:14px">התקדמות בנושא</div>
+      <div class="prog-bar"><div class="prog-fill"></div></div>
+      <div class="pbadge">
+        <b>הצלחה</b>
+        <span>במבחן מחר!</span>
+      </div>
     </div>
   </div>
 </header>
 
-<section class="block" id="about">
+<!-- TRUST STRIP -->
+<div class="section" style="padding-top:0">
+  <div class="trust-strip reveal">
+    <div class="trust-item"><span class="trust-num">60+</span><div class="trust-label">נושאי לימוד</div></div>
+    <div class="trust-sep"></div>
+    <div class="trust-item"><span class="trust-num">500+</span><div class="trust-label">שאלות תרגול</div></div>
+    <div class="trust-sep"></div>
+    <div class="trust-item"><span class="trust-num">3</span><div class="trust-label">מסלולי לימוד</div></div>
+    <div class="trust-sep"></div>
+    <div class="trust-item"><span class="trust-num">2</span><div class="trust-label">מסלולי בגרות</div></div>
+    <div class="trust-sep"></div>
+    <div class="trust-item"><span class="trust-num">∞</span><div class="trust-label">תרגול ללא הגבלה</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section" id="about">
   <div class="kicker reveal">מה תמצאו בקורס</div>
-  <h2 class="h2 reveal d1">כל הכלים להצלחה במקום אחד</h2>
-  <p class="sub2 reveal d2">בנוי בקפידה כדי להפוך את ההכנה למה״ט לפשוטה, ברורה וממוקדת.</p>
+  <h2 class="sh2 reveal d1">כל הכלים להצלחה במקום אחד</h2>
+  <p class="ssub reveal d2">בנוי בקפידה כדי להפוך את ההכנה למה״ט לפשוטה, ברורה וממוקדת — בשפה שלנו.</p>
   <div class="feat-grid">
-    <div class="feat reveal"><div class="ic">📘</div><h3>הסברים ברורים</h3><p>הסברים מפורטים, שלב אחר שלב, בשפה פשוטה.</p></div>
-    <div class="feat reveal d1"><div class="ic">🧮</div><h3>נוסחאות עם הסברים</h3><p>כל הנוסחאות מסודרות, עם הסבר פשוט לכל אחת.</p></div>
-    <div class="feat reveal d2"><div class="ic">📝</div><h3>תרגילים פתורים</h3><p>תרגול לפי נושאים, עם פתרונות מלאים.</p></div>
-    <div class="feat reveal"><div class="ic">📋</div><h3>מבחני מה״ט לדוגמה</h3><p>מבחנים מלאים להתאמן עליהם לפני המבחן האמיתי.</p></div>
-    <div class="feat reveal d1"><div class="ic">🎯</div><h3>הכנה ממוקדת למבחן</h3><p>בדיוק מה שצריך לדעת — בלי בזבוז זמן.</p></div>
-    <div class="feat reveal d2"><div class="ic">🏆</div><h3>טיפים ושיטות עבודה</h3><p>טיפים לזכירת שיטות פתרון והצלחה במבחן.</p></div>
+    <div class="feat reveal">
+      <div class="feat-icon">📘</div>
+      <h3>הסברים צלולים</h3>
+      <p>כל נושא — הסבר מפורט שלב אחר שלב, בשפה פשוטה ללא מינוח מסובך.</p>
+    </div>
+    <div class="feat reveal d1">
+      <div class="feat-icon">🎮</div>
+      <h3>משחקים ואנימציות</h3>
+      <p>51 אנימציות ומשחקים אינטראקטיביים שהופכים כל נושא לקל ולכיף.</p>
+    </div>
+    <div class="feat reveal d2">
+      <div class="feat-icon">📝</div>
+      <h3>500+ תרגילים</h3>
+      <p>תרגול לפי נושאים עם פתרונות מלאים, כולל מבחן סיכום עם ניקוד אמיתי.</p>
+    </div>
+    <div class="feat reveal">
+      <div class="feat-icon">📋</div>
+      <h3>מבחני מה״ט לדוגמה</h3>
+      <p>מבחנים מלאים בפורמט האמיתי — לתרגול לפני הבגרות ולהכנה יסודית.</p>
+    </div>
+    <div class="feat reveal d1">
+      <div class="feat-icon">🔢</div>
+      <h3>סימולטור מחשבון Casio</h3>
+      <p>המחשבון האמיתי בדפדפן — לתרגל שימוש ב-fx-991EX לפני המבחן.</p>
+    </div>
+    <div class="feat reveal d2">
+      <div class="feat-icon">🎯</div>
+      <h3>מורה פרטי אישי</h3>
+      <p>ענה על 2 שאלות — וקבל תוכנית לימוד מותאמת אישית לפי זמנך ורמתך.</p>
+    </div>
   </div>
 </section>
 
-<section class="block">
-  <div class="kicker reveal">אודות הקורס</div>
-  <h2 class="h2 reveal d1">נוצר ע״י מסלול רכב</h2>
-  <div class="about reveal d2">
-    <div class="led">נוצר ע״י מסלול רכב בפרויקט יואב.</div>
-    <p>השימוש בקורס לחיילי פרויקט יואב מותנה בתשלום קולקטיבי לחברי מסלול רכב, באמצעות הנהלת פרויקט יואב או תורמים פוטנציאליים.</p>
+<!-- CURRICULUM -->
+<section class="section">
+  <div class="kicker reveal">תוכנית הלימודים</div>
+  <h2 class="sh2 reveal d1">מה לומדים?</h2>
+  <p class="ssub reveal d2">תוכנית לימודים מלאה הכוללת את כל נושאי הבגרות 3 יח״ל ומה״ט במתמטיקה.</p>
+  <div class="curr-grid">
+    <div class="curr-card reveal">
+      <div class="curr-num">א׳</div>
+      <div class="curr-info">
+        <h4>יסודות החשבון</h4>
+        <p>חזקות, שורשים, סדר פעולות, מספרים שליליים, שברים</p>
+      </div>
+    </div>
+    <div class="curr-card reveal d1">
+      <div class="curr-num">ב׳</div>
+      <div class="curr-info">
+        <h4>אלגברה</h4>
+        <p>כינוס איברים, פתיחת סוגריים, נוסחאות כפל מקוצר, פירוק לגורמים</p>
+      </div>
+    </div>
+    <div class="curr-card reveal">
+      <div class="curr-num">ג׳</div>
+      <div class="curr-info">
+        <h4>משוואות ופונקציות</h4>
+        <p>משוואות ממעלה ראשונה ושנייה, פונקציות, בעיות מילוליות, אחוזים</p>
+      </div>
+    </div>
+    <div class="curr-card reveal d1">
+      <div class="curr-num">ד׳</div>
+      <div class="curr-info">
+        <h4>גיאומטריה</h4>
+        <p>משולשים, מרובעים, מעגל, שטחים והיקפים, טריגונומטריה</p>
+      </div>
+    </div>
+    <div class="curr-card reveal">
+      <div class="curr-num">ה׳</div>
+      <div class="curr-info">
+        <h4>סטטיסטיקה והסתברות</h4>
+        <p>ממוצע, חציון, שכיח, סטיית תקן, הסתברות בסיסית</p>
+      </div>
+    </div>
+    <div class="curr-card reveal d1">
+      <div class="curr-num">ו׳</div>
+      <div class="curr-info">
+        <h4>אנגלית — 3 יחידות</h4>
+        <p>מילון, כרטיסיות, תרגול, משחק — הכנה לבגרות אנגלית</p>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="block">
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="kicker reveal">איך זה עובד</div>
+  <h2 class="sh2 reveal d1">שלושה צעדים להצלחה</h2>
+  <p class="ssub reveal d2">פשוט, ברור, בלי בזבוז זמן.</p>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <h4>כנס לאתר</h4>
+      <p>ללא הרשמה, ללא סיסמה — פשוט לחץ ותתחיל ללמוד.</p>
+    </div>
+    <div class="step reveal d1">
+      <div class="step-num">2</div>
+      <h4>בחר נושא</h4>
+      <p>תוכנית לימוד אישית, או לחץ על כל נושא שרוצה לחזק.</p>
+    </div>
+    <div class="step reveal d2">
+      <div class="step-num">3</div>
+      <h4>תרגל ותצליח</h4>
+      <p>הסבר ← אנימציה ← תרגול ← מבחן. כל נושא — שלמות.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="kicker reveal">שאלות נפוצות</div>
+  <h2 class="sh2 reveal d1">יש לכם שאלות?</h2>
+  <p class="ssub reveal d2">הנה מה שרוב האנשים שואלים.</p>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q">האם הקורס חינמי? <span class="faq-arrow">▼</span></button>
+      <div class="faq-a">כן — כל תוכן האתר זמין ללא תשלום. גישה לקורס מותנית ברכישה דרך הנהלת פרויקט יואב.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">האם צריך להוריד משהו? <span class="faq-arrow">▼</span></button>
+      <div class="faq-a">לא. הכל עובד בדפדפן — מחשב, טלפון או טאבלט. אין התקנה.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">כמה זמן לוקח להתכונן? <span class="faq-arrow">▼</span></button>
+      <div class="faq-a">תלוי ברמה הנוכחית. עם המורה הפרטי תקבל תוכנית אישית — בין שבוע לחודש לפי הצורך.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">האם זה מכסה את כל החומר? <span class="faq-arrow">▼</span></button>
+      <div class="faq-a">כן — כל נושאי בגרות 3 יח״ל ומה״ט במתמטיקה, פלוס מסלול אנגלית.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">אפשר ללמוד גם מהטלפון? <span class="faq-arrow">▼</span></button>
+      <div class="faq-a">בהחלט. האתר מותאם במיוחד למסכי מגע וטלפון נייד.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section">
   <div class="kicker reveal">יצירת קשר</div>
-  <h2 class="h2 reveal d1">דברו איתנו</h2>
-  <p class="sub2 reveal d2">במידה ויש טענות, מענות, בקשות, הערות או תיקונים — נשמח לשמוע בהודעת WhatsApp ל:</p>
-  <div class="cgrid">
-    <div class="ccard reveal"><span class="role">צוות הקורס</span><h3>צפניה</h3>
-      <a class="wa" href="https://wa.me/972538267942"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.1 14.1c-.2.6-1.2 1.1-1.7 1.2-.4 0-.9.2-3-.6-2.5-1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.7.9.8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .8-.3 1.3z"/></svg>053-826-7942</a></div>
-    <div class="ccard reveal d1"><span class="role">צוות הקורס</span><h3>שלמה</h3>
-      <a class="wa" href="https://wa.me/972557006050"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.1 14.1c-.2.6-1.2 1.1-1.7 1.2-.4 0-.9.2-3-.6-2.5-1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.7.9.8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .8-.3 1.3z"/></svg>055-700-6050</a></div>
-    <div class="ccard reveal d2"><span class="role">צוות הקורס</span><h3>משה</h3>
-      <a class="wa" href="https://wa.me/972548048516"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.1 14.1c-.2.6-1.2 1.1-1.7 1.2-.4 0-.9.2-3-.6-2.5-1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.7.9.8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .8-.3 1.3z"/></svg>054-804-8516</a></div>
+  <h2 class="sh2 reveal d1">דברו איתנו</h2>
+  <p class="ssub reveal d2">לשאלות, תיקונים, בקשות — נשמח לשמוע.</p>
+  <div class="contact-grid">
+    <div class="contact-card reveal">
+      <span class="cc-role">צוות הקורס</span>
+      <div class="cc-name">צפניה</div>
+      <a class="wa-btn" href="https://wa.me/972538267942">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.1 14.1c-.2.6-1.2 1.1-1.7 1.2-.4 0-.9.2-3-.6-2.5-1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.7.9.8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .8-.3 1.3z"/></svg>
+        053-826-7942
+      </a>
+    </div>
+    <div class="contact-card reveal d1">
+      <span class="cc-role">צוות הקורס</span>
+      <div class="cc-name">שלמה</div>
+      <a class="wa-btn" href="https://wa.me/972557006050">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.1 14.1c-.2.6-1.2 1.1-1.7 1.2-.4 0-.9.2-3-.6-2.5-1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.7.9.8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .8-.3 1.3z"/></svg>
+        055-700-6050
+      </a>
+    </div>
+    <div class="contact-card reveal d2">
+      <span class="cc-role">צוות הקורס</span>
+      <div class="cc-name">משה</div>
+      <a class="wa-btn" href="https://wa.me/972548048516">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.1 14.1c-.2.6-1.2 1.1-1.7 1.2-.4 0-.9.2-3-.6-2.5-1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.7.9.8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .8-.3 1.3z"/></svg>
+        054-804-8516
+      </a>
+    </div>
+  </div>
+
+  <!-- BUY / REGISTER -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:680px;margin:16px auto 0">
+    <div class="contact-card reveal">
+      <span class="cc-role buy">קניית הקורס</span>
+      <div class="cc-name">שילה</div>
+      <a class="wa-btn" href="https://wa.me/972545869759">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.1 14.1c-.2.6-1.2 1.1-1.7 1.2-.4 0-.9.2-3-.6-2.5-1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.7.9.8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .8-.3 1.3z"/></svg>
+        054-586-9759
+      </a>
+    </div>
+    <div class="contact-card reveal d1">
+      <span class="cc-role buy">הרשמה לפרויקט יואב</span>
+      <div class="cc-name">זכריה</div>
+      <a class="wa-btn" href="https://wa.me/972509090559">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.1 14.1c-.2.6-1.2 1.1-1.7 1.2-.4 0-.9.2-3-.6-2.5-1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.7.9.8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .8-.3 1.3z"/></svg>
+        050-909-0559
+      </a>
+    </div>
   </div>
 </section>
 
-<section class="block">
-  <div class="kicker reveal">תיקונים ועדכונים</div>
-  <h2 class="h2 reveal d1">רכישה והרשמה</h2>
-  <div class="cgrid" style="grid-template-columns:repeat(2,1fr);max-width:760px;margin-inline:auto">
-    <div class="ccard update reveal"><span class="role">קניית הקורס</span><h3>שילה</h3>
-      <a class="wa" href="https://wa.me/972545869759"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.1 14.1c-.2.6-1.2 1.1-1.7 1.2-.4 0-.9.2-3-.6-2.5-1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.7.9.8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .8-.3 1.3z"/></svg>054-586-9759</a></div>
-    <div class="ccard update reveal d1"><span class="role">הרשמה לפרויקט יואב</span><h3>זכריה</h3>
-      <a class="wa" href="https://wa.me/972509090559"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.1 14.1c-.2.6-1.2 1.1-1.7 1.2-.4 0-.9.2-3-.6-2.5-1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.7.9.8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .2 0 .8-.3 1.3z"/></svg>050-909-0559</a></div>
+<!-- BIG CTA -->
+<div class="section">
+  <div class="big-cta reveal">
+    <h2>מוכן להתחיל?</h2>
+    <p>כל החומר מחכה לך — ללא הרשמה, ללא תשלום, ללא בזבוז זמן.</p>
+    <a href="index.html" class="btn-hero">כנס לקורס עכשיו ←</a>
   </div>
-</section>
+</div>
 
+<!-- FOOTER -->
 <footer>
-  <div class="f-strip">🚗 נבנה ע״י תלמידי מסלול רכב בפרויקט יואב</div>
-  <p>כל החומר, הנוסחאות, התרגולים ומבחני הדוגמה — במערכת אחת מסודרת וברורה.</p>
-  <div class="copy">© קורס הכנה למבחני מה״ט במתמטיקה · פרויקט יואב — מסלול רכב</div>
+  <div class="f-logo">מתמטיקה לחרדים</div>
+  <p>הכנה למה״ט ולבגרות 3 יח״ל — מתמטיקה ואנגלית · פרויקט יואב מסלול רכב</p>
+  <div class="f-links">
+    <a href="index.html">מרכז הלמידה</a>
+    <a href="topics/yom-lifney-mivkhan.html">יום לפני המבחן</a>
+    <a href="topics/more-prati.html">מורה פרטי</a>
+    <a href="topics/anglit.html">מסלול אנגלית</a>
+    <a href="calculator/casio-v8.html">מחשבון Casio</a>
+  </div>
+  <div class="copy">© מתמטיקה לחרדים · פרויקט יואב — מסלול רכב · כל הזכויות שמורות</div>
 </footer>
 
+<!-- MOBILE STICKY CTA -->
+<div class="sticky-cta" id="sticky-cta">
+  <div class="sticky-cta-txt">
+    <b>מוכן להתחיל?</b>
+    חינמי, ללא הרשמה
+  </div>
+  <a href="index.html" class="btn-hero">כנס ←</a>
+</div>
+
 <script>
-const items=['(a+b)²','a²−b²','√(a²+b²)','f(x)=ax+b','x²+y²=r²','∑','π','sin θ','½bh','y=mx+c'];
+// Floating math background
+const items=['(a+b)²','a²−b²','√x','f(x)','sin θ','∑','π','x²+y²=r²','½bh','Δ'];
 const fm=document.getElementById('fm');
-for(let i=0;i<11;i++){
+for(let i=0;i<12;i++){
   const s=document.createElement('span');
   s.textContent=items[i%items.length];
-  s.style.left=(Math.random()*96)+'%';
-  s.style.animationDuration=(16+Math.random()*16)+'s';
-  s.style.animationDelay=(-Math.random()*20)+'s';
-  s.style.fontSize=(1.1+Math.random()*1.6)+'rem';
+  Object.assign(s.style,{
+    left:(Math.random()*96)+'%',
+    animationDuration:(18+Math.random()*18)+'s',
+    animationDelay:(-Math.random()*20)+'s',
+    fontSize:(1+Math.random()*1.5)+'rem'
+  });
   fm.appendChild(s);
 }
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const item=btn.parentElement;
+    const wasOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+
+// Hide sticky CTA when at top
+window.addEventListener('scroll',()=>{
+  const sc=document.getElementById('sticky-cta');
+  if(sc) sc.style.display=window.scrollY>300?'flex':'none';
+},{passive:true});
 </script>
 <script src="shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>

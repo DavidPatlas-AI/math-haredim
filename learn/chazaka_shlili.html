@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="חזקה של מספר שלילי — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>חזקה של מספר שלילי</title>
 <style>
@@ -70,7 +74,7 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">יחידה 1 · טכניקה אלגברית · פרק ב'</div>
+    <div class="eyebrow">פרק ב׳ — חזקות</div>
     <h1>חזקה של מספר שלילי</h1>
     <div class="sub">מתי שלילי בחזקה יוצא חיובי, ומתי שלילי</div>
   </header>
@@ -111,12 +115,45 @@
       </div>
       <div class="warn">
         כשאין סוגריים, החזקה מתייחסת רק למספר ולא לסימן:<br>
-        <b style="direction:ltr;display:inline-block">−2⁴ = −16</b> &nbsp; אבל &nbsp; <b style="direction:ltr;display:inline-block">(−2)⁴ = 16</b>
+        <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">−2⁴ = −16</b> &nbsp; אבל &nbsp; <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">(−2)⁴ = 16</b>
       </div>
       <div class="examples" style="margin-top:12px">
         <div>(−3)⁴ = 81 &nbsp;לעומת&nbsp; −3⁴ = −81</div>
         <div>(−3)³ = −27 &nbsp;וגם&nbsp; −3³ = −27 &nbsp;(כאן זהה!)</div>
       </div>
+    </div>
+
+    <div class="card">
+      <h2>כפל של חזקות שליליות <span class="tag">הרחבה</span></h2>
+      <p>כשמכפילים כמה חזקות שליליות ביחד — סופרים <b>כמה סימני מינוס בסך הכל</b>:</p>
+      <div class="examples">
+        <div>(−2)² · (−3)² = 4 · 9 = 36 &nbsp; (2+2=4 מינוסים, זוגי → +)</div>
+        <div>(−2)³ · (−5) = (−8)·(−5) = 40 &nbsp; (3+1=4 מינוסים → +)</div>
+        <div>(−1)⁵ · (−2)³ = (−1)·(−8) = 8 &nbsp; (5+3=8 → +)</div>
+      </div>
+      <div class="note"><b>כלל:</b> בכפל של חזקות שליליות — סכמו את כל המעריכים של הבסיסים השליליים. זוגי → +, אי-זוגי → −.</div>
+    </div>
+
+    <div class="card">
+      <h2>חזקה שלילית על מספר שלילי <span class="tag">כפול מסובך</span></h2>
+      <p>בואו נסתכל על המקרה המיוחד: <b>מספר שלילי בחזקה שלילית</b>:</p>
+      <div class="examples">
+        <div>(−2)⁻¹ = 1/(−2) = −1/2 &nbsp; (שלילי)</div>
+        <div>(−2)⁻² = 1/(−2)² = 1/4 &nbsp; (חיובי!)</div>
+        <div>(−3)⁻³ = 1/(−3)³ = 1/(−27) = −1/27</div>
+      </div>
+      <div class="note"><b>שימו לב:</b> חזקה שלילית שמה את המספר במכנה. מה שקובע את הסימן זה המעריך של הבסיס, לא הסימן של החזקה.</div>
+    </div>
+
+    <div class="card">
+      <h2>שאלות קשות בבחינה <span class="tag">לתרגל</span></h2>
+      <p>אלה הסוגים שמרמים הכי הרבה תלמידים — נסו לחשב:</p>
+      <div class="examples">
+        <div>−(−2)⁴ = −16 &nbsp; (המינוס שבחוץ נשאר! (−2)⁴=16, ואז −16)</div>
+        <div>(−2)² + (−2)³ = 4 + (−8) = −4</div>
+        <div>3³ − (−3)² = 27 − 9 = 18</div>
+      </div>
+      <div class="warn"><b>מלכודת:</b> כשכותבים <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">−(−2)⁴</span>, המינוס שבחוץ <b>לא בתוך הסוגריים</b>. קודם מחשבים <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(−2)⁴=16</span>, ואז מכפילים ב-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">−1</span> ומקבלים <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">−16</span>.</div>
     </div>
   </section>
 
@@ -142,14 +179,14 @@
         <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
       </div>
       <div class="turn-banner" id="turn">תורו של: שחקן</div>
-      <div class="q-box" id="question">—</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
     </div>
   </section>
 
-  <footer>על פי הספר: שלמה אבידן — מכינה טכנולוגית · יחידה 1 · פרק ב' · חזקה של מספר שלילי</footer>
+  <footer>מתמטיקה לחרדים · הכנה למה״ט ולבגרות 3 יח״ל · כל הזכויות שמורות</footer>
 </div>
 
 <script>
@@ -184,5 +221,10 @@ function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('next
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

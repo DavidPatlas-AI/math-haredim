@@ -2,6 +2,15 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="description" content="כל נוסחאות הבגרות עם הסבר ודוגמה">
+<meta property="og:title" content="דף הנוסחאות — בגרות מתמטיקה">
+<meta property="og:description" content="כל נוסחאות הבגרות עם הסבר ודוגמה">
+<meta property="og:image" content="https://math-haredim.netlify.app/banners/banner-1.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>דף נוסחאות לבגרות</title>
 <style>
@@ -45,6 +54,21 @@
   .formula-card .close-x{margin-top:10px;text-align:center;font-size:.82rem;color:var(--accent);font-weight:700;cursor:pointer;padding:4px}
   .formula-card .close-x:hover{text-decoration:underline}
   footer{text-align:center;font-size:.8rem;color:#7a8a92;margin-top:30px}
+
+  @media print {
+    @page { size: A4; margin: 18mm 14mm; }
+    body { background: #fff !important; padding: 0; font-size: 11pt; }
+    .back, .cat-nav, button, footer, #snav, #tnav { display: none !important; }
+    header { border: 2px solid #12142a; box-shadow: none; page-break-after: avoid; }
+    .intro { border: 1px solid #c9a227; }
+    .formula-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .formula-card { border: 1px solid #ccc; break-inside: avoid; cursor: default; }
+    .formula-card .hint { display: none; }
+    .formula-card .body { display: block !important; border-top: 1px dashed #aaa; }
+    .formula-card.open { grid-column: auto; }
+    .section-title { border-bottom: 1.5px solid #0d6e8c; page-break-after: avoid; }
+    h1 { font-size: 1.6rem; }
+  }
 </style>
 </head>
 <body>
@@ -56,8 +80,18 @@
     <div class="sub">כל הנוסחאות שצריך לדעת לבגרות — עם הסבר ודוגמה</div>
   </header>
 
-  <div class="intro">
-    <b>איך משתמשים?</b> לחצו על כל נוסחה כדי לראות הסבר קצר, דוגמה, ומתי משתמשים בה. לעבור בין קטגוריות בעזרת הכפתורים.
+  <div class="intro" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <span><b>איך משתמשים?</b> לחצו על כל נוסחה לראות הסבר, דוגמה ומתי להשתמש. עברו בין קטגוריות בכפתורים.</span>
+    <button onclick="window.print()" style="
+      display:inline-flex;align-items:center;gap:7px;
+      background:#12142a;color:#fff;border:none;
+      padding:10px 20px;border-radius:50px;
+      font-family:'Heebo',sans-serif;font-weight:700;font-size:.9rem;
+      cursor:pointer;white-space:nowrap;flex-shrink:0;
+      box-shadow:0 4px 14px rgba(18,20,42,.25);transition:.2s;
+    " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+      🖨️ הדפס נוסחאות
+    </button>
   </div>
 
   <div class="cat-nav">
@@ -88,12 +122,12 @@ const FORMULAS={
      when:'כל פעם שמרבעים סוגריים עם +. גם בכיוון הפוך — לפירוק לגורמים.'},
 
     {lbl:'ריבוע הפרש',eq:'(a − b)² = a² − 2ab + b²',
-     explain:'<p>דומה לנוסחה הקודמת, אבל הסימן באמצע מינוס. <b>שימו לב</b>: b² עדיין חיובי!</p>',
+     explain:'<p>דומה לנוסחה הקודמת, אבל הסימן באמצע מינוס. <b>שימו לב</b>: <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">b²</span> עדיין חיובי!</p>',
      example:'(x − 4)² = x² − 8x + 16<br>(3x − 2)² = 9x² − 12x + 4',
      when:'כל פעם שמרבעים סוגריים עם −.'},
 
     {lbl:'הפרש ריבועים',eq:'(a + b)(a − b) = a² − b²',
-     explain:'<p>כששני סוגריים זהים חוץ מהסימן — מקבלים <b>הפרש ריבועים</b> בלי איבר אמצעי.</p><p>גם בכיוון הפוך: x²−9 = (x+3)(x−3). שימושית מאוד לפירוק לגורמים.</p>',
+     explain:'<p>כששני סוגריים זהים חוץ מהסימן — מקבלים <b>הפרש ריבועים</b> בלי איבר אמצעי.</p><p>גם בכיוון הפוך: <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">x²−9 = (x+3)(x−3)</span>. שימושית מאוד לפירוק לגורמים.</p>',
      example:'(x + 5)(x − 5) = x² − 25<br>x² − 16 = (x + 4)(x − 4)',
      when:'ביטוי בצורה a² − b² (הפרש ריבועים).'},
 
@@ -125,7 +159,7 @@ const FORMULAS={
      when:'משולש ישר-זווית — חישוב צלע שלישית.'},
 
     {lbl:'סכום זוויות במשולש',eq:'α + β + γ = 180°',
-     explain:'<p>בכל משולש בעולם, סכום שלוש הזוויות = 180°. תמיד.</p>',
+     explain:'<p>בכל משולש בעולם, סכום שלוש הזוויות = <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">180°</span>. תמיד.</p>',
      example:'משולש עם זוויות 50° ו-70°:<br>הזווית השלישית = 180 − 50 − 70 = 60°',
      when:'בכל בעיה גיאומטרית עם משולש.'},
 
@@ -145,12 +179,12 @@ const FORMULAS={
      when:'חישוב היקף מלבן.'},
 
     {lbl:'שטח מעגל',eq:'S = π × r²',
-     explain:'<p>r = רדיוס (מרכז עד היקף). π ≈ 3.14.</p>',
+     explain:'<p>r = רדיוס (המרחק מהמרכז לשפת המעגל). π ≈ 3.14.</p>',
      example:'רדיוס 5:<br>S = π × 25 ≈ 78.5',
      when:'חישוב שטח עיגול/מעגל.'},
 
     {lbl:'היקף מעגל',eq:'P = 2 × π × r',
-     explain:'<p>או P = πd, כש-d=קוטר (2r).</p>',
+     explain:'<p>או <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">P = πd</span>, כש-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">d</span>=קוטר <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(2r)</span>.</p>',
      example:'רדיוס 5:<br>P = 2 × π × 5 ≈ 31.4',
      when:'חישוב היקף מעגל.'}
   ]},
@@ -194,7 +228,7 @@ const FORMULAS={
      when:'מחפשים את השיפוע ויש שתי נקודות.'},
 
     {lbl:'משוואת קו ישר',eq:'y = mx + b',
-     explain:'<p>m = שיפוע, b = חיתוך עם ציר y.</p><p>אם השיפוע 2 והקו עובר ב-(0,3): y = 2x + 3.</p>',
+     explain:'<p><span style="direction:ltr;unicode-bidi:isolate;display:inline-block">m</span> = שיפוע, <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">b</span> = נקודת החיתוך עם ציר <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">y</span>.</p><p>אם השיפוע 2 והקו עובר ב-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(0,3)</span>: <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">y = 2x + 3</span>.</p>',
      example:'שיפוע 2, חוצה y ב-(0,3):<br>y = 2x + 3',
      when:'מתאר קו בצורה אלגברית.'},
 
@@ -204,7 +238,7 @@ const FORMULAS={
      when:'בעיות על קווים מקבילים.'},
 
     {lbl:'קווים מאונכים',eq:'m₁ · m₂ = −1',
-     explain:'<p>מכפלת השיפועים של שני קווים מאונכים = −1. אחד הפוך של השני וגם הופכי בסימן.</p>',
+     explain:'<p>מכפלת השיפועים של שני קווים מאונכים = <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">−1</span>. אחד הפוך של השני וגם הופכי בסימן.</p>',
      example:'קו עם שיפוע 2 מאונך לקו עם שיפוע −½',
      when:'בעיות על קווים מאונכים, גובה במשולש.'}
   ]},
@@ -254,5 +288,11 @@ document.querySelectorAll('.cat-nav button').forEach(b=>{b.onclick=()=>{document
 render();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+
+

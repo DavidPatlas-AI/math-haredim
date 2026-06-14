@@ -1,0 +1,447 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+<meta name="description" content="נוסחאות אינטראקטיביות — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>נוסחאות אינטראקטיביות</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+        :root {
+            --ink: #1a1a2e;
+            --paper: #f8f6f0;
+            --accent: #1e6091;
+            --accent2: #c0392b;
+            --gold: #c9a227;
+            --line: #d5d0c8;
+            --shadow: 0 10px 30px rgba(26, 26, 46, .10);
+            --formula-bg: #fff;
+            --open-bg: #fafdfb;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Heebo', sans-serif;
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 24px 16px 60px;
+            background: radial-gradient(circle at 12% 8%, rgba(30, 96, 145, .04), transparent 40%),
+                radial-gradient(circle at 88% 92%, rgba(201, 162, 39, .05), transparent 40%),
+                var(--paper);
+        }
+        .wrap {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 30px 20px 26px;
+            border: 2px solid var(--ink);
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: "f(x)";
+            position: absolute;
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 110px;
+            font-weight: 900;
+            color: rgba(26, 26, 46, .03);
+            top: 10px;
+            left: 20px;
+        }
+        .eyebrow {
+            font-size: .85rem;
+            letter-spacing: 3px;
+            color: var(--accent);
+            font-weight: 600;
+            position: relative;
+        }
+        h1 {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin: 6px 0 2px;
+            position: relative;
+        }
+        .sub {
+            font-size: 1rem;
+            color: #5a5a6e;
+            position: relative;
+        }
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 22px 0;
+            flex-wrap: wrap;
+        }
+        .filter-bar button {
+            font-family: 'Heebo';
+            font-size: .9rem;
+            font-weight: 600;
+            border: 2px solid var(--ink);
+            background: #fff;
+            color: var(--ink);
+            padding: 8px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: .2s;
+        }
+        .filter-bar button:hover {
+            transform: translateY(-2px);
+        }
+        .filter-bar button.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .accordion-item {
+            background: #fff;
+            border: 1.5px solid var(--line);
+            border-radius: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(26, 26, 46, .06);
+            overflow: hidden;
+            transition: .2s;
+        }
+        .accordion-item.open {
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+        .accordion-header {
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            direction: ltr;
+            transition: .15s;
+            user-select: none;
+        }
+        .accordion-header:hover {
+            background: rgba(30, 96, 145, .03);
+        }
+        .accordion-header .arrow {
+            transition: .25s;
+            font-size: 1rem;
+            color: var(--accent);
+        }
+        .accordion-item.open .accordion-header .arrow {
+            transform: rotate(90deg);
+        }
+        .accordion-body {
+            display: none;
+            padding: 0 20px 20px;
+            animation: fade .3s ease;
+        }
+        .accordion-item.open .accordion-body {
+            display: block;
+        }
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        @media (max-width: 550px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .info-tag {
+            display: inline-block;
+            font-size: .7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 4px;
+            font-family: 'Heebo';
+        }
+        .info-tag.uses {
+            background: #e0e7ff;
+            color: #1e6091;
+        }
+        .info-tag.warn {
+            background: #ffe0e0;
+            color: #c0392b;
+        }
+        .info-tag.memory {
+            background: #f0e6ff;
+            color: #6b3fa0;
+        }
+        .example-box {
+            background: var(--paper);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-family: 'Frank Ruhl Libre', serif;
+            direction: ltr;
+            text-align: left;
+            line-height: 2;
+            margin-top: 8px;
+        }
+        .highlight {
+            background: rgba(201, 162, 39, .15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+        footer {
+            text-align: center;
+            font-size: .8rem;
+            color: #7d9285;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="eyebrow">📐 ארגז כלים</div>
+            <h1>נוסחאות אינטראקטיביות</h1>
+            <div class="sub">לחצו על כל נוסחה — קבלו הסבר, דוגמה, טעות נפוצה, טריק זיכרון ומילות מפתח</div>
+        </header>
+
+        <div class="filter-bar">
+            <button class="active" data-filter="all">📋 הכול</button>
+            <button data-filter="algebra">📐 אלגברה</button>
+            <button data-filter="geo">📏 גיאומטריה</button>
+            <button data-filter="func">📈 פונקציות</button>
+            <button data-filter="prob">🎲 הסתברות</button>
+        </div>
+
+        <div id="accordion">
+            <!-- 1 -->
+            <div class="accordion-item" data-cat="algebra">
+                <div class="accordion-header"><span class="arrow">▶</span> (a+b)² = a² + 2ab + b²</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> a ו-b — מספרים או ביטויים. ² — ריבוע. 2ab — פעמיים המכפלה.</p>
+                    <p><b>מתי משתמשים:</b> כשצריך לפתוח סוגריים של סכום בריבוע, או הפוך — לזהות טרינום שמתאים לתבנית.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">(x + 3)² = x² + 2·x·3 + 3² = x² + 6x + 9</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לשכוח את ה-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">2ab</span>. <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(a+b)²</span> <b>לא</b> שווה ל-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">a²+b²</span>!</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "ראשון בריבוע, פעמיים ראשון כפול שני, אחרון בריבוע".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "סכום בריבוע", "פתחו", "(____+____)²"</p>
+                </div>
+            </div>
+            <!-- 2 -->
+            <div class="accordion-item" data-cat="algebra">
+                <div class="accordion-header"><span class="arrow">▶</span> (a−b)² = a² − 2ab + b²</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> האיבר האמצעי <b>שלילי</b> — <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">−2ab</span>. ה-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">b²</span> נשאר חיובי (שלילי בריבוע = חיובי).</p>
+                    <p><b>מתי משתמשים:</b> פתיחת סוגריים של הפרש בריבוע. זיהוי טרינום עם איבר אמצעי שלילי.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">(x − 5)² = x² − 2·x·5 + 5² = x² − 10x + 25</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לחשוב שהאיבר האחרון שלילי. b² תמיד חיובי!</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "ראשון בריבוע, <b>פחות</b> פעמיים ראשון כפול שני, <b>ועוד</b> אחרון בריבוע".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "הפרש בריבוע", "(____−____)²", "פתחו"</p>
+                </div>
+            </div>
+            <!-- 3 -->
+            <div class="accordion-item" data-cat="algebra">
+                <div class="accordion-header"><span class="arrow">▶</span> (a+b)(a−b) = a² − b²</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> שני סוגריים — אחד סכום, אחד הפרש. התוצאה: <b>הפרש ריבועים</b> — אין איבר אמצעי!</p>
+                    <p><b>מתי משתמשים:</b> לפתוח מכפלה של סכום-הפרש. <b>בכיוון ההפוך:</b> לפרק <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">x²−9</span> לגורמים.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">(x+4)(x−4) = x² − 16 &nbsp;|&nbsp; x²−25 = (x+5)(x−5)</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> להתבלבל עם (a−b)². פה אין 2ab — זה לא ריבוע!</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "הפרש ריבועים = סכום כפול הפרש".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "הפרש ריבועים", "פרקו לגורמים", "x²−____"</p>
+                </div>
+            </div>
+            <!-- 4 -->
+            <div class="accordion-item" data-cat="algebra">
+                <div class="accordion-header"><span class="arrow">▶</span> x = [−b ± √(b²−4ac)] / 2a</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> a,b,c — מקדמי המשוואה <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">ax²+bx+c=0</span>. <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">Δ = b²−4ac</span>.</p>
+                    <p><b>מתי משתמשים:</b> כשצריך למצוא שורשים של משוואה ריבועית — במיוחד כשאי אפשר לפרק לגורמים.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">x²−5x+6=0 → a=1,b=−5,c=6 → Δ=25−24=1 → x=(5±1)/2 → x=3, x=2</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לשכוח את המינוס ב-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">−b</span>. אם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">b=−5</span>, אז <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">−(−5)=+5</span>.</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "מינוס בי, פלוס מינוס שורש דלתא, חלקי 2 איי".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "פתרו את המשוואה", "שורשים", "דלתא", "פתרונות"</p>
+                </div>
+            </div>
+            <!-- 5 -->
+            <div class="accordion-item" data-cat="algebra">
+                <div class="accordion-header"><span class="arrow">▶</span> x₁ + x₂ = −b/a &nbsp;|&nbsp; x₁·x₂ = c/a</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> x₁, x₂ — שורשי המשוואה. a,b,c — המקדמים.</p>
+                    <p><b>מתי משתמשים:</b> כששואלים על סכום/מכפלת שורשים <b>בלי לחשב</b> את השורשים עצמם. חוסך זמן!</p>
+                    <p><b>דוגמה:</b> <span class="example-box">x²−7x+10=0 → סכום: 7, מכפלה: 10. בלי דלתא!</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לשכוח את המינוס בסכום: x₁+x₂ = −b/a, לא b/a.</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "סכום = מינוס בי חלקי איי, מכפלה = סי חלקי איי".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "סכום השורשים", "מכפלת השורשים", "בלי לחשב"</p>
+                </div>
+            </div>
+            <!-- 6 -->
+            <div class="accordion-item" data-cat="algebra">
+                <div class="accordion-header"><span class="arrow">▶</span> aₙ = a₁ + (n−1)d</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> a₁ — איבר ראשון, n — מקום, d — הפרש קבוע, aₙ — האיבר במקום n.</p>
+                    <p><b>מתי משתמשים:</b> למצוא איבר ספציפי בטור חשבוני.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">3,7,11... → a₁=3,d=4 → a₁₀=3+(9)·4=3+36=39</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לכתוב a₁+n·d. חייבים (n−1)!</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "איבר ראשון ועוד (מקום פחות 1) כפול ההפרש".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "טור חשבוני", "איבר במקום", "האיבר הכללי"</p>
+                </div>
+            </div>
+            <!-- 7 -->
+            <div class="accordion-item" data-cat="algebra">
+                <div class="accordion-header"><span class="arrow">▶</span> Sₙ = n(a₁ + aₙ)/2</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> Sₙ — סכום n איברים ראשונים. a₁ — איבר ראשון, aₙ — איבר אחרון, n — מספר איברים.</p>
+                    <p><b>מתי משתמשים:</b> כששואלים מה הסכום של n איברים ראשונים בטור חשבוני.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">1+2+...+10 → n=10,a₁=1,a₁₀=10 → S=10·11/2=55</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לשכוח לחלק ב-2. הסכום = ממוצע האיברים × מספרם.</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "מספר האיברים כפול ממוצע האיבר הראשון והאחרון".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "סכום", "סכום n איברים", "Sₙ"</p>
+                </div>
+            </div>
+            <!-- 8 -->
+            <div class="accordion-item" data-cat="func">
+                <div class="accordion-header"><span class="arrow">▶</span> x<sub>קודקוד</sub> = −b/(2a)</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> a,b — מקדמי <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">y=ax²+bx+c</span>. x<sub>קודקוד</sub> — שיעור x של הקודקוד.</p>
+                    <p><b>מתי משתמשים:</b> למצוא את קודקוד הפרבולה. תמיד — לפני סקיצה.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">y=2x²−8x+5 → x<sub>ק</sub>=−(−8)/(2·2)=8/4=2 → y<sub>ק</sub>=2·4−16+5=−3 → (2,−3)</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לשכוח את המינוס. אם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">b=−8 → −(−8)=+8</span>.</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "מינוס בי חלקי 2 איי — איקס הקודקוד".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "קודקוד", "ציר סימטריה", "שיעור x של הקודקוד"</p>
+                </div>
+            </div>
+            <!-- 9 -->
+            <div class="accordion-item" data-cat="geo">
+                <div class="accordion-header"><span class="arrow">▶</span> a² + b² = c²</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> a,b — ניצבים. c — יתר. מתאים <b>רק</b> למשולש ישר-זווית.</p>
+                    <p><b>מתי משתמשים:</b> למצוא צלע חסרה במשולש ישר-זווית.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">ניצבים 3,4 → 3²+4²=9+16=25 → c=5</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> להשתמש בפיתגורס במשולש שאינו ישר-זווית.</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "במשולש ישר-זווית: הניצבים בריבוע שווים ליתר בריבוע".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "משולש ישר-זווית", "ניצב", "יתר", "מרחק"</p>
+                </div>
+            </div>
+            <!-- 10 -->
+            <div class="accordion-item" data-cat="geo">
+                <div class="accordion-header"><span class="arrow">▶</span> sin = מול / יתר &nbsp; cos = ליד / יתר &nbsp; tan = מול / ליד</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> sin, cos, tan — פונקציות טריגונומטריות. מול — ניצב מול הזווית. ליד — ניצב ליד הזווית. יתר — היתר.</p>
+                    <p><b>מתי משתמשים:</b> במשולש ישר-זווית, כשיודעים זווית וצלע וצריך צלע אחרת.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">זווית 30°, יתר=10 → sin30=0.5=מול/10 → מול=5</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לבלבל בין מול לליד. תמיד ביחס לזווית הנתונה!</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "סין-מול-יתר, קוס-ליד-יתר, טאן-מול-ליד".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "משולש ישר-זווית", "זווית", "צלע חסרה"</p>
+                </div>
+            </div>
+            <!-- 11 -->
+            <div class="accordion-item" data-cat="geo">
+                <div class="accordion-header"><span class="arrow">▶</span> A = πr²</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> A — שטח. r — רדיוס. π ≈ 3.14 (בבגרות משאירים כ-π).</p>
+                    <p><b>מתי משתמשים:</b> חישוב שטח עיגול.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">רדיוס=5 → A=π·5²=25π</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לבלבל עם היקף 2πr. שטח = πr², היקף = 2πr.</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "פי ריבוע" — πr².</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "שטח מעגל", "עיגול", "רדיוס"</p>
+                </div>
+            </div>
+            <!-- 12 -->
+            <div class="accordion-item" data-cat="geo">
+                <div class="accordion-header"><span class="arrow">▶</span> P = 2πr</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> P — היקף. r — רדיוס. d=2r — קוטר.</p>
+                    <p><b>מתי משתמשים:</b> חישוב היקף מעגל.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">רדיוס=7 → P=2π·7=14π</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לבלבל עם שטח πr². היקף = 2πr.</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "2 פיי אר — היקף".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "היקף מעגל", "היקף", "קוטר", "רדיוס"</p>
+                </div>
+            </div>
+            <!-- 13 -->
+            <div class="accordion-item" data-cat="geo">
+                <div class="accordion-header"><span class="arrow">▶</span> שטח טרפז = (a+b)·h/2</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> a,b — בסיסים (מקבילים). h — גובה (אנכי לבסיסים).</p>
+                    <p><b>מתי משתמשים:</b> חישוב שטח טרפז.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">בסיסים 5,9, גובה 4 → A=(5+9)·4/2=14·2=28</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לחשוב שהגובה הוא אחת הצלעות. גובה = מרחק אנכי בין הבסיסים!</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "ממוצע הבסיסים כפול גובה".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "שטח טרפז", "בסיסים", "גובה"</p>
+                </div>
+            </div>
+            <!-- 14 -->
+            <div class="accordion-item" data-cat="prob">
+                <div class="accordion-header"><span class="arrow">▶</span> P(A) = |A| / |Ω|</div>
+                <div class="accordion-body">
+                    <p><b>מה הסימנים:</b> P(A) — הסתברות מאורע A. |A| — מספר תוצאות ב-A. |Ω| — סה"כ תוצאות אפשריות.</p>
+                    <p><b>מתי משתמשים:</b> חישוב הסתברות בסיסית — קובייה, קלפים, כדורים.</p>
+                    <p><b>דוגמה:</b> <span class="example-box">הטלת קובייה — P(זוגי) = 3/6 = 1/2</span></p>
+                    <p><span class="info-tag warn">⚠️ טעות</span> לשכוח לצמצם. 3/6 = 1/2. בבגרות מצפים לצמצום.</p>
+                    <p><span class="info-tag memory">🧠 זכרו</span> "רצוי חלקי אפשרי".</p>
+                    <p><span class="info-tag uses">🔍 מילות מפתח</span> "הסתברות", "מה הסיכוי", "מאורע"</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>📐 ארגז כלים · 14 נוסחאות אינטראקטיביות · לחצו על כל נוסחה</footer>
+    </div>
+
+    <script>
+        // ACCORDION
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                const isOpen = item.classList.contains('open');
+                // close all
+                document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+                // open clicked (if wasn't open)
+                if (!isOpen) item.classList.add('open');
+            });
+        });
+
+        // FILTER
+        const filterButtons = document.querySelectorAll('.filter-bar button');
+        const items = document.querySelectorAll('.accordion-item');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+                items.forEach(item => {
+                    if (filter === 'all' || item.dataset.cat === filter) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+<script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
+</body>
+</html>
+
+
+

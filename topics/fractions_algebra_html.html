@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="שברים וצמצום שברים אלגבריים — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>שברים וצמצום שברים אלגבריים</title>
 <style>
@@ -112,7 +116,7 @@
   <section id="anim">
     <div class="card">
       <h2>צמצום שלב-אחר-שלב 🎬</h2>
-      <p>בחרי דוגמה ולחצי הפעל.</p>
+      <p>בחרו דוגמה ולחצו הפעל.</p>
       <div class="anim-pick" id="animPick"></div>
       <div class="steps" id="steps"></div>
       <div class="controls"><button class="ctrl" id="playBtn">▶ הפעל</button></div>
@@ -139,15 +143,15 @@
     <div class="card">
       <h2>משחק צמצום שברים 🎮</h2>
       <div class="scoreboard"><div class="box"><div class="who">ניקוד</div><div class="pts" id="score">0</div></div><div class="box"><div class="who">שאלה</div><div class="pts" id="count">1</div></div></div>
-      <div class="turn-banner">בחרי את הצמצום הנכון</div>
-      <div class="q-box" id="question">—</div>
+      <div class="turn-banner">בחרו את הצמצום הנכון</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
     </div>
   </section>
 
-  <footer>על פי הספר: שלמה אבידן - מכינה טכנולוגית · יחידה 1 · טכניקה אלגברית</footer>
+  <footer>מתמטיקה לחרדים · הכנה למה״ט ולבגרות 3 יח״ל · כל הזכויות שמורות</footer>
 </div>
 
 <script>
@@ -188,5 +192,10 @@ function answer(btn,val){const box=document.getElementById('opts');box.style.poi
 document.getElementById('nextBtn').onclick=newQ;newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

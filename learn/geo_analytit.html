@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="גיאומטריה אנליטית — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>גיאומטריה אנליטית</title>
 <style>
@@ -162,11 +166,47 @@
     <div class="card">
       <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
       <div class="warn">
-        <b>1.</b> בנוסחת המרחק — <b>אל תשכחו את השורש!</b> זה לא רק (x₂−x₁)² + (y₂−y₁)², אלא <b>השורש של זה</b>.<br><br>
+        <b>1.</b> בנוסחת המרחק — <b>אל תשכחו את השורש!</b> זה לא רק <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(x₂−x₁)² + (y₂−y₁)²</span>, אלא <b>השורש של זה</b>.<br><br>
         <b>2.</b> בנוסחת השיפוע — <b>y תמיד למעלה</b>, x למטה. אם תהפכו, תקבלו את התוצאה ההפוכה.<br><br>
-        <b>3.</b> שמרו על <b>סדר הנקודות עקבי</b>: אם בנוסחה אחת אתם מחשבים x₂−x₁, אז גם ב-y תחשבו y₂−y₁ (לא הפוך).<br><br>
-        <b>4.</b> סימנים שליליים — שמרו על הסוגריים: <b>(−3)²</b> זה <b>9</b>, לא −9.
+        <b>3.</b> שמרו על <b>סדר הנקודות עקבי</b>: אם בנוסחה אחת אתם מחשבים <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">x₂−x₁</span>, אז גם ב-y תחשבו <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">y₂−y₁</span> (לא הפוך).<br><br>
+        <b>4.</b> סימנים שליליים — שמרו על הסוגריים: <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">(−3)²</b> זה <b>9</b>, לא <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">−9</span>.
       </div>
+    </div>
+
+    <div class="card">
+      <h2>נוסחת המרחק נובעת מפיתגורס <span class="tag">למה זה עובד</span></h2>
+      <p>נוסחת המרחק היא בדיוק <b>משפט פיתגורס</b> — רק מוסתרת קצת:</p>
+      <div class="examples">
+        <div>בין A(1,2) ל-B(4,6): הפרש x = 3 (ניצב אופקי)</div>
+        <div>הפרש y = 4 (ניצב אנכי)</div>
+        <div>מרחק = יתר = √(3²+4²) = √25 = 5</div>
+      </div>
+      <div class="note"><b>הדמיה:</b> ציירו בראש משולש ישר-זווית בין שתי הנקודות — הניצבים הם הפרשי x ו-y, והיתר הוא המרחק. זה כל הסיפור.</div>
+    </div>
+
+    <div class="card">
+      <h2>אמצע קטע — דוגמה עם שליליים <span class="tag">תרגול</span></h2>
+      <p>הנוסחה עובדת גם עם מספרים שליליים — פשוט ממוצע של כל ציר:</p>
+      <div class="examples">
+        <div>A(−4, 6) ו-B(2, −2)</div>
+        <div>x של האמצע: (−4+2)/2 = −2/2 = −1</div>
+        <div>y של האמצע: (6+(−2))/2 = 4/2 = 2</div>
+        <div>M(−1, 2)</div>
+      </div>
+      <div class="note"><b>בדיקה:</b> האמצע תמיד "בין" שתי הנקודות. אם A שלילי ו-B חיובי — האמצע בתוך הטווח. אם יצאה תוצאה קיצונית — כנראה טעות.</div>
+    </div>
+
+    <div class="card">
+      <h2>שיפוע — משמעות ויזואלית <span class="tag">להבין לא רק לחשב</span></h2>
+      <p>שיפוע אומר: <b>כמה הקו עולה לכל צעד ימינה</b>. זה עוזר להבין מה הסימן אומר:</p>
+      <div class="examples">
+        <div>m = 2 → עולה 2 יחידות לכל צעד ימינה (קו עולה בחדות)</div>
+        <div>m = 0.5 → עולה 1 לכל 2 צעדים (קו עולה בעדינות)</div>
+        <div>m = 0 → קו אופקי, לא עולה ולא יורד</div>
+        <div>m = −3 → יורד 3 יחידות לכל צעד ימינה (קו יורד)</div>
+        <div>m = לא מוגדר → קו אנכי לגמרי (x קבוע)</div>
+      </div>
+      <div class="note"><b>כלל:</b> שיפוע חיובי = קו עולה משמאל לימין. שיפוע שלילי = קו יורד. ככל שהמספר גדול יותר — הקו תלול יותר.</div>
     </div>
   </section>
 
@@ -206,7 +246,7 @@
         <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
       </div>
       <div class="turn-banner" id="turn">תורו של: שחקן</div>
-      <div class="q-box" id="question">—</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
@@ -357,5 +397,10 @@ function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('next
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

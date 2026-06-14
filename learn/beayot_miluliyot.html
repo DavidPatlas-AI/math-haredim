@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="בעיות מילוליות — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>בעיות מילוליות</title>
 <style>
@@ -153,9 +157,47 @@
       <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
       <div class="warn">
         <b>1.</b> "<b>פי 3 יותר</b>" זה לא אותו דבר כמו "<b>3 יותר</b>".<br>
-        &nbsp;&nbsp;פי 3 = 3x &nbsp;|&nbsp; 3 יותר = x+3<br><br>
-        <b>2.</b> "<b>X פחות Y</b>" — שימו לב לסדר. אם "לדן יש 5 יותר מלרון", זה <b>דן = רון + 5</b> (לא להפך).<br><br>
+        &nbsp;&nbsp;<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">פי 3 = 3x</span> &nbsp;|&nbsp; <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">3 יותר = x+3</span><br><br>
+        <b>2.</b> "<b>X פחות Y</b>" — שימו לב לסדר. אם "לדן יש 5 יותר מלרון", זה <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">דן = רון + 5</b> (לא להפך).<br><br>
         <b>3.</b> <b>לא לשכוח לענות על השאלה!</b> אם השאלה "בן כמה האח?", אל תכתבו רק "x=6" — כתבו "האח בן 6 שנים".
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>השיטה השיטתית <span class="tag">4 צעדים</span></h2>
+      <p>בכל בעיה מילולית — אותה שיטה בדיוק, בלי יוצאי דופן:</p>
+      <div class="steps-howto">
+        <div class="step-row"><div class="n">1</div><div><b>מגדירים את הנעלם:</b> "יהי x = ..."</div></div>
+        <div class="step-row"><div class="n">2</div><div><b>כותבים משוואה</b> שמתרגמת את הסיפור — בעזרת המילון.</div></div>
+        <div class="step-row"><div class="n">3</div><div><b>פותרים את המשוואה</b> — בשיטת המאזניים.</div></div>
+        <div class="step-row"><div class="n">4</div><div><b>בודקים ועונים</b> — מציבים בחזרה ועונים בשלמות.</div></div>
+      </div>
+      <div class="note"><b>הטריק:</b> לא לדלג על שום צעד. תלמידים שמדלגים — עושים טעויות. ארבעה צעדים, ארבע נקודות בבחינה.</div>
+    </div>
+
+    <div class="card">
+      <h2>בעיות גיל <span class="tag">דפוס נפוץ</span></h2>
+      <p>בעיות גיל חוזרות בכל שנה בבגרות. הדפוס תמיד אותו:</p>
+      <div class="example-box">
+        <div class="q">"האם גדולה מבנה ב-20 שנה. בעוד 5 שנים תהיה פי 2 מגיל הבן. מה גיל הבן היום?"</div>
+        <div class="ex-step"><div class="num">1</div><div class="body">יהי x = גיל הבן היום. גיל האם היום = x + 20</div></div>
+        <div class="ex-step"><div class="num">2</div><div class="body">בעוד 5 שנים: בן = x+5, אם = x+25</div></div>
+        <div class="ex-step"><div class="num">3</div><div class="body"><span class="math">x + 25 = 2(x + 5)</span></div></div>
+        <div class="ex-step"><div class="num">4</div><div class="body"><span class="math">x + 25 = 2x + 10 → x = 15</span></div></div>
+      </div>
+      <div class="note"><b>כלל:</b> "בעוד N שנים" — מוסיפים N לכל הגילאים. "לפני N שנים" — מורידים N מכולם.</div>
+    </div>
+
+    <div class="card">
+      <h2>בעיות מרחק ומהירות <span class="tag">נוסחה קבועה</span></h2>
+      <p>נוסחת הקסם: <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">מרחק = מהירות × זמן</b>. ממנה נגזרות שתי הנוסחאות האחרות:</p>
+      <div class="formula" style="direction:ltr">d = v·t &nbsp;&nbsp; v = d/t &nbsp;&nbsp; t = d/v</div>
+      <div class="example-box">
+        <div class="q">"שני אנשים יוצאים מאותה עיר בכיוונים מנוגדים. אחד נוסע 60 קמ"ש והשני 80 קמ"ש. אחרי כמה שעות יהיו מרוחקים 280 ק"מ?"</div>
+        <div class="ex-step"><div class="num">1</div><div class="body">יהי t = שעות הנסיעה</div></div>
+        <div class="ex-step"><div class="num">2</div><div class="body">מרחק ראשון = 60t, מרחק שני = 80t</div></div>
+        <div class="ex-step"><div class="num">3</div><div class="body"><span class="math">60t + 80t = 280</span></div></div>
+        <div class="ex-step"><div class="num">4</div><div class="body"><span class="math">140t = 280 → t = 2 שעות</span></div></div>
       </div>
     </div>
   </section>
@@ -193,7 +235,7 @@
         <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
       </div>
       <div class="turn-banner" id="turn">תורו של: שחקן</div>
-      <div class="q-box" id="question">—</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">הבעיה הבאה ←</button>
@@ -405,5 +447,10 @@ function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('next
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+

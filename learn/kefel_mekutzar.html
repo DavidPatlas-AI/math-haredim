@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="נוסחאות הכפל המקוצר — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>נוסחאות הכפל המקוצר</title>
 <style>
@@ -167,11 +171,47 @@
     <div class="card">
       <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
       <div class="warn">
-        <b>1.</b> <b>אסור</b> לכתוב (a+b)² = a² + b². <b>חייבים</b> את 2ab באמצע!<br><br>
-        <b>2.</b> בנוסחה 2 — <b>האיבר האמצעי שלילי</b> (−2ab), אבל ה-b² <b>חיובי</b> (כי שלילי בריבוע = חיובי).<br><br>
-        <b>3.</b> כשיש מקדם כמו (2x+3)² — צריך לרבע גם את ה-2: <b>(2x)² = 4x²</b>, לא 2x².<br><br>
-        <b>4.</b> ב-2ab — אם a או b שליליים, שימו לב לסימן הכולל.
+        <b>1.</b> <b>אסור</b> לכתוב <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(a+b)² = a² + b²</span>. <b>חייבים</b> את <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">2ab</span> באמצע!<br><br>
+        <b>2.</b> בנוסחה 2 — <b>האיבר האמצעי שלילי</b> <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(−2ab)</span>, אבל ה-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">b²</span> <b>חיובי</b> (כי שלילי בריבוע = חיובי).<br><br>
+        <b>3.</b> כשיש מקדם כמו <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">(2x+3)²</span> — צריך לרבע גם את ה-2: <b style="direction:ltr;unicode-bidi:isolate;display:inline-block">(2x)² = 4x²</b>, לא <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">2x²</span>.<br><br>
+        <b>4.</b> ב-<span style="direction:ltr;unicode-bidi:isolate;display:inline-block">2ab</span> — אם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">a</span> או <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">b</span> שליליים, שימו לב לסימן הכולל.
       </div>
+    </div>
+
+    <div class="card">
+      <h2>(a+b)² — פריסה שלב אחר שלב <span class="tag">נוסחה 1</span></h2>
+      <p>בואו נפתח לאט לאט, כדי להבין למה יש <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">2ab</span>:</p>
+      <div class="examples">
+        <div>(a + b)² = (a + b)(a + b)</div>
+        <div>= a·a + a·b + b·a + b·b</div>
+        <div>= a² + ab + ab + b²</div>
+        <div>= a² + 2ab + b²</div>
+      </div>
+      <div class="note"><b>שימו לב:</b> ה-2ab בא מכך ש-a·b מופיע <b>פעמיים</b> — פעם מהאיבר הראשון ופעם מהשני. לכן תמיד כותבים 2ab.</div>
+    </div>
+
+    <div class="card">
+      <h2>(a−b)² — כמו נוסחה 1 אבל עם שינוי <span class="tag">נוסחה 2</span></h2>
+      <p>ההבדל היחיד: <b>האיבר האמצעי שלילי</b>. b² נשאר חיובי!</p>
+      <div class="formula" style="direction:ltr">(a − b)² = a² − 2ab + b²</div>
+      <div class="examples">
+        <div>(x − 4)² = x² − 8x + 16 &nbsp; (לא −16!)</div>
+        <div>(3 − y)² = 9 − 6y + y²</div>
+        <div>(2x − 5)² = 4x² − 20x + 25</div>
+      </div>
+      <div class="note"><b>כלל:</b> b² תמיד חיובי — כי שלילי בריבוע = חיובי. הסימן המינוס נמצא רק אצל 2ab.</div>
+    </div>
+
+    <div class="card">
+      <h2>(a+b)(a−b) — הפרש ריבועים <span class="tag">נוסחה 3</span></h2>
+      <p>שני סוגריים עם אותם איברים, רק הסימן שונה — מייצרים <b>הפרש ריבועים</b> בלי איבר אמצעי:</p>
+      <div class="formula" style="direction:ltr">(a + b)(a − b) = a² − b²</div>
+      <div class="examples">
+        <div>(x + 5)(x − 5) = x² − 25</div>
+        <div>(3 + y)(3 − y) = 9 − y²</div>
+        <div>(2x + 7)(2x − 7) = 4x² − 49</div>
+      </div>
+      <div class="note"><b>איך לזהות:</b> שני סוגריים? אחד עם + ואחד עם −? אותם מספרים/אותיות? → נוסחה 3 מייד!</div>
     </div>
   </section>
 
@@ -213,7 +253,7 @@
         <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
       </div>
       <div class="turn-banner" id="turn">תורו של: שחקן</div>
-      <div class="q-box" id="question">—</div>
+      <div class="q-box" id="question">לחצו כדי להתחיל</div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback"></div>
       <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
@@ -376,5 +416,10 @@ function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('next
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
 <script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
+
+
+
+
