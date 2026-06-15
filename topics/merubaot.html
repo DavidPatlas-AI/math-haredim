@@ -286,6 +286,94 @@ function cpuAnswer(btn,v){const fb=document.getElementById('feedback');if(v===cu
 function endTurn(){updateScore();turn=turn===1?2:1;document.getElementById('nextBtn').style.display='block';}
 document.getElementById('nextBtn').onclick=newQ;document.getElementById('n2').textContent='מחשב';newQ();
 </script>
+<!-- GeoGebra Interactive Section -->
+<style id="ggb-embed-css">
+.ggb-embed-section{margin:40px auto;max-width:900px;border-radius:14px;overflow:hidden;border:2px solid rgba(43,58,50,.18);box-shadow:0 4px 28px rgba(0,0,0,.09);font-family:'Heebo',sans-serif;}
+.ggb-section-hdr{background:#2b3a32;color:#f4f1ea;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.ggb-section-hdr h3{margin:0;font-family:'Frank Ruhl Libre',serif;font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px;color:#f4f1ea;}
+.ggb-section-hdr-sub{font-size:.73rem;opacity:.65;font-weight:400;display:block;margin-top:3px;color:#f4f1ea;}
+.ggb-hdr-btns{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+.ggb-btn{padding:6px 15px;border-radius:99px;border:1px solid rgba(255,230,109,.35);background:rgba(255,230,109,.1);color:#ffe66d;font-family:'Heebo',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:.2s;}
+.ggb-btn:hover{background:rgba(255,230,109,.22);}
+.ggb-btn-reset{border-color:rgba(116,185,255,.35);background:rgba(116,185,255,.1);color:#74b9ff;}
+.ggb-btn-reset:hover{background:rgba(116,185,255,.22);}
+.ggb-body{transition:all .25s;}
+.ggb-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:140px;gap:10px;padding:28px 20px;text-align:center;background:#f9f7f2;border-top:1px solid rgba(43,58,50,.08);}
+.ggb-ph-icon{font-size:2.6rem;opacity:.3;}
+.ggb-ph-txt{color:#666;font-size:.88rem;max-width:380px;line-height:1.6;}
+.ggb-ph-lbl{font-size:.73rem;color:#aaa;}
+@keyframes ggb-spin{to{transform:rotate(360deg)}}
+</style>
+<section class="ggb-embed-section" id="ggb-section-merubaot">
+  <div class="ggb-section-hdr">
+    <div>
+      <h3>⬛ חקור מרובעים — כלי גיאומטריה</h3>
+      <span class="ggb-section-hdr-sub">בנו ריבוע, מלבן, מקבילית וטרפז — מדדו שטחים ואלכסונים</span>
+    </div>
+    <div class="ggb-hdr-btns">
+      <button class="ggb-btn ggb-btn-reset" id="ggb-reset-merubaot" onclick="ggbReset_merubaot()" style="display:none">↺ אתחול</button>
+      <button class="ggb-btn" id="ggb-toggle-merubaot" onclick="ggbToggle_merubaot()">הסתר ▲</button>
+    </div>
+  </div>
+  <div class="ggb-body" id="ggb-body-merubaot">
+    <div class="ggb-ph" id="ggb-ph-merubaot">
+      <div class="ggb-ph-icon">⬛</div>
+      <div class="ggb-ph-txt">כלי גיאומטריה — בנו מרובעים שונים וגלו את תכונותיהם</div>
+      <div class="ggb-ph-lbl">⬇ גללו למטה — הכלי יטען אוטומטית</div>
+    </div>
+    <div id="ggb-cont-merubaot"></div>
+  </div>
+</section>
+<script>
+(function() {
+  var _loaded = false, _visible = true, _api = null;
+  var _id = 'merubaot';
+
+  function _load() {
+    if (_loaded) return; _loaded = true;
+    var ph = document.getElementById('ggb-ph-' + _id);
+    ph.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;gap:10px;min-height:80px;color:#888;font-size:.88rem;padding:20px"><div style="width:20px;height:20px;border-radius:50%;border:2px solid #ddd;border-top-color:#2b3a32;animation:ggb-spin .8s linear infinite;flex-shrink:0"></div>טוען GeoGebra…</div>';
+    var cont = document.getElementById('ggb-cont-' + _id);
+    var h = Math.min(540, Math.max(400, Math.round(window.innerHeight * 0.58)));
+    cont.style.height = h + 'px';
+    new GGBApplet({
+      appName: 'geometry', language: 'he',
+      width: cont.offsetWidth || 860, height: h,
+      showToolBar: true, showAlgebraInput: false, showMenuBar: false,
+      showResetIcon: false, enableRightClick: false, showZoomButtons: true,
+      enableFileFeatures: false,
+      appletOnLoad: function() {
+        ph.style.display = 'none';
+        _api = window.ggbApplet;
+        var rb = document.getElementById('ggb-reset-' + _id);
+        if (rb) rb.style.display = '';
+      }
+    }, true).inject('ggb-cont-' + _id);
+  }
+
+  var _sec = document.getElementById('ggb-section-' + _id);
+  if ('IntersectionObserver' in window) {
+    var _obs = new IntersectionObserver(function(e) {
+      if (e[0].isIntersecting) { _load(); _obs.disconnect(); }
+    }, { rootMargin: '200px' });
+    _obs.observe(_sec);
+  }
+
+  window.ggbToggle_merubaot = function() {
+    _visible = !_visible;
+    var b = document.getElementById('ggb-body-' + _id);
+    var tb = document.getElementById('ggb-toggle-' + _id);
+    b.style.display = _visible ? '' : 'none';
+    tb.innerHTML = _visible ? 'הסתר ▲' : 'הצג ▼';
+    if (_visible && !_loaded) _load();
+  };
+
+  window.ggbReset_merubaot = function() {
+    if (_api) _api.reset();
+  };
+})();
+</script>
+
 <script src="../shared/nav.js"></script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
