@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="כלי גיאומטריה אינטראקטיביים — גרפים, גיאומטריה וחישובים אלגבריים. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#2b3a32"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>כלי גיאומטריה אינטראקטיביים | מתמטיקה לחרדים</title>
+<script src="https://www.geogebra.org/apps/deployggb.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+
+  :root {
+    --board:#2b3a32; --board-dark:#1e2b23; --board-light:#374d3e;
+    --chalk:#f4f1ea; --chalk-dim:rgba(244,241,234,.6); --chalk-faint:rgba(244,241,234,.12);
+    --chalk-y:#ffe66d; --chalk-b:#74b9ff; --chalk-g:#55efc4; --chalk-r:#ff7675; --chalk-p:#a29bfe;
+    --wood:#7a5410; --wood-hi:#c4922a;
+    --line:rgba(244,241,234,.12);
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    font-family:'Heebo',sans-serif; color:var(--chalk);
+    min-height:100vh; line-height:1.7; overflow-x:hidden;
+    background:
+      radial-gradient(ellipse 70% 40% at 15% 0%, rgba(255,230,109,.06) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 35% at 85% 100%, rgba(116,185,255,.05) 0%, transparent 55%),
+      var(--board);
+    background-attachment:fixed;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:9998;
+    border:10px solid var(--wood);
+    box-shadow:inset 0 0 0 1px var(--wood-hi), inset 0 0 0 3px rgba(0,0,0,.45), inset 0 0 40px rgba(0,0,0,.12);
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:13px 24px; position:sticky; top:0; z-index:100;
+    background:rgba(20,32,25,.9); backdrop-filter:blur(20px);
+    border-bottom:1px solid rgba(255,230,109,.12);
+    box-shadow:0 4px 24px rgba(0,0,0,.3);
+  }
+  .back-link {
+    display:inline-flex; align-items:center; gap:7px;
+    color:var(--chalk-y); text-decoration:none; font-weight:700; font-size:.88rem;
+    padding:7px 16px; border-radius:20px;
+    border:1px solid rgba(255,230,109,.2); background:rgba(255,230,109,.07);
+    transition:.2s;
+  }
+  .back-link:hover { background:rgba(255,230,109,.15); transform:translateX(3px); }
+  .topbar-title {
+    font-family:'Frank Ruhl Libre',serif; font-size:1.05rem; font-weight:900;
+    color:var(--chalk); letter-spacing:.2px; text-align:center; flex:1;
+  }
+  .topbar-spacer { width:90px; }
+
+  /* ── HERO ── */
+  .hero {
+    padding:36px 24px 28px; text-align:center;
+  }
+  .hero h1 {
+    font-family:'Frank Ruhl Libre',serif; font-size:clamp(1.6rem,4vw,2.2rem);
+    font-weight:900; color:var(--chalk-y); margin-bottom:10px; letter-spacing:.3px;
+  }
+  .hero p { color:var(--chalk-dim); font-size:.92rem; max-width:560px; margin:0 auto; }
+
+  /* ── TOOL TABS ── */
+  .tabs-wrap { max-width:900px; margin:0 auto; padding:0 16px 60px; }
+
+  .tab-nav {
+    display:flex; gap:0; border-radius:14px 14px 0 0; overflow:hidden;
+    border:1px solid var(--line); border-bottom:none;
+    margin-bottom:0;
+  }
+  .tab-btn {
+    flex:1; padding:14px 10px; border:none; cursor:pointer;
+    font-family:'Heebo',sans-serif; font-size:.9rem; font-weight:700;
+    color:var(--chalk-dim); background:rgba(244,241,234,.04);
+    transition:all .2s; position:relative; letter-spacing:.2px;
+    display:flex; align-items:center; justify-content:center; gap:7px;
+  }
+  .tab-btn + .tab-btn { border-right:1px solid var(--line); }
+  .tab-btn:hover { background:rgba(255,230,109,.07); color:var(--chalk); }
+  .tab-btn.active {
+    background:rgba(255,230,109,.1); color:var(--chalk-y);
+    border-bottom:2px solid var(--chalk-y);
+  }
+  .tab-btn.active::after {
+    content:''; position:absolute; bottom:-1px; left:0; right:0; height:1px;
+    background:var(--board-light);
+  }
+  .tab-icon { font-size:1.15rem; }
+  .tab-label-sub { font-size:.68rem; font-weight:400; color:inherit; opacity:.7; display:block; }
+
+  /* ── APPLET PANELS ── */
+  .applet-panel {
+    border:1px solid var(--line); border-top:none;
+    border-radius:0 0 14px 14px;
+    overflow:hidden;
+    background:rgba(244,241,234,.03);
+  }
+
+  /* placeholder shown before load */
+  .ggb-placeholder {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:520px; gap:20px; padding:40px;
+    text-align:center;
+  }
+  .ggb-placeholder-icon { font-size:3.5rem; opacity:.4; }
+  .ggb-placeholder-text { color:var(--chalk-dim); font-size:.92rem; max-width:360px; }
+  .load-btn {
+    display:inline-flex; align-items:center; gap:10px;
+    padding:13px 30px; border-radius:12px; border:none; cursor:pointer;
+    font-family:'Frank Ruhl Libre',serif; font-size:1.05rem; font-weight:900;
+    color:var(--board-dark); background:linear-gradient(135deg,var(--chalk-y),#ffd233);
+    box-shadow:0 6px 20px rgba(255,230,109,.25);
+    transition:transform .2s, box-shadow .2s;
+  }
+  .load-btn:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(255,230,109,.35); }
+
+  /* live GeoGebra container */
+  .ggb-live { display:none; width:100%; }
+  .ggb-live.loaded { display:block; }
+
+  /* ── APPLET CONTROLS ── */
+  .applet-controls {
+    display:none; align-items:center; justify-content:space-between;
+    padding:10px 16px; border-top:1px solid var(--line);
+    background:rgba(20,32,25,.6); flex-wrap:wrap; gap:8px;
+  }
+  .applet-controls.visible { display:flex; }
+  .ctrl-btn {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:7px 16px; border-radius:99px; border:1px solid var(--line);
+    background:rgba(244,241,234,.06); color:var(--chalk-dim);
+    font-family:'Heebo',sans-serif; font-size:.8rem; font-weight:700;
+    cursor:pointer; transition:.2s;
+  }
+  .ctrl-btn:hover { border-color:var(--chalk-y); color:var(--chalk-y); background:rgba(255,230,109,.08); }
+  .ctrl-btn.danger:hover { border-color:var(--chalk-r); color:var(--chalk-r); background:rgba(255,118,117,.08); }
+  .applet-hint { font-size:.75rem; color:var(--chalk-dim); opacity:.6; }
+
+  /* ── EXAMPLES STRIP ── */
+  .examples-strip {
+    padding:12px 16px 0;
+    display:none; flex-wrap:wrap; gap:7px; align-items:center;
+  }
+  .examples-strip.visible { display:flex; }
+  .examples-label { font-size:.7rem; color:var(--chalk-dim); opacity:.6; white-space:nowrap; }
+  .ex-chip {
+    padding:5px 12px; border-radius:99px; border:1px solid var(--line);
+    background:rgba(244,241,234,.05); color:var(--chalk-dim);
+    font-size:.76rem; font-weight:600; cursor:pointer; transition:.2s;
+    direction:ltr;
+  }
+  .ex-chip:hover { border-color:var(--chalk-b); color:var(--chalk-b); background:rgba(116,185,255,.08); }
+
+  /* ── INFO CARDS ── */
+  .info-grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px;
+    max-width:900px; margin:32px auto 0; padding:0 16px;
+  }
+  .info-card {
+    border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; background:rgba(244,241,234,.03);
+  }
+  .info-card h3 {
+    font-family:'Frank Ruhl Libre',serif; font-size:1rem; font-weight:900;
+    color:var(--chalk-y); margin-bottom:7px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .info-card p { font-size:.8rem; color:var(--chalk-dim); line-height:1.6; }
+  .info-card ul { list-style:none; margin-top:6px; }
+  .info-card ul li::before { content:'← '; color:var(--chalk-y); font-weight:700; }
+  .info-card ul li { font-size:.78rem; color:var(--chalk-dim); padding:2px 0; }
+
+  /* ── FOOTER ── */
+  .chalk-footer {
+    text-align:center; font-size:.7rem; color:rgba(244,241,234,.25);
+    padding:18px 16px 32px; margin-top:32px;
+    border-top:1px solid var(--line); letter-spacing:.3px;
+  }
+  .chalk-footer a { color:rgba(116,185,255,.5); text-decoration:none; }
+  .chalk-footer a:hover { color:var(--chalk-b); }
+
+  /* ── LOADING SPINNER ── */
+  .ggb-loading {
+    display:flex; align-items:center; justify-content:center; min-height:520px;
+    color:var(--chalk-dim); font-size:.88rem; gap:10px;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .spinner {
+    width:22px; height:22px; border-radius:50%;
+    border:2px solid var(--line); border-top-color:var(--chalk-y);
+    animation:spin .8s linear infinite;
+  }
+
+  @media(max-width:640px) {
+    .topbar { padding:11px 14px; }
+    .topbar-title { font-size:.9rem; }
+    .topbar-spacer { width:60px; }
+    .hero { padding:24px 16px 20px; }
+    .tab-btn { font-size:.78rem; padding:12px 6px; }
+    .tab-label-sub { display:none; }
+    .ggb-placeholder { min-height:380px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<nav class="topbar">
+  <a href="/" class="back-link">← בית</a>
+  <div class="topbar-title">🔧 כלי גיאומטריה אינטראקטיביים</div>
+  <div class="topbar-spacer"></div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>כלי גיאומטריה אינטראקטיביים</h1>
+  <p>שלושה כלים של GeoGebra — גרפים, גיאומטריה וחישובים אלגבריים. בחרו כלי ולחצו "טעינה" להפעלה.</p>
+</div>
+
+<!-- TABS + APPLETS -->
+<div class="tabs-wrap">
+
+  <!-- TAB NAVIGATION -->
+  <div class="tab-nav" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true"
+            onclick="switchTab(0)" id="tab-0">
+      <span class="tab-icon">📈</span>
+      <span>
+        גרפים
+        <span class="tab-label-sub">פונקציות ליניאריות</span>
+      </span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false"
+            onclick="switchTab(1)" id="tab-1">
+      <span class="tab-icon">📐</span>
+      <span>
+        גיאומטריה
+        <span class="tab-label-sub">צורות וזוויות</span>
+      </span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false"
+            onclick="switchTab(2)" id="tab-2">
+      <span class="tab-icon">🧮</span>
+      <span>
+        אלגברה CAS
+        <span class="tab-label-sub">חישובים מדויקים</span>
+      </span>
+    </button>
+  </div>
+
+  <!-- ── PANEL 0: GRAPHING ── -->
+  <div class="applet-panel" id="panel-0">
+
+    <!-- Examples strip (shown after load) -->
+    <div class="examples-strip" id="examples-0">
+      <span class="examples-label">דוגמאות מהירות:</span>
+      <span class="ex-chip" onclick="runExample(0,'y=2x+1')">y=2x+1</span>
+      <span class="ex-chip" onclick="runExample(0,'y=x^2-4x+3')">y=x²−4x+3</span>
+      <span class="ex-chip" onclick="runExample(0,'y=-x^2+2x+3')">y=−x²+2x+3</span>
+      <span class="ex-chip" onclick="runExample(0,'y=sqrt(x)')">y=√x</span>
+      <span class="ex-chip" onclick="runExample(0,'x^2+y^2=25')">עיגול r=5</span>
+      <span class="ex-chip" onclick="runExamplePair(0,'y=x^2-3','y=x+1')">פרבולה∩קו</span>
+    </div>
+
+    <!-- Placeholder -->
+    <div class="ggb-placeholder" id="ph-0">
+      <div class="ggb-placeholder-icon">📈</div>
+      <div class="ggb-placeholder-text">
+        מחשבון גרפים — הקלידו פונקציות וראו את הגרף מיד.<br>
+        קו ישר, פרבולה, שורש, עיגול ועוד.
+      </div>
+      <button class="load-btn" onclick="loadApplet(0)">
+        ⚡ טען כלי גרפים
+      </button>
+    </div>
+
+    <!-- Loading state -->
+    <div class="ggb-loading" id="loading-0" style="display:none">
+      <div class="spinner"></div>
+      <span>טוען GeoGebra…</span>
+    </div>
+
+    <!-- Live applet -->
+    <div class="ggb-live" id="ggb-0"></div>
+
+    <!-- Controls (shown after load) -->
+    <div class="applet-controls" id="ctrl-0">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="ctrl-btn" onclick="resetApplet(0)">↺ אפס גרף</button>
+        <button class="ctrl-btn" onclick="toggleToolbar(0)">⚙ הסתר/הצג סרגל</button>
+      </div>
+      <span class="applet-hint">גלגלת עכבר = זום · גרור = הזזה</span>
+    </div>
+
+  </div><!-- /panel-0 -->
+
+  <!-- ── PANEL 1: GEOMETRY ── -->
+  <div class="applet-panel" id="panel-1" style="display:none">
+
+    <!-- Placeholder -->
+    <div class="ggb-placeholder" id="ph-1">
+      <div class="ggb-placeholder-icon">📐</div>
+      <div class="ggb-placeholder-text">
+        כלי גיאומטריה — בנו צורות, מדדו זוויות ואורכים, גלו תכונות.
+        מושלם לגיאומטריה ומשולשים.
+      </div>
+      <button class="load-btn" onclick="loadApplet(1)">
+        ⚡ טען כלי גיאומטריה
+      </button>
+    </div>
+
+    <!-- Loading state -->
+    <div class="ggb-loading" id="loading-1" style="display:none">
+      <div class="spinner"></div>
+      <span>טוען GeoGebra…</span>
+    </div>
+
+    <!-- Live applet -->
+    <div class="ggb-live" id="ggb-1"></div>
+
+    <!-- Controls (shown after load) -->
+    <div class="applet-controls" id="ctrl-1">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="ctrl-btn" onclick="resetApplet(1)">↺ אפס לוח</button>
+        <button class="ctrl-btn" onclick="toggleToolbar(1)">⚙ הסתר/הצג סרגל</button>
+      </div>
+      <span class="applet-hint">לחצו על כלי בסרגל כדי לצייר</span>
+    </div>
+
+  </div><!-- /panel-1 -->
+
+  <!-- ── PANEL 2: CAS ── -->
+  <div class="applet-panel" id="panel-2" style="display:none">
+
+    <!-- Examples strip (shown after load) -->
+    <div class="examples-strip" id="examples-2">
+      <span class="examples-label">דוגמאות:</span>
+      <span class="ex-chip" onclick="runExample(2,'Factor(x^2-5x+6)')">פירוק x²−5x+6</span>
+      <span class="ex-chip" onclick="runExample(2,'Solve(2x+3=7,x)')">פתרון 2x+3=7</span>
+      <span class="ex-chip" onclick="runExample(2,'Expand((x+3)^2)')">פתיחת (x+3)²</span>
+      <span class="ex-chip" onclick="runExample(2,'Simplify((x^2-9)/(x-3))')">פישוט שבר</span>
+    </div>
+
+    <!-- Placeholder -->
+    <div class="ggb-placeholder" id="ph-2">
+      <div class="ggb-placeholder-icon">🧮</div>
+      <div class="ggb-placeholder-text">
+        מחשבון אלגברי מדויק (CAS) — פירוק לגורמים, פתרון משוואות,
+        פישוט ביטויים ועוד. תוצאות מדויקות עם שורשים ושברים.
+      </div>
+      <button class="load-btn" onclick="loadApplet(2)">
+        ⚡ טען מחשבון אלגברי
+      </button>
+    </div>
+
+    <!-- Loading state -->
+    <div class="ggb-loading" id="loading-2" style="display:none">
+      <div class="spinner"></div>
+      <span>טוען GeoGebra…</span>
+    </div>
+
+    <!-- Live applet -->
+    <div class="ggb-live" id="ggb-2"></div>
+
+    <!-- Controls (shown after load) -->
+    <div class="applet-controls" id="ctrl-2">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="ctrl-btn" onclick="resetApplet(2)">↺ נקה חישובים</button>
+        <button class="ctrl-btn" onclick="toggleToolbar(2)">⚙ הסתר/הצג סרגל</button>
+      </div>
+      <span class="applet-hint">Enter לחישוב · Ctrl+Z לביטול</span>
+    </div>
+
+  </div><!-- /panel-2 -->
+
+</div><!-- /tabs-wrap -->
+
+<!-- INFO CARDS -->
+<div class="info-grid">
+
+  <div class="info-card">
+    <h3><span>📈</span> כלי גרפים — שימושים</h3>
+    <ul>
+      <li>ציור גרפים של פונקציות ליניאריות</li>
+      <li>פרבולות ומציאת נקודות חיתוך</li>
+      <li>גרפי שורשים ועיגולים</li>
+      <li>השוואת שתי פונקציות על אותו לוח</li>
+    </ul>
+  </div>
+
+  <div class="info-card">
+    <h3><span>📐</span> גיאומטריה — שימושים</h3>
+    <ul>
+      <li>בניית משולשים ומדידת זוויות</li>
+      <li>בדיקת משפט פיתגורס ויזואלית</li>
+      <li>ציור מרובעים ומעגלים</li>
+      <li>מדידת שטחים ואורכים</li>
+    </ul>
+  </div>
+
+  <div class="info-card">
+    <h3><span>🧮</span> אלגברה CAS — שימושים</h3>
+    <ul>
+      <li><span dir="ltr" style="unicode-bidi:isolate">Factor(x²−5x+6)</span> — פירוק</li>
+      <li><span dir="ltr" style="unicode-bidi:isolate">Solve(2x+3=7,x)</span> — פתרון</li>
+      <li><span dir="ltr" style="unicode-bidi:isolate">Expand((x+3)²)</span> — פתיחת סוגריים</li>
+      <li><span dir="ltr" style="unicode-bidi:isolate">Simplify(expr)</span> — פישוט</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="chalk-footer">
+  מתמטיקה לחרדים · כלי גיאומטריה אינטראקטיביים · הכנה למה״ט ולבגרות 3 יח״ל<br>
+  <span style="opacity:.7">
+    הכלים מופעלים על-ידי
+    <a href="https://www.geogebra.org" target="_blank" rel="noopener">GeoGebra</a>
+    — רשיון <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC-BY-SA 3.0</a>
+  </span>
+</footer>
+
+<script>
+// ── STATE ──
+var applets = [null, null, null];
+var toolbarVisible = [true, true, true];
+var loaded = [false, false, false];
+var currentTab = 0;
+
+var CONFIGS = [
+  { appName:'graphing',  language:'he', showAlgebraInput:true,  showMenuBar:true, containerId:'ggb-0' },
+  { appName:'geometry',  language:'he', showAlgebraInput:false, showMenuBar:true, containerId:'ggb-1' },
+  { appName:'cas',       language:'he', showAlgebraInput:false, showMenuBar:true, containerId:'ggb-2' },
+];
+
+// ── TAB SWITCHING ──
+function switchTab(idx) {
+  currentTab = idx;
+  // update buttons
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) {
+    b.classList.toggle('active', i === idx);
+    b.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+  });
+  // show/hide panels
+  for (var i = 0; i < 3; i++) {
+    document.getElementById('panel-' + i).style.display = (i === idx) ? '' : 'none';
+  }
+}
+
+// ── LAZY LOAD ──
+function loadApplet(idx) {
+  if (loaded[idx]) return;
+
+  // hide placeholder, show spinner
+  document.getElementById('ph-' + idx).style.display = 'none';
+  document.getElementById('loading-' + idx).style.display = 'flex';
+
+  var cfg = CONFIGS[idx];
+  var container = document.getElementById(cfg.containerId);
+  var h = Math.max(520, window.innerHeight - 260);
+  container.style.height = h + 'px';
+
+  var params = {
+    appName: cfg.appName,
+    language: cfg.language,
+    width: container.offsetWidth || 860,
+    height: h,
+    showToolBar: true,
+    showAlgebraInput: cfg.showAlgebraInput,
+    showMenuBar: cfg.showMenuBar,
+    enableRightClick: false,
+    showResetIcon: false,
+    enableLabelDrags: true,
+    allowStyleBar: true,
+    showZoomButtons: true,
+    enableFileFeatures: false,
+    appletOnLoad: (function(i) {
+      return function() {
+        loaded[i] = true;
+        document.getElementById('loading-' + i).style.display = 'none';
+        var live = document.getElementById('ggb-' + i);
+        live.classList.add('loaded');
+        document.getElementById('ctrl-' + i).classList.add('visible');
+        var ex = document.getElementById('examples-' + i);
+        if (ex) ex.classList.add('visible');
+      };
+    })(idx)
+  };
+
+  var applet = new GGBApplet(params, true);
+  applet.inject(cfg.containerId);
+  applets[idx] = applet;
+}
+
+// ── RESET ──
+function resetApplet(idx) {
+  var api = getAPI(idx);
+  if (api) api.reset();
+}
+
+// ── TOGGLE TOOLBAR ──
+function toggleToolbar(idx) {
+  var api = getAPI(idx);
+  if (!api) return;
+  toolbarVisible[idx] = !toolbarVisible[idx];
+  api.showToolBar(toolbarVisible[idx]);
+}
+
+// ── GET API ──
+function getAPI(idx) {
+  // GGBApplet exposes global ggbApplet / ggbApplet1 / ggbApplet2
+  var names = ['ggbApplet', 'ggbApplet1', 'ggbApplet2'];
+  // Try by order of injection (first loaded = ggbApplet, second = ggbApplet1, etc.)
+  var loadedSoFar = 0;
+  for (var i = 0; i <= idx; i++) { if (loaded[i]) loadedSoFar++; }
+  var name = loadedSoFar === 1 ? 'ggbApplet' : ('ggbApplet' + (loadedSoFar - 1));
+  return window[name] || null;
+}
+
+// ── EXAMPLES (graphing) ──
+function runExample(idx, expr) {
+  var api = getAPI(idx);
+  if (!api) { loadApplet(idx); return; }
+  api.reset();
+  api.evalCommand(expr);
+}
+
+function runExamplePair(idx, expr1, expr2) {
+  var api = getAPI(idx);
+  if (!api) { loadApplet(idx); return; }
+  api.reset();
+  api.evalCommand(expr1);
+  api.evalCommand(expr2);
+}
+
+// ── EXAMPLES (CAS) ──
+// For CAS, evalCommand works differently — just paste into input
+function runExample(idx, expr) {
+  var api = getAPI(idx);
+  if (!api) { loadApplet(idx); return; }
+  if (CONFIGS[idx].appName === 'cas') {
+    api.evalCommand(expr);
+  } else {
+    api.reset();
+    api.evalCommand(expr);
+  }
+}
+
+// ── RESIZE ──
+window.addEventListener('resize', function() {
+  for (var i = 0; i < 3; i++) {
+    if (!loaded[i]) continue;
+    var c = document.getElementById('ggb-' + i);
+    var h = Math.max(520, window.innerHeight - 260);
+    c.style.height = h + 'px';
+  }
+});
+</script>
+
+<script src="/shared/nav.js"></script>
+<script>if("serviceWorker"in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})}</script>
+</body>
+</html>
