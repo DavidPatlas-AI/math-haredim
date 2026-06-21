@@ -1,0 +1,407 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+<meta name="description" content="יום לפני המבחן — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>יום לפני המבחן</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+        :root {
+            --ink: #1a1a2e;
+            --paper: #f8f6f0;
+            --accent: #1e6091;
+            --accent2: #c0392b;
+            --gold: #c9a227;
+            --line: #d5d0c8;
+            --shadow: 0 10px 30px rgba(26, 26, 46, .10);
+            --done: #2d6a4f;
+            --warn: #c0392b;
+            --mid: #d97706;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Heebo', sans-serif;
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 20px 12px 60px;
+            background: radial-gradient(circle at 12% 8%, rgba(192, 57, 43, .04), transparent 40%),
+                radial-gradient(circle at 88% 92%, rgba(45, 106, 79, .05), transparent 40%),
+                var(--paper);
+        }
+        .wrap { max-width: 850px; margin: 0 auto; }
+        header {
+            text-align: center;
+            padding: 32px 20px 28px;
+            border: 2px solid var(--ink);
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: "📅";
+            position: absolute;
+            font-size: 110px;
+            top: -15px;
+            left: 15px;
+            opacity: .04;
+        }
+        .eyebrow { font-size: .85rem; letter-spacing: 3px; color: var(--warn); font-weight: 600; position: relative; }
+        h1 { font-family: 'Frank Ruhl Libre', serif; font-size: 2.2rem; font-weight: 900; margin: 6px 0 2px; position: relative; }
+        .sub { font-size: 1rem; color: #5a5a6e; position: relative; }
+        .card {
+            background: #fff;
+            border: 1.5px solid var(--line);
+            border-radius: 16px;
+            padding: 24px 22px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+        .card h2 {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .tag { background: var(--gold); color: #fff; font-size: .7rem; font-weight: 700; padding: 2px 8px; border-radius: 5px; font-family: 'Heebo'; }
+        .tag.red { background: var(--warn); }
+        .tag.grn { background: var(--done); }
+        .tag.org { background: var(--mid); }
+
+        /* CHECKLIST */
+        .checklist { list-style: none; }
+        .checklist li {
+            padding: 6px 0;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: .95rem;
+            transition: .15s;
+        }
+        .checklist li:last-child { border-bottom: none; }
+        .checklist li:hover { background: rgba(201, 162, 39, .04); border-radius: 6px; }
+        .checklist .box {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--line);
+            border-radius: 5px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .85rem;
+            transition: .15s;
+        }
+        .checklist li.done .box {
+            background: var(--done);
+            border-color: var(--done);
+            color: #fff;
+        }
+        .checklist li.done .text { text-decoration: line-through; opacity: .6; }
+
+        /* FORMULAS */
+        .formula-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+        @media (max-width: 600px) { .formula-grid { grid-template-columns: 1fr 1fr; } }
+        .formula-chip {
+            background: var(--paper);
+            border: 1.5px solid var(--line);
+            border-radius: 10px;
+            padding: 10px 12px;
+            text-align: center;
+            font-family: 'Frank Ruhl Libre', serif;
+            font-weight: 700;
+            font-size: .95rem;
+            direction: ltr;
+        }
+
+        /* TIPS */
+        .tip-row {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            padding: 5px 0;
+            border-bottom: 1px solid var(--line);
+            font-size: .92rem;
+        }
+        .tip-row:last-child { border-bottom: none; }
+        .tip-icon { font-size: 1.1rem; min-width: 26px; text-align: center; }
+
+        /* SIMULATION */
+        .sim-q {
+            background: var(--paper);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 10px;
+        }
+        .sim-q .q { font-weight: 700; margin-bottom: 8px; font-family: 'Frank Ruhl Libre', serif; direction: ltr; }
+        .sim-q .opts { display: flex; gap: 8px; flex-wrap: wrap; }
+        .sim-q .opts button {
+            font-family: 'Heebo';
+            font-size: .85rem;
+            font-weight: 600;
+            border: 2px solid var(--ink);
+            background: #fff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: .15s;
+        }
+        .sim-q .opts button:hover { background: rgba(30,96,145,.06); }
+        .sim-q .opts button.picked-right { background: var(--done); color: #fff; border-color: var(--done); }
+        .sim-q .opts button.picked-wrong { background: var(--warn); color: #fff; border-color: var(--warn); }
+        .sim-q .feedback { margin-top: 6px; font-weight: 700; font-size: .85rem; min-height: 20px; }
+
+        /* READINESS */
+        .readiness-bar {
+            width: 100%;
+            height: 20px;
+            background: var(--line);
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .readiness-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width .4s;
+            background: var(--done);
+        }
+        .big-percent {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            text-align: center;
+            color: var(--done);
+        }
+        .readiness-questions {
+            display: grid;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .readiness-questions div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: .9rem;
+            padding: 4px 0;
+        }
+        .readiness-questions .rbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--line);
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .15s;
+        }
+        .readiness-questions div.yes .rbox { background: var(--done); border-color: var(--done); color: #fff; }
+
+        footer { text-align: center; font-size: .8rem; color: #7d9285; margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="eyebrow">📅 ערב לפני — הכנה אחרונה</div>
+            <h1>יום לפני המבחן</h1>
+            <div class="sub">צ'קליסט, נוסחאות, טיפים, שאלות שחוזרות, סימולציה ובדיקת מוכנות</div>
+        </header>
+
+        <!-- ====== CHECKLIST ====== -->
+        <div class="card">
+            <h2>✅ צ'קליסט — נושאים שחייבים לדעת <span class="tag red">חובה</span></h2>
+            <ul class="checklist" id="checklist">
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">נוסחאות כפל מקוצר — (a±b)², (a+b)(a−b)</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">פירוק לגורמים — גורם משותף, טרינום, הפרש ריבועים</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">תחום הגדרה — מכנה ≠ 0, שורש ≥ 0</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">שברים אלגבריים — צמצום, כפל, חילוק, מכנה משותף</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">משוואות עם שברים — ת"ה, מכנה משותף, בדיקה</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">משוואה ריבועית — דלתא, שורשים, וייטה</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">אי-שוויונות — היפוך סימן, ציר מספרים</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">פרבולה — קודקוד, ציר סימטריה, חיתוך צירים, סקיצה</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">קו ישר — שיפוע, חיתוך צירים</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">פיתגורס + טריגונומטריה (sin, cos, tan)</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">שטחים והיקפים — כל הצורות + מעגל</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">דמיון משולשים — k, k², ז.ז, צ.ז.צ</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">חפיפת משולשים — צ.ז.צ, ז.צ.ז, צ.צ.צ, צ.צ.ז</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">בעיות תנועה והספק — טבלה, קצב</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">טור חשבוני — aₙ=a₁+(n−1)d, Sₙ</span></li>
+                <li onclick="this.classList.toggle('done')"><span class="box">✓</span><span class="text">סטטיסטיקה + הסתברות — ממוצע, חציון, P=רצוי/אפשרי</span></li>
+            </ul>
+        </div>
+
+        <!-- ====== FORMULAS ====== -->
+        <div class="card">
+            <h2>📐 נוסחאות אחרונות — להעיף מבט <span class="tag org">דקה לפני</span></h2>
+            <div class="formula-grid">
+                <div class="formula-chip">(a+b)²=a²+2ab+b²</div>
+                <div class="formula-chip">(a−b)²=a²−2ab+b²</div>
+                <div class="formula-chip">(a+b)(a−b)=a²−b²</div>
+                <div class="formula-chip">x=[−b±√(b²−4ac)]/2a</div>
+                <div class="formula-chip">x<sub>ק</sub>=−b/(2a)</div>
+                <div class="formula-chip">a²+b²=c²</div>
+                <div class="formula-chip">sin=מול/יתר</div>
+                <div class="formula-chip">A=πr²</div>
+                <div class="formula-chip">P=2πr</div>
+                <div class="formula-chip">(a+b)h/2 טרפז</div>
+                <div class="formula-chip">aₙ=a₁+(n−1)d</div>
+                <div class="formula-chip">Sₙ=n(a₁+aₙ)/2</div>
+            </div>
+        </div>
+
+        <!-- ====== TIPS ====== -->
+        <div class="card">
+            <h2>💡 טיפים אחרונים — לפני שנכנסים <span class="tag grn">טיפים</span></h2>
+            <div class="tip-row"><span class="tip-icon">1</span><span>קראו <b>את כל השאלה</b> לפני שאתם פותרים. סמנו מילות מפתח.</span></div>
+            <div class="tip-row"><span class="tip-icon">2</span><span><b>תחום הגדרה</b> — תמיד לפני הכול. בשברים ובשורשים.</span></div>
+            <div class="tip-row"><span class="tip-icon">3</span><span>כפל/חילוק במספר שלילי באי-שוויון = <b>הופכים סימן</b>.</span></div>
+            <div class="tip-row"><span class="tip-icon">4</span><span><b>בדקו תשובה</b> — הציבו במשוואה המקורית. לוקח 10 שניות.</span></div>
+            <div class="tip-row"><span class="tip-icon">5</span><span>אם נתקעתם — <b>כתבו מה שאתם יודעים</b>. ת"ה, שרטוט, סימון נתונים.</span></div>
+            <div class="tip-row"><span class="tip-icon">6</span><span>שטח — משולש, טרפז, מעוין, דלתון: <b>אל תשכחו לחלק ב-2</b>.</span></div>
+            <div class="tip-row"><span class="tip-icon">7</span><span>בפרבולה: a>0 = מחייכת ∪. a<0 = עצובה ∩.</span></div>
+            <div class="tip-row"><span class="tip-icon">8</span><span>שתי דקות אחרונות — <b>עברו על כל השאלות</b>. וודאו שלא דילגתם.</span></div>
+        </div>
+
+        <!-- ====== שאלות שחוזרות ====== -->
+        <div class="card">
+            <h2>🔄 שאלות שחוזרות הרבה <span class="tag red">שימו לב</span></h2>
+            <div class="tip-row"><span class="tip-icon">🔁</span><span><b>"פתרו את המשוואה"</b> — כמעט תמיד ריבועית, תבדקו דלתא.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔁</span><span><b>"מהו תחום ההגדרה?"</b> — מופיע ב-85% מהבחינות.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔁</span><span><b>"פרקו לגורמים"</b> — גורם משותף קודם, תמיד.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔁</span><span><b>"מצאו את הקודקוד" / "שרטטו סקיצה"</b> — פרבולה.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔁</span><span><b>"חשבו שטח / היקף"</b> — צורה אחת או צורה מורכבת.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔁</span><span><b>"הוכיחו דמיון / חפיפה"</b> — ז.ז הכי קל.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔁</span><span><b>"מהו האיבר במקום... / סכום"</b> — טור חשבוני.</span></div>
+            <div class="tip-row"><span class="tip-icon">🔁</span><span><b>בעיית תנועה / הספק</b> — טבלה, v·t=s או קצב=1/זמן.</span></div>
+        </div>
+
+        <!-- ====== SIMULATION ====== -->
+        <div class="card">
+            <h2>🎯 סימולציה מהירה — 5 שאלות <span class="tag org">בדקו את עצמכם</span></h2>
+            <div id="simContainer"></div>
+            <div id="simScore" style="text-align:center;font-weight:900;font-size:1.1rem;margin-top:10px;"></div>
+            <button id="simReset" style="display:none;margin:10px auto 0;font-family:'Heebo';font-weight:700;border:none;background:var(--ink);color:#fff;padding:8px 18px;border-radius:8px;cursor:pointer;">🔄 נסו שוב</button>
+        </div>
+
+        <!-- ====== READINESS ====== -->
+        <div class="card">
+            <h2>🧠 בדיקת מוכנות סופית <span class="tag grn">כן / לא</span></h2>
+            <div class="readiness-questions" id="readiness">
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני יודע לפתוח סוגריים עם נוסחאות כפל מקוצר</div>
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני יודע לפרק לגורמים (גורם משותף, טרינום, הפרש ריבועים)</div>
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני זוכר לבדוק תחום הגדרה לפני כל שאלה עם שבר/שורש</div>
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני יודע לפתור משוואה ריבועית עם נוסחת שורשים</div>
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני זוכר להפוך סימן באי-שוויון כשכופלים בשלילי</div>
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני יודע למצוא קודקוד פרבולה: x=−b/(2a)</div>
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני יודע מתי פרבולה מחייכת (a>0) ומתי עצובה (a<0)</div>
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני יודע את נוסחאות השטח של כל הצורות</div>
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני יודע לזהות דמיון משולשים (ז.ז) וחפיפה</div>
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני יודע לפתור בעיות תנועה והספק עם טבלה</div>
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני יודע את נוסחאות הטור החשבוני</div>
+                <div onclick="this.classList.toggle('yes')"><span class="rbox">✓</span>אני מרגיש מוכן/ה — אני הולך להצליח!</div>
+            </div>
+            <div class="big-percent" id="readinessPercent">0%</div>
+            <div class="readiness-bar"><div class="readiness-fill" id="readinessFill" style="width:0%"></div></div>
+            <p style="text-align:center;font-size:.9rem;color:#5a5a6e" id="readinessMsg">סמנו את כל מה שנכון עבורכם</p>
+        </div>
+
+        <footer>📅 יום לפני המבחן · אתם מוכנים. לכו על זה! 🚀</footer>
+    </div>
+
+    <script>
+        // ====== SIMULATION ======
+        const questions = [
+            { q: "x² − 9 = ?", opts: ["(x+3)(x−3)", "(x−3)²", "x²−9", "(x+9)(x−1)"], ans: 0 },
+            { q: "מהו x הקודקוד של y=x²−4x+3?", opts: ["2", "−2", "4", "−4"], ans: 0 },
+            { q: "−2x > 6 → x ?", opts: ["x < −3", "x > −3", "x < 3", "x > 3"], ans: 0 },
+            { q: "שטח מעגל רדיוס 5?", opts: ["25π", "10π", "5π", "50π"], ans: 0 },
+            { q: "a₁=3, d=4. a₅ = ?", opts: ["19", "15", "23", "7"], ans: 0 },
+            { q: "sin 30° = ?", opts: ["0.5", "√3/2", "1", "0"], ans: 0 },
+            { q: "P(זוגי) בהטלת קובייה?", opts: ["1/2", "1/6", "1/3", "2/3"], ans: 0 },
+            { q: "שטח טרפז בסיסים 4,10 גובה 5?", opts: ["35", "70", "25", "50"], ans: 0 },
+        ];
+        let simAnswered = 0, simCorrect = 0;
+        function buildSim() {
+            const container = document.getElementById('simContainer');
+            container.innerHTML = '';
+            simAnswered = 0; simCorrect = 0;
+            document.getElementById('simScore').textContent = '';
+            document.getElementById('simReset').style.display = 'none';
+            const shuffled = questions.sort(() => Math.random() - 0.5).slice(0, 5);
+            shuffled.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.className = 'sim-q';
+                div.innerHTML = `<div class="q">${item.q}</div><div class="opts" id="opts${i}"></div><div class="feedback" id="fb${i}"></div>`;
+                container.appendChild(div);
+                const optDiv = document.getElementById('opts' + i);
+                item.opts.forEach((opt, j) => {
+                    const btn = document.createElement('button');
+                    btn.textContent = opt;
+                    btn.addEventListener('click', () => {
+                        if (btn.classList.contains('picked-right') || btn.classList.contains('picked-wrong')) return;
+                        simAnswered++;
+                        const fb = document.getElementById('fb' + i);
+                        if (j === item.ans) {
+                            btn.classList.add('picked-right');
+                            fb.textContent = '✓ נכון!';
+                            fb.style.color = 'var(--done)';
+                            simCorrect++;
+                        } else {
+                            btn.classList.add('picked-wrong');
+                            fb.textContent = '✗ התשובה: ' + item.opts[item.ans];
+                            fb.style.color = 'var(--warn)';
+                            optDiv.querySelectorAll('button')[item.ans].classList.add('picked-right');
+                        }
+                        if (simAnswered === 5) {
+                            document.getElementById('simScore').textContent = '🎯 סיימתם! ' + simCorrect + '/5 נכונות';
+                            document.getElementById('simReset').style.display = 'block';
+                        }
+                    });
+                    optDiv.appendChild(btn);
+                });
+            });
+        }
+        buildSim();
+        document.getElementById('simReset').addEventListener('click', buildSim);
+
+        // ====== READINESS ======
+        function updateReadiness() {
+            const total = document.querySelectorAll('#readiness div').length;
+            const yes = document.querySelectorAll('#readiness div.yes').length;
+            const pct = Math.round((yes / total) * 100);
+            document.getElementById('readinessPercent').textContent = pct + '%';
+            document.getElementById('readinessFill').style.width = pct + '%';
+            const msg = document.getElementById('readinessMsg');
+            if (pct === 100) msg.textContent = '🏆 אתם מוכנים לגמרי!';
+            else if (pct >= 75) msg.textContent = '👍 כמעט שם — תחזקו את מה שחסר';
+            else if (pct >= 50) msg.textContent = '📚 יש עוד על מה לעבוד — מחר בבוקר';
+            else msg.textContent = '🔴 אל תלחצו — תעברו על הדפים של מה שלא מסומן';
+        }
+        document.querySelectorAll('#readiness div').forEach(div => {
+            div.addEventListener('click', () => { setTimeout(updateReadiness, 50); });
+        });
+    </script>
+<script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
+</body>
+</html>
+
+
+

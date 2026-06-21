@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#2b3a32"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מסלול אנגלית — הכנה למה״ט ולבגרות 3 יח״ל</title>
+<meta name="description" content="לימוד אנגלית לחרדים — מילון, כרטיסיות, תרגול ומשחק. הכנה למה״ט ולבגרות 3 יח״ל.">
+<style>
+:root{
+  --board:#2b3a32;--board-dark:#1e2b23;--board-light:#374d3e;
+  --chalk:#f4f1ea;--chalk-dim:rgba(244,241,234,.6);--chalk-faint:rgba(244,241,234,.18);
+  --chalk-y:#ffe66d;--chalk-b:#74b9ff;--chalk-g:#55efc4;--chalk-r:#ff7675;
+  --wood:#7a5410;--wood-hi:#c4922a;--wood-dk:#4a3008;
+  --line:rgba(244,241,234,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Heebo',sans-serif;background:var(--board);color:var(--chalk);
+  min-height:100vh;line-height:1.7;overflow-x:hidden;padding-bottom:80px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+  border:14px solid var(--wood);
+  box-shadow:inset 0 0 0 2px var(--wood-hi),inset 0 0 0 4px var(--wood-dk),0 0 0 1px rgba(0,0,0,.6);
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+
+/* TOP BAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:100;background:rgba(43,58,50,.96);backdrop-filter:blur(8px)}
+.brand-chalk{font-family:'Frank Ruhl Libre',serif;font-size:1.1rem;font-weight:900;color:var(--chalk)}
+.brand-sub{display:block;font-size:.7rem;color:var(--chalk-dim);margin-top:1px}
+.back-btn{color:var(--chalk-b);text-decoration:none;font-weight:700;font-size:.88rem;
+  padding:8px 14px;border:1px solid rgba(116,185,255,.3);border-radius:8px;transition:.2s}
+.back-btn:hover{background:rgba(116,185,255,.1)}
+
+/* HEADER */
+.page-header{text-align:center;padding:clamp(28px,5vw,52px) 20px clamp(20px,4vw,36px)}
+.page-eyebrow{font-size:.72rem;letter-spacing:4px;color:var(--chalk-b);font-weight:700;
+  text-transform:uppercase;margin-bottom:10px;opacity:.8}
+.page-h1{font-family:'Frank Ruhl Libre',serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:900;
+  color:var(--chalk-y);margin-bottom:8px;letter-spacing:.3px}
+.page-sub{color:var(--chalk-dim);font-size:1rem;max-width:480px;margin:0 auto}
+
+/* UNIT TABS */
+.unit-tabs{display:flex;gap:8px;justify-content:center;margin:0 0 28px;flex-wrap:wrap;padding:0 4px}
+.unit-tab{padding:9px 18px;border-radius:8px;border:1.5px solid var(--line);color:var(--chalk-dim);
+  font-family:'Heebo',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;
+  background:var(--chalk-faint);transition:.2s}
+.unit-tab:hover{border-color:var(--chalk-b);color:var(--chalk-b)}
+.unit-tab.active{background:var(--chalk-b);color:var(--board-dark);border-color:var(--chalk-b)}
+
+/* VIEW TABS */
+.view-tabs{display:flex;gap:6px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+.vtab{padding:7px 16px;border-radius:6px;border:1px solid var(--line);color:var(--chalk-dim);
+  font-family:'Heebo',sans-serif;font-weight:600;font-size:.82rem;cursor:pointer;
+  background:transparent;transition:.2s}
+.vtab:hover{border-color:var(--chalk-y);color:var(--chalk-y)}
+.vtab.active{background:var(--chalk-y);color:var(--board-dark);border-color:var(--chalk-y)}
+
+/* VIEW PANELS */
+.view-panel{display:none;animation:fadeUp .3s ease}
+.view-panel.show{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── VOCAB TABLE ── */
+.vocab-table{width:100%;border-collapse:separate;border-spacing:0 6px}
+.vocab-table th{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--chalk-dim);font-weight:700;padding:6px 14px 2px;text-align:right}
+.vocab-table th:nth-child(1),.vocab-table th:nth-child(2){width:38%}
+.vocab-table th:nth-child(3){width:12%;text-align:center}
+.vocab-table td{background:rgba(244,241,234,.05);padding:11px 14px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.vocab-table tr td:first-child{border-right:1px solid var(--line);border-radius:0 8px 8px 0}
+.vocab-table tr td:last-child{border-left:1px solid var(--line);border-radius:8px 0 0 8px;text-align:center}
+.vocab-table tr:hover td{background:rgba(244,241,234,.09)}
+.td-en{font-weight:700;color:var(--chalk-b);direction:ltr;font-size:.97rem}
+.td-he{color:var(--chalk);font-size:.95rem}
+.speak-btn{background:none;border:none;cursor:pointer;font-size:1.2rem;padding:4px 8px;
+  border-radius:6px;transition:.15s;color:var(--chalk-dim)}
+.speak-btn:hover{background:rgba(116,185,255,.15);color:var(--chalk-b)}
+.rule-box{background:rgba(255,230,109,.08);border-right:3px solid var(--chalk-y);
+  padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:.92rem;color:var(--chalk-dim)}
+.rule-box strong{color:var(--chalk-y)}
+
+/* ── FLASHCARDS ── */
+.flashcard-wrap{max-width:480px;margin:0 auto;text-align:center}
+.fc-info{color:var(--chalk-dim);font-size:.85rem;margin-bottom:16px}
+.fc-container{perspective:1000px;height:200px;margin-bottom:20px;cursor:pointer}
+.fc-inner{position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.fc-inner.flipped{transform:rotateY(180deg)}
+.fc-front,.fc-back{
+  position:absolute;inset:0;backface-visibility:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-radius:14px;border:1.5px solid var(--line);padding:24px}
+.fc-front{background:rgba(116,185,255,.1);border-color:rgba(116,185,255,.3)}
+.fc-back{background:rgba(255,230,109,.08);border-color:rgba(255,230,109,.3);
+  transform:rotateY(180deg)}
+.fc-word{font-family:'Frank Ruhl Libre',serif;font-size:clamp(1.4rem,5vw,2.2rem);font-weight:900;
+  color:var(--chalk-y)}
+.fc-label{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--chalk-dim);margin-bottom:8px}
+.fc-he{font-family:'Frank Ruhl Libre',serif;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:700;
+  color:var(--chalk)}
+.fc-tap-hint{font-size:.75rem;color:rgba(244,241,234,.35);margin-top:10px}
+.fc-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:14px}
+.fc-nav-btn{background:rgba(244,241,234,.08);border:1px solid var(--line);color:var(--chalk);
+  padding:8px 18px;border-radius:8px;cursor:pointer;font-family:'Heebo',sans-serif;
+  font-weight:700;font-size:.88rem;transition:.2s}
+.fc-nav-btn:hover{background:rgba(244,241,234,.16)}
+.fc-nav-btn:disabled{opacity:.25;cursor:default}
+.fc-counter{color:var(--chalk-dim);font-size:.88rem;min-width:60px;text-align:center}
+.fc-speak-row{margin-bottom:12px}
+
+/* ── PRACTICE (show/hide) ── */
+.practice-controls{display:flex;gap:10px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.ctrl-show{background:var(--chalk-g);color:var(--board-dark);border:none;
+  padding:9px 22px;border-radius:8px;font-family:'Heebo',sans-serif;font-weight:700;
+  font-size:.9rem;cursor:pointer;transition:.15s}
+.ctrl-show:hover{opacity:.85}
+.ctrl-hide{background:transparent;border:1.5px solid var(--chalk-dim);color:var(--chalk-dim);
+  padding:9px 22px;border-radius:8px;font-family:'Heebo',sans-serif;font-weight:700;
+  font-size:.9rem;cursor:pointer;transition:.15s}
+.ctrl-hide:hover{border-color:var(--chalk);color:var(--chalk)}
+.practice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.pcard{background:rgba(244,241,234,.05);border:1px solid var(--line);border-radius:10px;
+  padding:12px 16px;display:flex;gap:10px;align-items:center}
+.pcard-num{font-weight:800;color:var(--chalk-y);min-width:24px;font-size:.88rem}
+.pcard-q{flex:1;font-size:.9rem;color:var(--chalk)}
+.pcard-a{font-weight:700;color:var(--chalk-g);direction:ltr;display:none;flex:1;font-size:.9rem}
+.show-answers .pcard-q{display:none}
+.show-answers .pcard-a{display:block}
+
+/* ── QUIZ ── */
+.quiz-header{text-align:center;margin-bottom:20px}
+.quiz-score{font-family:'Frank Ruhl Libre',serif;font-size:1.6rem;font-weight:900;
+  color:var(--chalk-y);margin-bottom:4px}
+.quiz-progress-bar{height:6px;background:rgba(244,241,234,.12);border-radius:3px;
+  max-width:360px;margin:8px auto 0;overflow:hidden}
+.quiz-progress-fill{height:100%;background:var(--chalk-y);border-radius:3px;transition:width .4s}
+.quiz-q-num{font-size:.78rem;color:var(--chalk-dim);letter-spacing:1px;text-transform:uppercase}
+.quiz-q-text{font-family:'Frank Ruhl Libre',serif;font-size:clamp(1.1rem,4vw,1.6rem);
+  font-weight:700;color:var(--chalk);text-align:center;margin:16px 0;direction:ltr;
+  background:rgba(244,241,234,.06);border-radius:10px;padding:16px 20px}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:480px;margin:0 auto 16px}
+.quiz-opt{background:rgba(244,241,234,.06);border:1.5px solid var(--line);color:var(--chalk);
+  padding:12px 16px;border-radius:10px;cursor:pointer;font-family:'Heebo',sans-serif;
+  font-weight:600;font-size:.9rem;text-align:center;transition:.15s}
+.quiz-opt:hover{background:rgba(244,241,234,.13);border-color:rgba(244,241,234,.3)}
+.quiz-opt.correct{background:rgba(85,239,196,.15)!important;border-color:var(--chalk-g)!important;color:var(--chalk-g)!important}
+.quiz-opt.wrong{background:rgba(255,118,117,.1)!important;border-color:var(--chalk-r)!important;color:var(--chalk-r)!important}
+.quiz-feedback{text-align:center;font-weight:700;min-height:28px;font-size:1rem;margin-bottom:10px}
+.quiz-next-btn{display:none;background:var(--chalk-b);color:var(--board-dark);border:none;
+  padding:11px 28px;border-radius:10px;cursor:pointer;font-family:'Heebo',sans-serif;
+  font-weight:700;font-size:.95rem;margin:0 auto;display:none}
+.quiz-restart{background:var(--chalk-y);color:var(--board-dark);border:none;
+  padding:12px 30px;border-radius:10px;cursor:pointer;font-family:'Heebo',sans-serif;
+  font-weight:800;font-size:1rem;margin-top:12px}
+.quiz-result{text-align:center;padding:28px 20px}
+.quiz-result-emoji{font-size:3rem;margin-bottom:10px}
+.quiz-result-score{font-family:'Frank Ruhl Libre',serif;font-size:2.4rem;font-weight:900;
+  color:var(--chalk-y);margin-bottom:6px}
+.quiz-result-msg{color:var(--chalk-dim);font-size:1rem;margin-bottom:20px}
+
+footer{text-align:center;font-size:.76rem;color:var(--chalk-dim);
+  margin-top:32px;padding:16px 16px 20px;border-top:1px solid var(--line)}
+
+@media(max-width:560px){
+  .vocab-table th:nth-child(3){display:none}
+  .vocab-table td:last-child{display:none}
+  .quiz-opts{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<nav class="topbar">
+  <div>
+    <span class="brand-chalk">מסלול אנגלית</span>
+    <span class="brand-sub">הכנה למה״ט ולבגרות 3 יח״ל</span>
+  </div>
+  <a href="../index.html" class="back-btn">🏠 מרכז ראשי</a>
+</nav>
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="page-eyebrow">ENGLISH TRACK · 3 UNITS</div>
+  <h1 class="page-h1">לימוד אנגלית</h1>
+  <p class="page-sub">מילון · כרטיסיות · תרגול · משחק — הכנה למה״ט ולבגרות</p>
+</header>
+
+<div class="wrap">
+
+<!-- UNIT TABS -->
+<div class="unit-tabs" id="unitTabs">
+  <button class="unit-tab active" data-unit="greetings">👋 ברכות</button>
+  <button class="unit-tab" data-unit="numbers">🔢 מספרים ושעות</button>
+  <button class="unit-tab" data-unit="daily">🏠 פעולות יומיומיות</button>
+  <button class="unit-tab" data-unit="academic">📚 אוצר מילים אקדמי</button>
+</div>
+
+<!-- VIEW TABS -->
+<div class="view-tabs" id="viewTabs">
+  <button class="vtab active" data-view="table">📋 מילון</button>
+  <button class="vtab" data-view="flashcard">🃏 כרטיסיות</button>
+  <button class="vtab" data-view="practice">✍️ תרגול</button>
+  <button class="vtab" data-view="quiz">🎮 מבחן קצר</button>
+</div>
+
+<!-- ══ TABLE VIEW ══ -->
+<div class="view-panel show" id="view-table"></div>
+
+<!-- ══ FLASHCARD VIEW ══ -->
+<div class="view-panel" id="view-flashcard">
+  <div class="flashcard-wrap">
+    <div class="fc-info" id="fc-info">לחצו על הכרטיס לראות תרגום</div>
+    <div class="fc-speak-row">
+      <button class="speak-btn" id="fc-speak-btn" title="הגייה">🔊 הגייה</button>
+    </div>
+    <div class="fc-container" id="fc-container">
+      <div class="fc-inner" id="fc-inner">
+        <div class="fc-front">
+          <div class="fc-label">ENGLISH</div>
+          <div class="fc-word" id="fc-en">—</div>
+          <div class="fc-tap-hint">לחצו לראות תרגום</div>
+        </div>
+        <div class="fc-back">
+          <div class="fc-label">עברית</div>
+          <div class="fc-he" id="fc-he">—</div>
+        </div>
+      </div>
+    </div>
+    <div class="fc-nav">
+      <button class="fc-nav-btn" id="fc-prev">→ הקודם</button>
+      <span class="fc-counter" id="fc-counter">1 / 1</span>
+      <button class="fc-nav-btn" id="fc-next">הבא ←</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PRACTICE VIEW ══ -->
+<div class="view-panel" id="view-practice">
+  <div class="practice-controls">
+    <button class="ctrl-show" id="btn-show">✅ הצג תשובות</button>
+    <button class="ctrl-hide" id="btn-hide">🙈 הסתר תשובות</button>
+  </div>
+  <div class="practice-grid" id="practice-grid"></div>
+</div>
+
+<!-- ══ QUIZ VIEW ══ -->
+<div class="view-panel" id="view-quiz">
+  <div id="quiz-area">
+    <div class="quiz-header">
+      <div class="quiz-q-num" id="quiz-q-num">שאלה 1 / 8</div>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="quiz-fill" style="width:0%"></div>
+      </div>
+      <div class="quiz-score">ניקוד: <span id="quiz-score">0</span></div>
+    </div>
+    <div class="quiz-q-text" id="quiz-q"></div>
+    <div class="quiz-opts" id="quiz-opts"></div>
+    <div class="quiz-feedback" id="quiz-fb"></div>
+    <div style="text-align:center">
+      <button class="quiz-next-btn" id="quiz-next" style="display:none">הבא ←</button>
+    </div>
+  </div>
+  <div id="quiz-result" class="quiz-result" style="display:none">
+    <div class="quiz-result-emoji" id="result-emoji">🏆</div>
+    <div class="quiz-result-score" id="result-score">8/8</div>
+    <div class="quiz-result-msg" id="result-msg">מצוין!</div>
+    <button class="quiz-restart" id="quiz-restart">נסו שוב ←</button>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>מתמטיקה לחרדים · הכנה למה״ט ולבגרות 3 יח״ל — מתמטיקה ואנגלית · כל הזכויות שמורות</footer>
+
+<script>
+/* ══ VOCABULARY DATA ══ */
+const UNITS = {
+  greetings: {
+    title:'ברכות והיכרות', icon:'👋',
+    rule:'💡 <strong>Good</strong> + שעה ביום: Good morning (עד 12:00) · Good afternoon (12–18) · Good evening (18+)',
+    words:[
+      {en:'Hello',          he:'שלום'},
+      {en:'Good morning',   he:'בוקר טוב'},
+      {en:'Good afternoon', he:'צהריים טובים'},
+      {en:'Good evening',   he:'ערב טוב'},
+      {en:'Good night',     he:'לילה טוב'},
+      {en:'How are you?',   he:'מה שלומך?'},
+      {en:"I'm fine, thank you", he:'אני בסדר, תודה'},
+      {en:'Goodbye',        he:'להתראות'},
+      {en:'See you later',  he:'נתראה אחר כך'},
+      {en:'Nice to meet you', he:'נעים להכיר'},
+      {en:'My name is...',  he:'שמי...'},
+      {en:"What's your name?", he:'מה שמך?'},
+    ]
+  },
+  numbers: {
+    title:'מספרים ושעות', icon:'🔢',
+    rule:'⏰ <strong>half past</strong> = וחצי · <strong>quarter to</strong> = רבע ל · <strong>quarter past</strong> = ורבע',
+    words:[
+      {en:'One',            he:'אחד'},
+      {en:'Two',            he:'שתיים'},
+      {en:'Three',          he:'שלוש'},
+      {en:'Four',           he:'ארבע'},
+      {en:'Five',           he:'חמש'},
+      {en:'Six',            he:'שש'},
+      {en:'Seven',          he:'שבע'},
+      {en:'Eight',          he:'שמונה'},
+      {en:'Nine',           he:'תשע'},
+      {en:'Ten',            he:'עשר'},
+      {en:'Hundred',        he:'מאה'},
+      {en:'Thousand',       he:'אלף'},
+      {en:"What time is it?", he:'מה השעה?'},
+      {en:"It's three o'clock", he:'השעה שלוש'},
+      {en:'Half past two',  he:'שתיים וחצי'},
+      {en:'Quarter to six', he:'רבע לשש'},
+    ]
+  },
+  daily: {
+    title:'פעולות יומיומיות', icon:'🏠',
+    rule:'📖 Present Simple — גוף שלישי יחיד: מוסיפים <strong>s</strong>. He <strong>eats</strong>, She <strong>prays</strong>.',
+    words:[
+      {en:'Wake up',        he:'להתעורר'},
+      {en:'Get dressed',    he:'להתלבש'},
+      {en:'Eat breakfast',  he:'לאכול ארוחת בוקר'},
+      {en:'Go to school',   he:'ללכת לבית ספר'},
+      {en:'Go to work',     he:'ללכת לעבודה'},
+      {en:'Study',          he:'ללמוד'},
+      {en:'Study Torah',    he:'ללמוד תורה'},
+      {en:'Pray',           he:'להתפלל'},
+      {en:'Eat lunch',      he:'לאכול ארוחת צהריים'},
+      {en:'Rest',           he:'לנוח'},
+      {en:'Go home',        he:'לחזור הביתה'},
+      {en:'Eat dinner',     he:'לאכול ארוחת ערב'},
+      {en:'Read',           he:'לקרוא'},
+      {en:'Sleep',          he:'לישון'},
+    ]
+  },
+  academic: {
+    title:'אוצר מילים אקדמי', icon:'📚',
+    rule:'📝 מילים אלו מופיעות לעיתים קרובות בשאלות מה״ט. חשוב לזכור את <strong>כל</strong> המילים!',
+    words:[
+      {en:'Describe',       he:'לתאר'},
+      {en:'Explain',        he:'להסביר'},
+      {en:'Compare',        he:'להשוות'},
+      {en:'Calculate',      he:'לחשב'},
+      {en:'Find',           he:'למצוא'},
+      {en:'Prove',          he:'להוכיח'},
+      {en:'Solution',       he:'פתרון'},
+      {en:'Answer',         he:'תשובה'},
+      {en:'Question',       he:'שאלה'},
+      {en:'Problem',        he:'בעיה / תרגיל'},
+      {en:'Example',        he:'דוגמה'},
+      {en:'Result',         he:'תוצאה'},
+      {en:'Therefore',      he:'לכן / לפיכך'},
+      {en:'Because',        he:'כי / מפני ש'},
+      {en:'According to',   he:'לפי / על פי'},
+      {en:'Given that',     he:'בהינתן ש'},
+    ]
+  }
+};
+
+/* ══ STATE ══ */
+let curUnit = 'greetings';
+let curView = 'table';
+let fcIdx = 0;
+let fcFlipped = false;
+
+function getWords() { return UNITS[curUnit].words; }
+
+/* ══ RENDER TABLE ══ */
+function renderTable() {
+  const u = UNITS[curUnit];
+  let html = '<div class="rule-box">' + u.rule + '</div>';
+  html += '<table class="vocab-table"><thead><tr>';
+  html += '<th>English</th><th>עברית</th><th>🔊</th>';
+  html += '</tr></thead><tbody>';
+  u.words.forEach((w,i)=>{
+    html += `<tr>
+      <td class="td-en">${w.en}</td>
+      <td class="td-he">${w.he}</td>
+      <td><button class="speak-btn" onclick="speak('${w.en.replace(/'/,"\\'")}')">🔊</button></td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  document.getElementById('view-table').innerHTML = html;
+}
+
+/* ══ RENDER PRACTICE ══ */
+function renderPractice() {
+  const words = getWords();
+  let html = '';
+  words.forEach((w,i)=>{
+    html += `<div class="pcard">
+      <span class="pcard-num">${i+1}.</span>
+      <span class="pcard-q">מה המשמעות של: <strong style="color:var(--chalk-b);direction:ltr;display:inline-block">${w.en}</strong></span>
+      <span class="pcard-a">${w.he}</span>
+    </div>`;
+  });
+  const grid = document.getElementById('practice-grid');
+  if (grid) {
+    grid.innerHTML = html;
+    grid.className = 'practice-grid';
+  }
+}
+
+/* ══ FLASHCARD ══ */
+function updateFlashcard() {
+  const words = getWords();
+  if (!words.length) return;
+  fcIdx = Math.max(0, Math.min(fcIdx, words.length - 1));
+  const w = words[fcIdx];
+  document.getElementById('fc-en').textContent = w.en;
+  document.getElementById('fc-he').textContent = w.he;
+  document.getElementById('fc-counter').textContent = (fcIdx+1) + ' / ' + words.length;
+  document.getElementById('fc-prev').disabled = fcIdx === 0;
+  document.getElementById('fc-next').disabled = fcIdx === words.length - 1;
+  fcFlipped = false;
+  document.getElementById('fc-inner').classList.remove('flipped');
+}
+
+/* ══ QUIZ ══ */
+let quizQuestions=[], quizIdx=0, quizScore=0, quizAnswered=false;
+
+function buildQuiz() {
+  const words = getWords();
+  const all = [...words];
+  for(let i=all.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]]; }
+  quizQuestions = all.slice(0, Math.min(8, all.length)).map(w=>{
+    const wrongs = words.filter(x=>x.he!==w.he).map(x=>x.he);
+    for(let i=wrongs.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[wrongs[i],wrongs[j]]=[wrongs[j],wrongs[i]]; }
+    const opts = [w.he, ...wrongs.slice(0,3)];
+    for(let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]]; }
+    return {q:w.en, ans:w.he, opts};
+  });
+  quizIdx=0; quizScore=0; quizAnswered=false;
+  document.getElementById('quiz-area').style.display='block';
+  document.getElementById('quiz-result').style.display='none';
+  renderQuizQ();
+}
+
+function renderQuizQ() {
+  const q = quizQuestions[quizIdx];
+  const total = quizQuestions.length;
+  document.getElementById('quiz-q-num').textContent = `שאלה ${quizIdx+1} / ${total}`;
+  document.getElementById('quiz-fill').style.width = (quizIdx/total*100)+'%';
+  document.getElementById('quiz-score').textContent = quizScore;
+  document.getElementById('quiz-q').textContent = q.q;
+  document.getElementById('quiz-fb').textContent = '';
+  document.getElementById('quiz-next').style.display='none';
+  quizAnswered = false;
+
+  const optsEl = document.getElementById('quiz-opts');
+  optsEl.innerHTML='';
+  q.opts.forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.className='quiz-opt'; btn.textContent=opt;
+    btn.onclick=()=>{
+      if(quizAnswered) return;
+      quizAnswered=true;
+      const correct=opt===q.ans;
+      btn.classList.add(correct?'correct':'wrong');
+      if(!correct) [...optsEl.children].find(b=>b.textContent===q.ans)?.classList.add('correct');
+      document.getElementById('quiz-fb').textContent = correct?'✅ נכון!':'❌ התשובה: '+q.ans;
+      if(correct) quizScore++;
+      document.getElementById('quiz-score').textContent=quizScore;
+      document.getElementById('quiz-next').style.display='block';
+      optsEl.querySelectorAll('.quiz-opt').forEach(b=>b.style.pointerEvents='none');
+    };
+    optsEl.appendChild(btn);
+  });
+}
+
+function showResult() {
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('quiz-result').style.display='block';
+  const total=quizQuestions.length;
+  const pct=Math.round(quizScore/total*100);
+  document.getElementById('result-score').textContent=quizScore+'/'+total;
+  const emojis=['😅','🙂','👍','😊','🌟','🏆'];
+  document.getElementById('result-emoji').textContent=emojis[Math.min(5,Math.floor(pct/20))];
+  const msgs=['המשיכו לתרגל!','כמעט! עוד קצת.','יפה! ממשיכים.','כל הכבוד!','מצוין מאוד!','מושלם! שולטים!'];
+  document.getElementById('result-msg').textContent=msgs[Math.min(5,Math.floor(pct/20))];
+}
+
+/* ══ SPEAK ══ */
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='en-US'; u.rate=0.85; u.pitch=1;
+  speechSynthesis.speak(u);
+}
+
+/* ══ RENDER ALL ══ */
+function renderAll() {
+  renderTable();
+  renderPractice();
+  updateFlashcard();
+  buildQuiz();
+}
+
+/* ══ EVENT LISTENERS ══ */
+document.addEventListener('DOMContentLoaded', ()=>{
+
+  // Unit tabs
+  document.getElementById('unitTabs').addEventListener('click', e=>{
+    const btn=e.target.closest('.unit-tab');
+    if(!btn) return;
+    document.querySelectorAll('.unit-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    curUnit=btn.dataset.unit;
+    fcIdx=0;
+    renderAll();
+  });
+
+  // View tabs
+  document.getElementById('viewTabs').addEventListener('click', e=>{
+    const btn=e.target.closest('.vtab');
+    if(!btn) return;
+    document.querySelectorAll('.vtab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    curView=btn.dataset.view;
+    document.querySelectorAll('.view-panel').forEach(p=>p.classList.remove('show'));
+    document.getElementById('view-'+curView).classList.add('show');
+    if(curView==='quiz') buildQuiz();
+  });
+
+  // Show/hide answers
+  document.getElementById('btn-show').onclick=()=>{
+    document.getElementById('practice-grid').classList.add('show-answers');
+  };
+  document.getElementById('btn-hide').onclick=()=>{
+    document.getElementById('practice-grid').classList.remove('show-answers');
+  };
+
+  // Flashcard flip
+  document.getElementById('fc-container').onclick=()=>{
+    fcFlipped=!fcFlipped;
+    document.getElementById('fc-inner').classList.toggle('flipped',fcFlipped);
+  };
+  document.getElementById('fc-prev').onclick=()=>{ fcIdx--; updateFlashcard(); };
+  document.getElementById('fc-next').onclick=()=>{ fcIdx++; updateFlashcard(); };
+  document.getElementById('fc-speak-btn').onclick=()=>{
+    const w=getWords()[fcIdx];
+    if(w) speak(w.en);
+  };
+
+  // Quiz next
+  document.getElementById('quiz-next').onclick=()=>{
+    quizIdx++;
+    if(quizIdx>=quizQuestions.length) showResult();
+    else renderQuizQ();
+  };
+  document.getElementById('quiz-restart').onclick=buildQuiz;
+
+  renderAll();
+});
+</script>
+<script src="/shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
+</body>
+</html>

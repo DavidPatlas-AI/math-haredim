@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+<meta name="description" content="משוואות דו-ריבועיות — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>משוואות דו-ריבועיות</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+    :root {
+      --ink: #1a1a2e;
+      --paper: #f8f6f0;
+      --accent: #2d6a4f;
+      --accent2: #c0392b;
+      --gold: #c9a227;
+      --line: #d5d0c8;
+      --shadow: 0 10px 30px rgba(26, 26, 46, .10);
+      --pos: #2d6a4f;
+      --neg: #c0392b;
+      --bi: #1e6091;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Heebo', sans-serif; color: var(--ink); line-height: 1.7;
+      min-height: 100vh; padding: 24px 16px 60px;
+      background: radial-gradient(circle at 12% 8%, rgba(30,96,145,.06), transparent 40%),
+                  radial-gradient(circle at 88% 92%, rgba(107,63,160,.05), transparent 40%), var(--paper);
+    }
+    .wrap { max-width: 800px; margin: 0 auto; }
+    header {
+      text-align: center; padding: 30px 20px 26px; border: 2px solid var(--ink);
+      border-radius: 18px; background: #fff; box-shadow: var(--shadow);
+      position: relative; overflow: hidden;
+    }
+    header::before {
+      content: "x⁴"; position: absolute; font-family: 'Frank Ruhl Libre', serif;
+      font-size: 130px; font-weight: 900; color: rgba(26,26,46,.03); top: 0; left: 20px;
+    }
+    .eyebrow { font-size: .85rem; letter-spacing: 3px; color: var(--bi); font-weight: 600; position: relative; }
+    h1 { font-family: 'Frank Ruhl Libre', serif; font-size: 2.2rem; font-weight: 900; margin: 6px 0 2px; position: relative; }
+    .sub { font-size: 1rem; color: #5a5a6e; position: relative; }
+    nav { display: flex; gap: 8px; justify-content: center; margin: 22px 0; flex-wrap: wrap; }
+    nav button {
+      font-family: 'Heebo'; font-size: .95rem; font-weight: 600; border: 2px solid var(--ink);
+      background: #fff; color: var(--ink); padding: 9px 18px; border-radius: 999px;
+      cursor: pointer; transition: .2s;
+    }
+    nav button:hover { transform: translateY(-2px); }
+    nav button.active { background: var(--bi); color: #fff; border-color: var(--bi); }
+    section { display: none; animation: fade .4s ease; }
+    section.show { display: block; }
+    @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .card {
+      background: #fff; border: 1.5px solid var(--line); border-radius: 16px;
+      padding: 26px 24px; margin-bottom: 18px; box-shadow: var(--shadow);
+    }
+    .card h2 {
+      font-family: 'Frank Ruhl Libre', serif; font-size: 1.5rem; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .tag { background: var(--gold); color: #fff; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; font-family: 'Heebo'; }
+    .tag.blue { background: var(--bi); }
+    .note { background: rgba(30,96,145,.07); border-right: 4px solid var(--bi); padding: 12px 16px; border-radius: 8px; margin-top: 14px; font-size: .97rem; }
+    .warn { background: rgba(192,57,43,.07); border-right: 4px solid var(--accent2); padding: 12px 16px; border-radius: 8px; margin-top: 14px; font-size: .97rem; }
+    .gold-box { background: rgba(201,162,39,.10); border: 2px solid var(--gold); border-radius: 12px; padding: 16px; margin-top: 14px; }
+    .gold-box .title { font-weight: 800; color: #8a6f0e; margin-bottom: 6px; }
+    .examples { display: grid; gap: 8px; margin-top: 8px; }
+    .examples div { background: var(--paper); border-radius: 10px; padding: 10px 14px; font-family: 'Frank Ruhl Libre', serif; font-size: 1.05rem; direction: ltr; text-align: left; line-height: 1.8; }
+    .formula-highlight {
+      background: #fff; border: 2px dashed var(--bi); border-radius: 14px;
+      padding: 16px; text-align: center; font-family: 'Frank Ruhl Libre', serif;
+      font-size: 1.3rem; font-weight: 900; direction: ltr; margin: 14px 0;
+    }
+    .steps { background: var(--paper); border-radius: 12px; padding: 16px; margin-top: 14px; counter-reset: step; }
+    .steps>div { counter-increment: step; padding: 8px 12px; border-bottom: 1px solid var(--line); display: flex; gap: 10px; align-items: baseline; }
+    .steps>div:last-child { border-bottom: none; }
+    .steps>div::before { content: counter(step) "."; font-family: 'Frank Ruhl Libre', serif; font-weight: 900; color: var(--bi); font-size: 1.1rem; min-width: 24px; }
+    footer { text-align: center; font-size: .8rem; color: #7d9285; margin-top: 30px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">בגרות · אלגברה</div>
+    <h1>משוואות דו-ריבועיות</h1>
+    <div class="sub">x⁴ + bx² + c = 0 → הצבה → משוואה ריבועית → חזרה ל-x</div>
+  </header>
+  <nav>
+    <button class="active" data-t="learn">📘 הסבר</button>
+  </nav>
+  <section id="learn" class="show">
+    <div class="card">
+      <h2>מהי משוואה דו-ריבועית? <span class="tag blue">הגדרה</span></h2>
+      <p>משוואה דו-ריבועית היא משוואה מהצורה:</p>
+      <div class="formula-highlight">ax⁴ + bx² + c = 0</div>
+      <p>כאשר a ≠ 0. <b>אין איבר x³ ואין איבר x</b> — רק חזקות זוגיות.</p>
+      <p style="margin-top:8px"><b>הטריק:</b> מציבים <b>t = x²</b>, ואז x⁴ = t². המשוואה הופכת ל<b>משוואה ריבועית</b> רגילה!</p>
+    </div>
+
+    <div class="card">
+      <h2>שיטת הפתרון — 4 שלבים <span class="tag blue">⭐</span></h2>
+      <div class="steps">
+        <div><span><b>הצבה:</b> t = x². שימו לב: <b>t ≥ 0</b> (כי x² לא יכול להיות שלילי).</span></div>
+        <div><span><b>פותרים:</b> at² + bt + c = 0 — עם דלתא או פירוק.</span></div>
+        <div><span><b>בודקים:</b> כל t < 0 — <b>נדחה</b> (אין x ממשי).</span></div>
+        <div><span><b>חוזרים:</b> x² = t → x = ±√t. כל t > 0 נותן <b>שני פתרונות</b>.</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>דוגמה מלאה <span class="tag blue">פתרון</span></h2>
+      <div class="examples">
+        <div>פתרו: x⁴ − 13x² + 36 = 0</div>
+        <div>הצבה: t = x² → t² − 13t + 36 = 0</div>
+        <div>פירוק: (t−4)(t−9) = 0 → t₁ = 4, t₂ = 9 (שניהם ≥ 0 ✓)</div>
+        <div>חזרה: x² = 4 → x = ±2. &nbsp; x² = 9 → x = ±3.</div>
+        <div><b>פתרונות: x = 2, −2, 3, −3</b> (ארבעה פתרונות!)</div>
+      </div>
+      <div class="note">
+        <b>שימו לב:</b> יש <b>ארבעה</b> פתרונים. בגלל הסימטריה — אם 2 פתרון, גם −2 פתרון.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>מקרים מיוחדים <span class="tag blue">וריאציות</span></h2>
+      <div class="examples">
+        <div>1. t שלילי — נדחה. x⁴ + 4x² − 5 = 0 → t² + 4t − 5 = 0 → t=1, t=−5. t=−5 נדחה. x=±1.</div>
+        <div>2. t = 0 — פתרון יחיד: x = 0.</div>
+        <div>3. אין t ≥ 0 — <b>אין פתרון ממשי</b>.</div>
+        <div>4. מקדם a: 2x⁴ − 7x² + 3 = 0 → 2t² − 7t + 3 = 0 → t=3, t=½ → x=±√3, x=±√½.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+      <div class="warn">
+        <b>1.</b> <b>שוכחים ש-t ≥ 0.</b> t שלילי = אין x. מקבלים t=−2? תעצרו — לא ממשיכים.<br><br>
+        <b>2.</b> <b>שוכחים את הסימן ±.</b> x² = 4 → x = 2 <b>וגם</b> x = −2. תמיד שני פתרונות!<br><br>
+        <b>3.</b> <b>מבלבלים בין x⁴ ל-(x²)².</b> x⁴ = (x²)² = t². לא t⁴!<br><br>
+        <b>4.</b> <b>לא בודקים שכל t עבר חזרה.</b> כל t תקף → שני פתרונות x.
+      </div>
+    </div>
+  </section>
+  <footer>בסיס לבגרות · משוואות דו-ריבועיות</footer>
+</div>
+<script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
+</body>
+</html>
+
+
+

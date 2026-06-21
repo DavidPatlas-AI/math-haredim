@@ -1,0 +1,625 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+<meta name="description" content="תחום הגדרה — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תחום הגדרה</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
+        :root {
+            --ink: #1b3a2e;
+            --paper: #e7efe9;
+            --accent: #2d6a4f;
+            --accent2: #c0392b;
+            --gold: #c9a227;
+            --line: #c5d4cc;
+            --shadow: 0 10px 30px rgba(27, 58, 46, .12);
+            --pos: #2d6a4f;
+            --neg: #c0392b;
+            --den: #c0392b;
+            --sqrt: #2d6a4f;
+            --warn-bg: #fff5f5;
+            --info-bg: #f0f7f3;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Heebo', sans-serif;
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 24px 16px 60px;
+            background: radial-gradient(circle at 12% 8%, rgba(192, 57, 43, .06), transparent 40%),
+                radial-gradient(circle at 88% 92%, rgba(45, 106, 79, .08), transparent 40%),
+                var(--paper);
+        }
+        .wrap {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 30px 20px 26px;
+            border: 2px solid var(--ink);
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: "x≠?";
+            position: absolute;
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 120px;
+            font-weight: 900;
+            color: rgba(27, 58, 46, .04);
+            top: 20px;
+            left: 20px;
+            letter-spacing: 2px;
+        }
+        .eyebrow {
+            font-size: .85rem;
+            letter-spacing: 3px;
+            color: var(--accent2);
+            font-weight: 600;
+            position: relative;
+        }
+        h1 {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin: 6px 0 2px;
+            position: relative;
+        }
+        .sub {
+            font-size: 1rem;
+            color: #6b4545;
+            position: relative;
+        }
+        nav {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 22px 0;
+            flex-wrap: wrap;
+        }
+        nav button {
+            font-family: 'Heebo';
+            font-size: .95rem;
+            font-weight: 600;
+            border: 2px solid var(--ink);
+            background: #fff;
+            color: var(--ink);
+            padding: 9px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: .2s;
+        }
+        nav button:hover {
+            transform: translateY(-2px);
+        }
+        nav button.active {
+            background: var(--ink);
+            color: var(--paper);
+        }
+        section {
+            display: none;
+            animation: fade .4s ease;
+        }
+        section.show {
+            display: block;
+        }
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+        .card {
+            background: #fff;
+            border: 1.5px solid var(--line);
+            border-radius: 16px;
+            padding: 26px 24px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow);
+        }
+        .card h2 {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            background: var(--gold);
+            color: #fff;
+            font-size: .75rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-family: 'Heebo';
+        }
+        .tag.den {
+            background: var(--den);
+        }
+        .tag.sqrt {
+            background: var(--sqrt);
+        }
+        .note {
+            background: rgba(45, 106, 79, .08);
+            border-right: 4px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 14px;
+            font-size: .97rem;
+        }
+        .warn {
+            background: rgba(192, 57, 43, .08);
+            border-right: 4px solid var(--accent2);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 14px;
+            font-size: .97rem;
+        }
+        .rule-box {
+            border-radius: 14px;
+            padding: 20px 18px;
+            margin-top: 14px;
+            border: 2px solid;
+            position: relative;
+        }
+        .rule-box.denominator {
+            border-color: var(--den);
+            background: #fff5f5;
+        }
+        .rule-box.root {
+            border-color: var(--sqrt);
+            background: #f0f7f3;
+        }
+        .rule-box .rule-icon {
+            font-size: 2.2rem;
+            position: absolute;
+            top: 14px;
+            right: 14px;
+        }
+        .rule-box .rule-title {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            margin-bottom: 4px;
+            padding-right: 50px;
+        }
+        .rule-box .rule-body {
+            padding-right: 50px;
+        }
+        .examples {
+            display: grid;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .examples div {
+            background: var(--paper);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.1rem;
+            direction: ltr;
+            text-align: left;
+        }
+        .two-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        @media (max-width: 500px) {
+            .two-cols {
+                grid-template-columns: 1fr;
+            }
+            .rule-box .rule-body {
+                padding-right: 0;
+            }
+        }
+
+        /* GAME */
+        .mode-pick {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .mode-pick button {
+            font-family: 'Heebo';
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 2px solid var(--ink);
+            background: #fff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            transition: .2s;
+        }
+        .mode-pick button.active {
+            background: var(--accent2);
+            color: #fff;
+            border-color: var(--accent2);
+        }
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .scoreboard .box {
+            flex: 1;
+        }
+        .scoreboard .who {
+            font-size: .85rem;
+            color: #456b5b;
+        }
+        .scoreboard .pts {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 2rem;
+            font-weight: 900;
+        }
+        .turn-banner {
+            text-align: center;
+            font-weight: 700;
+            padding: 8px;
+            border-radius: 10px;
+            background: var(--paper);
+            margin-bottom: 14px;
+        }
+        .q-box {
+            text-align: center;
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            direction: ltr;
+            padding: 22px;
+            background: var(--paper);
+            border-radius: 14px;
+            margin-bottom: 14px;
+        }
+        .opts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .opts button {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: 2px solid var(--ink);
+            background: #fff;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: .15s;
+            direction: ltr;
+        }
+        .opts button:hover {
+            transform: translateY(-2px);
+        }
+        .opts button.right {
+            background: var(--pos);
+            color: #fff;
+            border-color: var(--pos);
+        }
+        .opts button.wrong {
+            background: var(--neg);
+            color: #fff;
+            border-color: var(--neg);
+        }
+        .feedback {
+            text-align: center;
+            font-weight: 700;
+            min-height: 28px;
+            margin-top: 14px;
+        }
+        .next-btn {
+            display: none;
+            margin: 14px auto 0;
+            font-family: 'Heebo';
+            font-weight: 700;
+            border: none;
+            background: var(--ink);
+            color: #fff;
+            padding: 11px 26px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        footer {
+            text-align: center;
+            font-size: .8rem;
+            color: #7d9285;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="eyebrow">בגרות · אלגברה מרכזית</div>
+            <h1>תחום הגדרה</h1>
+            <div class="sub">איך נדע מתי הביטוי קיים — ומתי הוא "מתרסק"</div>
+        </header>
+
+        <nav>
+            <button class="active" data-t="learn">📘 הסבר</button>
+            <button data-t="game">🎮 משחק</button>
+        </nav>
+
+        <!-- LEARN -->
+        <section id="learn" class="show">
+            <div class="card">
+                <h2>מה זה "תחום הגדרה"? <span class="tag">מושג יסוד</span></h2>
+                <p><b>תחום ההגדרה</b> של ביטוי אלגברי הוא קבוצת כל המספרים שאפשר להציב בביטוי <b>בלי ליצור בעיה מתמטית</b>.</p>
+                <p style="margin-top:8px">במילים פשוטות: אנחנו שואלים — <b>אילו ערכים "אסורים"?</b> כל השאר — מותר.</p>
+                <div class="note">
+                    <b>בבגרות 3 יחידות</b> יש שני מצבים עיקריים שאסורים: <b>מכנה = 0</b> ו-<b>שורש ריבועי של מספר שלילי</b>. כל השאר — בדרך כלל תקין.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>כלל 1: מכנה לא יכול להיות 0 <span class="tag den">🚫 מכנה</span></h2>
+                <p>אי אפשר לחלק באפס. לכן <b>כל ערך שמאפס את המכנה — אסור</b>.</p>
+                <div class="rule-box denominator">
+                    <div class="rule-icon">🚫</div>
+                    <div class="rule-title">איך בודקים?</div>
+                    <div class="rule-body">
+                        <b>1.</b> לוקחים את המכנה <b>בלבד</b>.<br>
+                        <b>2.</b> משווים אותו ל-0.<br>
+                        <b>3.</b> פותרים את המשוואה — אלה הערכים ה<b>אסורים</b>.<br>
+                        <b>4.</b> תחום ההגדרה: כל x <b>חוץ</b> מהערכים האלה.
+                    </div>
+                </div>
+                <div class="examples">
+                    <div>1/(x − 3)  →  x − 3 = 0  →  x = 3 אסור  →  ת"ה: x ≠ 3</div>
+                    <div>5/(x + 2)  →  x + 2 = 0  →  x = −2 אסור  →  ת"ה: x ≠ −2</div>
+                    <div>(x+1)/(x² − 4)  →  x² − 4 = 0  →  x = ±2 אסורים  →  ת"ה: x ≠ 2, −2</div>
+                    <div>3/(2x − 6)  →  2x − 6 = 0  →  x = 3 אסור  →  ת"ה: x ≠ 3</div>
+                </div>
+                <div class="warn">
+                    <b>שימו לב!</b> בודקים <b>רק את המכנה</b>. המונה לא משפיע על תחום ההגדרה (הוא יכול להיות כל דבר).
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>כלל 2: שורש ריבועי של מספר שלילי <span class="tag sqrt">√ שורש</span></h2>
+                <p>שורש ריבועי מוגדר רק עבור מספרים <b>אי-שליליים</b> (≥0). לכן הביטוי <b>בתוך השורש</b> חייב להיות <b>גדול או שווה לאפס</b>.</p>
+                <div class="rule-box root">
+                    <div class="rule-icon">√</div>
+                    <div class="rule-title">איך בודקים?</div>
+                    <div class="rule-body">
+                        <b>1.</b> לוקחים את מה ש<b>בתוך השורש</b>.<br>
+                        <b>2.</b> דורשים: <b>≥ 0</b>.<br>
+                        <b>3.</b> פותרים אי-שוויון — זה תחום ההגדרה.
+                    </div>
+                </div>
+                <div class="examples">
+                    <div>√(x + 4)  →  x + 4 ≥ 0  →  x ≥ −4</div>
+                    <div>√(2x − 6)  →  2x − 6 ≥ 0  →  x ≥ 3</div>
+                    <div>√(9 − x)  →  9 − x ≥ 0  →  x ≤ 9</div>
+                    <div>√(x²)  →  x² ≥ 0 תמיד!  →  כל x מותר</div>
+                </div>
+                <div class="note">
+                    <b>למה לא "גדול מ-0"?</b> שורש של 0 הוא 0 — וזה בסדר גמור. √0 = 0.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>כששני הכללים מופיעים יחד <span class="tag">שילוב</span></h2>
+                <p>אם בביטוי יש <b>גם מכנה וגם שורש</b> — חייבים לספק את <b>שני התנאים</b> בו-זמנית.</p>
+                <div class="examples">
+                    <div>1/√(x − 2)  →  x − 2 ≥ 0 (שורש)  +  √(x−2) ≠ 0 (מכנה)  →  x > 2</div>
+                    <div>√(x + 1)/(x − 3)  →  x + 1 ≥ 0 (שורש)  +  x ≠ 3 (מכנה)  →  x ≥ −1, x ≠ 3</div>
+                    <div>√(x)/(x² − 1)  →  x ≥ 0 (שורש)  +  x ≠ ±1 (מכנה)  →  x ≥ 0, x ≠ 1</div>
+                </div>
+                <div class="gold-box" style="background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:12px;padding:16px;margin-top:14px;">
+                    <div style="font-weight:800;color:#8a6f0e;margin-bottom:6px;">💡 סיכום — סדר פעולות</div>
+                    <b>1.</b> בדקו מכנה → מצאו ערכים אסורים (≠)<br>
+                    <b>2.</b> בדקו שורש → מצאו תחום מותר (≥)<br>
+                    <b>3.</b> חתכו את שני התנאים יחד
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>טעויות נפוצות <span class="tag">להיזהר</span></h2>
+                <div class="warn">
+                    <b>1.</b> <b>שוכחים לבדוק מכנה.</b> בכל ביטוי עם שבר — מיד חושבים "מה מאפס את המכנה?"<br><br>
+                    <b>2.</b> <b>מתבלבלים: שורש במכנה.</b> ב-1/√(x−1) חייבים <b>גם</b> x−1 ≥ 0 <b>וגם</b> √(x−1) ≠ 0, כלומר x−1 ≠ 0. התוצאה: x > 1 (בלי שוויון!).<br><br>
+                    <b>3.</b> <b>בודקים גם את המונה.</b> לא צריך! המונה לא קובע תחום הגדרה.<br><br>
+                    <b>4.</b> <b>שורש שלילי?</b> √(−4) לא מוגדר במספרים ממשיים. אבל √(x²+1) תמיד מוגדר כי x²+1 ≥ 1 > 0.
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME -->
+        <section id="game">
+            <div class="card">
+                <h2>משחק תחום ההגדרה 🎮</h2>
+                <p style="text-align:center;font-size:.9rem;color:#456b5b;margin-bottom:14px">מהו תחום ההגדרה של הביטוי?</p>
+                <div class="mode-pick">
+                    <button class="active" data-m="cpu">נגד המחשב 🤖</button>
+                    <button data-m="duo">שני שחקנים 👥</button>
+                </div>
+                <div class="scoreboard">
+                    <div class="box"><div class="who" id="n1">שחקן</div><div class="pts" id="s1">0</div></div>
+                    <div class="box"><div class="who" id="n2">מחשב</div><div class="pts" id="s2">0</div></div>
+                </div>
+                <div class="turn-banner" id="turn">תורו של: שחקן</div>
+                <div class="q-box" id="question">לחצו כדי להתחיל</div>
+                <div class="opts" id="opts"></div>
+                <div class="feedback" id="feedback"></div>
+                <button class="next-btn" id="nextBtn">השאלה הבאה ←</button>
+            </div>
+        </section>
+
+        <footer>בסיס לבגרות · תחום הגדרה</footer>
+    </div>
+
+    <script>
+        // TABS
+        document.querySelectorAll('nav button').forEach(b => {
+            b.onclick = () => {
+                document.querySelectorAll('nav button').forEach(x => x.classList.remove('active'));
+                document.querySelectorAll('section').forEach(s => s.classList.remove('show'));
+                b.classList.add('active');
+                document.getElementById(b.dataset.t).classList.add('show');
+            };
+        });
+
+        // ========================
+        // GAME
+        // ========================
+        const POOL = [
+            // מכנה בלבד
+            { q: '1 / (x − 5)', ans: 'x ≠ 5', wrong: ['x ≠ −5', 'כל x', 'x > 5'] },
+            { q: '4 / (x + 3)', ans: 'x ≠ −3', wrong: ['x ≠ 3', 'x > −3', 'כל x'] },
+            { q: '7 / (2x − 8)', ans: 'x ≠ 4', wrong: ['x ≠ −4', 'x ≠ 8', 'x > 4'] },
+            { q: '(x+1) / (x² − 9)', ans: 'x ≠ 3, −3', wrong: ['x ≠ 3', 'x ≠ 9', 'x > 3'] },
+            { q: '1 / (x² + 1)', ans: 'כל x מותר', wrong: ['x ≠ 1', 'x ≠ 0', 'x > 0'] },
+            // שורש בלבד
+            { q: '√(x − 2)', ans: 'x ≥ 2', wrong: ['x > 2', 'x ≤ 2', 'x ≠ 2'] },
+            { q: '√(x + 6)', ans: 'x ≥ −6', wrong: ['x > −6', 'x ≤ −6', 'x ≠ −6'] },
+            { q: '√(10 − x)', ans: 'x ≤ 10', wrong: ['x ≥ 10', 'x < 10', 'x ≠ 10'] },
+            { q: '√(3x + 9)', ans: 'x ≥ −3', wrong: ['x > −3', 'x ≤ −3', 'x ≠ −3'] },
+            { q: '√(x² + 4)', ans: 'כל x מותר', wrong: ['x ≥ 2', 'x ≥ 0', 'אין תחום הגדרה'] },
+            // שילוב
+            { q: '1 / √(x − 4)', ans: 'x > 4', wrong: ['x ≥ 4', 'x ≠ 4', 'x < 4'] },
+            { q: '√(x + 2) / (x − 1)', ans: 'x ≥ −2, x ≠ 1', wrong: ['x ≥ −2', 'x ≠ 1', 'x > −2'] },
+            { q: '√(x) / (x² − 4)', ans: 'x ≥ 0, x ≠ 2', wrong: ['x ≥ 0', 'x ≠ 2, −2', 'x > 0'] },
+            { q: '1 / √(x²)', ans: 'x ≠ 0', wrong: ['x > 0', 'x ≥ 0', 'כל x'] },
+            { q: '√(x−1) / √(x−3)', ans: 'x ≥ 3', wrong: ['x ≥ 1', 'x > 3', 'x ≥ 1, x ≠ 3'] },
+        ];
+
+        let mode = 'cpu';
+        let s1 = 0,
+            s2 = 0,
+            turn = 1,
+            cur = null;
+
+        const modeButtons = document.querySelectorAll('.mode-pick button');
+        modeButtons.forEach(b => {
+            b.onclick = () => {
+                modeButtons.forEach(x => x.classList.remove('active'));
+                b.classList.add('active');
+                mode = b.dataset.m;
+                document.getElementById('n2').textContent = mode === 'cpu' ? 'מחשב' : 'שחקן 2';
+                document.getElementById('n1').textContent = mode === 'cpu' ? 'שחקן' : 'שחקן 1';
+                s1 = s2 = 0;
+                turn = 1;
+                updateScore();
+                newQ();
+            };
+        });
+
+        function updateScore() {
+            document.getElementById('s1').textContent = s1;
+            document.getElementById('s2').textContent = s2;
+            const name = turn === 1 ? document.getElementById('n1').textContent : document.getElementById('n2')
+                .textContent;
+            document.getElementById('turn').textContent = 'תורו של: ' + name;
+        }
+
+        function shuffle(a) { return a.sort(() => Math.random() - .5); }
+
+        function newQ() {
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('nextBtn').style.display = 'none';
+            cur = POOL[Math.floor(Math.random() * POOL.length)];
+            document.getElementById('question').textContent = cur.q;
+            const opts = shuffle([cur.ans, ...cur.wrong]);
+            const O = document.getElementById('opts');
+            O.innerHTML = '';
+            opts.forEach(v => {
+                const btn = document.createElement('button');
+                btn.textContent = v;
+                btn.onclick = () => answer(btn, v);
+                O.appendChild(btn);
+            });
+            updateScore();
+            if (mode === 'cpu' && turn === 2) {
+                O.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    const btns = [...O.children];
+                    let pick = Math.random() < 0.7 ?
+                        btns.find(x => x.textContent === cur.ans) :
+                        btns[Math.floor(Math.random() * btns.length)];
+                    cpuAnswer(pick, pick.textContent);
+                }, 1400);
+            } else {
+                O.style.pointerEvents = 'auto';
+            }
+        }
+
+        function lock() { document.getElementById('opts').style.pointerEvents = 'none'; }
+
+        function answer(btn, v) {
+            lock();
+            const fb = document.getElementById('feedback');
+            if (v === cur.ans) {
+                btn.classList.add('right');
+                if (turn === 1) s1++;
+                else s2++;
+                fb.textContent = '✓ נכון! ת"ה: ' + cur.ans;
+                fb.style.color = 'var(--pos)';
+            } else {
+                btn.classList.add('wrong');
+                [...document.getElementById('opts').children].find(x => x.textContent === cur.ans)?.classList.add(
+                    'right');
+                fb.textContent = '✗ התשובה: ' + cur.ans;
+                fb.style.color = 'var(--neg)';
+            }
+            endTurn();
+        }
+
+        function cpuAnswer(btn, v) {
+            const fb = document.getElementById('feedback');
+            if (v === cur.ans) {
+                btn.classList.add('right');
+                s2++;
+                fb.textContent = '🤖 המחשב ענה נכון: ' + cur.ans;
+            } else {
+                btn.classList.add('wrong');
+                [...document.getElementById('opts').children].find(x => x.textContent === cur.ans)?.classList.add('right');
+                fb.textContent = '🤖 המחשב טעה! התשובה: ' + cur.ans;
+            }
+            fb.style.color = 'var(--ink)';
+            endTurn();
+        }
+
+        function endTurn() {
+            updateScore();
+            turn = turn === 1 ? 2 : 1;
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+
+        document.getElementById('nextBtn').onclick = newQ;
+        document.getElementById('n2').textContent = 'מחשב';
+        newQ();
+    </script>
+<script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
+</body>
+</html>
+
+
+

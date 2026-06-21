@@ -1,0 +1,445 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+<meta name="description" content="תרגול אלגברה לפי נושאים — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תרגול אלגברה לפי נושאים | מה״ט ובגרות 3 יח״ל</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800;900&display=swap');
+
+        :root {
+            --bg: #f4f6ff;
+            --card: rgba(255, 255, 255, 0.92);
+            --card-solid: #ffffff;
+            --glass: rgba(0, 0, 0, 0.02);
+            --gold: #c9a227;
+            --gold-light: #b5880a;
+            --gold-dark: #8b6914;
+            --accent: #b5651d;
+            --accent2: #2d6a4f;
+            --text: #12142a;
+            --text-dim: #5a6080;
+            --border: rgba(0, 0, 0, 0.10);
+            --border-gold: rgba(201, 162, 39, 0.35);
+            --shadow-3d: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+            --shadow-glow: 0 0 20px rgba(201,162,39,0.15);
+            --pos: #3ddc84;
+            --neg: #ff5e5b;
+            --radius-xl: 24px;
+            --radius-lg: 18px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 16px 16px 50px;
+            overflow-x: hidden;
+            perspective: 1200px;
+        }
+
+        .bg-particles { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+        .particle { position:absolute; border-radius:50%; background:var(--gold); animation:floatUp linear infinite; opacity:0; }
+        @keyframes floatUp {
+            0% { transform:translateY(105vh) scale(0); opacity:0; }
+            10% { opacity:0.7; }
+            30% { opacity:0.3; }
+            100% { transform:translateY(-10vh) scale(1.4); opacity:0; }
+        }
+        @keyframes pulseGlow {
+            0%,100% { box-shadow:0 0 20px rgba(201,162,39,0.3), 0 0 50px rgba(201,162,39,0.1); }
+            50% { box-shadow:0 0 35px rgba(201,162,39,0.6), 0 0 80px rgba(201,162,39,0.2); }
+        }
+
+        .wrap { max-width:980px; margin:0 auto; position:relative; z-index:1; }
+
+        header {
+            text-align:center; padding:36px 24px 30px; border-radius:var(--radius-xl);
+            background:var(--card); border:1px solid var(--border-gold);
+            box-shadow:var(--shadow-3d), var(--shadow-glow);
+            position:relative; overflow:hidden;
+            transform-style:preserve-3d; transform:rotateX(1deg) rotateY(-1deg);
+            transition:transform 0.5s ease; margin-bottom:20px;
+        }
+        header:hover {
+            transform:rotateX(0deg) rotateY(0deg) translateY(-4px);
+            box-shadow:0 28px 60px rgba(0,0,0,0.6), 0 0 50px rgba(201,162,39,0.35);
+        }
+        header::before {
+            content:""; position:absolute; inset:-2px; border-radius:var(--radius-xl);
+            background:linear-gradient(135deg, var(--gold), transparent 40%, transparent 60%, var(--gold-light));
+            z-index:-1; opacity:0.5; filter:blur(10px);
+        }
+        header::after {
+            content:"(a+b)(c+d)"; position:absolute; font-family:'Playfair Display', serif;
+            font-size:110px; font-weight:900; color:rgba(255,255,255,0.012);
+            top:15px; left:5px; direction:ltr; pointer-events:none;
+        }
+        .eyebrow { font-size:0.8rem; letter-spacing:5px; color:var(--gold-light); font-weight:700; text-transform:uppercase; position:relative; z-index:1; }
+        h1 {
+            font-family:'Playfair Display', serif; font-size:2.2rem; font-weight:900; margin:4px 0 0;
+            background:linear-gradient(180deg, #e9cc6e 0%, #c9a227 50%, #8b6914 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+            position:relative; z-index:1; filter:drop-shadow(0 2px 6px rgba(201,162,39,0.4));
+        }
+        .sub { font-size:1rem; color:var(--text-dim); position:relative; z-index:1; margin-top:2px; }
+
+        nav {
+            display:flex; gap:8px; justify-content:center; margin:18px 0 24px; flex-wrap:wrap;
+            perspective:800px;
+        }
+        nav button {
+            font-family:'Heebo', sans-serif; font-size:0.9rem; font-weight:700;
+            border:1.5px solid var(--border); background:var(--card); color:var(--text-dim);
+            padding:9px 16px; border-radius:999px; cursor:pointer; transition:var(--transition);
+            position:relative; transform-style:preserve-3d; transform:translateZ(0);
+            box-shadow:0 4px 12px rgba(0,0,0,0.3); letter-spacing:0.5px;
+        }
+        nav button:hover { transform:translateY(-3px) translateZ(10px); box-shadow:0 10px 28px rgba(0,0,0,0.5); border-color:var(--gold); color:#fff; }
+        nav button.active {
+            background:linear-gradient(135deg, #1a1410, #2a1f15); color:#fff;
+            border-color:var(--gold); box-shadow:0 6px 20px rgba(201,162,39,0.3), 0 0 30px rgba(201,162,39,0.15);
+            transform:translateY(-2px) translateZ(6px);
+        }
+
+        section { display:none; animation:fadeSlideIn 0.5s ease; }
+        section.show { display:block; }
+        @keyframes fadeSlideIn {
+            from { opacity:0; transform:translateY(24px) rotateX(3deg); }
+            to { opacity:1; transform:translateY(0) rotateX(0); }
+        }
+
+        .card {
+            background:var(--card); border:1px solid var(--border); border-radius:var(--radius-xl);
+            padding:28px 26px; margin-bottom:18px; box-shadow:var(--shadow-3d);
+            position:relative; transform-style:preserve-3d; transform:translateZ(0);
+            transition:var(--transition); overflow:hidden;
+        }
+        .card:hover { transform:translateY(-2px) translateZ(4px); box-shadow:0 24px 55px rgba(0,0,0,0.55), 0 0 20px rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.18); }
+        .card::before { content:""; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.02) 0%, transparent 50%); pointer-events:none; }
+        .card h2 { font-family:'Playfair Display', serif; font-size:1.5rem; margin-bottom:10px; display:flex; align-items:center; gap:10px; color:#fff; flex-wrap:wrap; }
+        .tag { background:linear-gradient(135deg, var(--gold-dark), var(--gold)); color:#1a1a2e; font-size:0.7rem; font-weight:800; padding:4px 12px; border-radius:20px; font-family:'Heebo', sans-serif; letter-spacing:1px; }
+        .formula { font-family:'Playfair Display', serif; text-align:center; font-size:1.7rem; margin:16px 0; padding:18px; background:rgba(255,255,255,0.03); border-radius:var(--radius-lg); border:1.5px dashed var(--border); direction:ltr; color:#fff; letter-spacing:1px; }
+        .note { background:rgba(181,101,29,0.07); border-right:4px solid var(--accent); padding:14px 18px; border-radius:var(--radius-sm); margin-top:14px; font-size:0.95rem; color:#e0c8a0; }
+
+        .progress-bar-wrap { background:rgba(255,255,255,0.06); border-radius:99px; height:10px; margin:10px 0 16px; overflow:hidden; }
+        .progress-bar-fill { height:100%; background:linear-gradient(90deg, var(--accent2), var(--pos)); border-radius:99px; transition:width 0.5s ease; width:0%; }
+        .progress-text { text-align:center; font-size:0.85rem; color:var(--text-dim); margin-bottom:4px; }
+
+        .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-top:14px; }
+        .ex {
+            background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:var(--radius-md);
+            padding:14px 16px; display:flex; gap:10px; align-items:center; justify-content:space-between;
+            min-height:58px; transition:var(--transition); cursor:pointer; position:relative;
+        }
+        .ex:hover { border-color:var(--border-gold); background:rgba(255,255,255,0.06); transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.3); }
+        .ex.completed { border-color:var(--pos) !important; background:rgba(61,220,132,0.08) !important; }
+        .ex.completed::after {
+            content:"✓"; position:absolute; top:-6px; right:-6px; background:var(--pos); color:#0a0a0f;
+            width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+            font-size:0.8rem; font-weight:900;
+        }
+        .num { font-weight:800; color:var(--gold-light); min-width:36px; font-size:1rem; }
+        .math { font-family:'Playfair Display', serif; font-size:1.15rem; direction:ltr; text-align:left; flex:1; color:#fff; }
+        .ans { font-family:'Playfair Display', serif; font-size:1.1rem; direction:ltr; text-align:left; color:var(--pos); font-weight:700; display:none; flex:1; }
+        .show-answers .ans { display:block; } .show-answers .math { display:none; }
+
+        .controls { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:18px; }
+        .controls button {
+            font-family:'Heebo', sans-serif; font-weight:700; border:2px solid var(--accent);
+            background:linear-gradient(135deg, #b5651d, #8b4510); color:#fff;
+            padding:9px 18px; border-radius:var(--radius-sm); cursor:pointer; transition:var(--transition);
+            letter-spacing:0.5px; box-shadow:0 4px 14px rgba(0,0,0,0.3);
+        }
+        .controls button:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(0,0,0,0.4); }
+        .controls button.secondary { background:transparent; color:var(--accent); border-color:var(--accent); }
+        .controls button.secondary:hover { background:rgba(181,101,29,0.15); color:#fff; }
+        .controls button.reset-progress { border-color:var(--neg); color:var(--neg); background:transparent; }
+        .controls button.reset-progress:hover { background:rgba(255,94,91,0.15); color:#fff; }
+
+        .search { width:min(520px,100%); display:block; margin:0 auto 18px; padding:12px 18px; border:2px solid var(--border); border-radius:999px; font-family:'Heebo', sans-serif; font-size:1rem; background:var(--card-solid); color:#fff; transition:var(--transition); }
+        .search:focus { outline:none; border-color:var(--gold); box-shadow:0 0 20px rgba(201,162,39,0.2); }
+        .search::placeholder { color:var(--text-dim); }
+
+        .topic-list { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; margin-top:16px; }
+        .topic-card {
+            background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:var(--radius-md);
+            padding:18px; transition:var(--transition); cursor:pointer;
+        }
+        .topic-card:hover { border-color:var(--border-gold); background:rgba(255,255,255,0.06); transform:translateY(-3px); box-shadow:0 10px 25px rgba(0,0,0,0.4); }
+        .topic-card h3 { font-family:'Playfair Display', serif; font-size:1.25rem; margin-bottom:8px; color:#fff; }
+        .topic-card p { font-size:0.92rem; color:var(--text-dim); margin-bottom:12px; }
+        .topic-card .goto-btn {
+            font-family:'Heebo', sans-serif; font-weight:700; border:0; background:var(--accent); color:#fff;
+            padding:8px 16px; border-radius:var(--radius-sm); cursor:pointer; transition:var(--transition);
+        }
+        .topic-card .goto-btn:hover { background:#d4751f; }
+
+        .tips-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+        @media (max-width:600px) {
+            .tips-grid { grid-template-columns:1fr; }
+            h1 { font-size:1.8rem; }
+            .grid { grid-template-columns:1fr; }
+        }
+        .tip-card { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:var(--radius-md); padding:16px; transition:var(--transition); cursor:default; }
+        .tip-card:hover { border-color:var(--gold); transform:translateY(-3px); box-shadow:0 10px 25px rgba(0,0,0,0.4); background:rgba(255,255,255,0.06); }
+        .tip-card .tip-icon { font-size:1.8rem; margin-bottom:6px; }
+        .tip-card h4 { color:var(--gold-light); font-size:0.95rem; margin-bottom:4px; }
+        .tip-card p { font-size:0.85rem; color:var(--text-dim); }
+
+        footer { text-align:center; font-size:0.8rem; color:#6a5a4a; margin-top:30px; letter-spacing:1px; }
+        .blessing { text-align:center; font-size:0.9rem; color:var(--gold-light); margin-top:8px; font-style:italic; }        /* ── LIGHT THEME OVERRIDE ── */
+        /* extra: fix hardcoded white text on now-white backgrounds */
+        .math, .formula-box, .topic-card h3, .topic-name,
+        .scoreboard .pts, .scoreboard .who, .scoreboard .box,
+        .brow .tname, .topbar, .progress-text,
+        .q-box, .question-text, .feedback,
+        .rule-box, .vocab-card .heb, .question-text { color: #12142a !important; }
+        .math, .formula { background: #eef1fb !important; border-color: rgba(0,0,0,0.12) !important; }
+        .grade-circle { background: linear-gradient(135deg, #2a5bd8, #1d4ed8) !important; color: #fff !important; }
+        .brow { background: #e8edf8 !important; border-color: rgba(0,0,0,0.1) !important; }
+        .topic-chip { background: rgba(201,162,39,0.18) !important; color: #8b6914 !important; }
+        .scoreboard { background: #f0f4ff !important; border-radius: 14px; padding: 12px; }
+        body { background: #f4f6ff !important; color: #12142a !important; }
+        .bg-particles { display: none !important; }
+        header { background: #fff !important; border-color: rgba(201,162,39,0.3) !important; }
+        h1 { -webkit-text-fill-color: unset !important; color: #12142a !important; background: linear-gradient(135deg,#12142a 0%,#c9a227 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        h2, h3, h4, .card h2, .card h3 { color: #12142a !important; }
+        .card { background: #fff !important; border-color: rgba(0,0,0,0.1) !important; }
+        .card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.1) !important; border-color: rgba(201,162,39,0.4) !important; }
+        nav button, .unit-nav button, .mode-pick button, .len-pick button { background: #f0f4ff !important; color: #12142a !important; border-color: rgba(0,0,0,0.15) !important; }
+        nav button.active, .unit-nav button.active, .mode-pick button.active, .len-pick button.active { background: linear-gradient(135deg,#2a5bd8,#1d4ed8) !important; color: #fff !important; }
+        .formula { background: #f0f4ff !important; color: #12142a !important; border-color: rgba(0,0,0,0.12) !important; }
+        .note { color: #12142a !important; background: rgba(200,130,10,0.06) !important; }
+        .start-btn { background: linear-gradient(135deg,#2a5bd8,#1d4ed8) !important; color: #fff !important; }
+        .tag { color: #12142a !important; }
+        .sub { color: #5a6080 !important; }
+        .eyebrow { color: #c9a227 !important; }
+    </style>
+</head>
+<body>
+    <div class="bg-particles" id="particles"></div>
+    <div class="wrap">
+        <header>
+            <div class="eyebrow">תרגול לפי נושאים — פרק ב׳</div>
+            <h1>תרגול אלגברה לפי נושאים</h1>
+            <div class="sub">בעזרת השם — כל נושא בדף נפרד · הסבר קצר · תרגילים · תשובות · מעקב התקדמות</div>
+        </header>
+
+        <nav>
+            <button class="active" data-t="home">🏠 ראשי</button>
+            <button data-t="combine">1. כינוס איברים</button>
+            <button data-t="open">2. פתיחת סוגריים</button>
+            <button data-t="double">3. סוגריים כפול</button>
+            <button data-t="advanced">4. מינוס/שני סוגריים</button>
+            <button data-t="factor">5. פירוק לגורמים</button>
+            <button data-t="allAnswers">✅ כל התשובות</button>
+            <button data-t="tips">💡 טיפים</button>
+        </nav>
+
+        <!-- HOME -->
+        <section id="home" class="show">
+            <div class="card">
+                <h2>חלוקה לפי נושאים</h2>
+                <p style="color:var(--text-dim)">במקום עמוד אחד ארוך, החומר חולק לדפים נפרדים לפי סוג התרגיל. בכל דף יש הסבר קצר, התרגילים המתאימים, וכפתור להצגת תשובות. סמנו תרגילים שהושלמו כדי לעקוב אחר ההתקדמות.</p>
+                <div class="progress-text" id="homeProgressText">הושלמו: 0 / 64 תרגילים (0%)</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" id="homeProgressBar"></div></div>
+                <div class="topic-list">
+                    <div class="topic-card" onclick="go('combine')"><h3>כינוס איברים</h3><p>תרגילים 31-44. מחברים רק איברים מאותו סוג.</p><button class="goto-btn">פתח דף</button></div>
+                    <div class="topic-card" onclick="go('open')"><h3>פתיחת סוגריים</h3><p>תרגילים 45-54. שימוש בחוק הפילוג.</p><button class="goto-btn">פתח דף</button></div>
+                    <div class="topic-card" onclick="go('double')"><h3>סוגריים כפול סוגריים</h3><p>תרגילים 55-59. כל איבר כופל כל איבר.</p><button class="goto-btn">פתח דף</button></div>
+                    <div class="topic-card" onclick="go('advanced')"><h3>מינוס ושני סוגריים</h3><p>תרגילים 60-74. תרגילים מורכבים יותר.</p><button class="goto-btn">פתח דף</button></div>
+                    <div class="topic-card" onclick="go('factor')"><h3>פירוק לגורמים</h3><p>תרגילים 75-94. זיהוי ריבוע של סכום/הפרש והוצאת גורם משותף.</p><button class="goto-btn">פתח דף</button></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMBINE -->
+        <section id="combine"><div class="card"><h2>1. כינוס איברים <span class="tag">תרגילים 31-44</span></h2><p>מכנסים רק איברים דומים: x עם x, מספר עם מספר, ab עם ab. אם האיברים לא מאותו סוג, משאירים אותם כפי שהם.</p><div class="formula">7b − 5b = 2b</div><div class="progress-text" id="combineProgressText"></div><div class="progress-bar-wrap"><div class="progress-bar-fill" id="combineProgressBar"></div></div><div class="controls"><button onclick="toggleAnswers('combine')">👁️ הצג תשובות</button><button class="secondary" onclick="hideAnswers('combine')">🙈 הסתר תשובות</button><button class="reset-progress" onclick="resetTopicProgress('combine')">🗑️ אפס סימונים בנושא</button></div><div id="combineList" class="grid"></div></div></section>
+
+        <!-- OPEN -->
+        <section id="open"><div class="card"><h2>2. פתיחת סוגריים <span class="tag">תרגילים 45-54</span></h2><p>כל איבר שמחוץ לסוגריים כופל כל איבר שבתוך הסוגריים. אחרי הפתיחה מכנסים איברים דומים.</p><div class="formula">a(b+c) = ab + ac</div><div class="progress-text" id="openProgressText"></div><div class="progress-bar-wrap"><div class="progress-bar-fill" id="openProgressBar"></div></div><div class="controls"><button onclick="toggleAnswers('open')">👁️ הצג תשובות</button><button class="secondary" onclick="hideAnswers('open')">🙈 הסתר תשובות</button><button class="reset-progress" onclick="resetTopicProgress('open')">🗑️ אפס סימונים בנושא</button></div><div id="openList" class="grid"></div></div></section>
+
+        <!-- DOUBLE -->
+        <section id="double"><div class="card"><h2>3. סוגריים כפול סוגריים <span class="tag">תרגילים 55-59</span></h2><p>פותחים לפי הכלל: הראשון עם הראשון, הראשון עם השני, השני עם הראשון, השני עם השני.</p><div class="formula">(a+b)(c+d) = ac+ad+bc+bd</div><div class="progress-text" id="doubleProgressText"></div><div class="progress-bar-wrap"><div class="progress-bar-fill" id="doubleProgressBar"></div></div><div class="controls"><button onclick="toggleAnswers('double')">👁️ הצג תשובות</button><button class="secondary" onclick="hideAnswers('double')">🙈 הסתר תשובות</button><button class="reset-progress" onclick="resetTopicProgress('double')">🗑️ אפס סימונים בנושא</button></div><div id="doubleList" class="grid"></div></div></section>
+
+        <!-- ADVANCED -->
+        <section id="advanced"><div class="card"><h2>4. מינוס ושני סוגריים רצופים <span class="tag">תרגילים 60-74</span></h2><p>כאן חשוב במיוחד להיזהר מסימנים. מינוס לפני סוגריים משנה את כל הסימנים, ומספר לפני סוגריים כופל את כל התוצאה.</p><div class="formula">−(a−b) = −a + b</div><div class="progress-text" id="advancedProgressText"></div><div class="progress-bar-wrap"><div class="progress-bar-fill" id="advancedProgressBar"></div></div><div class="controls"><button onclick="toggleAnswers('advanced')">👁️ הצג תשובות</button><button class="secondary" onclick="hideAnswers('advanced')">🙈 הסתר תשובות</button><button class="reset-progress" onclick="resetTopicProgress('advanced')">🗑️ אפס סימונים בנושא</button></div><div id="advancedList" class="grid"></div></div></section>
+
+        <!-- FACTOR -->
+        <section id="factor"><div class="card"><h2>5. פירוק לגורמים <span class="tag">תרגילים 75-94</span></h2><p>מחפשים תבניות מוכרות כמו ריבוע של סכום, ריבוע של הפרש, או גורם משותף שאפשר להוציא.</p><div class="formula">a²+2ab+b² = (a+b)²</div><div class="formula">a²−2ab+b² = (a−b)²</div><div class="progress-text" id="factorProgressText"></div><div class="progress-bar-wrap"><div class="progress-bar-fill" id="factorProgressBar"></div></div><div class="controls"><button onclick="toggleAnswers('factor')">👁️ הצג תשובות</button><button class="secondary" onclick="hideAnswers('factor')">🙈 הסתר תשובות</button><button class="reset-progress" onclick="resetTopicProgress('factor')">🗑️ אפס סימונים בנושא</button></div><div id="factorList" class="grid"></div><div class="note">בתרגילים 90-91 הביטוי אינו טרינום ריבועי פשוט. השארתי הערה במקום תשובה חד-משמעית.</div></div></section>
+
+        <!-- ALL ANSWERS -->
+        <section id="allAnswers"><div class="card show-answers"><h2>כל התשובות לבדיקה עצמית</h2><input class="search" id="searchAnswers" placeholder="חיפוש לפי מספר תרגיל, למשל 65 או 90"><div id="answersList" class="grid"></div></div></section>
+
+        <!-- TIPS -->
+        <section id="tips">
+            <div class="card">
+                <h2>💡 טיפים מהירים — שלא כולם מכירים</h2>
+                <p style="color:var(--text-dim);margin-bottom:8px;">הטיפים האלה יעזרו לכם לפתוח סוגריים ולכנס איברים במהירות, בעזרת השם:</p>
+                <div class="tips-grid">
+                    <div class="tip-card"><div class="tip-icon">🧠</div><h4>מינוס לפני סוגריים = היפוך סימנים</h4><p>המינוס הוא כמו כפל ב-(−1). לכן −(a−b) = −a+b. כל סימן בתוך הסוגריים מתהפך.</p></div>
+                    <div class="tip-card"><div class="tip-icon">⚡</div><h4>כל אחד בכל אחד — שיטה מסודרת</h4><p>קחו את האיבר הראשון, כפלו בכל האיברים בשני. אחר כך את השני, וכן הלאה. לבסוף סכמו איברים דומים.</p></div>
+                    <div class="tip-card"><div class="tip-icon">🎯</div><h4>מספר לפני סוגריים — רק בסוף</h4><p>כשיש מקדם לפני הסוגריים, אפשר לפתוח קודם את הסוגריים ורק אז להכפיל במספר.</p></div>
+                    <div class="tip-card"><div class="tip-icon">🔟</div><h4>בדיקה: הציבו מספר קטן</h4><p>אם אתם לא בטוחים, הציבו x=1 או x=2 בביטוי המקורי ובתוצאה. אם יוצא אותו מספר — כנראה שהתשובה נכונה.</p></div>
+                    <div class="tip-card"><div class="tip-icon">🪞</div><h4>איברים דומים — אות וחזקה זהות</h4><p>3x² ו-5x² דומים. 3x² ו-3x אינם דומים! תמיד בדקו שהאות והחזקה זהות לחלוטין.</p></div>
+                    <div class="tip-card"><div class="tip-icon">📐</div><h4>טרינום ריבועי — נוסחאות הכפל המקוצר</h4><p>(a+b)² = a²+2ab+b² , (a−b)² = a²−2ab+b². כדאי לזכור בעל פה — חוסך זמן יקר.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div>נלמד בשקידה ובחשק · תרגול לפי נושאים</div>
+            <div class="blessing">בסייעתא דשמיא</div>
+        </footer>
+    </div>
+
+    <script>
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 35; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                const size = Math.random() * 3 + 1;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = Math.random() * 12 + 8 + 's';
+                p.style.animationDelay = Math.random() * 8 + 's';
+                container.appendChild(p);
+            }
+        })();
+
+        const data = [
+            [31,'4a + 7a + 12a','23a','combine'],[32,'2x − 5x + 7x','4x','combine'],[33,'−6b − 9b','−15b','combine'],[34,'a + b + 3a − b − 4a','0','combine'],[35,'x + 2x + y − 2y','3x − y','combine'],[36,'x + y + 2x + 2xy','3x + y + 2xy','combine'],[37,'2a²b + 7a²b − 3a²b','6a²b','combine'],[38,'−10ab + 20ba','10ab','combine'],[39,'−a + 7b − 5 + 6a − 5b + 4','5a + 2b − 1','combine'],[40,'5 − x² + 2yx² + 5x²','4x² + 2yx² + 5','combine'],[41,'−3x²y² + 3x²y² + 5x²y − 3xy²','5x²y − 3xy²','combine'],[42,'5a²bc + 5ab²c + 5abc²','לא ניתן לכנס איברים','combine'],[43,'2x² + 9xy − 7 − 8xy + 8 − 3x²','−x² + xy + 1','combine'],[44,'3xa² + 13 + 4x²a − 4xa² − 12 − 5x²a','−xa² − x²a + 1','combine'],
+            [45,'4(x + 7) + 2(x − 3) + 6 + (x + 3)','7x + 31','open'],[46,'2(1 − a) + 4(a + 3) − 4 − (a − 2)','a + 12','open'],[47,'4(y + 1) − 5(1 − y)','9y − 1','open'],[48,'y(y + 2) − y(y − 3)','5y','open'],[49,'2(x − 3) − 4(x − 2) + 3(1 − x)','−5x + 5','open'],[50,'4(b + a − 3) + 5(a + 2 − b)','9a − b − 2','open'],[51,'4x(x − 6)','4x² − 24x','open'],[52,'2a(a + 1)','2a² + 2a','open'],[53,'2x(1 − x) + x(3x − 6)','x² − 4x','open'],[54,'4(x² − 6) + 3x(5 − 2x)','−2x² − 24 + 15x','open'],
+            [55,'(x + 2)(x + 3)','x² + 5x + 6','double'],[56,'(x − 5)(x + 4)','x² − x − 20','double'],[57,'(x + 3)(2x − 6)','2x² − 18','double'],[58,'(7 + 2a)(7 − a)','−2a² + 7a + 49','double'],[59,'(4a + 2)(2a − 2)','8a² − 4a − 4','double'],
+            [60,'4(5 − y)(4 + y)','−4y² + 4y + 80','advanced'],[61,'−(x + 2)(x − 4)','−x² + 2x + 8','advanced'],[62,'−(2 − x)(5 + x)','x² + 3x − 10','advanced'],[63,'−(4 + 2x)(5 − 2x)','4x² − 2x − 20','advanced'],[64,'(3 − x)(x − 2)','−x² + 5x − 6','advanced'],[65,'2(x + 4)(5 − x) − 5(2x − 1)(x + 1)','−12x² − 3x + 45','advanced'],[66,'4(x + 3)(x − 5) − 2(x − 2)(2x + 1)','−2x − 56','advanced'],[67,'(a + 1)(a − 2) − (a + 3)(a − 1)','−3a + 1','advanced'],[68,'(k + 5)(k − 6) + 2k(1 + k)','3k² + k − 30','advanced'],[69,'(y + 4)(4 − y) − (y + 2)(3 − y)','10 − y','advanced'],[70,'(a + b)(a + 1) − (a − 1)(b + 2)','a² − a + 2b + 2','advanced'],[71,'2(x + y)(y − 1) − (y − x)(x + 2y)','x² + 3xy − 2x − 2y','advanced'],[72,'3(x − 3) − 13(x − 1)(x + 2)','−13x² − 10x + 17','advanced'],[73,'x(2 − x) − (x − 1)(1 + x)','−2x² + 2x + 1','advanced'],[74,'(3 + 2x)(1 − x) + 2(x − 2)(4 − x)','−4x² + 11x − 13','advanced'],
+            [75,'x² + 18x + 81','(x + 9)²','factor'],[76,'x² − 6x + 9','(x − 3)²','factor'],[77,'25x² − 20x + 4','(5x − 2)²','factor'],[78,'9x² + 24x + 16','(3x + 4)²','factor'],[79,'2a² + 8a + 8','2(a + 2)²','factor'],[80,'−m² + 10m − 25','−(m − 5)²','factor'],[81,'12m² − 72m + 108','12(m − 3)²','factor'],[82,'4x² + 16xy + 16y²','4(x + 2y)²','factor'],[83,'−a² − 18a − 81','−(a + 9)²','factor'],[84,'5ya² − 10yab + 5yb²','5y(a − b)²','factor'],[85,'−2xb² + 4xab − 2xa²','−2x(a − b)²','factor'],[86,'−x² − 18x − 81','−(x + 9)²','factor'],[87,'−49 + 14x − x²','−(x − 7)²','factor'],[88,'4x² − 16x + 16','4(x − 2)²','factor'],[89,'9x² + 54x + 81','9(x + 3)²','factor'],[90,'13x² − 10x + 95','לא נראה כטרינום ריבועי פשוט','factor'],[91,'−ab − 16b + 64','לא נראה כטרינום ריבועי פשוט','factor'],[92,'4','2²','factor'],[93,'−14x − 7','−7(2x + 1)','factor'],[94,'−5a² + 4a','−a(5a − 4)','factor']
+        ];
+
+        const topics = ['combine', 'open', 'double', 'advanced', 'factor'];
+        let completedSet = new Set(JSON.parse(localStorage.getItem('algProgress') || '[]'));
+
+        function saveProgress() { localStorage.setItem('algProgress', JSON.stringify([...completedSet])); }
+
+        function updateAllProgress() {
+            const total = data.length;
+            const done = completedSet.size;
+            const pct = total ? Math.round(done / total * 100) : 0;
+            document.getElementById('homeProgressText').textContent = `הושלמו: ${done} / ${total} תרגילים (${pct}%)`;
+            document.getElementById('homeProgressBar').style.width = pct + '%';
+
+            topics.forEach(topic => {
+                const topicData = data.filter(x => x[3] === topic);
+                const topicDone = topicData.filter(x => completedSet.has(x[0])).length;
+                const topicTotal = topicData.length;
+                const topicPct = topicTotal ? Math.round(topicDone / topicTotal * 100) : 0;
+                const textEl = document.getElementById(topic + 'ProgressText');
+                const barEl = document.getElementById(topic + 'ProgressBar');
+                if (textEl) textEl.textContent = `הושלמו בנושא: ${topicDone} / ${topicTotal} (${topicPct}%)`;
+                if (barEl) barEl.style.width = topicPct + '%';
+            });
+        }
+
+        function toggleComplete(num) {
+            if (completedSet.has(num)) completedSet.delete(num);
+            else completedSet.add(num);
+            saveProgress();
+            updateAllProgress();
+            refreshAllTopicCards();
+        }
+
+        function makeCard(item, isPractice) {
+            const [num, q, ans] = item;
+            const d = document.createElement('div');
+            d.className = 'ex';
+            d.dataset.num = num;
+            if (isPractice && completedSet.has(num)) d.classList.add('completed');
+            d.innerHTML = `<span class="num">${num}.</span><span class="math">${q} =</span><span class="ans">${ans}</span>`;
+            if (isPractice) {
+                d.title = completedSet.has(num) ? 'לחץ כדי לבטל סימון' : 'לחץ כדי לסמן שהושלם';
+                d.onclick = () => toggleComplete(num);
+            }
+            return d;
+        }
+
+        function refreshTopicCards(topic) {
+            const box = document.getElementById(topic + 'List');
+            if (!box) return;
+            box.innerHTML = '';
+            data.filter(x => x[3] === topic).forEach(x => box.appendChild(makeCard(x, true)));
+        }
+
+        function refreshAllTopicCards() {
+            topics.forEach(topic => refreshTopicCards(topic));
+            renderAnswers(document.getElementById('searchAnswers')?.value || '');
+        }
+
+        function renderAnswers(query = '') {
+            const box = document.getElementById('answersList');
+            if (!box) return;
+            box.innerHTML = '';
+            data.filter(x => String(x[0]).includes(query.trim())).forEach(x => box.appendChild(makeCard(x, false)));
+        }
+
+        function toggleAnswers(topic) {
+            const card = document.querySelector('#' + topic + ' .card');
+            if (card) card.classList.add('show-answers');
+        }
+        function hideAnswers(topic) {
+            const card = document.querySelector('#' + topic + ' .card');
+            if (card) card.classList.remove('show-answers');
+        }
+        function resetTopicProgress(topic) {
+            if (confirm('בטוח שברצונך לאפס את כל הסימונים בנושא זה?')) {
+                const nums = data.filter(x => x[3] === topic).map(x => x[0]);
+                nums.forEach(n => completedSet.delete(n));
+                saveProgress();
+                updateAllProgress();
+                refreshAllTopicCards();
+            }
+        }
+
+        function go(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('show'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.t === id));
+            const section = document.getElementById(id);
+            if (section) section.classList.add('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (id === 'allAnswers') renderAnswers();
+            updateAllProgress();
+        }
+
+        document.querySelectorAll('nav button').forEach(b => {
+            b.onclick = () => go(b.dataset.t);
+        });
+
+        document.getElementById('searchAnswers').oninput = e => renderAnswers(e.target.value);
+
+        // Initial render
+        refreshAllTopicCards();
+        renderAnswers();
+        updateAllProgress();
+    </script>
+<script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
+</body>
+</html>
+
+
+
+
+
+

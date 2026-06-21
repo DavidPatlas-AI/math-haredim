@@ -1,0 +1,380 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+<meta name="description" content="fx-991ES PLUS סימולטור מלא — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>fx-991ES PLUS סימולטור מלא | בגרות 3 יחידות + אימון</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600&display=swap');
+    .calculator { width: 460px; background: linear-gradient(145deg, #1b1b1b, #2a2a2a); border: 28px solid #0e0e0e; border-radius: 42px;
+      box-shadow: 0 55px 110px -25px rgba(0,0,0,0.85), inset 0 18px 28px rgba(255,255,255,0.1), inset 0 -18px 28px rgba(0,0,0,0.9);
+      padding: 30px 26px 34px; transform: perspective(1400px) rotateX(6deg); }
+    .screen { background: #d8ecd8; border: 9px solid #1a1a1a; border-radius: 14px; min-height: 125px; padding: 12px 18px; margin-bottom: 24px;
+      box-shadow: inset 0 15px 22px rgba(0,0,0,0.85); font-family: 'Roboto Mono', monospace; }
+    .expression-line { font-size: 15px; color: #1a4d1a; word-break: break-word; border-bottom: 1px dashed #2b6e2b; min-height: 48px; direction: ltr; text-align: right; }
+    .result-line { font-size: 28px; font-weight: 600; color: #001a00; word-break: break-word; direction: ltr; text-align: right; }
+    .solar { position: absolute; top: 20px; right: 30px; background: linear-gradient(#222, #0a0a0a); width: 98px; height: 20px; border-radius: 4px; }
+    .button { transition: all 0.08s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 5px 0 #111, 0 8px 18px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.3);
+      border-radius: 9px; font-weight: 600; font-size: 13px; cursor: pointer; user-select: none; }
+    .button:active { transform: translateY(3px); box-shadow: 0 2px 0 #111; }
+    .shift  { background: linear-gradient(#ffeb3b, #fbc02d); color: #111; }
+    .alpha  { background: linear-gradient(#e74c3c, #c0392b); color: white; }
+    .gray   { background: linear-gradient(#3f3f3f, #2c2c2c); color: white; }
+    .white  { background: linear-gradient(#f0f0f0, #d8d8d8); color: #111; }
+    .orange { background: linear-gradient(#ff9f1c, #f57c00); color: white; }
+    .green  { background: linear-gradient(#7cb342, #689f38); color: white; }
+    .mode-badge { background: #121212; border-radius: 40px; padding: 2px 12px; font-size: 0.7rem; }
+  </style>
+</head>
+<body class="bg-zinc-950 flex flex-col items-center justify-center min-h-screen p-4">
+  <div class="text-center max-w-xl w-full">
+    <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
+      <h1 class="text-white text-2xl md:text-3xl font-bold">📟 CASIO fx-991ES PLUS</h1>
+      <div class="flex gap-2">
+        <div id="angleBadge" class="mode-badge text-emerald-300 border border-emerald-800 bg-black/70">DEG</div>
+        <div id="ansBadge" class="mode-badge text-gray-300 border border-gray-700">Ans = 0</div>
+      </div>
+    </div>
+    <p class="text-emerald-400 text-sm mb-4">✅ סימולטור מלא | SHIFT, hyp, DEG/RAD | אימון אינטראקטיבי לבגרות</p>
+
+    <div class="calculator mx-auto">
+      <div class="flex justify-between items-center mb-5 px-3 text-white">
+        <div class="text-2xl font-bold tracking-widest">CASIO</div>
+        <div class="text-right"><div>fx-991ES PLUS</div><div class="text-xs text-emerald-300">NATURAL-V.P.A.M. • 2nd Edition</div></div>
+      </div>
+
+      <div class="screen relative">
+        <div class="solar"></div>
+        <div id="exprDisplay" class="expression-line overflow-x-auto">0</div>
+        <div id="resultDisplay" class="result-line mt-2">0</div>
+      </div>
+
+      <div class="grid grid-cols-6 gap-2 text-xs font-medium">
+        <!-- שורה 1 -->
+        <button id="shiftBtn" onclick="toggleShiftMode()" class="button shift py-3">SHIFT</button>
+        <button id="alphaBtn" onclick="toggleAlphaMode()" class="button alpha py-3">ALPHA</button>
+        <button class="button gray py-3 col-span-2 text-[10px]">◀ ▲ ▶ ▼<br>REPLAY</button>
+        <button onclick="toggleAngleMode()" class="button gray py-3" id="drgBtn">DEG</button>
+        <button onclick="setupMenu()" class="button gray py-3">SETUP</button>
+
+        <!-- שורה 2 -->
+        <button onclick="specialMsg('SOLVE')" class="button gray py-4 text-[10px]">SOLVE<br>CALC</button>
+        <button onclick="specialMsg('∫dx')" class="button gray py-4 text-[10px]">∫dx</button>
+        <button onclick="insertOp('^(-1)')" class="button gray py-4 text-[10px]">x⁻¹</button>
+        <button id="logBtn" onclick="insertFuncWrapper('log')" class="button gray py-4">log</button>
+        <button id="lnBtn" onclick="insertFuncWrapper('ln')" class="button gray py-4">ln</button>
+        <button onclick="insertOp('^2')" class="button gray py-4">x²</button>
+
+        <!-- שורה 3 -->
+        <button onclick="insertOp('√(')" class="button gray py-4">√</button>
+        <button onclick="insertOp('^')" class="button gray py-4">^</button>
+        <button id="sinBtn" onclick="insertTrig('sin')" class="button gray py-4">sin</button>
+        <button id="cosBtn" onclick="insertTrig('cos')" class="button gray py-4">cos</button>
+        <button id="tanBtn" onclick="insertTrig('tan')" class="button gray py-4">tan</button>
+        <button id="hypBtn" onclick="toggleHypMode()" class="button gray py-4">hyp</button>
+
+        <!-- שורה 4 -->
+        <button onclick="insertOp('π')" class="button gray py-4">π</button>
+        <button onclick="insertOp('e')" class="button gray py-4">e</button>
+        <button onclick="insertOp('×10^')" class="button gray py-4 text-[10px]">×10ˣ</button>
+        <button onclick="append('(')" class="button gray py-4">(</button>
+        <button onclick="append(')')" class="button gray py-4">)</button>
+        <button onclick="deleteLast()" class="button orange py-4">DEL</button>
+
+        <!-- שורה 5 -->
+        <button onclick="append('7')" class="button white py-6 text-xl">7</button>
+        <button onclick="append('8')" class="button white py-6 text-xl">8</button>
+        <button onclick="append('9')" class="button white py-6 text-xl">9</button>
+        <button onclick="append('÷')" class="button orange py-6 text-2xl">÷</button>
+        <button onclick="append('×')" class="button orange py-6 text-2xl">×</button>
+        <button onclick="append('-')" class="button orange py-6 text-2xl">−</button>
+
+        <button onclick="append('4')" class="button white py-6 text-xl">4</button>
+        <button onclick="append('5')" class="button white py-6 text-xl">5</button>
+        <button onclick="append('6')" class="button white py-6 text-xl">6</button>
+        <button onclick="append('+')" class="button orange py-6 text-2xl">+</button>
+        <button onclick="append('Ans')" class="button gray py-6 text-sm">Ans</button>
+        <button onclick="clearAll()" class="button green py-6 text-xl">AC</button>
+
+        <button onclick="append('1')" class="button white py-6 text-xl">1</button>
+        <button onclick="append('2')" class="button white py-6 text-xl">2</button>
+        <button onclick="append('3')" class="button white py-6 text-xl">3</button>
+        <button onclick="calculate()" class="button orange row-span-2 py-6 text-4xl">=</button>
+        <button onclick="append('0')" class="button white py-6 text-xl col-span-2">0</button>
+        <button onclick="append('.')" class="button white py-6 text-2xl">.</button>
+        <button onclick="negate()" class="button gray py-4 col-span-6 text-sm">(-)</button>
+      </div>
+    </div>
+
+    <!-- אימון אינטראקטיבי -->
+    <div class="mt-8 w-full bg-zinc-800/70 rounded-2xl p-4 text-right border border-emerald-800/40">
+      <div class="flex justify-between items-center flex-wrap gap-3">
+        <div class="text-white"><span class="font-bold text-emerald-300">🎯 אימון לבגרות 3 יחידות</span>
+          <p class="text-sm text-gray-300 mt-1">חשבו: <span id="quizQuestion" class="font-mono text-emerald-300 bg-black/40 px-2 py-0.5 rounded">5 + 3 × 2</span></p>
+        </div>
+        <div class="flex gap-2">
+          <input type="number" id="quizAnswer" placeholder="תשובה" class="bg-zinc-900 text-white w-28 rounded-lg px-3 py-1 border border-emerald-600 text-center font-mono">
+          <button onclick="checkQuiz()" class="bg-emerald-700 hover:bg-emerald-600 px-4 py-1 rounded-lg">בדוק</button>
+          <button onclick="newQuiz()" class="bg-indigo-700 hover:bg-indigo-600 px-4 py-1 rounded-lg">חדש</button>
+        </div>
+      </div>
+      <div id="quizFeedback" class="text-sm text-gray-300 mt-3"></div>
+      <div class="text-gray-500 text-xs mt-2">💡 מקלדת: 0-9, + - * / ^, Enter=, Backspace=DEL, Esc=AC</div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- STATE ----------
+    let currentExpression = "0";      // ביטוי עליון
+    let lastAnswer = 0;               // Ans
+    let angleMode = "DEG";            // DEG / RAD
+    let shiftActive = false;          // SHIFT
+    let hypActive = false;            // hyp
+
+    const exprDiv = document.getElementById("exprDisplay");
+    const resultDiv = document.getElementById("resultDisplay");
+    const angleBadge = document.getElementById("angleBadge");
+    const ansBadge = document.getElementById("ansBadge");
+    const sinBtn = document.getElementById("sinBtn");
+    const cosBtn = document.getElementById("cosBtn");
+    const tanBtn = document.getElementById("tanBtn");
+    const logBtn = document.getElementById("logBtn");
+    const lnBtn = document.getElementById("lnBtn");
+    const hypBtn = document.getElementById("hypBtn");
+    const shiftBtn = document.getElementById("shiftBtn");
+
+    function updateExpr() { exprDiv.innerText = currentExpression || "0"; }
+    function updateResult(value) { 
+      resultDiv.innerText = value; 
+      if (typeof value === 'number' && !isNaN(value)) { lastAnswer = value; ansBadge.innerText = `Ans = ${lastAnswer}`; }
+    }
+    function refreshUI() { updateExpr(); }
+
+    // הוספה לביטוי
+    function append(sym) {
+      if (currentExpression === "0" && sym !== '.' && sym !== 'Ans' && !isNaN(sym)) currentExpression = sym;
+      else currentExpression += sym;
+      refreshUI();
+    }
+
+    function insertOp(op) {
+      if (op === '^2') append('^2');
+      else if (op === '^(-1)') append('^(-1)');
+      else if (op === '√(') append('√(');
+      else if (op === 'π') append('π');
+      else if (op === 'e') append('e');
+      else if (op === '×10^') append('×10^');
+      else append(op);
+    }
+
+    // פונקציות טריג עם SHIFT ו-hyp
+    function insertTrig(func) {
+      let toInsert = "";
+      if (shiftActive) {
+        if (func === 'sin') toInsert = 'asin(';
+        else if (func === 'cos') toInsert = 'acos(';
+        else if (func === 'tan') toInsert = 'atan(';
+        shiftActive = false;
+        updateShiftUI();
+      } else if (hypActive) {
+        if (func === 'sin') toInsert = 'sinh(';
+        else if (func === 'cos') toInsert = 'cosh(';
+        else if (func === 'tan') toInsert = 'tanh(';
+      } else {
+        toInsert = func + '(';
+      }
+      append(toInsert);
+    }
+
+    // log / ln עם SHIFT (10^ ו-e^)
+    function insertFuncWrapper(type) {
+      if (shiftActive) {
+        if (type === 'log') append('10^(');
+        else if (type === 'ln') append('e^(');
+        shiftActive = false;
+        updateShiftUI();
+      } else {
+        append(type + '(');
+      }
+    }
+
+    function deleteLast() {
+      if (currentExpression.length === 1 || currentExpression === "0") currentExpression = "0";
+      else currentExpression = currentExpression.slice(0, -1);
+      if (currentExpression === "") currentExpression = "0";
+      refreshUI();
+    }
+
+    function clearAll() { currentExpression = "0"; updateResult(0); refreshUI(); shiftActive=false; hypActive=false; updateShiftUI(); updateHypUI(); }
+
+    function negate() {
+      if (currentExpression === "0") return;
+      if (currentExpression.startsWith('-')) currentExpression = currentExpression.slice(1);
+      else currentExpression = '-' + currentExpression;
+      refreshUI();
+    }
+
+    // המרת ביטוי לחישול (תומך בכל)
+    function preprocess(expr) {
+      let str = expr.replace(/×/g, '*').replace(/÷/g, '/').replace(/\^/g, '**');
+      str = str.replace(/π/g, 'Math.PI').replace(/e(?!\w)/g, 'Math.E');
+      str = str.replace(/Ans/g, `(${lastAnswer})`);
+      str = str.replace(/√\(/g, 'Math.sqrt(');
+      str = str.replace(/log\(/g, 'Math.log10(');
+      str = str.replace(/ln\(/g, 'Math.log(');
+      str = str.replace(/10\^\(/g, 'Math.pow(10,');
+      str = str.replace(/e\^\(/g, 'Math.exp(');
+      // טריג רגיל
+      const trigList = ['sin','cos','tan','asin','acos','atan','sinh','cosh','tanh'];
+      for (let f of trigList) {
+        let regex = new RegExp(`${f}\\(`, 'g');
+        str = str.replace(regex, (match) => {
+          if ((f === 'sin' || f === 'cos' || f === 'tan') && angleMode === 'DEG') {
+            return `(function(x){ return Math.${f}(x * Math.PI/180); })(`;
+          } else if ((f === 'asin' || f === 'acos' || f === 'atan') && angleMode === 'DEG') {
+            return `(function(x){ return Math.${f}(x) * 180/Math.PI; })(`;
+          } else {
+            return `Math.${f}(`;
+          }
+        });
+      }
+      return str;
+    }
+
+    function calculate() {
+      if (!currentExpression || currentExpression === "0") { updateResult(0); return; }
+      let expr = currentExpression;
+      try {
+        let jsExpr = preprocess(expr);
+        let result = Function(`"use strict"; return (${jsExpr})`)();
+        if (isNaN(result) || !isFinite(result)) throw new Error();
+        result = Math.round(result * 1e12) / 1e12;
+        updateResult(result);
+      } catch(e) { updateResult("Error"); }
+    }
+
+    // מצבי SHIFT / hyp
+    function toggleShiftMode() { shiftActive = !shiftActive; hypActive = false; updateShiftUI(); updateHypUI(); setTimeout(() => { shiftActive = false; updateShiftUI(); }, 800); }
+    function toggleHypMode() { hypActive = !hypActive; shiftActive = false; updateHypUI(); updateShiftUI(); }
+    function updateShiftUI() {
+      if (shiftActive) { shiftBtn.style.filter = "brightness(0.8)"; 
+        sinBtn.textContent = "sin⁻¹"; cosBtn.textContent = "cos⁻¹"; tanBtn.textContent = "tan⁻¹";
+        logBtn.textContent = "10ˣ"; lnBtn.textContent = "eˣ";
+      } else { shiftBtn.style.filter = "";
+        sinBtn.textContent = "sin"; cosBtn.textContent = "cos"; tanBtn.textContent = "tan";
+        logBtn.textContent = "log"; lnBtn.textContent = "ln";
+      }
+    }
+    function updateHypUI() { hypBtn.style.background = hypActive ? "#ff9800" : "linear-gradient(#3f3f3f, #2c2c2c)"; }
+
+    function toggleAngleMode() { angleMode = (angleMode === "DEG") ? "RAD" : "DEG"; document.getElementById("drgBtn").textContent = angleMode; angleBadge.innerText = angleMode; updateResult(angleMode === "DEG" ? "DEG" : "RAD"); setTimeout(() => calculate(), 80); }
+    function setupMenu() { alert("SETUP: Angle, Display, Contrast"); }
+    function specialMsg(t) { alert(t + " - פעולה מתקדמת"); }
+    function toggleAlphaMode() { alert("ALPHA (מצב משתנים) – בגרסה מתקדמת"); }
+
+    // ---------- אימון בגרות ----------
+    let currentQuiz = { question: "", answer: 0 };
+    function generateQuiz() {
+      // Generate only clean integer-result exercises
+      // For division: pick divisor first, then multiply to guarantee clean division
+      function rnd(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+      const safeOps = ['+', '-', '×'];
+      // Occasionally include ÷ but only with clean divisors
+      const allOps  = ['+', '-', '×', '+', '-', '×', '÷']; // ÷ weighted 1/7
+
+      function makeOperand(){ return rnd(2,15); }
+
+      function makeDivPair(){
+        // b divides a evenly
+        const b = rnd(2,9);
+        const a = b * rnd(1,10);
+        return { a, b };
+      }
+
+      let a, b, c, op1, op2, display, ans;
+      let attempts = 0;
+
+      do {
+        attempts++;
+        op1 = allOps[Math.floor(Math.random()*allOps.length)];
+        op2 = allOps[Math.floor(Math.random()*allOps.length)];
+
+        if (op1 === '÷') {
+          const p = makeDivPair(); a = p.a; b = p.b;
+        } else {
+          a = makeOperand(); b = makeOperand();
+        }
+        c = makeOperand();
+        if (op2 === '÷') {
+          // after op1 result, ensure divisible by c
+          const interim = op1==='+' ? a+b : op1==='-' ? a-b : op1==='×' ? a*b : a/b;
+          if (!Number.isInteger(interim) || interim % c !== 0) {
+            c = 1; // fallback: divide by 1 always clean
+          }
+        }
+
+        // Build expression — add parentheses randomly for interest
+        const useParens = Math.random() > 0.5;
+        if (useParens) {
+          display = `(${a} ${op1} ${b}) ${op2} ${c}`;
+        } else {
+          display = `${a} ${op1} ${b} ${op2} ${c}`;
+        }
+
+        // Calculate
+        const calc = display.replace(/×/g,'*').replace(/÷/g,'/');
+        ans = Function(`'use strict'; return (${calc})`)();
+        ans = Math.round(ans * 1000) / 1000;
+
+        // Reject: non-integer, division by zero, negative, too large
+      } while (attempts < 20 && (!Number.isInteger(ans) || !isFinite(ans) || ans < 0 || ans > 200));
+
+      if (!Number.isInteger(ans) || !isFinite(ans)) {
+        // Ultimate fallback: simple addition
+        a = rnd(2,20); b = rnd(2,20);
+        display = `${a} + ${b}`;
+        ans = a + b;
+      }
+
+      return { question: display + " = ?", answer: ans };
+    }
+    function newQuiz() { currentQuiz = generateQuiz(); document.getElementById("quizQuestion").innerHTML = currentQuiz.question; document.getElementById("quizAnswer").value = ""; document.getElementById("quizFeedback").innerHTML = "✨ הזינו תשובה"; }
+    function checkQuiz() {
+      let user = parseFloat(document.getElementById("quizAnswer").value);
+      if (isNaN(user)) { document.getElementById("quizFeedback").innerHTML = "❌ הכנס מספר"; return; }
+      if (Math.abs(user - currentQuiz.answer) < 0.001) { document.getElementById("quizFeedback").innerHTML = "✅ נכון! 🎉"; newQuiz(); }
+      else { document.getElementById("quizFeedback").innerHTML = `❌ לא נכון. תשובה: ${currentQuiz.answer}`; }
+    }
+    newQuiz();
+
+    // תמיכת מקלדת
+    document.addEventListener('keydown', (e) => {
+      let key = e.key;
+      if (/^[0-9]$/.test(key)) { append(key); e.preventDefault(); }
+      else if (key === '+' || key === '-' || key === '*' || key === '/') { let m = { '*':'×', '/':'÷' }; append(m[key] || key); e.preventDefault(); }
+      else if (key === '^') { append('^'); e.preventDefault(); }
+      else if (key === '.') { append('.'); e.preventDefault(); }
+      else if (key === '(') { append('('); e.preventDefault(); }
+      else if (key === ')') { append(')'); e.preventDefault(); }
+      else if (key === 'Enter') { calculate(); e.preventDefault(); }
+      else if (key === 'Backspace') { deleteLast(); e.preventDefault(); }
+      else if (key === 'Escape') { clearAll(); e.preventDefault(); }
+    });
+
+    clearAll();
+  </script>
+<script src="../shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
+
+<footer>מתמטיקה לחרדים · הכנה למה״ט ולבגרות 3 יח״ל · כל הזכויות שמורות</footer>
+</body>
+</html>
+
+
+
