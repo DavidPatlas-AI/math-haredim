@@ -1,10 +1,28 @@
+<div align="center">
+
 # 📐 מתמטיקה לחרדים | Math for the Haredi Community
 
-> פלטפורמת מתמטיקה מלאה ופתוחה לקהילה החרדית — הכנה למה"ט, לבגרות 3 יחידות לימוד ולאנשי מקצוע
+### פלטפורמת מתמטיקה מלאה לקהילה החרדית — הכנה למה"ט ולבגרות
 
-**🔗 דמו חי:** [math-haredim.netlify.app](https://math-haredim.netlify.app)
+![Status](https://img.shields.io/badge/Status-Production-22c55e?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-7c6af5?style=flat-square&logo=netlify&logoColor=white)](https://math-haredim.netlify.app)
+
+</div>
 
 ---
+
+## 🎯 הבעיה → הפתרון
+
+בקהילה החרדית אין מספיק חומרי לימוד איכותיים ונגישים למתמטיקה — לא לתלמידים שמתכוננים למה"ט, לא לבגרות 3 יחידות, ולא למבוגרים שרוצים ללמוד מחדש. **מתמטיקה לחרדים** היא פלטפורמה פתוחה וחינמית: 90+ שיעורים אינטראקטיביים, מחשבון מובנה, אנימציות GeoGebra, ועובדת גם ללא אינטרנט (PWA) — כדי שהלמידה תהיה זמינה לכל אחד, בכל מקום.
+
+## 📸 Screenshots
+
+<p align="center">
+  <img src="banners/banner-1.png" width="32%" />
+  <img src="banners/banner-2.png" width="32%" />
+  <img src="banners/banner-3.png" width="32%" />
+</p>
 
 ## ✨ מה בפרויקט
 
@@ -19,7 +37,11 @@
 
 `HTML5` `CSS3` `JavaScript` `GeoGebra` `PWA` `Service Worker` `Netlify`
 
-## 🚀 הרצה מקומית
+## 🌐 דמו חי
+
+**[math-haredim.netlify.app](https://math-haredim.netlify.app)**
+
+## 📦 הרצה מקומית
 
 ```bash
 git clone https://github.com/DavidPatlas-AI/math-haredim
@@ -27,7 +49,7 @@ cd math-haredim
 # פתח את index.html בדפדפן או השתמש ב-Live Server
 ```
 
-## 📦 מבנה
+**מבנה:**
 
 ```
 ├── index.html        # דף ראשי
