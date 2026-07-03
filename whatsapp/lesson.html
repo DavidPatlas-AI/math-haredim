@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#087c68">
+  <title>פרק מלא · מתמטיקה לחרדים</title>
+  <link rel="stylesheet" href="whatsapp-app.css?v=20260703-1">
+  <style>
+    html,body{height:auto;min-height:100%;overflow:auto;background:#eef3f1}
+    .lesson-page{min-height:100dvh;background:#eef3f1;color:#101820}
+    .lesson-hero{background:#087c68;color:#fff;padding:22px max(18px,6vw)}
+    .lesson-nav{max-width:960px;margin:0 auto 20px;display:flex;align-items:center;gap:10px}
+    .lesson-nav a{min-height:38px;border-radius:8px;background:rgba(255,255,255,.14);color:#fff;text-decoration:none;font-weight:900;font-size:13px;padding:10px 12px}
+    .lesson-hero-grid{max-width:960px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:22px;align-items:center}
+    .lesson-title{min-width:0}
+    .lesson-title span{font-size:12px;font-weight:900;color:#b9f4df}
+    .lesson-title h1{font-size:34px;line-height:1.16;margin:8px 0 10px;letter-spacing:0}
+    .lesson-title p{max-width:680px;margin:0;color:rgba(255,255,255,.85);font-size:15px;line-height:1.7}
+    .lesson-art{border:1px solid rgba(255,255,255,.24);border-radius:8px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.22)}
+    .lesson-art img{display:block;width:100%;height:auto}
+    .lesson-main{max-width:960px;margin:0 auto;padding:22px max(16px,3vw) 44px;display:grid;gap:14px}
+    .lesson-band{background:#fff;border:1px solid #dbe4e0;border-radius:8px;padding:18px}
+    .lesson-band h2{font-size:19px;margin:0 0 10px}
+    .lesson-band p{font-size:15px;line-height:1.75;margin:0;color:#26333b}
+    .lesson-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .example-list,.check-list,.question-list{display:grid;gap:9px;margin:0;padding:0;list-style:none}
+    .example-list li,.check-list li,.question-list li{border:1px solid #dbe4e0;border-radius:8px;background:#f8fbfa;padding:12px;font-size:14px;line-height:1.55}
+    .example-list code{display:block;direction:ltr;text-align:left;font:700 15px Arial, sans-serif;white-space:normal;color:#075e54}
+    .check-list li{display:flex;gap:9px}.check-list b{color:#087c68}
+    .warning-box{border-right:4px solid #c43d42;background:#fff6f6;color:#7f2529}
+    .deep-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.deep-card{border:1px solid #dbe4e0;border-radius:8px;background:#f8fbfa;padding:14px}.deep-card b{display:block;color:#087c68;margin-bottom:6px}.deep-card span{font-size:14px;line-height:1.65;color:#26333b}
+    .walk-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}.walk-list li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;border:1px solid #dbe4e0;border-radius:8px;background:#f8fbfa;padding:12px}.walk-list i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#087c68;color:#fff;font-style:normal;font-weight:900}.walk-list b{display:block;margin-bottom:4px;color:#101820}.walk-list span{display:block;font-size:14px;line-height:1.55}.walk-list code{display:inline-block;direction:ltr;text-align:left;margin-top:7px;border-radius:7px;background:#edf7f3;color:#075e54;padding:5px 7px;font:800 13px Arial,sans-serif}
+    .practice-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin:0;padding:0;list-style:none}.practice-list li{border:1px solid #e0d3aa;border-right:4px solid #b86a08;border-radius:8px;background:#fffaf1;padding:12px;font-weight:800;color:#443112}
+    .question-list b{display:block;margin-bottom:6px;color:#087c68}
+    .chat-cta{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#d9fdd3;border-color:#bfe8bc}
+    .chat-cta a{border-radius:8px;background:#087c68;color:#fff;text-decoration:none;font-weight:900;font-size:14px;padding:11px 14px;white-space:nowrap}
+    @media(max-width:760px){
+      .lesson-title h1{font-size:27px}
+      .lesson-hero-grid{grid-template-columns:1fr}
+      .lesson-art{max-width:360px}
+      .lesson-grid{grid-template-columns:1fr}
+      .deep-grid{grid-template-columns:1fr}
+      .lesson-band{padding:15px}
+      .chat-cta{align-items:flex-start;flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <main class="lesson-page">
+    <section class="lesson-hero">
+      <nav class="lesson-nav" aria-label="ניווט">
+        <a href="whatsapp-learning.html">חזרה למסלול</a>
+      </nav>
+      <div class="lesson-hero-grid">
+        <div class="lesson-title">
+          <span id="lessonMeta"></span>
+          <h1 id="lessonTitle">פרק מלא</h1>
+          <p id="lessonIntro"></p>
+        </div>
+        <div class="lesson-art">
+          <img id="lessonArt" alt="">
+        </div>
+      </div>
+    </section>
+
+    <section class="lesson-main">
+      <section class="lesson-band">
+        <h2>הסבר קצר</h2>
+        <p id="lessonBeginner"></p>
+      </section>
+
+      <section class="lesson-band">
+        <h2>מה חשוב להבין באמת</h2>
+        <div class="deep-grid">
+          <div class="deep-card"><b>הרעיון</b><span id="lessonDeepWhy"></span></div>
+          <div class="deep-card"><b>מלכודת נפוצה</b><span id="lessonDeepTrap"></span></div>
+        </div>
+      </section>
+
+      <section class="lesson-band">
+        <h2>פתרון צעד־צעד</h2>
+        <ul class="walk-list" id="lessonWalkthrough"></ul>
+      </section>
+
+      <section class="lesson-grid">
+        <section class="lesson-band">
+          <h2>דוגמאות</h2>
+          <ul class="example-list" id="lessonExamples"></ul>
+        </section>
+        <section class="lesson-band">
+          <h2>סדר עבודה</h2>
+          <ul class="check-list" id="lessonChecks"></ul>
+        </section>
+      </section>
+
+      <section class="lesson-band warning-box">
+        <h2>טעות נפוצה</h2>
+        <p id="lessonWarning"></p>
+      </section>
+
+      <section class="lesson-band">
+        <h2>אתגר קצר</h2>
+        <p id="lessonChallenge"></p>
+      </section>
+
+      <section class="lesson-band">
+        <h2>תרגול נוסף</h2>
+        <ul class="practice-list" id="lessonPractice"></ul>
+      </section>
+
+      <section class="lesson-band">
+        <h2>בדיקת הבנה</h2>
+        <ul class="question-list" id="lessonQuestions"></ul>
+      </section>
+
+      <section class="lesson-band chat-cta">
+        <div>
+          <h2>להמשיך בשיחה</h2>
+          <p>רונן יפתח לך את אותו פרק במסלול הווצאפ, עם דוגמאות וחידון אינטראקטיבי.</p>
+        </div>
+        <a id="chatLink" href="whatsapp-learning.html">פתח שיחה</a>
+      </section>
+    </section>
+  </main>
+
+  <script src="math-pages.js?v=20260703-1"></script>
+  <script src="math-lessons.js?v=20260703-1"></script>
+  <script src="math-upgrades.js?v=20260703-1"></script>
+  <script src="math-visuals.js?v=20260703-1"></script>
+  <script>
+    (function(){
+      const pages=window.MATHBRO_PAGES||[];
+      const lessons=window.MATHBRO_LESSONS||{};
+      const visuals=window.MATHBRO_VISUALS||{};
+      const params=new URLSearchParams(location.search);
+      const requested=params.get('file');
+      const page=pages.find(p=>p.file===requested)||pages[0];
+      const lesson=lessons[page.file]||{};
+      const $=id=>document.getElementById(id);
+      const escapeHtml=value=>String(value??'').replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+      const cleanTitle=p=>String(p&&p.title||'פרק מלא').replace(/\s*·\s*מתמטיקה לחרדים.*$/,'').replace(/^פרק\s*\d+[:：]?\s*/,'').trim();
+      const title=cleanTitle(page);
+      document.title=`${title} · מתמטיקה לחרדים`;
+      $('lessonMeta').textContent=`פרק ${page.chapter||''} · ${page.group||'מסלול'} · ${page.level||'בסיס'}`;
+      $('lessonTitle').textContent=title;
+      $('lessonIntro').textContent=lesson.location||'פרק מתוך מסלול מתמטיקה לחרדים.';
+      $('lessonArt').src=visuals.chapterArt?visuals.chapterArt(page,'wide'):'';
+      $('lessonArt').alt=`תמונת פרק ${title}`;
+      $('lessonBeginner').textContent=lesson.advanced||lesson.beginner||'';
+      $('lessonDeepWhy').textContent=lesson.deep&&lesson.deep.why||lesson.beginner||'';
+      $('lessonDeepTrap').textContent=lesson.deep&&lesson.deep.trap||lesson.warning||'';
+      $('lessonExamples').innerHTML=(lesson.examples||[]).map(item=>`<li><code>${escapeHtml(item)}</code></li>`).join('');
+      $('lessonChecks').innerHTML=(lesson.checks||[]).map((item,index)=>`<li><b>${index+1}.</b><span>${escapeHtml(item)}</span></li>`).join('');
+      $('lessonWalkthrough').innerHTML=(lesson.walkthrough||[]).map((item,index)=>`<li><i>${index+1}</i><div><b>${escapeHtml(item.title)}</b><span>${escapeHtml(item.text)}</span>${item.formula?`<code>${escapeHtml(item.formula)}</code>`:''}</div></li>`).join('');
+      $('lessonWarning').textContent=lesson.warning||'';
+      $('lessonChallenge').textContent=lesson.challenge||'';
+      $('lessonPractice').innerHTML=(lesson.practice||[]).map(item=>`<li>${escapeHtml(item)}</li>`).join('');
+      $('lessonQuestions').innerHTML=(lesson.questions||[]).map(item=>`<li><b>${escapeHtml(item.q)}</b><span>${escapeHtml(item.why)}</span></li>`).join('');
+      $('chatLink').href=`whatsapp-learning.html?lesson=${encodeURIComponent(page.chapter||1)}&demo-chat=1`;
+    })();
+  </script>
+</body>
+</html>

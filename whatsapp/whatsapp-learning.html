@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#087c68">
+  <title>מסלול ווצאפ · מתמטיקה לחרדים</title>
+  <link rel="stylesheet" href="whatsapp-app.css?v=20260703-1">
+</head>
+<body>
+  <main class="app-shell" id="appShell">
+    <aside class="home-view" id="homeView" aria-label="מסלול הלמידה">
+      <header class="brand-bar">
+        <div class="brand-mark" aria-hidden="true">מת</div>
+        <div class="brand-copy">
+          <strong>מתמטיקה לחרדים</strong>
+          <span>מסלול ווצאפ · לימוד עם רונן</span>
+        </div>
+        <a class="icon-link" href="../index.html" title="דף הבית הרגיל" aria-label="דף הבית הרגיל">⌂</a>
+      </header>
+
+      <section class="status-section" aria-labelledby="statusTitle">
+        <div class="section-heading"><h2 id="statusTitle">עדכונים</h2><span>סטטוס קצר עם תמונות לכל פרק</span></div>
+        <div class="status-list" id="statusList"></div>
+      </section>
+
+      <section class="home-intro" aria-labelledby="homeTitle">
+        <div class="eyebrow">רונן · מחובר</div>
+        <h1 id="homeTitle">מה לומדים עכשיו?</h1>
+        <p>בחר כיוון אחד. בכל משימה תקבל הסבר קצר, דוגמה מהבחינה ושאלה שבאמת מגיבה לתשובה שלך.</p>
+        <button class="primary-action" id="continueBtn" type="button">המשך מהמשימה הבאה</button>
+        <div class="progress-line" aria-label="התקדמות במסלול">
+          <div class="progress-meta"><span id="progressText">0 מתוך 24 פרקים</span><b id="progressPercent">0%</b></div>
+          <div class="progress-track"><i id="progressBar"></i></div>
+        </div>
+      </section>
+
+      <section class="whatsapp-route-banner" aria-label="באנר מסלול ווצאפ">
+        <div class="banner-copy">
+          <span>מסלול ווצאפ</span>
+          <h2>כל פרק הופך לשיחה קצרה עם תמונה, סטטוס וחידון.</h2>
+          <p>פותחים סטטוס, מבינים את הכלל, ואז נכנסים לשיחה עם רונן על אותו נושא.</p>
+          <button id="bannerStartBtn" type="button">פתח את השיחה הבאה</button>
+        </div>
+        <div class="banner-phone" aria-hidden="true">
+          <div class="banner-status-dot"></div>
+          <div class="banner-screen">
+            <b>פרק 4 · אחוזים</b>
+            <span>מה השלם?</span>
+            <i>35% = 0.35</i>
+          </div>
+        </div>
+      </section>
+
+      <section class="route-section" aria-labelledby="routeTitle">
+        <div class="section-heading"><h2 id="routeTitle">כניסה מהירה</h2><span>בחר מה דחוף לך</span></div>
+        <div class="route-grid">
+          <button class="route-button route-green" data-route="zero" type="button"><i>1</i><span><b>יסודות</b><small>סדר פעולות ומספרים שליליים</small></span></button>
+          <button class="route-button route-red" data-route="fractions" type="button"><i>%</i><span><b>שברים ואחוזים</b><small>חלקים, הנחות ויחס למאה</small></span></button>
+          <button class="route-button route-amber" data-route="algebra" type="button"><i>x</i><span><b>אלגברה</b><small>כינוס איברים ופתיחת סוגריים</small></span></button>
+          <button class="route-button route-blue" data-route="equations" type="button"><i>=</i><span><b>משוואות וגרפים</b><small>למצוא את x ולקרוא פונקציה</small></span></button>
+          <button class="route-button route-data" data-route="calculator" type="button"><i>fx</i><span><b>מחשבון Casio</b><small>להקליד נכון, לבדוק תשובות ולפתוח טבלאות</small></span></button>
+        </div>
+      </section>
+
+      <section class="library-section" aria-labelledby="libraryTitle">
+        <div class="section-heading"><h2 id="libraryTitle">שיחות ופרקים</h2><span id="resultCount">24 פרקים</span></div>
+        <label class="search-box" for="lessonSearch"><span aria-hidden="true">⌕</span><input id="lessonSearch" type="search" placeholder="חפש נושא או פרק" autocomplete="off"></label>
+        <div class="filter-row" role="group" aria-label="סינון פרקים">
+          <button class="filter active" data-filter="all" type="button">הכל</button>
+          <button class="filter" data-filter="chapters" type="button">פרקים</button>
+          <button class="filter" data-filter="done" type="button">הושלמו</button>
+        </div>
+        <div class="lesson-list" id="lessonList"></div>
+        <button class="show-more" id="showMoreBtn" type="button">הצג עוד פרקים</button>
+      </section>
+    </aside>
+
+    <section class="chat-view" id="chatView" aria-label="שיחה עם רונן">
+      <header class="chat-header">
+        <button class="icon-button back-button" id="backBtn" type="button" aria-label="חזרה למסלול">‹</button>
+        <div class="contact-avatar" aria-hidden="true">ר</div>
+        <div class="contact-copy">
+          <h2 id="chatTitle">רונן</h2>
+          <p id="chatStatus">מחובר · מוכן למשימה</p>
+        </div>
+        <div class="chat-tools">
+          <button class="icon-button" id="doneBtn" type="button" title="סמן פרק כהושלם" aria-label="סמן פרק כהושלם">✓</button>
+          <a class="icon-link" id="openLessonLink" href="learn/seder_peulot.html" title="פתח פרק מלא" aria-label="פתח פרק מלא">↗</a>
+        </div>
+      </header>
+
+      <div class="messages" id="messages" aria-live="polite" aria-relevant="additions"></div>
+
+      <form class="composer" id="composer">
+        <input id="messageInput" type="text" placeholder="שאל את רונן על הפרק" autocomplete="off" aria-label="כתוב הודעה">
+        <button class="send-button" type="submit" aria-label="שלח הודעה">➤</button>
+      </form>
+    </section>
+  </main>
+
+  <div class="status-modal" id="statusModal" hidden>
+    <div class="status-dialog" id="statusViewer" role="dialog" aria-modal="true" aria-labelledby="statusModalTitle">
+      <div class="status-bars" id="statusBars"></div>
+      <header class="status-header">
+        <div class="status-icon" id="statusIcon" aria-hidden="true"></div>
+        <div class="status-owner"><b>מתמטיקה לחרדים</b><span id="statusTime">עכשיו</span></div>
+        <button class="status-close" id="statusClose" type="button" aria-label="סגור סטטוס">×</button>
+      </header>
+      <div class="status-photo" id="statusPhoto" aria-hidden="true"></div>
+      <div class="status-caption">
+        <p class="status-kicker">טיפ ממתמטיקה לחרדים</p>
+        <h2 id="statusModalTitle"></h2>
+        <p id="statusModalText"></p>
+        <button class="status-learn" id="statusLearn" type="button">פתח שיחה על זה</button>
+        <span>הקשה למעבר · לחיצה ארוכה לעצירה</span>
+      </div>
+      <button class="status-hit status-hit-prev" id="statusPrev" type="button" aria-label="סטטוס קודם"></button>
+      <button class="status-hit status-hit-next" id="statusNext" type="button" aria-label="סטטוס הבא"></button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="math-pages.js?v=20260703-1"></script>
+  <script src="math-lessons.js?v=20260703-1"></script>
+  <script src="math-upgrades.js?v=20260703-1"></script>
+  <script src="math-visuals.js?v=20260703-1"></script>
+  <script src="whatsapp-app.js?v=20260703-1"></script>
+</body>
+</html>
