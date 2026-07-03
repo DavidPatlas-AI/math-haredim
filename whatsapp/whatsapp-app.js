@@ -13,7 +13,7 @@
     messages:$('messages'),chatTitle:$('chatTitle'),chatStatus:$('chatStatus'),openLesson:$('openLessonLink'),doneBtn:$('doneBtn'),
     backBtn:$('backBtn'),composer:$('composer'),input:$('messageInput'),toast:$('toast'),statusList:$('statusList'),
     statusModal:$('statusModal'),statusViewer:$('statusViewer'),statusBars:$('statusBars'),statusIcon:$('statusIcon'),statusPhoto:$('statusPhoto'),
-    statusTitle:$('statusModalTitle'),statusText:$('statusModalText'),statusTime:$('statusTime'),statusClose:$('statusClose'),statusPrev:$('statusPrev'),statusNext:$('statusNext'),
+    statusTitle:$('statusModalTitle'),statusText:$('statusModalText'),statusTime:$('statusTime'),statusOwnerName:$('statusOwnerName'),statusClose:$('statusClose'),statusPrev:$('statusPrev'),statusNext:$('statusNext'),
     statusLearn:$('statusLearn')
   };
 
@@ -38,7 +38,10 @@
   }
   function setStage(stage){if(!state.current)return;memoryFor(state.current.file).stage=stage;save()}
 
-  function escapeHtml(value){return String(value??'').replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]))}
+  function escapeHtml(value){
+    const safe=String(value??'').replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+    return safe.replace(/(?<![\d/])(\d{1,3})\/(\d{1,3})(?!\d)/g,'<span class="frac"><i>$1</i><em>$2</em></span>');
+  }
   function cleanTitle(p){
     return String(p&&p.title||'נושא חדש')
       .replace(/\s*·\s*מתמטיקה לחרדים.*$/,'')
@@ -111,6 +114,8 @@
         <span>תמונה שמסבירה את הרעיון</span>
         <b>${escapeHtml(deep.hook||pack.simple)}</b>
         <p>${escapeHtml(deep.why||pack.advanced||pack.beginner)}</p>
+        ${pack.examples&&pack.examples[0]?`<p class="micro-copy"><b>דוגמה:</b> ${escapeHtml(pack.examples[0])}</p>`:''}
+        ${pack.fact?`<p class="micro-copy fun-fact"><b>עובדה מעניינת:</b> ${escapeHtml(pack.fact)}</p>`:''}
       </div>
     </div>`;
   }
@@ -136,13 +141,13 @@
     return `<article class="bubble ${message.who}">${message.html}${actionsHtml(message.actions)}<time>${message.who==='user'?'נקרא ✓✓':'רונן'} · עכשיו</time></article>`;
   }
   function renderMessages(){
-    const typing=state.busy?'<div class="typing-bubble" aria-label="רונן מקליד תשובה"><i></i><i></i><i></i></div>':'';
+    const typing=state.busy?'<div class="typing-bubble" aria-label="רונן מקליד תשובה"><span>רונן מקליד</span><div class="dots"><i></i><i></i><i></i></div></div>':'';
     els.messages.innerHTML='<div class="day-label">היום · מסלול ווצאפ</div>'+state.messages.map(messageHtml).join('')+typing;
     requestAnimationFrame(()=>{els.messages.scrollTop=els.messages.scrollHeight});
     setTimeout(()=>{els.messages.scrollTop=els.messages.scrollHeight},90);
   }
   function pushUser(text){state.messages.push({who:'user',html:`<p>${escapeHtml(text)}</p>`});renderMessages()}
-  async function pushBot(html,actions=[],delay=420){
+  async function pushBot(html,actions=[],delay=700){
     if(state.busy)return;
     state.busy=true;renderMessages();
     await new Promise(resolve=>setTimeout(resolve,delay));
@@ -222,7 +227,7 @@
       {label:'עכשיו צעד־צעד',action:'steps'},
       {label:'תן דוגמה',action:'example'},
       {label:'תרגול קצר',action:'practice',wide:true}
-    ],520);
+    ],750);
   }
   async function showAnalogy(){
     const pack=packFor(state.current);setStage('analogy');pushUser('תן לי דוגמה מהחיים');
@@ -230,7 +235,7 @@
       {label:'עכשיו צעד־צעד',action:'steps'},
       {label:'תן דוגמה מהמבחן',action:'example'},
       {label:'בחן אותי',action:'quiz',wide:true}
-    ],480);
+    ],700);
   }
   async function showStepCoach(){
     const pack=packFor(state.current);setStage('steps');pushUser('למד אותי צעד־צעד');
@@ -238,7 +243,7 @@
       {label:'תן לי תרגול',action:'practice'},
       {label:'מה הטעות הנפוצה?',action:'safety'},
       {label:'בחן אותי',action:'quiz',wide:true}
-    ],520);
+    ],750);
   }
   async function showPracticeSet(){
     const pack=packFor(state.current);setStage('practice');pushUser('תן לי תרגול קצר');
@@ -246,7 +251,7 @@
       {label:'אני רוצה פתרון דרך',action:'steps'},
       {label:'עוד שאלות אמריקאיות',action:'quiz'},
       {label:'סיכום לפני מעבר',action:'summary',wide:true}
-    ],520);
+    ],750);
   }
   async function showExample(){
     const pack=packFor(state.current),memory=memoryFor(state.current.file),examples=pack.examples||[pack.case];
@@ -309,7 +314,7 @@
     const {quiz,index,total}=quizForCurrent();setStage('quiz');
     if(!state.messages.some(m=>m.html&&m.html.includes('בדיקת הבנה')))pushUser('בחן אותי');
     const options=`<div class="quiz-options">${quiz.options.map((option,i)=>`<button type="button" data-quiz="${i}">${escapeHtml(option)}</button>`).join('')}</div>`;
-    await pushBot(`<span class="message-tag">בדיקת הבנה · שאלה ${index+1}/${total}</span><p><b>${escapeHtml(quiz.q)}</b></p>${options}`,[],320);
+    await pushBot(`<span class="message-tag">בדיקת הבנה · שאלה ${index+1}/${total}</span><p><b>${escapeHtml(quiz.q)}</b></p>${options}`,[],650);
   }
   async function answerQuiz(index){
     if(!state.currentQuiz||state.currentQuiz.file!==state.current.file)return;
@@ -323,7 +328,7 @@
     await pushBot(`<div class="feedback ${correct?'good':'try'}"><b>${correct?'בדיוק.':'כמעט.'}</b> ${escapeHtml(quiz.why)}</div>`,[
       {label:correct?'עוד שאלה':'הסבר ממוקד',action:correct?'quiz':'remediate'},
       {label:correct?'סיכום המשימה':'נסה שאלה אחרת',action:correct?'summary':'quiz'}
-    ],300);
+    ],600);
   }
   async function showRemediation(){
     const pack=packFor(state.current);pushUser('תסביר לי איפה טעיתי');
@@ -390,7 +395,7 @@
       html=`<span class="message-tag">לפי הפרק הנוכחי</span><p>${escapeHtml(pack.simple)}</p><p>לשאלה שלך הייתי מתחיל מהצעדים האלה:</p>${listHtml(pack.checks.slice(0,3))}<p><small>ותמיד — בודקים כל שלב לפני שממשיכים לשלב הבא.</small></p>`;
       actions=[{label:'תסביר פשוט',action:'start-new'},{label:'תן דוגמה',action:'example'},{label:'בחן אותי',action:'quiz',wide:true}];
     }
-    await pushBot(html,actions,420);
+    await pushBot(html,actions,700);
   }
 
   async function handleAction(action){
@@ -438,13 +443,15 @@
     if(/משווא|מילול|פונקציה|גרף|גיאומטר/i.test(t))return 'equations';
     return 'zero';
   }
-  const statusData=chapterPages.map(p=>{
+  const STUDENT_NAMES=['בנימין','משה','צפניה','זכריה','שילה','שלמה','איתי','שרול','יעקב','אברהם','יצחק','דוד','יהודה','נפתלי','אשר','ראובן','אפרים','חיים','מרדכי','ברוך','אליהו','רפאל','ישראל','יוסף'];
+  const statusData=chapterPages.map((p,i)=>{
     const lesson=lessonContent[p&&p.file]||{};
     const visual=visuals.visualFor?visuals.visualFor(p):{symbol:p.chapter||'•'};
     const slides=visuals.storySlides?visuals.storySlides(p,lesson):[{title:cleanTitle(p),text:chapterStatusText(p),formula:visual.formula||''}];
     return {
       page:p,
       icon:visual.symbol,
+      owner:STUDENT_NAMES[i%STUDENT_NAMES.length],
       title:`${pageLabel(p)} · ${cleanTitle(p)}`,
       text:chapterStatusText(p),
       route:routeForPage(p),
@@ -459,7 +466,7 @@
   const seenStatuses=readSeenStatuses();
   let statusTimer=null,statusStartedAt=0,statusRemaining=STATUS_DURATION,statusPointerAt=0,statusPointerX=0,suppressStatusClick=false;
   function renderStatuses(){
-    els.statusList.innerHTML=statusData.map((s,i)=>`<button class="status-card ${seenStatuses.has(i)?'seen':''}" data-status="${i}" type="button" aria-label="פתח סטטוס: ${escapeHtml(s.title)}"><div class="status-ring"><div class="status-face status-face-icon"><img src="${escapeHtml(s.thumb)}" alt=""></div></div><span>${escapeHtml(cleanTitle(s.page))}</span><small>${s.slides.length} תמונות</small></button>`).join('');
+    els.statusList.innerHTML=statusData.map((s,i)=>`<button class="status-card ${seenStatuses.has(i)?'seen':''}" data-status="${i}" type="button" aria-label="הסטטוס של ${escapeHtml(s.owner)}: ${escapeHtml(s.title)}"><div class="status-ring"><div class="status-face status-face-icon"><img src="${escapeHtml(s.thumb)}" alt=""></div></div><span>${escapeHtml(s.owner)}</span><small>${escapeHtml(cleanTitle(s.page))}</small></button>`).join('');
   }
   function scheduleStatus(ms=STATUS_DURATION){
     clearTimeout(statusTimer);statusRemaining=ms;statusStartedAt=Date.now();
@@ -473,6 +480,7 @@
     seenStatuses.add(state.statusIndex);localStorage.setItem('mathbro-status-seen',JSON.stringify([...seenStatuses]));renderStatuses();
     els.statusBars.innerHTML=s.slides.map((_,i)=>`<i class="${i<state.statusSlide?'done':i===state.statusSlide?'current':''}"><span></span></i>`).join('');
     els.statusIcon.innerHTML=`<img src="${escapeHtml(s.thumb)}" alt="">`;
+    if(els.statusOwnerName)els.statusOwnerName.textContent=s.owner||'מתמטיקה לחרדים';
     const image=visuals.storyArt?visuals.storyArt(s.page,slide,state.statusSlide):s.image;
     els.statusPhoto.innerHTML=`<img src="${escapeHtml(image)}" alt="תמונת סטטוס ${escapeHtml(cleanTitle(s.page))}">`;
     els.statusTitle.textContent=slide.title||s.title;els.statusText.textContent=slide.text||s.text;

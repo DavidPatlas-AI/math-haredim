@@ -80,7 +80,7 @@ button{cursor:pointer}
 .status-face{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;background:#eef8f4;font-size:20px;font-weight:900;overflow:hidden;box-shadow:0 0 0 2px #fff}.status-face img{width:100%;height:100%;object-fit:cover;display:block}.status-card.seen .status-ring{background:#c8d2ce}.status-card:not(.seen):hover .status-ring{filter:saturate(1.16) brightness(1.03);transform:scale(1.03)}
 .status-card:not(.seen):after{content:"";position:absolute;top:49px;right:12px;width:13px;height:13px;border:2px solid #fff;border-radius:50%;background:#25d366}
 .status-card span{display:block;font-size:10.5px;font-weight:800;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.status-card small{display:block;margin-top:2px;font-size:8.5px;color:var(--muted);font-weight:800}
+.status-card small{display:block;margin-top:2px;font-size:8.5px;color:var(--muted);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 .search-box{height:42px;border:1px solid var(--line);background:#fff;border-radius:8px;display:flex;align-items:center;gap:7px;padding:0 11px}
 .search-box span{font-size:20px;color:var(--muted)}.search-box input{min-width:0;flex:1;border:0;outline:0;background:transparent;color:var(--text);font-size:13px}
@@ -137,11 +137,17 @@ button{cursor:pointer}
 .feedback.good:before{content:"";position:absolute;inset:0;border-radius:8px;border:2px solid #34d399;opacity:.8;animation:feedback-ring .7s ease-out forwards}
 .return-note{margin-top:10px;padding:9px 10px;border:1px solid #c9e3d8;border-radius:8px;background:#f3fbf7;color:#315d4e;font-size:11.5px;line-height:1.5}
 .flow-diagram{display:flex;align-items:stretch;gap:5px;margin:8px 0;direction:rtl;overflow-x:auto;scrollbar-width:none}.flow-diagram::-webkit-scrollbar{display:none}.flow-diagram>b{display:grid;place-items:center;color:#86a399;font-size:15px;flex:0 0 auto}.flow-step{min-width:86px;min-height:58px;border:1px solid #cfe1da;border-radius:8px;background:#f7fbf9;display:grid;place-items:center;align-content:center;gap:4px;text-align:center;font-size:10.5px;font-weight:900;color:#264e42;padding:6px}.flow-step i{width:19px;height:19px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#fff;font-style:normal;font-size:9px}
-.micro-copy{color:var(--muted);font-size:11px!important}.challenge-box{margin-top:4px;padding:12px;border:1px solid #dfc692;border-right:4px solid var(--amber);border-radius:8px;background:#fffaf1;color:#5e4520}.challenge-box>b{display:block;font-size:11px;color:#99620d;margin-bottom:4px}.challenge-box p{font-size:13px!important}
+.micro-copy{color:var(--muted);font-size:11px!important}
+.micro-copy.fun-fact{color:#5b4a8a;background:#f5f2ff;border:1px solid #e2daf7;border-radius:6px;padding:6px 8px;margin-top:5px}.challenge-box{margin-top:4px;padding:12px;border:1px solid #dfc692;border-right:4px solid var(--amber);border-radius:8px;background:#fffaf1;color:#5e4520}.challenge-box>b{display:block;font-size:11px;color:#99620d;margin-bottom:4px}.challenge-box p{font-size:13px!important}
 .mastery-card{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;padding:9px 10px;border:1px solid #c8e6d9;border-radius:8px;background:#f1fbf6;color:#245b48;font-size:11px}.mastery-card span{color:#5f756d;text-align:left}
 .lesson-score{font-style:normal;color:var(--green);font-size:9.5px;font-weight:900}
-.typing-bubble{align-self:flex-start;background:#fff;border-radius:8px;padding:11px 14px;display:flex;gap:4px;box-shadow:0 1px 1px rgba(16,24,32,.12)}
+.typing-bubble{align-self:flex-start;background:#fff;border-radius:8px;padding:9px 13px;display:flex;align-items:center;gap:7px;box-shadow:0 1px 1px rgba(16,24,32,.12)}
+.typing-bubble span{font-size:11.5px;font-weight:800;color:var(--green-dark)}
+.typing-bubble .dots{display:flex;gap:4px}
 .typing-bubble i{width:6px;height:6px;border-radius:50%;background:#84939a;animation:typing 1s infinite ease-in-out}.typing-bubble i:nth-child(2){animation-delay:.15s}.typing-bubble i:nth-child(3){animation-delay:.3s}
+.frac{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:-.4em;line-height:1.05;margin:0 1px;font-size:.86em}
+.frac i{font-style:normal;padding:0 2px}
+.frac em{font-style:normal;padding:0 2px;border-top:1.4px solid currentColor;margin-top:1px}
 
 .composer{position:relative;z-index:2;height:64px;border-top:1px solid #ccd7d2;background:#f4f6f5;display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:7px;align-items:center;padding:8px 12px calc(8px + env(safe-area-inset-bottom))}
 .composer input{height:44px;border:1px solid transparent;border-radius:999px;background:#fff;padding:0 15px;outline:0;color:var(--text);font-size:15px;box-shadow:0 1px 2px rgba(16,24,32,.08)}.composer input:focus{border-color:#8fcbb5;box-shadow:0 0 0 3px rgba(8,124,104,.08),0 1px 2px rgba(16,24,32,.08)}
