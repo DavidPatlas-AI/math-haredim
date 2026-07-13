@@ -4,6 +4,21 @@
   const fallbackVisual={symbol:'∑',formula:'x+1',tag:'מסלול',bg:'#087c68',bg2:'#2563eb',accent:'#d9fdd3'};
   const ICON_W=160,ICON_H=120;
 
+  // Real designed explainer cards (photographed/prepared by hand), keyed by chapter number.
+  // Only chapters with an actual matching card are listed; everything else keeps the generated SVG art.
+  const REAL_CHAPTER_CARDS={
+    1:'../assets/chapter-cards/chapter-01.jpg',
+    5:'../assets/chapter-cards/chapter-05.jpg',
+    6:'../assets/chapter-cards/chapter-06.jpg',
+    10:'../assets/chapter-cards/chapter-10.jpg',
+    12:'../assets/chapter-cards/chapter-12.jpg',
+    13:'../assets/chapter-cards/chapter-13.jpg',
+    14:'../assets/chapter-cards/chapter-14.jpg',
+    16:'../assets/chapter-cards/chapter-16.jpg',
+    18:'../assets/chapter-cards/chapter-18.jpg',
+    19:'../assets/chapter-cards/chapter-19.jpg'
+  };
+
   const FAMILY_BY_FILE={
     'learn/seder_peulot.html':'order',
     'learn/shliliyim.html':'numberline',
@@ -508,8 +523,9 @@
   }
 
   function chapterArt(page,mode){
-    const v=visualFor(page),title=cleanTitle(page),chapter=page&&page.chapter?`פרק ${page.chapter}`:'מסלול';
     const story=mode==='story',wide=mode==='wide';
+    if(page&&REAL_CHAPTER_CARDS[page.chapter])return REAL_CHAPTER_CARDS[page.chapter];
+    const v=visualFor(page),title=cleanTitle(page),chapter=page&&page.chapter?`פרק ${page.chapter}`:'מסלול';
     if(story)return storyArt(page,storySlides(page)[0],0);
     const w=wide?640:220,h=wide?300:220,cx=w/2;
     const family=familyFor(page);
