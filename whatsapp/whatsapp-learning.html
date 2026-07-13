@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#087c68">
   <title>מסלול ווצאפ · מתמטיקה לחרדים</title>
-  <link rel="stylesheet" href="whatsapp-app.css?v=20260703-1">
+  <link rel="stylesheet" href="whatsapp-app.css?v=20260708-2">
 </head>
 <body>
   <main class="app-shell" id="appShell">
@@ -16,7 +16,11 @@
           <strong>מתמטיקה לחרדים</strong>
           <span>מסלול ווצאפ · לימוד עם רונן</span>
         </div>
-        <a class="icon-link" href="../index.html" title="דף הבית הרגיל" aria-label="דף הבית הרגיל">⌂</a>
+        <div class="brand-actions" aria-label="פעולות">
+          <a class="icon-link" href="../index.html" title="דף הבית הרגיל" aria-label="דף הבית הרגיל">⌂</a>
+          <button class="header-icon" type="button" title="חיפוש" aria-label="חיפוש">⌕</button>
+          <button class="header-icon" type="button" title="תפריט" aria-label="תפריט">⋮</button>
+        </div>
       </header>
 
       <section class="status-section" aria-labelledby="statusTitle">
@@ -28,7 +32,10 @@
         <div class="eyebrow">רונן · מחובר</div>
         <h1 id="homeTitle">מה לומדים עכשיו?</h1>
         <p>בחר כיוון אחד. בכל משימה תקבל הסבר קצר, דוגמה מהבחינה ושאלה שבאמת מגיבה לתשובה שלך.</p>
-        <button class="primary-action" id="continueBtn" type="button">המשך מהמשימה הבאה</button>
+        <div class="home-actions">
+          <button class="primary-action" id="continueBtn" type="button">המשך מהמשימה הבאה</button>
+          <button class="exam-action" id="examStartBtn" type="button">מצב מבחן · 10 שאלות</button>
+        </div>
         <div class="progress-line" aria-label="התקדמות במסלול">
           <div class="progress-meta"><span id="progressText">0 מתוך 24 פרקים</span><b id="progressPercent">0%</b></div>
           <div class="progress-track"><i id="progressBar"></i></div>
@@ -86,7 +93,10 @@
         </div>
         <div class="chat-tools">
           <button class="icon-button" id="doneBtn" type="button" title="סמן פרק כהושלם" aria-label="סמן פרק כהושלם">✓</button>
+          <a class="icon-link wa-contact-link" id="waContactLink" href="#" target="_blank" rel="noopener" title="שלחו הודעה אמיתית" aria-label="שלחו הודעה אמיתית" hidden>💬</a>
           <a class="icon-link" id="openLessonLink" href="learn/seder_peulot.html" title="פתח פרק מלא" aria-label="פתח פרק מלא">↗</a>
+          <button class="icon-button" type="button" title="חיפוש בשיחה" aria-label="חיפוש בשיחה">⌕</button>
+          <button class="icon-button" type="button" title="תפריט שיחה" aria-label="תפריט שיחה">⋮</button>
         </div>
       </header>
 
@@ -98,6 +108,46 @@
       </form>
     </section>
   </main>
+
+  <button class="tools-fab" id="toolsFab" type="button" aria-label="כלים: מחשבון וטיוטה" title="מחשבון וטיוטה">🧮</button>
+
+  <div class="tools-panel" id="toolsPanel" hidden>
+    <div class="tools-panel-head">
+      <div class="tools-tabs">
+        <button class="tools-tab active" data-tab="calc" type="button">מחשבון</button>
+        <button class="tools-tab" data-tab="draft" type="button">טיוטה</button>
+      </div>
+      <button class="tools-panel-close" id="toolsPanelClose" type="button" aria-label="סגור כלים">×</button>
+    </div>
+    <div class="tools-tab-body" data-tabpanel="calc">
+      <div class="calc-display" id="calcDisplay">0</div>
+      <div class="calc-grid">
+        <button data-calc="clear">C</button>
+        <button data-calc="back">⌫</button>
+        <button data-calc="percent">%</button>
+        <button data-calc="op" data-op="÷">÷</button>
+        <button data-calc="num">7</button>
+        <button data-calc="num">8</button>
+        <button data-calc="num">9</button>
+        <button data-calc="op" data-op="×">×</button>
+        <button data-calc="num">4</button>
+        <button data-calc="num">5</button>
+        <button data-calc="num">6</button>
+        <button data-calc="op" data-op="−">−</button>
+        <button data-calc="num">1</button>
+        <button data-calc="num">2</button>
+        <button data-calc="num">3</button>
+        <button data-calc="op" data-op="+">+</button>
+        <button data-calc="num" data-wide="1">0</button>
+        <button data-calc="dot">.</button>
+        <button class="calc-eq" data-calc="equals">=</button>
+      </div>
+    </div>
+    <div class="tools-tab-body" data-tabpanel="draft" hidden>
+      <textarea id="draftPad" placeholder="רשמו כאן חישובים או פתרון תוך כדי הלימוד..."></textarea>
+      <div class="draft-actions"><button id="draftClear" type="button">נקה טיוטה</button><span id="draftSaved"></span></div>
+    </div>
+  </div>
 
   <div class="status-modal" id="statusModal" hidden>
     <div class="status-dialog" id="statusViewer" role="dialog" aria-modal="true" aria-labelledby="statusModalTitle">
@@ -121,10 +171,10 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="math-pages.js?v=20260703-1"></script>
-  <script src="math-lessons.js?v=20260703-1"></script>
-  <script src="math-upgrades.js?v=20260703-1"></script>
-  <script src="math-visuals.js?v=20260703-1"></script>
-  <script src="whatsapp-app.js?v=20260703-1"></script>
+  <script src="math-pages.js?v=20260708-2"></script>
+  <script src="math-lessons.js?v=20260708-2"></script>
+  <script src="math-upgrades.js?v=20260708-2"></script>
+  <script src="math-visuals.js?v=20260708-2"></script>
+  <script src="whatsapp-app.js?v=20260708-2"></script>
 </body>
 </html>

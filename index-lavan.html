@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/shared/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#1e6feb"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מתמטיקה לחרדים — לוח לבן | הכנה למה״ט ולבגרות 3 יח״ל</title>
+<meta name="description" content="הכנה למה״ט ולבגרות 3 יח״ל — מתמטיקה ואנגלית. הסברים, אנימציות, משחקים ומבחנים. מותאם לקהילה החרדית.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&display=swap');
+
+  :root{
+    --wall:#dfe4ec; --board:#ffffff;
+    --ink:#1b2430; --ink-dim:#42495a;
+    --card:#ffffff; --card-line:#e4e9f2; --tile:#f7f9fc;
+    --c-basics:#e0483f; --c-algebra:#c98a00; --c-equations:#1e6feb;
+    --c-geometry:#0f9e6e; --c-stats:#7c5cf0; --c-tools:#333a46;
+    --shadow:0 14px 32px rgba(27,36,48,.08);
+    --heading-font:"Rubik","Segoe UI",Arial,sans-serif;
+    --t1:#e8401a;--t2:#0f9e56;--t3:#2a5bd8;--t4:#7c2ee0;--t5:#d45c0a;
+    --t6:#0899b0;--t7:#b35700;--t8:#cc7200;--t9:#be185d;--t10:#1d4ed8;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif; direction:rtl;
+    color:var(--ink); background:var(--wall); min-height:100vh; padding:30px 16px 90px;
+  }
+  a{color:inherit;text-decoration:none}
+  @keyframes fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes draw{from{stroke-dashoffset:220}to{stroke-dashoffset:0}}
+  @keyframes wobble{0%{transform:translateY(0) rotate(0deg)}55%{transform:translateY(-18px) rotate(-10deg)}75%{transform:translateY(-13px) rotate(-6deg)}100%{transform:translateY(-15px) rotate(-8deg)}}
+  @keyframes pop-in{0%{opacity:0;transform:scale(.9) translateY(6px)}70%{transform:scale(1.02) translateY(0)}100%{opacity:1;transform:scale(1)}}
+
+  .frame{
+    position:relative; max-width:1180px;margin:0 auto; border-radius:16px; padding:16px;
+    background:
+      linear-gradient(105deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,0) 10%, rgba(255,255,255,0) 44%, rgba(255,255,255,.8) 50%, rgba(255,255,255,0) 56%, rgba(255,255,255,0) 90%, rgba(255,255,255,.7) 100%),
+      linear-gradient(155deg,#f5f7fa,#c3cad6 42%,#9aa3b5 70%,#dee2e9);
+    box-shadow:0 30px 60px rgba(10,16,28,.3), inset 0 1px 0 rgba(255,255,255,.6);
+  }
+  .screw{
+    position:absolute;width:15px;height:15px;border-radius:50%;z-index:3;
+    background:radial-gradient(circle at 34% 30%,#fff,#d3d8e1 42%,#8891a1 78%,#5c6577);
+    box-shadow:0 1px 3px rgba(0,0,0,.45), inset 0 -1px 1px rgba(0,0,0,.35);
+  }
+  .screw:after{content:"";position:absolute;top:47%;left:14%;right:14%;height:2px;background:rgba(0,0,0,.4);border-radius:1px;transform:rotate(25deg)}
+  .screw.tl{top:12px;left:12px} .screw.tr{top:12px;right:12px}
+  .screw.bl{bottom:12px;left:12px} .screw.br{bottom:12px;right:12px}
+
+  .board{position:relative;border-radius:8px;background:var(--board);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06), inset 0 2px 16px rgba(255,255,255,.6);overflow:hidden}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 26px;border-bottom:2px solid var(--card-line);flex-wrap:wrap}
+  .brand b{font-family:var(--heading-font);font-size:1.15rem;font-weight:900}
+  .brand span{display:block;font-size:.68rem;color:var(--ink-dim);font-weight:700;margin-top:1px}
+  .today-tag{font-size:.72rem;font-weight:800;color:var(--ink-dim);border:1.5px dashed var(--card-line);border-radius:999px;padding:5px 12px}
+  .tb-actions{display:flex;gap:8px;align-items:center}
+  .tb-icon{border:1.5px solid var(--card-line);background:var(--tile);color:var(--ink-dim);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1rem}
+  .tb-icon:hover{border-color:var(--c-equations);color:var(--c-equations)}
+  .tb-btn{border:1.5px solid var(--c-equations);color:var(--c-equations);background:transparent;padding:8px 18px;border-radius:999px;font-weight:800;font-size:.82rem;cursor:pointer}
+  .tb-btn:hover{background:var(--c-equations);color:#fff}
+
+  .search-panel{padding:14px 26px;border-bottom:2px solid var(--card-line);display:none}
+  .search-panel input{width:100%;padding:12px 18px;border-radius:10px;border:1.5px solid var(--card-line);font:inherit;color:var(--ink);outline:0}
+  .search-panel input:focus{border-color:var(--c-equations)}
+  #no-results{color:var(--ink-dim);margin-top:8px;font-size:.9rem;display:none}
+
+  .hero{padding:38px 26px 6px;text-align:center}
+  h1{font-family:var(--heading-font);font-size:clamp(1.7rem,3.8vw,2.5rem);font-weight:900;margin:0 0 12px;text-wrap:balance;letter-spacing:-.01em}
+  h1 span{position:relative;color:var(--c-equations);display:inline-block}
+  h1 span svg{position:absolute;right:-2%;bottom:-.18em;width:104%;height:.42em;z-index:-1}
+  h1 span svg path{stroke-dasharray:220;stroke-dashoffset:220;animation:draw 1s .3s ease forwards}
+
+  .main-cta-wrap{margin-bottom:22px}
+  .main-cta-btn{
+    display:inline-flex;align-items:center;gap:12px;font-family:var(--heading-font);
+    font-size:clamp(1.3rem,3.4vw,1.8rem);font-weight:900;color:#fff;
+    background:var(--c-equations);padding:15px 34px;border-radius:14px;
+    box-shadow:0 12px 26px rgba(30,111,235,.32);transition:transform .18s ease,box-shadow .18s ease;
+  }
+  .main-cta-btn:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(30,111,235,.38)}
+  .cta-arrow{font-size:1.3rem}
+  .next-topic-line{color:var(--ink-dim);font-size:.9rem;margin-top:12px;font-weight:700}
+  .next-topic-line strong{color:var(--ink)}
+
+  .readiness-wrap{max-width:440px;margin:0 auto 22px;padding:0 16px}
+  .readiness-label{display:flex;justify-content:space-between;color:var(--ink-dim);font-size:.85rem;margin-bottom:8px;font-weight:800}
+  .readiness-num{color:var(--c-equations);font-weight:900}
+  .chalk-meter-track{height:10px;background:var(--tile);border-radius:99px;position:relative;overflow:hidden;border:1px solid var(--card-line)}
+  .chalk-meter-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--c-geometry),var(--c-equations));transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+  .meter-marks{position:absolute;top:-20px;left:0;right:0;display:flex;justify-content:space-around;font-size:.65rem;color:var(--ink-dim);pointer-events:none}
+
+  .mastery-legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:0 auto 18px;max-width:480px;font-size:.76rem;color:var(--ink-dim);font-weight:700}
+  .ml-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-inline-end:5px;vertical-align:middle}
+  .ml-fresh .ml-dot{background:var(--c-geometry)} .ml-stale .ml-dot{background:var(--c-algebra)} .ml-none .ml-dot{background:var(--card-line)}
+
+  .exam-day-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:13px 34px;
+    border:2px dashed var(--c-basics);border-radius:50px;color:var(--c-basics);
+    font-family:var(--heading-font);font-size:1.05rem;font-weight:900;margin:0 auto 22px;
+    background:rgba(224,72,63,.05);transition:all .2s ease;
+  }
+  .exam-day-btn:hover{background:var(--c-basics);color:#fff;border-style:solid;transform:translateY(-2px)}
+
+  .tracks-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+  .track-btn{display:inline-flex;align-items:center;gap:9px;padding:12px 26px;border-radius:12px;border:1.5px solid var(--card-line);color:var(--ink);font-weight:800;font-size:.92rem;background:var(--tile);transition:all .2s ease}
+  .track-icon{font-size:1.15rem}
+  .track-math:hover{border-color:var(--c-equations);background:var(--c-equations);color:#fff;transform:translateY(-2px)}
+  .track-english:hover{border-color:var(--c-geometry);background:var(--c-geometry);color:#fff;transform:translateY(-2px)}
+  .track-whatsapp{border-color:rgba(15,158,110,.3);background:rgba(15,158,110,.06)}
+  .track-whatsapp:hover{background:var(--c-geometry);color:#fff;transform:translateY(-2px)}
+  .track-instagram{border-color:rgba(214,36,159,.3);background:rgba(214,36,159,.06)}
+  .track-instagram:hover{background:linear-gradient(135deg,#fdf497,#fd5949,#d6249f,#285aeb);color:#fff;transform:translateY(-2px)}
+  .track-news{border-color:rgba(198,40,40,.3);background:rgba(198,40,40,.06)}
+  .track-news:hover{background:#c62828;color:#fff;transform:translateY(-2px)}
+
+  .featured-wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:0 26px 30px}
+  @media (max-width:900px){.featured-wrap{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:560px){.featured-wrap{grid-template-columns:1fr}}
+  .featured{
+    background:var(--card);border:1.5px solid var(--card-line);border-inline-start:5px solid var(--fc,var(--c-equations));
+    border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow);
+    transform:rotate(var(--tilt,0deg));animation:fade-up .5s ease both;animation-delay:calc(var(--i,0) * .07s);
+    transition:transform .18s ease,box-shadow .18s ease;min-height:auto;position:relative;
+  }
+  .featured:hover{transform:rotate(0deg) translateY(-4px);box-shadow:0 18px 34px rgba(27,36,48,.14)}
+  .featured .ico{font-size:1.5rem}
+  .featured h3{margin:0;font-family:var(--heading-font);font-size:1rem;font-weight:900;color:var(--fc,var(--c-equations))}
+  .featured p{margin:0;font-size:.82rem;color:var(--ink-dim);font-weight:600;line-height:1.5}
+  .featured .arr{margin-top:auto;font-size:.8rem;font-weight:800;color:var(--fc,var(--c-equations))}
+
+  .marker-tray-wrap{text-align:center;margin:0 0 8px}
+  .tray-label{font-size:.82rem;font-weight:800;color:var(--ink-dim);margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:6px}
+  .marker-tray{display:flex;justify-content:center;align-items:flex-end;gap:18px;flex-wrap:wrap;padding:0 20px 8px}
+  .marker{--mc:#333;appearance:none;border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px;padding:0;transition:transform .22s cubic-bezier(.2,.9,.3,1.3);animation:fade-up .45s ease both;animation-delay:calc(var(--i,0) * .05s)}
+  .marker .body{width:22px;height:64px;border-radius:11px 11px 4px 4px;background:linear-gradient(180deg,#fbfcfe,#eef1f6 62%,var(--mc) 62%,var(--mc) 100%);border:1px solid rgba(0,0,0,.12);box-shadow:0 3px 8px rgba(0,0,0,.2);position:relative}
+  .marker .body::before{content:"";position:absolute;top:-9px;right:2px;width:18px;height:11px;border-radius:5px 5px 2px 2px;background:var(--mc);box-shadow:inset -2px 0 3px rgba(0,0,0,.25), inset 2px 0 3px rgba(255,255,255,.2)}
+  .marker .body::after{content:"";position:absolute;top:6px;left:-2px;width:4px;height:16px;border-radius:2px;background:linear-gradient(180deg,#d7dbe2,#aab0bd)}
+  .marker .lbl{font-size:.78rem;font-weight:800;color:var(--ink-dim)}
+  .marker:hover{transform:translateY(-7px) rotate(-5deg)}
+  .marker.active{animation:wobble .5s cubic-bezier(.3,1.6,.4,1) forwards}
+  .marker.active .lbl{color:var(--mc);font-weight:900}
+  .eraser{appearance:none;border:1.5px solid var(--card-line);background:var(--tile);color:var(--ink-dim);border-radius:10px;padding:9px 16px;font-weight:800;font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:8px;align-self:center;margin-inline-start:4px;transition:opacity .2s ease,transform .15s ease}
+  .eraser:disabled{opacity:.35;cursor:default}
+  .eraser:not(:disabled):hover{border-color:var(--ink-dim);transform:translateY(-2px)}
+  .eraser i{width:20px;height:12px;border-radius:3px;background:#e7e2d6;border:1px solid #cfc8b8;display:block}
+
+  .topics-accordion{margin:20px 26px;border-radius:14px;overflow:hidden;border:1.5px solid var(--card-line)}
+  .acc-header{width:100%;display:flex;justify-content:space-between;align-items:center;padding:16px 22px;background:var(--tile);font-family:var(--heading-font);font-size:1.05rem;font-weight:900;color:var(--c-equations);border:none;cursor:pointer;text-align:right;direction:rtl}
+  .acc-arrow{transition:transform .3s;font-size:.85rem}
+  .acc-arrow.open{transform:rotate(180deg)}
+  .acc-body{padding:20px 20px 6px;border-top:1.5px solid var(--card-line)}
+
+  .sec-title{font-family:var(--heading-font);font-size:1.15rem;font-weight:900;color:var(--ink);margin:32px 4px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .sec-title::before{content:"";width:4px;height:20px;border-radius:2px;background:var(--c-equations);flex-shrink:0}
+  .sec-sub{color:var(--ink-dim);font-size:.72rem;font-weight:700;margin-right:auto;background:var(--tile);border-radius:99px;padding:3px 12px;border:1px solid var(--card-line)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+  .tile{
+    display:flex;flex-direction:column;min-height:112px;background:var(--card);border:1.5px solid var(--card-line);
+    border-inline-start:4px solid var(--accent);border-radius:10px;padding:14px 16px;position:relative;
+    transition:transform .15s ease,box-shadow .15s ease;opacity:0;animation:pop-in .4s ease forwards;animation-delay:calc(var(--i,0) * .04s);
+  }
+  .tile:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(27,36,48,.1)}
+  .tile .tag{font-size:.62rem;font-weight:900;letter-spacing:1px;color:var(--accent);margin-bottom:5px;text-transform:uppercase}
+  .tile h3{font-family:var(--heading-font);font-size:.98rem;font-weight:900;margin:0 0 4px;line-height:1.3}
+  .tile .desc{font-size:.78rem;color:var(--ink-dim);flex:1;line-height:1.5;font-weight:600}
+  .tile .go{font-size:.78rem;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:4px;margin-top:8px}
+  .tile .go .arr{transition:transform .2s}
+  .tile:hover .go .arr{transform:translateX(-4px)}
+  .badge-calc{border-radius:99px;padding:2px 8px;font-size:.6rem;font-weight:900;letter-spacing:.5px;margin-inline-end:5px;display:inline-block;background:rgba(204,114,0,.12);color:var(--c-algebra);border:1px solid rgba(204,114,0,.22)}
+
+  .vck{position:absolute;top:-8px;left:-8px;width:20px;height:20px;border-radius:50%;background:var(--c-geometry);color:#fff;font-size:.68rem;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(15,158,110,.4)}
+  .tile.t-fresh{border-color:var(--c-geometry)!important;background:rgba(15,158,110,.05)!important}
+  .tile.t-stale{border-color:var(--c-algebra)!important;background:rgba(201,138,0,.05)!important}
+
+  .tools-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:24px 26px}
+  .tool-card{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border:1.5px solid var(--card-line);border-radius:10px;color:var(--c-equations);background:var(--tile);font-size:.86rem;font-weight:800;transition:all .2s ease}
+  .tool-card:hover{border-color:var(--c-equations);transform:translateY(-2px);box-shadow:0 6px 18px rgba(30,111,235,.12)}
+
+  .chalk-footer{text-align:center;font-size:.78rem;color:var(--ink-dim);margin-top:16px;padding:20px 26px 30px;border-top:1.5px solid var(--card-line)}
+
+  .sticky-mobile{position:fixed;bottom:0;left:0;right:0;z-index:9990;background:#fff;border-top:1.5px solid var(--card-line);padding:13px 20px;text-align:center;display:none;box-shadow:0 -4px 20px rgba(0,0,0,.08)}
+  .sticky-btn{color:var(--c-equations);font-weight:900;font-size:1rem;font-family:var(--heading-font)}
+
+  /* ── BOARD-STYLE SWITCH (same look as the day/night toggle) ── */
+  #board-switch{
+    position:fixed;bottom:22px;left:22px;z-index:99998;
+    width:46px;height:46px;border-radius:50%;
+    background:#12142a;color:#f0c14b;border:none;font-size:1.25rem;
+    cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.3);
+    text-decoration:none;display:flex;align-items:center;justify-content:center;
+    transition:transform .2s;
+  }
+  #board-switch:hover{transform:scale(1.12)}
+  @media(max-width:600px){#board-switch{bottom:70px;left:14px;width:42px;height:42px;font-size:1.1rem}}
+  @media(max-width:600px){
+    .sticky-mobile{display:block}
+    body{padding-bottom:74px}
+    .featured-wrap{grid-template-columns:1fr}
+    .main-cta-btn{padding:13px 26px;font-size:1.3rem}
+  }
+  @media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+  <div class="board">
+    <header class="topbar">
+      <div class="brand"><b>מתמטיקה לחרדים</b><span>לוח לבן · הכנה למה״ט ולבגרות 3 יח״ל</span></div>
+      <span class="today-tag" id="todayTag"></span>
+      <div class="tb-actions">
+        <button class="tb-icon" id="search-toggle" title="חיפוש">🔎</button>
+        <button class="tb-btn acc-open-btn" id="topics-toggle">כל הנושאים ↓</button>
+      </div>
+    </header>
+
+    <div class="search-panel" id="search-panel">
+      <input id="srch" type="text" placeholder="חפשו נושא..." dir="rtl" autocomplete="off">
+      <div id="no-results">לא נמצאו תוצאות</div>
+    </div>
+
+    <section class="hero">
+      <h1>בוחרים <span>טוש<svg viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M2 14 Q 50 4, 100 12 T 198 10" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" opacity=".28"/></svg></span> — ומקבלים את הנושא</h1>
+
+      <div class="main-cta-wrap">
+        <a id="main-cta-btn" href="learn/index.html" class="main-cta-btn">
+          <span id="cta-arrow" class="cta-arrow">←</span>
+          <span id="cta-label">התחל ללמוד</span>
+        </a>
+        <div id="next-topic-line" class="next-topic-line" style="display:none">
+          הבא: <strong id="next-topic-name"></strong>
+        </div>
+      </div>
+
+      <div class="readiness-wrap">
+        <div class="readiness-label"><span>המוכנות שלך:</span><span id="readiness-pct" class="readiness-num">0%</span></div>
+        <div class="chalk-meter-track">
+          <div id="readiness-fill" class="chalk-meter-fill" style="width:0%"></div>
+          <div class="meter-marks"><span>¼</span><span>½</span><span>¾</span><span>✓</span></div>
+        </div>
+      </div>
+
+      <div class="mastery-legend" id="mastery-legend" style="display:none">
+        <span class="ml-fresh"><span class="ml-dot"></span> שולט (ביקרת לאחרונה)</span>
+        <span class="ml-stale"><span class="ml-dot"></span> לחזרה (ביקרת לפני זמן)</span>
+        <span class="ml-none"><span class="ml-dot"></span> עוד לא</span>
+      </div>
+
+      <a href="topics/yom-lifney-mivkhan.html" class="exam-day-btn">⏰ מסלול יום לפני המבחן</a>
+
+      <div class="tracks-row">
+        <a href="learn/index.html" class="track-btn track-math"><span class="track-icon">📐</span> מסלול מתמטיקה</a>
+        <a href="topics/anglit.html" class="track-btn track-english"><span class="track-icon">📖</span> מסלול אנגלית</a>
+        <a href="whatsapp/whatsapp-learning.html" class="track-btn track-whatsapp"><span class="track-icon">💬</span> מסלול ווצאפ</a>
+        <a href="instagram/instagram-learning.html" class="track-btn track-instagram"><span class="track-icon">📷</span> מסלול אינסטגרם</a>
+        <a href="news/news-learning.html" class="track-btn track-news"><span class="track-icon">📰</span> המבזק</a>
+      </div>
+    </section>
+
+    <div class="featured-wrap">
+      <a class="featured" style="--fc:var(--c-equations);--tilt:.5deg;--i:0" href="learn/index.html">
+        <span class="ico">📚</span><h3>מרכז הלמידה — פרק א׳ + ב׳</h3>
+        <p>17 נושאים, אנימציות, משחקים ומבחן סיכום — הכל בממשק אחד מסודר</p>
+        <span class="arr">← כניסה למרכז הלימוד</span>
+      </a>
+      <a class="featured" style="--fc:var(--c-geometry);--tilt:-.7deg;--i:1" href="whatsapp/whatsapp-learning.html">
+        <span class="ico">💬</span><h3>מסלול ווצאפ — ללמוד כמו שיחה</h3>
+        <p>24 פרקים עם סטטוסים, תמונות, הסבר ברור, דוגמאות וחידון קצר עם רונן</p>
+        <span class="arr">← כניסה למסלול ווצאפ</span>
+      </a>
+      <a class="featured" style="--fc:#d6249f;--tilt:.6deg;--i:2" href="instagram/instagram-learning.html">
+        <span class="ico">📷</span><h3>מסלול אינסטגרם — סטוריז ופיד</h3>
+        <p>24 פרקים כסטוריז ופוסטים, עם שיחה על כל נושא ואפשרות לשלוח הודעה אמיתית</p>
+        <span class="arr">← כניסה למסלול אינסטגרם</span>
+      </a>
+      <a class="featured" style="--fc:#c62828;--tilt:-.5deg;--i:3" href="news/news-learning.html">
+        <span class="ico">📰</span><h3>המבזק — כל פרק ככתבה</h3>
+        <p>24 פרקים בעיצוב פורטל חדשות, עם כתבה מלאה על כל נושא והתקדמות אישית</p>
+        <span class="arr">← כניסה למבזק</span>
+      </a>
+      <a class="featured" style="--fc:var(--c-algebra);--tilt:.4deg;--i:2" href="topics/more-prati.html">
+        <span class="ico">🎯</span><h3>מורה פרטי — תוכנית לימוד אישית</h3>
+        <p>ענה על 2 שאלות — וקבל תוכנית לימוד ממוקדת לפי הזמן שיש לך ומה שעוד לא שולט בו</p>
+        <span class="arr">← כניסה לתוכנית האישית</span>
+      </a>
+      <a class="featured" style="--fc:var(--c-basics);--tilt:-.5deg;--i:3" href="topics/yom-lifney-mivkhan.html">
+        <span class="ico">⏰</span><h3>יום לפני המבחן</h3>
+        <p>סיכום מרוכז וחכם לכל מי שיש לו מבחן מחר — כל מה שצריך לדעת בפורמט קצר</p>
+        <span class="arr">← כניסה</span>
+      </a>
+    </div>
+
+    <div class="marker-tray-wrap">
+      <div class="tray-label">✏️ בחרו פרק</div>
+      <div class="marker-tray" id="markerTray">
+        <button class="marker" data-chap="basics" style="--mc:#e0483f;--i:5"><span class="body"></span><span class="lbl">יסודות</span></button>
+        <button class="marker" data-chap="algebra" style="--mc:#c98a00;--i:4"><span class="body"></span><span class="lbl">אלגברה</span></button>
+        <button class="marker" data-chap="equations" style="--mc:#1e6feb;--i:3"><span class="body"></span><span class="lbl">משוואות</span></button>
+        <button class="marker" data-chap="geometry" style="--mc:#0f9e6e;--i:2"><span class="body"></span><span class="lbl">גיאומטריה</span></button>
+        <button class="marker" data-chap="stats" style="--mc:#7c5cf0;--i:1"><span class="body"></span><span class="lbl">סטטיסטיקה</span></button>
+        <button class="marker" data-chap="tools" style="--mc:#333a46;--i:0"><span class="body"></span><span class="lbl">כלים</span></button>
+        <button class="eraser" id="markerEraser" disabled><i></i> נקה בחירה</button>
+      </div>
+    </div>
+
+    <div class="topics-accordion" id="acc-section">
+      <button class="acc-header" id="acc-toggle"><span>📚 כל הנושאים</span><span class="acc-arrow" id="acc-arrow">▼</span></button>
+      <div class="acc-body" id="acc-body" style="display:none">
+
+<div class="sec-title">פרק א׳ — יסודות החשבון <span class="sec-sub">הבסיס של הכל</span></div>
+<div class="grid">
+  <a class="tile" href="learn/chazakot.html" style="--accent:var(--t1);--i:0"><div class="tag">נושא 1</div><h3>חזקות</h3><div class="desc">2³, כללי חזקות, כפל וחילוק עם חזקות</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/shorashim.html" style="--accent:var(--t2);--i:1"><div class="tag">נושא 2</div><h3>שורשים</h3><div class="desc">√, שורשים ריבועיים, פישוט וחישוב</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/seder_peulot.html" style="--accent:var(--t3);--i:2"><div class="tag">נושא 3</div><h3>סדר פעולות</h3><div class="desc">מה מחשבים קודם — כפל, חזקה, סוגריים</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/shliliyim.html" style="--accent:var(--t4);--i:3"><div class="tag">נושא 4</div><h3>מספרים שליליים</h3><div class="desc">חיבור, חיסור, כפל וכלל הסימנים</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/chazaka_shlili.html" style="--accent:var(--t5);--i:4"><div class="tag">נושא 5</div><h3>חזקה של שלילי</h3><div class="desc"><span class="math-inline">(−2)² vs −2²</span> — ההבדל החשוב</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/mavoa-algebra.html" style="--accent:var(--t6);--i:5"><div class="tag">מבוא</div><h3>מבוא לאלגברה</h3><div class="desc">מושגי יסוד: משתנה, ביטוי, שוויון</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+</div>
+
+<div class="sec-title">שברים <span class="sec-sub">רגילים ואלגבריים</span></div>
+<div class="grid">
+  <a class="tile" href="topics/fraction_addition_subtraction_html.html" style="--accent:var(--t3);--i:0"><div class="tag">שברים 1</div><h3>חיבור וחיסור שברים</h3><div class="desc">מכנה משותף, הרחבה וצמצום</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/advanced_fractions_operations_html.html" style="--accent:var(--t7);--i:1"><div class="tag">שברים 2</div><h3>כפל וחילוק שברים</h3><div class="desc">צמצום, כפל, חילוק והרחבה</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/fractions_algebra_html.html" style="--accent:var(--t8);--i:2"><div class="tag">שברים 3</div><h3>שברים אלגבריים</h3><div class="desc">צמצום שברים עם אותיות — פירוק לגורמים קודם</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/mechane-meshutaf.html" style="--accent:var(--t9);--i:3"><div class="tag">שברים 4</div><h3>מכנה משותף ומשוואות</h3><div class="desc">משוואות עם שברים — כפל במכנה משותף</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+</div>
+
+<div class="sec-title">פרק ב׳ — אלגברה <span class="sec-sub">עובדים עם אותיות</span></div>
+<div class="grid">
+  <a class="tile" href="learn/kinus_evarim.html" style="--accent:var(--t6);--i:0"><div class="tag">נושא 6</div><h3>כינוס איברים</h3><div class="desc">מה זה פרמטר ואיך מחברים איברים דומים</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/kefel_sograyim.html" style="--accent:var(--t7);--i:1"><div class="tag">נושא 7</div><h3>כפל ופתיחת סוגריים</h3><div class="desc">חוק הפילוג, סוגריים כפול סוגריים</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/kefel_mekutzar.html" style="--accent:var(--t2);--i:2"><div class="tag">נושא 8</div><h3>נוסחאות כפל מקוצר</h3><div class="desc"><span class="math-inline">(a±b)², (a+b)(a−b)</span> — חובה לדעת!</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/tirgul-noshaim.html" style="--accent:var(--t10);--i:3"><div class="tag">תרגול</div><h3>תרגול לפי נושאים</h3><div class="desc">תרגול ממוקד לפרקים א׳ ו-ב׳ — בחרו נושא</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/tirgul_perek_b.html" style="--accent:var(--t5);--i:4"><div class="tag">תרגול</div><h3>תרגול מסכם פרק ב׳</h3><div class="desc">עשרות תרגילים, רצף 🔥 והתקדמות</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+</div>
+
+<div class="sec-title">פירוק לגורמים <span class="sec-sub">לחלק ולפשט</span></div>
+<div class="grid">
+  <a class="tile" href="topics/common_factor_standalone_html.html" style="--accent:var(--t1);--i:0"><div class="tag">פירוק 1</div><h3>גורם משותף</h3><div class="desc">הוצאת גורם משותף מביטוי — השיטה הבסיסית</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/factoring_difference_squares_html.html" style="--accent:var(--t4);--i:1"><div class="tag">פירוק 2</div><h3>הפרש ריבועים</h3><div class="desc"><span class="math-inline">a²−b² = (a+b)(a−b)</span> + גורם משותף משולב</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/piruk-legormim.html" style="--accent:var(--t3);--i:2"><div class="tag">פירוק 3</div><h3>פירוק לגורמים — מלא</h3><div class="desc">כל השיטות יחד — תרגול מקיף</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+</div>
+
+<div class="sec-title">משוואות ופונקציות <span class="sec-sub">בגרות 3 יחידות</span></div>
+<div class="grid">
+  <a class="tile" href="learn/mishvaot.html" style="--accent:var(--t3);--i:0"><div class="tag">נושא 9</div><h3>משוואות ממעלה ראשונה</h3><div class="desc">שיטת המאזניים, x בשני צדדים</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/aishvayonot.html" style="--accent:var(--t9);--i:1"><div class="tag">נושא</div><h3>אי-שוויונות</h3><div class="desc">&gt;, &lt;, ≥, ≤ — כאשר הופכים את הסימן</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/beayot_miluliyot.html" style="--accent:var(--t4);--i:2"><div class="tag">נושא 10</div><h3>בעיות מילוליות</h3><div class="desc">מסיפור למשוואה — בשיטה</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/beayot-taarovet.html" style="--accent:var(--t6);--i:3"><div class="tag">נושא</div><h3>בעיות תערובת</h3><div class="desc">ריכוז, תמיסות, ושאלות תערובת</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/achuzim.html" style="--accent:var(--t2);--i:4"><div class="tag">נושא 11</div><h3>אחוזים</h3><div class="desc">הנחות, מע"מ, ריבית וגידול</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/funktziot.html" style="--accent:var(--t8);--i:5"><div class="tag">נושא 12</div><h3>פונקציות וגרפים</h3><div class="desc"><span class="math-inline">y=mx+b</span>, שיפוע וחיתוכים</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/tchum-hagdara.html" style="--accent:var(--t10);--i:6"><div class="tag">נושא</div><h3>תחום הגדרה</h3><div class="desc">מה מותר לשים ב-x — שורש ומכנה</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/mishvaa_ribuit.html" style="--accent:var(--t4);--i:7"><div class="tag">נושא 13</div><h3>משוואה ריבועית</h3><div class="desc">נוסחת השורשים <span class="math-inline">x=(−b±√Δ)/2a</span></div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/mishvaot-du-riboiot.html" style="--accent:var(--t1);--i:8"><div class="tag">נושא</div><h3>משוואות דו-ריבועיות</h3><div class="desc"><span class="math-inline">ax⁴+bx²+c=0</span> — פתרון בהחלפת <span class="math-inline">t=x²</span></div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/funktziat-shoresh.html" style="--accent:var(--t5);--i:9"><div class="tag">נושא</div><h3>פונקציית שורש</h3><div class="desc">√x, משוואות עם שורשים וגרף</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/maarechet.html" style="--accent:var(--t5);--i:10"><div class="tag">נושא 14</div><h3>מערכת משוואות</h3><div class="desc">שתי משוואות, שני נעלמים</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/tor-cheshboni.html" style="--accent:var(--t7);--i:11"><div class="tag">נושא</div><h3>טור חשבוני</h3><div class="desc">סדרה חשבונית, סכום טור וסדרה הנדסית</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+</div>
+
+<div class="sec-title">גיאומטריה <span class="sec-sub">צורות, זוויות ומרחקים</span></div>
+<div class="grid">
+  <a class="tile" href="learn/meshulashim.html" style="--accent:var(--t1);--i:0"><div class="tag">גיאומטריה 1</div><h3>משולשים</h3><div class="desc">פיתגורס, שו"ש, ישר-זווית</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/zaviyot-meshulash.html" style="--accent:var(--t3);--i:1"><div class="tag">גיאומטריה 2</div><h3>זוויות במשולש</h3><div class="desc">סכום זוויות <span class="math-inline">180°</span>, חיצוניות ושוות</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/chafifast-meshulashim.html" style="--accent:var(--t2);--i:2"><div class="tag">גיאומטריה 3</div><h3>חפיפת משולשים</h3><div class="desc">צלע-זווית-צלע, זווית-צלע-זווית וכו'</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/merubaot.html" style="--accent:var(--t4);--i:3"><div class="tag">גיאומטריה 4</div><h3>מרובעים</h3><div class="desc">ריבוע, מלבן, מקבילית, טרפז</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/shtachim-vhikim.html" style="--accent:var(--t6);--i:4"><div class="tag">גיאומטריה 5</div><h3>שטחים והיקפים</h3><div class="desc">נוסחאות שטח: משולש, מלבן, טרפז, עיגול</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/maagal.html" style="--accent:var(--t9);--i:5"><div class="tag">גיאומטריה 6</div><h3>מעגל</h3><div class="desc">היקף, שטח, משיק, קשת ומיתר</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/geo_analytit.html" style="--accent:var(--t4);--i:6"><div class="tag">גיאומטריה 7</div><h3>גיאומטריה אנליטית</h3><div class="desc">מרחק, אמצע, שיפוע בין נקודות</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="learn/trigo.html" style="--accent:var(--t3);--i:7"><div class="tag">גיאומטריה 8</div><h3>טריגונומטריה</h3><div class="desc">sin, cos, tan — SOH-CAH-TOA</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+</div>
+
+<div class="sec-title">סטטיסטיקה והסתברות <span class="sec-sub">מספרים על נתונים</span></div>
+<div class="grid">
+  <a class="tile" href="topics/statistika.html" style="--accent:var(--t7);--i:0"><div class="tag">סטטיסטיקה</div><h3>ממוצע, חציון, שכיח</h3><div class="desc">מדדי מרכז, פיזור וטבלאות תדירות</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+  <a class="tile" href="topics/hasttabrut.html" style="--accent:var(--t8);--i:1"><div class="tag">הסתברות</div><h3>הסתברות</h3><div class="desc">אירועים, הסתברות בסיסית, הסתברות מותנית</div><span class="go"><span class="arr">←</span> לנושא</span></a>
+</div>
+
+<div class="sec-title">מחשבון Casio fx-991EX <span class="sec-sub">כלי מספר 1 לבגרות</span></div>
+<div class="grid">
+  <a class="featured" href="calculator/casio-v8.html" style="--fc:var(--t8);min-height:auto">
+    <span class="ico">🔢</span><h3>סימולטור מחשבון — גרסה מלאה</h3>
+    <p>המחשבון האמיתי בדפדפן — כפתורים, תצוגה ופעולות אמיתיות</p>
+    <span class="arr">← לסימולטור</span>
+  </a>
+  <a class="tile" href="calculator/casio-tutorial.html" style="--accent:var(--t6);--i:0"><div class="tag">מדריך</div><h3>מדריך מחשבון</h3><div class="desc">איך משתמשים במחשבון — טיפים, פונקציות ומקשים <span class="badge-calc">מחשבון</span></div><span class="go"><span class="arr">←</span> למדריך</span></a>
+  <a class="tile" href="calculator/calculator-lesson.html" style="--accent:var(--t5);--i:1"><div class="tag">שיעור</div><h3>שיעור מחשבון</h3><div class="desc">לימוד שימוש במחשבון לפי נושאי הבגרות <span class="badge-calc">מחשבון</span></div><span class="go"><span class="arr">←</span> לשיעור</span></a>
+</div>
+
+<div class="sec-title">מבחנים ומשחקים <span class="sec-sub">בדקו את עצמכם</span></div>
+<div class="grid">
+  <a class="featured" href="learn/mivchan_sikum.html" style="--fc:var(--c-equations);min-height:auto">
+    <span class="ico">🏆</span><h3>מבחן סיכום — כל הנושאים</h3>
+    <p>שאלות אקראיות מכל פרקי הקורס, ציון בסוף ופירוט לפי נושא. אפשר נגד המחשב או נגד חבר!</p>
+    <span class="arr">← למבחן הגדול</span>
+  </a>
+  <a class="tile" href="learn/mivchanim.html" style="--accent:var(--t4);--i:0"><div class="tag">מבחן</div><h3>מבחני מה"ט לדוגמה</h3><div class="desc">מאגר מבחני מכינה 2026 + מבחן רנדומלי + פתרונות</div><span class="go"><span class="arr">←</span> למבחנים</span></a>
+  <a class="tile" href="topics/mivchan-perek-ab.html" style="--accent:var(--t3);--i:1"><div class="tag">מבחן</div><h3>מבחן פרק א׳+ב׳ פרימיום</h3><div class="desc">מבחן סיכום מקיף לפרקים א׳ ו-ב׳</div><span class="go"><span class="arr">←</span> למבחן</span></a>
+  <a class="tile" href="topics/kerav-matematika.html" style="--accent:var(--t9);--i:2"><div class="tag">משחק</div><h3>קרב מתמטיקה כיתתי</h3><div class="desc">תחרות בין שחקנים — מי יסיים ראשון?</div><span class="go"><span class="arr">←</span> למשחק</span></a>
+</div>
+
+<div class="sec-title">כלי עזר ועיון <span class="sec-sub">משאבים ותמיכה</span></div>
+<div class="grid">
+  <a class="tile" href="learn/noschaot.html" style="--accent:var(--t3);--i:0"><div class="tag">נוסחאות</div><h3>דף הנוסחאות</h3><div class="desc">כל נוסחאות הבגרות עם הסבר ודוגמה</div><span class="go"><span class="arr">←</span> לנוסחאות</span></a>
+  <a class="tile" href="topics/noshaot-interaktiviot.html" style="--accent:var(--t10);--i:1"><div class="tag">נוסחאות</div><h3>נוסחאות אינטראקטיביות</h3><div class="desc">לחצו על נוסחה לקבל הסבר חי</div><span class="go"><span class="arr">←</span> לנוסחאות</span></a>
+  <a class="tile" href="learn/tipim.html" style="--accent:var(--t8);--i:2"><div class="tag">טיפים</div><h3>טיפים וטריקים</h3><div class="desc">24 טיפים לחישוב מהיר וחכם בראש</div><span class="go"><span class="arr">←</span> לטיפים</span></a>
+  <a class="tile" href="topics/shem-hamisphar.html" style="--accent:var(--t6);--i:3"><div class="tag">עברית</div><h3>שם המספר בעברית</h3><div class="desc">מדריך דקדוק לכתיבת מספרים — זכר ונקבה</div><span class="go"><span class="arr">←</span> למדריך</span></a>
+  <a class="tile" href="topics/anglit.html" style="--accent:var(--t2);--i:4"><div class="tag">אנגלית</div><h3>אנגלית לחרדים</h3><div class="desc">3 יחידות אנגלית — בסיס לבגרות</div><span class="go"><span class="arr">←</span> לאנגלית</span></a>
+  <a class="tile" href="topics/motivatzya.html" style="--accent:var(--t7);--i:5"><div class="tag">מוטיבציה</div><h3>מוטיבציה למתמטיקה</h3><div class="desc">למה כדאי ללמוד? עידוד ומוטיבציה</div><span class="go"><span class="arr">←</span> למוטיבציה</span></a>
+  <a class="tile" href="topics/geogebra.html" style="--accent:var(--t3);--i:6"><div class="tag">כלי גרפים</div><h3>כלי גרפים | GeoGebra</h3><div class="desc">ציירו גרפים, פונקציות וצורות — מחשבון גרפי חינמי</div><span class="go"><span class="arr">←</span> לכלי</span></a>
+  <a class="tile" href="topics/geogebra-tools.html" style="--accent:var(--t4);--i:7"><div class="tag">כלי אינטראקטיביים</div><h3>🔧 כלי גיאומטריה אינטראקטיביים</h3><div class="desc">גרפים, גיאומטריה וחישובים אלגבריים — בזמן אמת</div><span class="go"><span class="arr">←</span> לכלים</span></a>
+  <a class="tile" href="topics/geo-interactive.html" style="--accent:var(--t2);--i:8"><div class="tag">תרגול לבגרות</div><h3>📐 גיאומטריה אינטראקטיבית</h3><div class="desc">5 תרגילים — פיתגורס, טרפז, פונקציה, פרבולה ומרחק בין נקודות</div><span class="go"><span class="arr">←</span> לתרגול</span></a>
+</div>
+
+      </div><!-- /acc-body -->
+    </div><!-- /topics-accordion -->
+
+    <div class="tools-row">
+      <a href="calculator/casio-v8.html" class="tool-card">🔢 מחשבון Casio</a>
+      <a href="learn/noschaot.html" class="tool-card">📋 דף נוסחאות</a>
+      <a href="learn/tipim.html" class="tool-card">💡 טיפים ותעלולים</a>
+    </div>
+
+    <footer class="chalk-footer">
+      מתמטיקה לחרדים · הכנה למה״ט ולבגרות 3 יח״ל — מתמטיקה ואנגלית · כל הזכויות שמורות · <a href="index.html" style="text-decoration:underline">חזרה ללוח המקורי</a>
+    </footer>
+  </div>
+</div>
+
+<a id="board-switch" href="index.html" title="עברו ללוח הגיר" aria-label="עברו ללוח הגיר">🖍️</a>
+
+<div class="sticky-mobile" id="sticky-mobile">
+  <a id="sticky-link" href="learn/index.html" class="sticky-btn">← המשך מאיפה שעצרתי</a>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const allTiles = document.querySelectorAll('.tile, .featured');
+  const srch = document.getElementById('srch');
+  const noRes = document.getElementById('no-results');
+  const accBody = document.getElementById('acc-body');
+  const accArrow = document.getElementById('acc-arrow');
+
+  const days=['יום א׳','יום ב׳','יום ג׳','יום ד׳','יום ה׳','יום ו׳','שבת'];
+  document.getElementById('todayTag').textContent = 'היום · ' + days[new Date().getDay()];
+
+  function openAcc(){ accBody.style.display='block'; accArrow && accArrow.classList.add('open'); }
+  function closeAcc(){ accBody.style.display='none'; accArrow && accArrow.classList.remove('open'); }
+
+  srch && srch.addEventListener('input', () => {
+    const q = srch.value.trim().toLowerCase();
+    if (q && accBody.style.display === 'none') openAcc();
+    let visible = 0;
+    allTiles.forEach(t => {
+      const show = !q || t.textContent.toLowerCase().includes(q);
+      t.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.querySelectorAll('.sec-title').forEach(sec => {
+      let next = sec.nextElementSibling, has = false;
+      while (next && !next.classList.contains('sec-title')) {
+        if (next.classList.contains('tile') || next.classList.contains('featured')) {
+          if (next.style.display !== 'none') has = true;
+        }
+        next.querySelectorAll && next.querySelectorAll('.tile,.featured').forEach(t => {
+          if (t.style.display !== 'none') has = true;
+        });
+        next = next.nextElementSibling;
+      }
+      sec.style.display = (!q || has) ? '' : 'none';
+    });
+    noRes.style.display = visible === 0 && q ? 'block' : 'none';
+  });
+
+  // ── marker tray — chapter filter (same categories/logic as the chalk version) ──
+  const CHAP_MAP = {
+    basics:    ['פרק א', 'שברים'],
+    algebra:   ['פרק ב', 'פירוק'],
+    equations: ['משוואות'],
+    geometry:  ['גיאומטריה'],
+    stats:     ['סטטיסטיקה'],
+    tools:     ['מחשבון', 'מבחנים', 'כלי עזר', 'כניסה ראשית'],
+  };
+  let activeChap = null;
+
+  function setSectionVisibility(chap) {
+    document.querySelectorAll('.sec-title').forEach(sec => {
+      const text = sec.textContent;
+      const show = !chap || CHAP_MAP[chap].some(k => text.includes(k));
+      sec.style.display = show ? '' : 'none';
+      let el = sec.nextElementSibling;
+      while (el && !el.classList.contains('sec-title')) {
+        el.style.display = show ? '' : 'none';
+        el = el.nextElementSibling;
+      }
+    });
+  }
+
+  const markerTray = document.getElementById('markerTray');
+  const markerEraser = document.getElementById('markerEraser');
+
+  function setActiveMarker(btn) {
+    document.querySelectorAll('.marker').forEach(b => b.classList.remove('active'));
+    markerEraser.disabled = true;
+    if (btn) { btn.classList.add('active'); markerEraser.disabled = false; }
+  }
+
+  markerTray.querySelectorAll('.marker').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const chap = btn.dataset.chap;
+      if (activeChap === chap) {
+        activeChap = null;
+        setActiveMarker(null);
+        setSectionVisibility(null);
+      } else {
+        activeChap = chap;
+        setActiveMarker(btn);
+        setSectionVisibility(chap);
+        if (accBody.style.display === 'none') openAcc();
+        setTimeout(() => document.getElementById('acc-section').scrollIntoView({behavior:'smooth',block:'start'}), 80);
+      }
+    });
+  });
+  markerEraser.addEventListener('click', () => {
+    if (activeChap === null) return;
+    activeChap = null;
+    setActiveMarker(null);
+    setSectionVisibility(null);
+  });
+
+  // ── progress tracking (same localStorage keys as the chalk homepage) ──
+  function getVisitData(key) {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    try { return JSON.parse(raw); }
+    catch(e) { return {count:1, lastVisit: Date.now()}; }
+  }
+
+  function applyProgress() {
+    let visited = 0;
+    let firstUnvisited = null, lastVisitedTile = null;
+    const NOW = Date.now();
+    const FRESH_DAYS = 14;
+
+    allTiles.forEach(tile => {
+      const href = tile.getAttribute('href');
+      if (!href) return;
+      const parts = href.replace(/^\.\//, '').split('/').filter(Boolean);
+      const key = 'visited:' + parts.join('/');
+      const data = getVisitData(key);
+
+      if (data) {
+        visited++;
+        lastVisitedTile = tile;
+        tile.classList.remove('t-fresh','t-stale');
+        const ageDays = (NOW - (data.lastVisit || NOW)) / 86400000;
+        tile.classList.add(ageDays < FRESH_DAYS ? 't-fresh' : 't-stale');
+        if (!tile.querySelector('.vck')) {
+          const ck = document.createElement('div');
+          ck.className = 'vck'; ck.textContent = '✓';
+          tile.appendChild(ck);
+        }
+      } else {
+        tile.classList.remove('t-fresh','t-stale');
+        if (!firstUnvisited) firstUnvisited = tile;
+      }
+    });
+
+    const legend = document.getElementById('mastery-legend');
+    if (legend) legend.style.display = visited > 0 ? 'flex' : 'none';
+    const total = allTiles.length || 1;
+    const pct = Math.min(100, Math.round(visited / total * 100));
+
+    const rFill = document.getElementById('readiness-fill');
+    const rPct = document.getElementById('readiness-pct');
+    if (rFill) setTimeout(() => rFill.style.width = pct + '%', 200);
+    if (rPct) rPct.textContent = pct + '%';
+
+    const ctaBtn = document.getElementById('main-cta-btn');
+    const ctaLabel = document.getElementById('cta-label');
+    const nextLine = document.getElementById('next-topic-line');
+    const nextName = document.getElementById('next-topic-name');
+    const stickyLink = document.getElementById('sticky-link');
+
+    const targetTile = lastVisitedTile || firstUnvisited;
+    if (targetTile) {
+      const href = targetTile.getAttribute('href');
+      if (ctaBtn) ctaBtn.href = href;
+      if (stickyLink) stickyLink.href = href;
+      if (visited > 0) {
+        if (ctaLabel) ctaLabel.textContent = 'המשך מאיפה שעצרת';
+        if (firstUnvisited && firstUnvisited !== lastVisitedTile) {
+          if (nextLine) nextLine.style.display = 'block';
+          if (nextName) nextName.textContent = firstUnvisited.querySelector('h3') ? firstUnvisited.querySelector('h3').textContent : '';
+        }
+      }
+    }
+  }
+  applyProgress();
+  window.addEventListener('storage', applyProgress);
+
+  const searchToggle = document.getElementById('search-toggle');
+  const searchPanel = document.getElementById('search-panel');
+  searchToggle && searchToggle.addEventListener('click', () => {
+    const isHidden = searchPanel.style.display === 'none' || !searchPanel.style.display;
+    searchPanel.style.display = isHidden ? 'block' : 'none';
+    if (isHidden) document.getElementById('srch').focus();
+  });
+
+  const accToggle = document.getElementById('acc-toggle');
+  const topicsToggle = document.getElementById('topics-toggle');
+  accToggle && accToggle.addEventListener('click', () => {
+    accBody.style.display === 'none' ? openAcc() : closeAcc();
+  });
+  topicsToggle && topicsToggle.addEventListener('click', () => {
+    openAcc();
+    document.getElementById('acc-section').scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+
+<script src="/shared/nav.js"></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
+<style>@media(max-width:600px){#dmode{bottom:70px!important}}</style>
+</body>
+</html>

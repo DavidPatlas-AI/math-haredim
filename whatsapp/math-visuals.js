@@ -470,12 +470,15 @@
     </g>`;
   }
 
-  function storyArt(page,slide,index=0){
+  function storyArt(page,slide,index=0,trackLabel){
     const v=visualFor(page),title=cleanTitle(page),chapter=page&&page.chapter?`פרק ${page.chapter}`:'מסלול';
     const s=slide||storySlides(page)[0]||{};
     const total=(storySlides(page)||[]).length||6;
     const titleLines=wrap(s.title||title,18,2);
     const formulaLines=wrap(s.formula||v.formula,24,2);
+    const headerLabel=`${chapter} · ${s.badge||v.tag}`;
+    const headerSize=headerLabel.length>26?19:headerLabel.length>18?23:27;
+    const headerWidth=Math.min(632,Math.max(240,headerLabel.length*headerSize*.66+40));
     const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1280" viewBox="0 0 720 1280">
       ${commonDefs(v)}
       <rect width="720" height="1280" fill="url(#bg)"/>
@@ -487,8 +490,8 @@
       <circle class="glow" cx="128" cy="162" r="128" fill="#fff" opacity=".18"/>
       <circle cx="650" cy="742" r="200" fill="#000" opacity=".11"/>
       <path class="draw" d="M58 704 C 206 520, 352 850, 660 590" fill="none" stroke="${xml(v.accent)}" stroke-width="13" stroke-linecap="round" opacity=".52"/>
-      <rect x="88" y="82" width="544" height="66" rx="33" fill="#fff" opacity=".16"/>
-      <text x="360" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="27" font-weight="900" fill="#fff" direction="rtl">${xml(chapter)} · ${xml(s.badge||v.tag)}</text>
+      <rect x="${360-headerWidth/2}" y="82" width="${headerWidth}" height="66" rx="33" fill="#fff" opacity=".16"/>
+      <text x="360" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="${headerSize}" font-weight="900" fill="#fff" direction="rtl">${xml(headerLabel)}</text>
       ${storyGraphic(s.kind,v,page)}
       <g filter="url(#shadow)">
         <rect x="76" y="674" width="568" height="132" rx="30" fill="#061713" opacity=".36"/>
@@ -499,7 +502,7 @@
         <rect x="158" y="990" width="404" height="74" rx="37" fill="#061713" opacity=".36"/>
         <text x="360" y="1037" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="${xml(v.accent)}" direction="rtl">שקופית ${index+1} מתוך ${total}</text>
       </g>
-      <text x="360" y="1212" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="800" fill="#fff" opacity=".72" direction="rtl">מתמטיקה לחרדים · מסלול ווצאפ · ${xml(index+1)}</text>
+      <text x="360" y="1212" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="800" fill="#fff" opacity=".72" direction="rtl">מתמטיקה לחרדים · ${xml(trackLabel||'מסלול ווצאפ')} · ${xml(index+1)}</text>
     </svg>`;
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
   }
@@ -542,5 +545,35 @@
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
   }
 
-  window.MATHBRO_VISUALS={visualFor,statusText,storySlides,storyArt,chapterArt,cleanTitle};
+  // ---- soft "profile photo" style avatar: subtle math hint, not a full icon tile ----
+  function profileAvatar(page){
+    const v=visualFor(page),family=familyFor(page);
+    const w=200,h=200,cx=w/2,cy=h/2;
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+      <defs>
+        <radialGradient id="pav-bg" cx="32%" cy="28%" r="85%">
+          <stop offset="0" stop-color="${xml(v.bg2)}"/>
+          <stop offset="1" stop-color="${xml(v.bg)}"/>
+        </radialGradient>
+        <filter id="pav-blur" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="16"/>
+        </filter>
+        <filter id="pav-shadow" x="-40%" y="-40%" width="180%" height="180%">
+          <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity=".28"/>
+        </filter>
+      </defs>
+      <circle cx="${cx}" cy="${cy}" r="${cx}" fill="url(#pav-bg)"/>
+      <g filter="url(#pav-blur)" opacity=".8">
+        <circle cx="55" cy="60" r="58" fill="${xml(v.accent)}" opacity=".55"/>
+        <circle cx="152" cy="70" r="46" fill="#fff" opacity=".22"/>
+        <circle cx="120" cy="150" r="66" fill="#000" opacity=".16"/>
+      </g>
+      <g transform="translate(${cx-45},${cy-8}) scale(.56)" filter="url(#pav-shadow)">
+        ${placeIcon(family,v,0,0,160,120)}
+      </g>
+    </svg>`;
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  }
+
+  window.MATHBRO_VISUALS={visualFor,statusText,storySlides,storyArt,chapterArt,cleanTitle,profileAvatar};
 })();

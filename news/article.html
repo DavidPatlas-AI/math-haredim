@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c62828">
+  <title>כתבה · המבזק · מתמטיקה לחרדים</title>
+  <link rel="stylesheet" href="news-app.css?v=20260712-1">
+  <style>
+    .article-page { max-width:760px; margin:24px auto; padding:0 20px 60px; }
+    .back-link { display:inline-block; margin-bottom:14px; color:#c62828; text-decoration:none; font-weight:700; font-size:.9rem; }
+    .back-link:hover { text-decoration:underline; }
+    .article-hero { width:100%; border-radius:10px; overflow:hidden; margin-bottom:18px; box-shadow:0 3px 10px rgba(0,0,0,.1); }
+    .article-hero img { width:100%; display:block; }
+    .article-eyebrow { color:#c62828; font-weight:700; font-size:.82rem; margin-bottom:6px; }
+    .article-title { font-size:1.7rem; margin-bottom:8px; line-height:1.3; }
+    .article-byline { color:#888; font-size:.85rem; margin-bottom:22px; padding-bottom:16px; border-bottom:1px solid #e5e5e5; }
+    .article-body section { margin-bottom:22px; }
+    .article-body h2 { font-size:1.15rem; color:#111; margin-bottom:8px; border-right:4px solid #c62828; padding-right:10px; }
+    .article-body p { font-size:1rem; line-height:1.75; color:#333; }
+    .article-fact { background:#fff8e1; border-radius:8px; padding:14px 16px; font-size:.95rem; color:#5a4a00; }
+    .article-cta { display:block; text-align:center; background:#c62828; color:#fff; text-decoration:none; font-weight:700; padding:14px; border-radius:8px; margin-top:30px; font-size:1rem; }
+    .article-cta:hover { background:#a51f1f; }
+    .article-missing { text-align:center; padding:60px 20px; color:#888; }
+  </style>
+</head>
+<body>
+  <header class="main-header">
+    <a class="logo" href="news-learning.html">המבזק</a>
+  </header>
+
+  <div class="article-page" id="articlePage">
+    <a class="back-link" href="news-learning.html">‹ חזרה לכל הכתבות</a>
+    <div id="articleContent"></div>
+  </div>
+
+  <script src="../whatsapp/math-pages.js?v=20260712-1"></script>
+  <script src="../whatsapp/math-lessons.js?v=20260712-1"></script>
+  <script src="../whatsapp/math-upgrades.js?v=20260712-1"></script>
+  <script src="../whatsapp/math-visuals.js?v=20260712-1"></script>
+  <script>
+    (function(){
+      const pages=(window.MATHBRO_PAGES||[]).filter(p=>Number.isFinite(p.chapter));
+      const lessons=window.MATHBRO_LESSONS||{};
+      const visuals=window.MATHBRO_VISUALS||{};
+      function escapeHtml(v){ return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+
+      const params=new URLSearchParams(location.search);
+      const chapter=Number(params.get('lesson'));
+      const page=pages.find(p=>p.chapter===chapter);
+      const el=document.getElementById('articleContent');
+      if(!page){
+        el.innerHTML='<div class="article-missing">לא נמצא פרק כזה. <a href="news-learning.html">חזרה לרשימה</a></div>';
+        return;
+      }
+      const lesson=lessons[page.file]||{};
+      const title=visuals.cleanTitle?visuals.cleanTitle(page):(page.title||'');
+      const image=visuals.chapterArt?visuals.chapterArt(page,'wide'):'';
+      const example=(lesson.examples&&lesson.examples[0])||lesson.case||'';
+      const now=new Date();
+
+      document.title=`${title} · המבזק · מתמטיקה לחרדים`;
+
+      el.innerHTML=`
+        <div class="article-hero"><img src="${escapeHtml(image)}" alt="${escapeHtml(title)}"></div>
+        <p class="article-eyebrow">פרק ${page.chapter} · ${escapeHtml(page.group||'')}</p>
+        <h1 class="article-title">${escapeHtml(title)}</h1>
+        <p class="article-byline">מערכת המבזק · ${now.toLocaleDateString('he-IL')}</p>
+        <div class="article-body">
+          ${lesson.beginner?`<section><h2>מה זה בעצם?</h2><p>${escapeHtml(lesson.beginner)}</p></section>`:''}
+          ${lesson.real?`<section><h2>איפה פוגשים את זה בחיים</h2><p>${escapeHtml(lesson.real)}</p></section>`:''}
+          ${example?`<section><h2>דוגמה</h2><p>${escapeHtml(example)}</p></section>`:''}
+          ${lesson.warning?`<section><h2>הטעות שהכי כדאי להיזהר ממנה</h2><p>${escapeHtml(lesson.warning)}</p></section>`:''}
+          ${lesson.fact?`<section><h2>עובדה מעניינת</h2><p class="article-fact">${escapeHtml(lesson.fact)}</p></section>`:''}
+        </div>
+        <a class="article-cta" href="../whatsapp/whatsapp-learning.html?lesson=${page.chapter}">המשיכו לתרגל בשיחה על הפרק ›</a>
+      `;
+    })();
+  </script>
+</body>
+</html>

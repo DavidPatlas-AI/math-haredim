@@ -2,18 +2,18 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="description" content="מבחני מה"ט לדוגמה — הכנה למה״ט ולבגרות 3 יח״ל. מתמטיקה לחרדים.">
+<meta name="description" content="מבחני מה״ט לדוגמה, מאגר מבחני מכינה 2026, מבחן אקראי ושאלות עם פתרון — מתמטיקה לחרדים.">
 <link rel="stylesheet" href="/shared/style.css">
 <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
 <link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#12142a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="מת׳ לחרדים"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מבחני מה"ט לדוגמה</title>
+<title>מבחני מה״ט ומאגר מכינה 2026</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap');
   :root{--ink:#27272a;--paper:#f3f4f6;--accent:#3d1f7a;--accent2:#c0392b;--gold:#c9a227;--line:#d1d5db;--shadow:0 10px 30px rgba(39,39,42,.12);--pos:#2d6a4f;--neg:#c0392b}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(61,31,122,.08),transparent 40%),var(--paper)}
-  .wrap{max-width:760px;margin:0 auto}
+  body{font-family:'Heebo',sans-serif;color:var(--ink);line-height:1.7;min-height:100vh;padding:24px 16px 60px;background:radial-gradient(circle at 12% 8%,rgba(201,162,39,.08),transparent 40%),radial-gradient(circle at 88% 92%,rgba(61,31,122,.08),transparent 40%),var(--paper);overflow-x:hidden}
+  .wrap{width:100%;max-width:min(760px,calc(100vw - 32px));margin:0 auto;min-width:0}
   .back{display:inline-block;margin-bottom:14px;color:var(--accent);text-decoration:none;font-weight:700}
   .back:hover{text-decoration:underline}
   header{text-align:center;padding:30px 20px 26px;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
@@ -27,17 +27,54 @@
   nav button.active{background:var(--ink);color:var(--paper)}
   section{display:none;animation:fade .4s ease}section.show{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px;box-shadow:var(--shadow);max-width:100%;overflow:hidden}
   .card h2{font-family:'Frank Ruhl Libre',serif;font-size:1.5rem;margin-bottom:12px;color:var(--accent)}
+  @media (max-width:560px){
+    body{padding:18px 10px 56px}
+    .wrap{max-width:calc(100vw - 20px)}
+    header{padding:24px 14px 22px}
+    h1{font-size:1.85rem;line-height:1.2}
+    .sub{font-size:.95rem;line-height:1.55}
+    nav{gap:7px}
+    nav button{font-size:.88rem;line-height:1.25;padding:9px 12px;white-space:normal}
+    .card{padding:18px 14px}
+    .card h2{font-size:1.24rem;line-height:1.35}
+    .info-cell .val{font-size:1.02rem;line-height:1.3;overflow-wrap:anywhere}
+  }
   
   /* INFO */
   .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
   @media (max-width:560px){.info-grid{grid-template-columns:1fr}}
-  .info-cell{background:var(--paper);border-radius:10px;padding:12px}
+  .info-cell{background:var(--paper);border-radius:10px;padding:12px;min-width:0}
   .info-cell .lbl{font-size:.8rem;color:#6b7280;font-weight:600}
   .info-cell .val{font-family:'Frank Ruhl Libre',serif;font-size:1.2rem;font-weight:900;color:var(--accent);margin-top:2px}
   .topics-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
   .topics-list .chip{background:var(--paper);border:1px solid var(--accent);color:var(--accent);padding:4px 10px;border-radius:99px;font-size:.85rem;font-weight:600}
+
+  /* FULL EXAM BANK */
+  .exam-pack{border-color:rgba(61,31,122,.28);background:linear-gradient(180deg,#fff 0%,#fbf8f0 100%)}
+  .pack-top{display:grid;grid-template-columns:1fr 150px;gap:18px;align-items:center}
+  @media (max-width:620px){.pack-top{grid-template-columns:1fr}.pack-cover{max-width:170px;margin:0 auto}}
+  .pack-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(61,31,122,.1);color:var(--accent);border:1px solid rgba(61,31,122,.22);border-radius:99px;padding:5px 12px;font-size:.82rem;font-weight:800;margin-bottom:10px}
+  .pack-cover{min-height:190px;border:2px solid var(--ink);border-radius:14px;background:linear-gradient(145deg,var(--accent),#1f7a56);color:#fff;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;padding:16px;text-align:center;position:relative;overflow:hidden}
+  .pack-cover::before{content:"";position:absolute;inset:18px;border:1px solid rgba(255,255,255,.28);border-radius:10px}
+  .pack-cover strong{font-family:'Frank Ruhl Libre',serif;font-size:2rem;position:relative}
+  .pack-cover span{font-size:.9rem;font-weight:800;position:relative}
+  .pack-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+  @media (max-width:560px){.pack-stat-grid{grid-template-columns:1fr}}
+  .pack-stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .pack-stat b{display:block;font-family:'Frank Ruhl Libre',serif;font-size:1.45rem;color:var(--accent);line-height:1}
+  .pack-stat span{font-size:.82rem;color:#6b7280;font-weight:700}
+  .pack-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .pack-action{appearance:none;border:2px solid var(--accent);background:var(--accent);color:#fff;text-decoration:none;font-family:'Heebo';font-size:.96rem;font-weight:800;border-radius:12px;padding:11px 18px;cursor:pointer;transition:.2s}
+  .pack-action:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+  .pack-action.secondary{background:#fff;color:var(--accent)}
+  .pdf-preview{margin-top:16px;border:2px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+  .pdf-preview[hidden]{display:none}
+  .pdf-preview iframe{display:block;width:100%;height:min(74vh,720px);border:0;background:#fff}
+  .study-flow{display:grid;gap:8px;margin-top:12px}
+  .study-step{background:var(--paper);border-right:4px solid var(--accent);padding:11px 14px;border-radius:10px}
+  .study-step b{color:var(--accent)}
 
   /* QUIZ */
   .quiz-actions{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
@@ -87,15 +124,16 @@
 </head>
 <body>
 <div class="wrap">
-  <a href="index.html" class="back">← חזרה לעמוד הבית</a>
+  <a href="../index.html" class="back">← חזרה לעמוד הבית</a>
   <header>
-    <div class="eyebrow">📝 הכנה לבגרות 3 יח"ל</div>
-    <h1>מבחני מה"ט לדוגמה</h1>
-    <div class="sub">שאלות מתוך הבגרות, מחולל מבחן אקראי, ושאלות מפורטות עם פתרון</div>
+    <div class="eyebrow">📝 הכנה למה״ט ולבגרות 3 יח"ל</div>
+    <h1>מבחני מה״ט לדוגמה</h1>
+    <div class="sub">מאגר מבחני מכינה 2026, מבחן אקראי, ושאלות מפורטות עם פתרון</div>
   </header>
 
   <nav>
     <button class="active" data-t="info">ℹ️ מבנה המבחן</button>
+    <button data-t="bank">📄 מאגר מבחנים</button>
     <button data-t="quiz">🎯 מבחן אקראי</button>
     <button data-t="samples">📚 שאלות לדוגמה</button>
   </nav>
@@ -103,31 +141,34 @@
   <!-- INFO -->
   <section id="info" class="show">
     <div class="card">
-      <h2>מבנה הבגרות במתמטיקה — 3 יח"ל</h2>
-      <p>הבגרות מחולקת לשני שאלונים. כל אחד הוא מבחן נפרד, והציון הסופי הוא ממוצע משוקלל של שניהם.</p>
+      <h2>מבנה בחינת מה״ט במתמטיקה — מכינה טכנולוגית</h2>
+      <p>במבחן מה״ט עובדים לפי חלקים. לא מנסים לפתור הכל לפי הסדר, אלא מזהים בכל חלק את השאלות הבטוחות ומתחילים מהן.</p>
       <div class="info-grid">
-        <div class="info-cell"><div class="lbl">שאלון ראשון</div><div class="val">35381</div></div>
-        <div class="info-cell"><div class="lbl">שאלון שני</div><div class="val">35382</div></div>
-        <div class="info-cell"><div class="lbl">זמן לכל שאלון</div><div class="val">90 דקות</div></div>
-        <div class="info-cell"><div class="lbl">מספר שאלות</div><div class="val">6–8 שאלות</div></div>
-        <div class="info-cell"><div class="lbl">לבחור</div><div class="val">5 שאלות</div></div>
-        <div class="info-cell"><div class="lbl">ערך כל שאלה</div><div class="val">20 נקודות</div></div>
+        <div class="info-cell"><div class="lbl">סוג הבחינה</div><div class="val">מכינה טכנולוגית</div></div>
+        <div class="info-cell"><div class="lbl">משך הבחינה</div><div class="val">3.5 שעות</div></div>
+        <div class="info-cell"><div class="lbl">חלק א׳</div><div class="val">4 מתוך 5 · 40 נק׳</div></div>
+        <div class="info-cell"><div class="lbl">חלק ב׳</div><div class="val">2 מתוך 3 · 32 נק׳</div></div>
+        <div class="info-cell"><div class="lbl">חלק ג׳</div><div class="val">2 מתוך 3 · 28 נק׳</div></div>
+        <div class="info-cell"><div class="lbl">סה״כ</div><div class="val">100 נקודות</div></div>
       </div>
       <div style="background:rgba(201,162,39,.12);border:2px solid var(--gold);border-radius:10px;padding:14px;margin-top:14px">
-        <b style="color:#8a6f0e">💡 טיפ:</b> אתם בוחרים <b>5 שאלות מתוך 6-8</b>. תקראו את כולן בהתחלה, ותתחילו מהשאלה הקלה לכם.
+        <b style="color:#8a6f0e">💡 טיפ:</b> בתחילת המבחן מסמנים בכל חלק את השאלה הכי מוכרת. פותרים קודם את הבטוחות, ורק אחר כך חוזרים לשאלות שדורשות יותר חשיבה.
       </div>
     </div>
 
     <div class="card">
       <h2>נושאים שמופיעים במבחן</h2>
-      <p>על סמך מבחני בגרות מהשנים האחרונות, הנושאים הבאים מופיעים כמעט תמיד:</p>
+      <p>על סמך המבחנים במאגר, אלה הנושאים שחוזרים שוב ושוב וכדאי לשלוט בהם לפני שניגשים למבחן מלא:</p>
       <div class="topics-list">
+        <span class="chip">חשבון בסיסי</span>
+        <span class="chip">פירוק לגורמים</span>
         <span class="chip">משוואות מעלה ראשונה</span>
         <span class="chip">משוואה ריבועית</span>
-        <span class="chip">בעיות מילוליות</span>
-        <span class="chip">אחוזים</span>
+        <span class="chip">חזקות ושורשים</span>
         <span class="chip">פונקציה לינארית</span>
-        <span class="chip">מערכת משוואות</span>
+        <span class="chip">פרבולה</span>
+        <span class="chip">אחוזים</span>
+        <span class="chip">בעיות מילוליות</span>
         <span class="chip">פיתגורס</span>
         <span class="chip">טריגונומטריה</span>
         <span class="chip">גיאו' אנליטית</span>
@@ -138,7 +179,17 @@
     </div>
 
     <div class="card">
-      <h2>טיפים כלליים לבגרות</h2>
+      <h2>חומר עזר ומסודרות בפתרון</h2>
+      <p>בבחינת מה״ט מותר להשתמש במחשבון סטנדרטי עם פונקציות טריגונומטריות, ובנוסחאון שמצורף לשאלון. אבל הציון לא ניתן רק על התשובה הסופית.</p>
+      <div class="study-flow">
+        <div class="study-step"><b>כתיבה מסודרת:</b> כל חישוב צריך להופיע במחברת, גם אם עשיתם אותו במחשבון.</div>
+        <div class="study-step"><b>דיוק:</b> כשאין הוראה אחרת, שומרים בדרך כלל על שתי ספרות אחרי הנקודה העשרונית.</div>
+        <div class="study-step"><b>יחידות:</b> במילים כמו מטר, מ״ר, דקות ושקלים — כותבים יחידה, כי זה חלק מהפתרון.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>טיפים כלליים למבחן</h2>
       <div style="display:grid;gap:8px">
         <div style="background:var(--paper);border-right:4px solid var(--accent);padding:10px 14px;border-radius:8px">
           <b>1.</b> סורקים את כל המבחן לפני שמתחילים — 2-3 דקות
@@ -155,6 +206,45 @@
         <div style="background:var(--paper);border-right:4px solid var(--accent);padding:10px 14px;border-radius:8px">
           <b>5.</b> מציבים את התשובה במשוואה לוודא שעובד
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FULL EXAM BANK -->
+  <section id="bank">
+    <div class="card exam-pack">
+      <div class="pack-top">
+        <div>
+          <div class="pack-badge">📄 נוסף למאגר מה״ט</div>
+          <h2>מבחנים מכינה מאוגד 2026</h2>
+          <p>מאגר PDF מלא לתרגול בחינת מכינה טכנולוגית במתמטיקה. מתאים במיוחד לשלב שבו כבר למדתם את הנושאים ורוצים להרגיש מבחן אמיתי.</p>
+          <div class="pack-stat-grid">
+            <div class="pack-stat"><b>101</b><span>עמודים</span></div>
+            <div class="pack-stat"><b>2026</b><span>מאגר עדכני</span></div>
+            <div class="pack-stat"><b>מה״ט</b><span>מכינה טכנולוגית</span></div>
+          </div>
+          <div class="pack-actions">
+            <a class="pack-action" href="../assets/exams/mehat-mechina-exams-2026.pdf" target="_blank" rel="noopener">פתח את המאגר</a>
+            <a class="pack-action secondary" href="../assets/exams/mehat-mechina-exams-2026.pdf" download>הורד PDF</a>
+            <button class="pack-action secondary" type="button" onclick="showPdfPreview()">תצוגה בתוך הדף</button>
+          </div>
+        </div>
+        <div class="pack-cover" aria-hidden="true">
+          <span>מתמטיקה</span>
+          <strong>מה״ט</strong>
+          <span>מבחני מכינה 2026</span>
+        </div>
+      </div>
+      <div class="pdf-preview" id="pdfPreview" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>איך להשתמש במאגר בלי ללכת לאיבוד</h2>
+      <div class="study-flow">
+        <div class="study-step"><b>סיבוב ראשון:</b> פותרים רק שאלות שאתם מזהים את הנושא שלהן תוך דקה.</div>
+        <div class="study-step"><b>סיבוב שני:</b> חוזרים לשאלות שנתקעו, ומחפשים באיזה פרק באתר נמצא הכלי שצריך.</div>
+        <div class="study-step"><b>סימולציה:</b> פעם-פעמיים בשבוע פותרים מבחן ברצף עם זמן, בלי לעצור להסברים.</div>
+        <div class="study-step"><b>מחברת טעויות:</b> כל טעות הופכת לשורה קצרה: “מה לא זיהיתי?” ו“מה אעשה פעם הבאה?”</div>
       </div>
     </div>
   </section>
@@ -296,7 +386,17 @@ function showResults(){
     Object.entries(topicErrs).forEach(([t,n])=>{topicHtml+='<li>'+t+' ('+n+' שגיאות)</li>';});
     topicHtml+='</ul></div>';
   }
-  R.innerHTML='<div class="results-card"><h3>סיימת את המבחן!</h3><div class="grade-circle">'+pct+'</div><p>'+qScore+' תשובות נכונות מתוך 10</p><p style="margin-top:8px;font-weight:700">'+msg+'</p>'+topicHtml+'<div class="results-actions"><button onclick="startQuiz()">🔄 מבחן חדש</button><button onclick="location.href=\'index.html\'">🏠 לעמוד הבית</button></div></div>';
+  R.innerHTML='<div class="results-card"><h3>סיימת את המבחן!</h3><div class="grade-circle">'+pct+'</div><p>'+qScore+' תשובות נכונות מתוך 10</p><p style="margin-top:8px;font-weight:700">'+msg+'</p>'+topicHtml+'<div class="results-actions"><button onclick="startQuiz()">🔄 מבחן חדש</button><button onclick="location.href=\'../index.html\'">🏠 לעמוד הבית</button></div></div>';
+}
+
+function showPdfPreview(){
+  const box=document.getElementById('pdfPreview');
+  if(!box.dataset.loaded){
+    box.innerHTML='<iframe title="מאגר מבחני מה״ט מכינה 2026" src="../assets/exams/mehat-mechina-exams-2026.pdf#view=FitH"></iframe>';
+    box.dataset.loaded='1';
+  }
+  box.hidden=false;
+  box.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
 /* ===== SAMPLE QUESTIONS WITH SOLUTIONS ===== */
@@ -359,7 +459,3 @@ renderSamples();
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
 </body>
 </html>
-
-
-
-

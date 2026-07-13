@@ -9,19 +9,19 @@
   const $=id=>document.getElementById(id);
   const els={
     list:$('lessonList'),search:$('lessonSearch'),resultCount:$('resultCount'),showMore:$('showMoreBtn'),
-    continueBtn:$('continueBtn'),bannerStart:$('bannerStartBtn'),progressText:$('progressText'),progressPercent:$('progressPercent'),progressBar:$('progressBar'),
-    messages:$('messages'),chatTitle:$('chatTitle'),chatStatus:$('chatStatus'),openLesson:$('openLessonLink'),doneBtn:$('doneBtn'),
+    continueBtn:$('continueBtn'),examStart:$('examStartBtn'),bannerStart:$('bannerStartBtn'),progressText:$('progressText'),progressPercent:$('progressPercent'),progressBar:$('progressBar'),
+    messages:$('messages'),chatTitle:$('chatTitle'),chatStatus:$('chatStatus'),chatAvatar:document.querySelector('#chatView .contact-avatar'),openLesson:$('openLessonLink'),doneBtn:$('doneBtn'),waContact:$('waContactLink'),
     backBtn:$('backBtn'),composer:$('composer'),input:$('messageInput'),toast:$('toast'),statusList:$('statusList'),
     statusModal:$('statusModal'),statusViewer:$('statusViewer'),statusBars:$('statusBars'),statusIcon:$('statusIcon'),statusPhoto:$('statusPhoto'),
     statusTitle:$('statusModalTitle'),statusText:$('statusModalText'),statusTime:$('statusTime'),statusOwnerName:$('statusOwnerName'),statusClose:$('statusClose'),statusPrev:$('statusPrev'),statusNext:$('statusNext'),
     statusLearn:$('statusLearn')
   };
 
-  const STORAGE={done:'mathbro-done',current:'mathbro-current-v2',level:'mathbro-level-v2',learning:'mathbro-learning-v3'};
+  const STORAGE={done:'mathbro-done',current:'mathbro-current-v2',level:'mathbro-level-v2',learning:'mathbro-learning-v3',exam:'mathbro-exam-v1'};
   function readDone(){try{return new Set(JSON.parse(localStorage.getItem(STORAGE.done)||'[]'))}catch(e){return new Set()}}
   function readLearning(){try{return JSON.parse(localStorage.getItem(STORAGE.learning)||'{}')}catch(e){return {}}}
   const state={
-    done:readDone(),current:null,messages:[],busy:false,filter:'all',query:'',showAll:false,level:localStorage.getItem(STORAGE.level)||'new',statusIndex:0,statusSlide:0,
+    done:readDone(),current:null,messages:[],busy:false,filter:'all',query:'',showAll:false,level:localStorage.getItem(STORAGE.level)||'new',statusIndex:0,statusSlide:0,exam:null,
     learning:readLearning(),currentQuiz:null
   };
 
@@ -138,10 +138,12 @@
     return `<div class="practice-set">${tasks.map((task,i)=>`<div class="practice-card"><span>תרגיל ${i+1}</span><b>${escapeHtml(task)}</b></div>`).join('')}</div>`;
   }
   function messageHtml(message){
-    return `<article class="bubble ${message.who}">${message.html}${actionsHtml(message.actions)}<time>${message.who==='user'?'נקרא ✓✓':'רונן'} · עכשיו</time></article>`;
+    const speaker=message.who==='user'?'נקרא ✓✓':(message.speaker||currentOwnerName());
+    return `<article class="bubble ${message.who}">${message.html}${actionsHtml(message.actions)}<time>${escapeHtml(speaker)} · עכשיו</time></article>`;
   }
   function renderMessages(){
-    const typing=state.busy?'<div class="typing-bubble" aria-label="רונן מקליד תשובה"><span>רונן מקליד</span><div class="dots"><i></i><i></i><i></i></div></div>':'';
+    const typer=currentOwnerName();
+    const typing=state.busy?`<div class="typing-bubble" aria-label="${escapeHtml(typer)} מקליד תשובה"><span>${escapeHtml(typer)} מקליד</span><div class="dots"><i></i><i></i><i></i></div></div>`:'';
     els.messages.innerHTML='<div class="day-label">היום · מסלול ווצאפ</div>'+state.messages.map(messageHtml).join('')+typing;
     requestAnimationFrame(()=>{els.messages.scrollTop=els.messages.scrollHeight});
     setTimeout(()=>{els.messages.scrollTop=els.messages.scrollHeight},90);
@@ -151,18 +153,27 @@
     if(state.busy)return;
     state.busy=true;renderMessages();
     await new Promise(resolve=>setTimeout(resolve,delay));
-    state.busy=false;state.messages.push({who:'bot',html,actions});renderMessages();
+    state.busy=false;state.messages.push({who:'bot',html,actions,speaker:currentOwnerName()});renderMessages();
   }
 
+  function realContactBannerHtml(p){
+    const c=contactForPage(p),link=waLinkForPage(p);
+    if(!c||!link)return '';
+    return `<a class="real-contact-banner" href="${escapeHtml(link)}" target="_blank" rel="noopener">
+      <span class="real-contact-ico">💬</span>
+      <span class="real-contact-copy"><b>המשיכו איתי בוואטסאפ האמיתי</b><span>${escapeHtml(c.name)} עונה שם על שאלות אמיתיות בזמן אמת</span></span>
+      <span class="real-contact-arr">›</span>
+    </a>`;
+  }
   function openingFor(p){
-    const topic=cleanTitle(p),pack=packFor(p),n=p.chapter||'כלי';
-    return `<img class="message-visual" src="${escapeHtml(chapterArt(p,'wide'))}" alt="תמונת פרק ${escapeHtml(topic)}"><span class="message-tag">${escapeHtml(pageLabel(p))} · ${escapeHtml(p.group||'מסלול')}</span><h3>${escapeHtml(topic)}</h3><p>אני רונן. נלמד את הנושא דרך דוגמה אמיתית מהבחינה, בקצב שלך.</p><p><b>מה רמת הידע שלך בנושא?</b></p>${termsHtml(pack.terms)}`;
+    const topic=cleanTitle(p),pack=packFor(p),owner=ownerForPage(p);
+    return `<img class="message-visual" src="${escapeHtml(chapterArt(p,'wide'))}" alt="תמונת פרק ${escapeHtml(topic)}"><span class="message-tag">${escapeHtml(pageLabel(p))} · ${escapeHtml(p.group||'מסלול')}</span><h3>${escapeHtml(topic)}</h3><p>אני ${escapeHtml(owner)}. נלמד את הנושא דרך דוגמה אמיתית מהבחינה, בקצב שלך.</p>${realContactBannerHtml(p)}<p><b>מה רמת הידע שלך בנושא?</b></p>${termsHtml(pack.terms)}`;
   }
   function startConversation(){
     const p=state.current,memory=memoryFor(p.file),hasProgress=memory.stage!=='start';
     state.currentQuiz=null;
     const progressNote=hasProgress?`<div class="return-note"><b>זוכר אותך.</b> עצרת בשלב ${stageLabel(memory.stage)} ויש לך ${memory.correct} תשובות נכונות בפרק.</div>`:'';
-    state.messages=[{who:'bot',html:openingFor(p)+progressNote,actions:hasProgress?[
+    state.messages=[{who:'bot',html:openingFor(p)+progressNote,speaker:ownerForPage(p),actions:hasProgress?[
       {label:'המשך מאיפה שעצרתי',action:'continue'},
       {label:'הסבר עם תמונה',action:'deep'},
       {label:'צעד־צעד',action:'steps'},
@@ -186,11 +197,24 @@
 
   function setHeader(){
     const p=state.current;if(!p)return;
+    const contact=contactForPage(p),owner=ownerForPage(p);
     els.chatTitle.textContent=p.chapter?`פרק ${p.chapter}: ${cleanTitle(p)}`:cleanTitle(p);
-    els.chatStatus.textContent=`מחובר · ${p.group||'מסלול לימוד'}`;
+    els.chatStatus.textContent=`${owner} מחובר · ${p.group||'מסלול לימוד'}`;
+    if(els.chatAvatar)els.chatAvatar.textContent=owner.charAt(0)||'ר';
+    if(els.input)els.input.placeholder=`שאל את ${owner} על הפרק`;
+    if(els.waContact){
+      const link=waLinkForPage(p);
+      els.waContact.href=link||'#';
+      els.waContact.hidden=!contact;
+      if(contact){
+        els.waContact.title=`נציג אמיתי: שלחו הודעה ל${contact.name} בוואטסאפ`;
+        els.waContact.setAttribute('aria-label',els.waContact.title);
+      }
+    }
     els.openLesson.href=lessonUrl(p);
     els.doneBtn.classList.toggle('is-done',state.done.has(p.file));
     els.doneBtn.textContent=state.done.has(p.file)?'✓':'○';
+    document.dispatchEvent(new CustomEvent('lesson:changed',{detail:{file:p.file}}));
   }
   function selectLesson(p,openChat=true){
     if(!p)return;
@@ -239,7 +263,7 @@
   }
   async function showStepCoach(){
     const pack=packFor(state.current);setStage('steps');pushUser('למד אותי צעד־צעד');
-    await pushBot(`<span class="message-tag">רונן מפרק את זה לשלבים</span>${walkthroughHtml(pack)}<p class="micro-copy">קרא שלב, עצור רגע, ואז עבור לשלב הבא. ככה בונים הרגל פתרון.</p>`,[
+    await pushBot(`<span class="message-tag">${escapeHtml(currentOwnerName())} מפרק את זה לשלבים</span>${walkthroughHtml(pack)}<p class="micro-copy">קרא שלב, עצור רגע, ואז עבור לשלב הבא. ככה בונים הרגל פתרון.</p>`,[
       {label:'תן לי תרגול',action:'practice'},
       {label:'מה הטעות הנפוצה?',action:'safety'},
       {label:'בחן אותי',action:'quiz',wide:true}
@@ -330,6 +354,126 @@
       {label:correct?'סיכום המשימה':'נסה שאלה אחרת',action:correct?'summary':'quiz'}
     ],600);
   }
+  function readExamStats(){try{return JSON.parse(localStorage.getItem(STORAGE.exam)||'{}')}catch(e){return {}}}
+  function saveExamStats(result){
+    const stats=readExamStats();
+    stats.count=(stats.count||0)+1;
+    stats.last=result;
+    if(!stats.best||result.percent>stats.best.percent)stats.best=result;
+    localStorage.setItem(STORAGE.exam,JSON.stringify(stats));
+    return stats;
+  }
+  function examQuestionPool(){
+    const pool=[];
+    chapterPages.forEach(p=>{
+      const pack=packFor(p),questions=pack.questions||[pack.quiz];
+      questions.forEach((quiz,index)=>{
+        if(quiz&&quiz.q&&Array.isArray(quiz.options)&&Number.isFinite(quiz.correct)){
+          pool.push({page:p,quiz,index,route:routeForPage(p)});
+        }
+      });
+    });
+    return pool;
+  }
+  function pickExamQuestions(){
+    const pool=examQuestionPool(),selected=[],used=new Set(),stats=readExamStats(),start=((stats.count||0)*7)%Math.max(pool.length,1);
+    ['zero','fractions','algebra','equations','calculator'].forEach(route=>{
+      const item=pool.find((x,i)=>i>=start&&x.route===route&&!used.has(`${x.page.file}:${x.index}`))||pool.find(x=>x.route===route&&!used.has(`${x.page.file}:${x.index}`));
+      if(item){selected.push(item);used.add(`${item.page.file}:${item.index}`)}
+    });
+    for(let offset=0;selected.length<10&&offset<pool.length*2;offset++){
+      const item=pool[(start+offset)%pool.length],key=`${item.page.file}:${item.index}`;
+      if(!used.has(key)){selected.push(item);used.add(key)}
+    }
+    return selected.slice(0,10);
+  }
+  function formatExamTime(ms){
+    const seconds=Math.max(1,Math.round(ms/1000)),m=Math.floor(seconds/60),s=String(seconds%60).padStart(2,'0');
+    return `${m}:${s}`;
+  }
+  function examMeterHtml(exam){
+    const total=exam.questions.length,answered=exam.answers.length,percent=Math.round(answered/total*100);
+    return `<div class="exam-meter"><b>שאלה ${Math.min(answered+1,total)} מתוך ${total}</b><div class="exam-track"><i style="width:${percent}%"></i></div></div>`;
+  }
+  function examBreakdownHtml(answers){
+    const groups={};
+    answers.forEach(a=>{const key=a.group||'כללי';if(!groups[key])groups[key]={total:0,correct:0};groups[key].total+=1;if(a.ok)groups[key].correct+=1});
+    return `<div class="exam-breakdown">${Object.keys(groups).map(key=>`<div class="exam-row"><b>${groups[key].correct}/${groups[key].total}</b><span>${escapeHtml(key)}<em>${groups[key].total-groups[key].correct?`${groups[key].total-groups[key].correct} שאלות לחזרה`:'נקי מטעויות'}</em></span></div>`).join('')}</div>`;
+  }
+  function examWrongHtml(wrong){
+    if(!wrong.length)return '<div class="exam-row"><b>✓</b><span>אין טעויות במבחן הזה.<em>אפשר לעבור למבחן חדש או להמשיך לפרק הבא.</em></span></div>';
+    return wrong.map((a,i)=>`<div class="exam-row wrong"><b>${i+1}</b><span>${escapeHtml(a.title)} · ${escapeHtml(a.question)}<em>סימנת: ${escapeHtml(a.choice)} · נכון: ${escapeHtml(a.correctAnswer)}</em><em>${escapeHtml(a.why)}</em></span></div>`).join('');
+  }
+  async function startExam(){
+    if(state.busy)return;
+    const questions=pickExamQuestions();
+    if(!questions.length){toast('אין עדיין מספיק שאלות למבחן');return}
+    state.exam={questions,current:0,answers:[],startedAt:Date.now(),finished:false};
+    state.current=questions[0].page;save();setHeader();
+    const stats=readExamStats(),best=stats.best?`<p class="micro-copy">השיא שלך עד עכשיו: ${stats.best.percent}% בזמן ${escapeHtml(stats.best.time||'')}</p>`:'';
+    state.messages=[{who:'bot',speaker:currentOwnerName(),html:`<span class="message-tag">מצב מבחן</span><div class="exam-card"><h3>10 שאלות מכל המסלול</h3><p>עונים ברצף בלי לקבל תשובה באמצע. בסוף מקבלים ציון, פירוט טעויות והמלצה על פרקים לחזרה.</p>${best}</div>`,actions:[]}];
+    renderMessages();
+    if(matchMedia('(max-width:760px)').matches)document.body.classList.add('chat-open');
+    await showExamQuestion();
+  }
+  async function showExamQuestion(){
+    const exam=state.exam;if(!exam||exam.finished)return;
+    const item=exam.questions[exam.current];if(!item)return finishExam();
+    state.current=item.page;save();setHeader();
+    const options=`<div class="quiz-options">${item.quiz.options.map((option,i)=>`<button type="button" data-exam="${i}">${escapeHtml(option)}</button>`).join('')}</div>`;
+    await pushBot(`<span class="message-tag">מצב מבחן · ${escapeHtml(pageLabel(item.page))} · ${escapeHtml(cleanTitle(item.page))}</span>${examMeterHtml(exam)}<p><b>${escapeHtml(item.quiz.q)}</b></p>${options}`,[],420);
+  }
+  async function answerExam(index){
+    const exam=state.exam;if(!exam||exam.finished||state.busy)return;
+    const item=exam.questions[exam.current];if(!item)return;
+    const quiz=item.quiz,choice=quiz.options[index]||'',correct=index===quiz.correct;
+    exam.answers.push({
+      page:item.page,file:item.page.file,title:cleanTitle(item.page),chapter:item.page.chapter,group:item.page.group,
+      question:quiz.q,choice,correctAnswer:quiz.options[quiz.correct],why:quiz.why||'',ok:correct
+    });
+    exam.current+=1;
+    pushUser(choice);
+    state.busy=true;renderMessages();
+    await new Promise(resolve=>setTimeout(resolve,360));
+    state.busy=false;
+    if(exam.current>=exam.questions.length)return finishExam();
+    await showExamQuestion();
+  }
+  async function finishExam(){
+    const exam=state.exam;if(!exam)return;
+    exam.finished=true;
+    const total=exam.questions.length,correct=exam.answers.filter(a=>a.ok).length,wrong=exam.answers.filter(a=>!a.ok),percent=Math.round(correct/total*100),time=formatExamTime(Date.now()-exam.startedAt);
+    const stats=saveExamStats({percent,correct,total,time,at:new Date().toISOString()});
+    const headline=percent>=90?'מצוין. אתה שולט בחומר.':percent>=70?'יפה מאוד. יש כמה נקודות לחיזוק.':'יש בסיס, עכשיו מחזקים את המקומות שנפלו.';
+    await pushBot(`<span class="message-tag">סיכום מבחן</span><div class="exam-card"><div class="exam-score"><strong>${percent}%</strong><span><b>${correct} מתוך ${total} נכונות</b><br>${escapeHtml(headline)}<br>זמן: ${escapeHtml(time)}${stats.best&&stats.best.percent===percent?' · שיא חדש':''}</span></div>${examBreakdownHtml(exam.answers)}<div class="exam-review">${examWrongHtml(wrong)}</div></div>`,[
+      {label:wrong.length?'חזור על הטעויות':'מבחן חדש',action:wrong.length?'exam-review':'exam-new'},
+      {label:'מבחן חדש',action:'exam-new'},
+      {label:'חזרה למסלול',action:'home',wide:true}
+    ],650);
+  }
+  async function showExamReview(){
+    const exam=state.exam,wrong=exam?exam.answers.filter(a=>!a.ok):[];
+    pushUser('חזור על הטעויות שלי');
+    if(!wrong.length){
+      await pushBot(`<span class="message-tag">חזרה על טעויות</span><p>במבחן הזה לא היו טעויות לחזרה. אפשר לפתוח מבחן חדש או להמשיך במסלול.</p>`,[
+        {label:'מבחן חדש',action:'exam-new'},
+        {label:'חזרה למסלול',action:'home'}
+      ]);
+      return;
+    }
+    await pushBot(`<span class="message-tag">טעויות לחזרה</span><p>אלה המקומות שכדאי לחזק לפני מבחן נוסף:</p><div class="exam-review">${examWrongHtml(wrong)}</div>`,[
+      {label:'פתח פרק ראשון לחזרה',action:'exam-open-weak'},
+      {label:'מבחן חדש',action:'exam-new'},
+      {label:'חזרה למסלול',action:'home',wide:true}
+    ]);
+  }
+  function openWeakExamLesson(){
+    const wrong=state.exam&&state.exam.answers.find(a=>!a.ok);
+    if(!wrong)return toast('אין טעות לפתוח');
+    const page=pages.find(p=>p.file===wrong.file);
+    state.exam=null;
+    selectLesson(page,true);
+  }
   async function showRemediation(){
     const pack=packFor(state.current);pushUser('תסביר לי איפה טעיתי');
     await pushBot(`<span class="message-tag">מחזקים את הנקודה</span><p>${escapeHtml(pack.beginner)}</p>${diagramHtml(pack.diagram||pack.terms)}<p><b>כלל עבודה:</b> ${escapeHtml(pack.checks[0])}, ורק אחר כך ממשיכים למסקנה.</p>`,[
@@ -387,6 +531,8 @@
     }else if(/טעות|לא נכון|איפה טועים/.test(q)){
       html=`<span class="message-tag">שימו לב לזה</span><div class="safety-note">${escapeHtml(pack.warning)}</div>`;
       actions=[{label:'הבנתי',action:'checks'},{label:'אתגר קצר',action:'challenge'}];
+    }else if(/מצב מבחן|מבחן מלא|סימולציה|10 שאלות|עשר שאלות/.test(q)){
+      state.messages.pop();renderMessages();return startExam();
     }else if(/בחן|שאלה|מבחן/.test(q)){
       state.messages.pop();renderMessages();return showQuiz();
     }else if(/המשך|הבא|סיכום/.test(q)){
@@ -427,12 +573,15 @@
     if(action==='location')return showLocation();
     if(action==='safety')return showSafety();
     if(action==='quiz')return showQuiz();
+    if(action==='exam'||action==='exam-new')return startExam();
+    if(action==='exam-review')return showExamReview();
+    if(action==='exam-open-weak')return openWeakExamLesson();
     if(action==='remediate')return showRemediation();
     if(action==='summary')return showSummary();
     if(action==='complete')return completeLesson();
     if(action==='next')return selectLesson(nextLesson(),true);
     if(action==='open')return location.href=lessonUrl(state.current);
-    if(action==='home'){document.body.classList.remove('chat-open');return}
+    if(action==='home'){state.exam=null;document.body.classList.remove('chat-open');return}
   }
 
   function routeForPage(p){
@@ -443,7 +592,18 @@
     if(/משווא|מילול|פונקציה|גרף|גיאומטר/i.test(t))return 'equations';
     return 'zero';
   }
-  const STUDENT_NAMES=['בנימין','משה','צפניה','זכריה','שילה','שלמה','איתי','שרול','יעקב','אברהם','יצחק','דוד','יהודה','נפתלי','אשר','ראובן','אפרים','חיים','מרדכי','ברוך','אליהו','רפאל','ישראל','יוסף'];
+  const TUTOR_NAME='רונן';
+  const REAL_CONTACTS=[
+    {name:'איתי בן אריה',phone:'972533465573'},
+    {name:'יעקב צפניה',phone:'972538267942'},
+    {name:'מיכאל מושיאב',phone:'972556770878'},
+    {name:'זכריה',phone:'972509090559'},
+    {name:'Moshe Greydi',phone:'972547929840'},
+    {name:'RL',phone:'972538212898'},
+    {name:'אלעד',phone:'972539000325'},
+    {name:'יהודה',phone:'972537984826'}
+  ];
+  const STUDENT_NAMES=REAL_CONTACTS.map(c=>c.name);
   const statusData=chapterPages.map((p,i)=>{
     const lesson=lessonContent[p&&p.file]||{};
     const visual=visuals.visualFor?visuals.visualFor(p):{symbol:p.chapter||'•'};
@@ -451,7 +611,8 @@
     return {
       page:p,
       icon:visual.symbol,
-      owner:STUDENT_NAMES[i%STUDENT_NAMES.length],
+      owner:REAL_CONTACTS[i%REAL_CONTACTS.length].name,
+      phone:REAL_CONTACTS[i%REAL_CONTACTS.length].phone,
       title:`${pageLabel(p)} · ${cleanTitle(p)}`,
       text:chapterStatusText(p),
       route:routeForPage(p),
@@ -461,12 +622,42 @@
       slides
     };
   });
+  function contactForPage(p){
+    if(!p)return null;
+    const status=statusData.find(s=>s.file===p.file);
+    if(status)return {name:status.owner,phone:status.phone};
+    const index=chapterPages.findIndex(x=>x.file===p.file);
+    return index>=0?REAL_CONTACTS[index%REAL_CONTACTS.length]:null;
+  }
+  function ownerForPage(p){
+    const c=contactForPage(p);
+    return c?c.name:TUTOR_NAME;
+  }
+  function currentOwnerName(){return ownerForPage(state.current)}
+  function waLinkForPage(p){
+    const c=contactForPage(p);
+    if(!c)return null;
+    const msg=`היי, אני מתעניין בפרויקט יואב, כרגע אני מנסה להבין משהו בפרק ${cleanTitle(p)}`;
+    return `https://wa.me/${c.phone}?text=${encodeURIComponent(msg)}`;
+  }
   const STATUS_DURATION=6800;
-  function readSeenStatuses(){try{return new Set(JSON.parse(localStorage.getItem('mathbro-status-seen')||'[]'))}catch(e){return new Set()}}
-  const seenStatuses=readSeenStatuses();
+  function readSeenOrder(){try{return JSON.parse(localStorage.getItem('mathbro-status-seen')||'[]')}catch(e){return []}}
+  let seenOrder=readSeenOrder();
+  function isSeenStatus(i){return seenOrder.includes(i)}
+  function markSeenStatus(i){
+    const at=seenOrder.indexOf(i);if(at>-1)seenOrder.splice(at,1);
+    seenOrder.push(i);
+    localStorage.setItem('mathbro-status-seen',JSON.stringify(seenOrder));
+  }
   let statusTimer=null,statusStartedAt=0,statusRemaining=STATUS_DURATION,statusPointerAt=0,statusPointerX=0,suppressStatusClick=false;
   function renderStatuses(){
-    els.statusList.innerHTML=statusData.map((s,i)=>`<button class="status-card ${seenStatuses.has(i)?'seen':''}" data-status="${i}" type="button" aria-label="הסטטוס של ${escapeHtml(s.owner)}: ${escapeHtml(s.title)}"><div class="status-ring"><div class="status-face status-face-icon"><img src="${escapeHtml(s.thumb)}" alt=""></div></div><span>${escapeHtml(s.owner)}</span><small>${escapeHtml(cleanTitle(s.page))}</small></button>`).join('');
+    // real WhatsApp behaviour: unseen statuses first (original order), seen ones pushed to the end in view order
+    const unseen=statusData.map((_,i)=>i).filter(i=>!isSeenStatus(i));
+    const order=[...unseen,...seenOrder.filter(i=>i<statusData.length)];
+    els.statusList.innerHTML=order.map(i=>{
+      const s=statusData[i];
+      return `<button class="status-card ${isSeenStatus(i)?'seen':''}" data-status="${i}" type="button" aria-label="הסטטוס של ${escapeHtml(s.owner)}: ${escapeHtml(s.title)}"><div class="status-ring"><div class="status-face status-face-icon"><img src="${escapeHtml(s.thumb)}" alt=""></div></div><span>${escapeHtml(s.owner)}</span><small>${escapeHtml(cleanTitle(s.page))}</small></button>`;
+    }).join('');
   }
   function scheduleStatus(ms=STATUS_DURATION){
     clearTimeout(statusTimer);statusRemaining=ms;statusStartedAt=Date.now();
@@ -477,7 +668,7 @@
     state.statusIndex=Math.max(0,Math.min(index,statusData.length-1));const s=statusData[state.statusIndex];
     state.statusSlide=Math.max(0,Math.min(slideIndex,(s.slides.length||1)-1));
     const slide=s.slides[state.statusSlide]||s.slides[0]||{};
-    seenStatuses.add(state.statusIndex);localStorage.setItem('mathbro-status-seen',JSON.stringify([...seenStatuses]));renderStatuses();
+    markSeenStatus(state.statusIndex);renderStatuses();
     els.statusBars.innerHTML=s.slides.map((_,i)=>`<i class="${i<state.statusSlide?'done':i===state.statusSlide?'current':''}"><span></span></i>`).join('');
     els.statusIcon.innerHTML=`<img src="${escapeHtml(s.thumb)}" alt="">`;
     if(els.statusOwnerName)els.statusOwnerName.textContent=s.owner||'מתמטיקה לחרדים';
@@ -533,7 +724,7 @@
   function renderLessonList(){
     const list=filteredPages(),limit=state.showAll?list.length:INITIAL_LESSON_LIMIT,visible=list.slice(0,limit);
     els.resultCount.textContent=`${list.length} תוצאות`;
-    els.list.innerHTML=visible.length?visible.map(p=>`<button class="lesson-item ${state.current&&state.current.file===p.file?'active':''} ${state.done.has(p.file)?'done':''}" data-file="${escapeHtml(p.file)}" type="button"><span class="lesson-thumb"><img src="${escapeHtml(chapterArt(p,'thumb'))}" alt=""></span><span class="lesson-copy"><b>${escapeHtml(cleanTitle(p))}</b><small>${escapeHtml(pageLabel(p))} · ${escapeHtml(p.group||'כלי')} · ${escapeHtml(p.level||'')}</small>${lessonStat(p)}</span></button>`).join(''):'<div class="empty-list">לא מצאתי פרק מתאים. נסה מילה אחרת.</div>';
+    els.list.innerHTML=visible.length?visible.map(p=>`<button class="lesson-item ${state.current&&state.current.file===p.file?'active':''} ${state.done.has(p.file)?'done':''}" data-file="${escapeHtml(p.file)}" type="button"><span class="lesson-thumb"><img src="${escapeHtml(chapterArt(p,'thumb'))}" alt=""></span><span class="lesson-copy"><b>${escapeHtml(ownerForPage(p))} · ${escapeHtml(cleanTitle(p))}</b><small>${escapeHtml(pageLabel(p))} · ${escapeHtml(p.group||'כלי')} · ${escapeHtml(p.level||'')}</small>${lessonStat(p)}</span></button>`).join(''):'<div class="empty-list">לא מצאתי פרק מתאים. נסה מילה אחרת.</div>';
     els.showMore.hidden=list.length<=INITIAL_LESSON_LIMIT;els.showMore.textContent=state.showAll?'הצג פחות':'הצג עוד פרקים';
   }
   function renderProgress(){
@@ -547,6 +738,7 @@
   document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.filter=b.dataset.filter;state.showAll=false;renderLessonList()}));
   els.showMore.addEventListener('click',()=>{state.showAll=!state.showAll;renderLessonList()});
   els.continueBtn.addEventListener('click',()=>selectLesson(nextLesson(),true));
+  els.examStart?.addEventListener('click',()=>startExam());
   els.bannerStart?.addEventListener('click',()=>selectLesson(nextLesson(),true));
   document.querySelectorAll('[data-route]').forEach(b=>b.addEventListener('click',()=>selectLesson(routePage(b.dataset.route),true)));
   els.statusList.addEventListener('click',e=>{const b=e.target.closest('[data-status]');if(b)openStatus(Number(b.dataset.status))});
@@ -565,10 +757,92 @@
   els.statusViewer.addEventListener('pointercancel',resumeStatus);
   els.backBtn.addEventListener('click',()=>document.body.classList.remove('chat-open'));
   els.doneBtn.addEventListener('click',()=>{if(!state.current)return;if(state.done.has(state.current.file)){state.done.delete(state.current.file);toast('הפרק הוחזר למסלול')}else{state.done.add(state.current.file);toast('הפרק סומן כהושלם')}save();renderProgress();renderLessonList();setHeader()});
-  els.messages.addEventListener('click',e=>{const quiz=e.target.closest('[data-quiz]');if(quiz)return answerQuiz(Number(quiz.dataset.quiz));const action=e.target.closest('[data-action]');if(action)handleAction(action.dataset.action)});
+  els.messages.addEventListener('click',e=>{const exam=e.target.closest('[data-exam]');if(exam)return answerExam(Number(exam.dataset.exam));const quiz=e.target.closest('[data-quiz]');if(quiz)return answerQuiz(Number(quiz.dataset.quiz));const action=e.target.closest('[data-action]');if(action)handleAction(action.dataset.action)});
   els.composer.addEventListener('submit',e=>{e.preventDefault();const text=els.input.value;els.input.value='';answerFreeText(text)});
   document.addEventListener('keydown',e=>{if(els.statusModal.hidden)return;if(e.key==='Escape')closeStatus();if(e.key==='ArrowLeft')moveStatus(-1);if(e.key==='ArrowRight')moveStatus(1)});
   document.addEventListener('visibilitychange',()=>{if(els.statusModal.hidden)return;document.hidden?pauseStatus():resumeStatus()});
+
+  // ── status row: click-and-drag horizontal scroll for mouse/desktop users ──
+  (function enableDragScroll(){
+    const list=els.statusList;if(!list)return;
+    let isDown=false,lastX=0,totalDx=0,moved=false;
+    list.addEventListener('pointerdown',e=>{
+      isDown=true;moved=false;totalDx=0;lastX=e.clientX;
+    });
+    window.addEventListener('pointermove',e=>{
+      if(!isDown)return;
+      const step=e.clientX-lastX;lastX=e.clientX;totalDx+=step;
+      if(Math.abs(totalDx)>4){moved=true;list.classList.add('dragging');list.scrollLeft-=step}
+    });
+    window.addEventListener('pointerup',e=>{
+      if(!isDown)return;isDown=false;list.classList.remove('dragging');
+      if(moved){
+        const btn=e.target.closest('[data-status]');
+        if(btn){const guard=ev=>{ev.stopPropagation();btn.removeEventListener('click',guard,true)};btn.addEventListener('click',guard,true)}
+      }
+    });
+  })();
+
+  // ── floating tools: calculator + scratchpad ──
+  (function initTools(){
+    const fab=$('toolsFab'),panel=$('toolsPanel'),closeBtn=$('toolsPanelClose');
+    if(!fab||!panel)return;
+    fab.addEventListener('click',()=>{panel.hidden=!panel.hidden});
+    closeBtn.addEventListener('click',()=>{panel.hidden=true});
+    panel.querySelectorAll('.tools-tab').forEach(tab=>{
+      tab.addEventListener('click',()=>{
+        panel.querySelectorAll('.tools-tab').forEach(t=>t.classList.toggle('active',t===tab));
+        panel.querySelectorAll('[data-tabpanel]').forEach(p=>{p.hidden=p.dataset.tabpanel!==tab.dataset.tab});
+      });
+    });
+
+    // safe calculator — state machine, no eval()
+    const display=$('calcDisplay');
+    let calc={cur:'0',prev:null,op:null,fresh:true};
+    function calcRender(){display.textContent=calc.cur}
+    function calcCompute(a,b,op){
+      a=parseFloat(a);b=parseFloat(b);
+      if(op==='+')return a+b; if(op==='−')return a-b;
+      if(op==='×')return a*b;
+      if(op==='÷')return b===0?'שגיאה':a/b;
+      return b;
+    }
+    panel.querySelector('.calc-grid').addEventListener('click',e=>{
+      const btn=e.target.closest('button');if(!btn)return;
+      const kind=btn.dataset.calc;
+      if(kind==='num'){
+        const d=btn.textContent;
+        calc.cur=(calc.fresh||calc.cur==='0')?d:calc.cur+d;calc.fresh=false;
+      }else if(kind==='dot'){
+        if(calc.fresh){calc.cur='0.';calc.fresh=false}
+        else if(!calc.cur.includes('.'))calc.cur+='.';
+      }else if(kind==='clear'){
+        calc={cur:'0',prev:null,op:null,fresh:true};
+      }else if(kind==='back'){
+        calc.cur=calc.cur.length>1?calc.cur.slice(0,-1):'0';
+      }else if(kind==='percent'){
+        calc.cur=String(parseFloat(calc.cur)/100);
+      }else if(kind==='op'){
+        if(calc.op&&!calc.fresh){calc.cur=String(calcCompute(calc.prev,calc.cur,calc.op))}
+        calc.prev=calc.cur;calc.op=btn.dataset.op;calc.fresh=true;
+      }else if(kind==='equals'){
+        if(calc.op){calc.cur=String(calcCompute(calc.prev,calc.cur,calc.op));calc.op=null;calc.prev=null;calc.fresh=true}
+      }
+      calcRender();
+    });
+
+    // scratchpad — per-chapter, autosaved
+    const draftPad=$('draftPad'),draftSaved=$('draftSaved'),draftClear=$('draftClear');
+    function draftKey(){return 'mathbro-draft:'+((state.current&&state.current.file)||'general')}
+    function loadDraft(){draftPad.value=localStorage.getItem(draftKey())||'';draftSaved.textContent=''}
+    draftPad.addEventListener('input',()=>{
+      localStorage.setItem(draftKey(),draftPad.value);
+      draftSaved.textContent='נשמר ✓';clearTimeout(draftPad._t);draftPad._t=setTimeout(()=>draftSaved.textContent='',1200);
+    });
+    draftClear.addEventListener('click',()=>{draftPad.value='';localStorage.removeItem(draftKey());draftSaved.textContent=''});
+    panel.querySelector('[data-tab="draft"]').addEventListener('click',loadDraft);
+    document.addEventListener('lesson:changed',loadDraft);
+  })();
 
   function init(){
     renderStatuses();renderProgress();renderLessonList();
@@ -580,6 +854,7 @@
     if(params.get('demo-chat')==='1'){document.body.classList.add('chat-open')}
     if(params.get('demo-status')==='1')setTimeout(()=>openStatus(0),200);
     if(params.get('demo-quiz')==='1')setTimeout(()=>showQuiz(),200);
+    if(params.get('demo-exam')==='1')setTimeout(()=>startExam(),220);
     if(params.get('demo-answer')==='1')setTimeout(async()=>{await showQuiz();setTimeout(()=>{const pack=packFor(state.current),quiz=(pack.questions||[pack.quiz])[state.currentQuiz.index];answerQuiz(quiz.correct)},550)},220);
     if(params.get('demo-text'))setTimeout(()=>answerFreeText(params.get('demo-text')),260);
     if(params.get('demo-complete')==='1')setTimeout(()=>completeLesson(),260);

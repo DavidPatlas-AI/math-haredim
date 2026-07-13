@@ -531,7 +531,7 @@
       {kind:'hero',badge:'פותחים סטורי',title:spec.title,text:spec.kid,formula:spec.formula},
       {kind:'idea',badge:'הסבר כמו לילד',title:'מה הרעיון?',text:spec.why,formula:spec.memory},
       {kind:'analogy',badge:'מהחיים',title:'דוגמה מהחיים',text:spec.real||spec.why,formula:spec.tag},
-      {kind:'steps',badge:'רונן מפרק לשלבים',title:spec.steps[0][0],text:spec.steps[0][1],formula:spec.steps[0][2]},
+      {kind:'steps',badge:'מפרקים את זה לשלבים',title:spec.steps[0][0],text:spec.steps[0][1],formula:spec.steps[0][2]},
       {kind:'example',badge:'דוגמה קטנה',title:spec.steps[1][0],text:spec.steps[1][1],formula:spec.steps[1][2]},
       {kind:'trap',badge:'זהירות במבחן',title:'המלכודת',text:spec.trap,formula:'שים לב'},
       {kind:'practice',badge:'נסה לבד',title:'תרגול קצר',text:`פתור עכשיו: ${spec.practice[0]}`,formula:spec.practice[1]||spec.formula}

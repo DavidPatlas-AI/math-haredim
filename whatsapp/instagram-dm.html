@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0095f6">
+  <title>הודעות · מסלול אינסטגרם · מתמטיקה לחרדים</title>
+  <link rel="stylesheet" href="whatsapp-app.css?v=20260710-1">
+  <link rel="stylesheet" href="instagram-dm-theme.css?v=20260710-1">
+</head>
+<body class="ig-dm-body">
+  <main class="app-shell" id="appShell">
+    <aside class="home-view" id="homeView" aria-label="מסלול הלמידה">
+      <header class="brand-bar">
+        <div class="brand-mark" aria-hidden="true">מת</div>
+        <div class="brand-copy">
+          <strong>מתמטיקה לחרדים</strong>
+          <span>מסלול אינסטגרם · לימוד עם רונן</span>
+        </div>
+        <div class="brand-actions" aria-label="פעולות">
+          <a class="icon-link" href="../instagram/instagram-learning.html" title="חזרה לאינסטגרם" aria-label="חזרה לאינסטגרם">⌂</a>
+          <button class="header-icon" type="button" title="חיפוש" aria-label="חיפוש">⌕</button>
+          <button class="header-icon" type="button" title="תפריט" aria-label="תפריט">⋮</button>
+        </div>
+      </header>
+
+      <section class="status-section" aria-labelledby="statusTitle">
+        <div class="section-heading"><h2 id="statusTitle">עדכונים</h2><span>סטטוס קצר עם תמונות לכל פרק</span></div>
+        <div class="status-list" id="statusList"></div>
+      </section>
+
+      <section class="home-intro" aria-labelledby="homeTitle">
+        <div class="eyebrow">רונן · מחובר</div>
+        <h1 id="homeTitle">מה לומדים עכשיו?</h1>
+        <p>בחר כיוון אחד. בכל משימה תקבל הסבר קצר, דוגמה מהבחינה ושאלה שבאמת מגיבה לתשובה שלך.</p>
+        <div class="home-actions">
+          <button class="primary-action" id="continueBtn" type="button">המשך מהמשימה הבאה</button>
+          <button class="exam-action" id="examStartBtn" type="button">מצב מבחן · 10 שאלות</button>
+        </div>
+        <div class="progress-line" aria-label="התקדמות במסלול">
+          <div class="progress-meta"><span id="progressText">0 מתוך 24 פרקים</span><b id="progressPercent">0%</b></div>
+          <div class="progress-track"><i id="progressBar"></i></div>
+        </div>
+      </section>
+
+      <section class="whatsapp-route-banner" aria-label="באנר מסלול">
+        <div class="banner-copy">
+          <span>מסלול אינסטגרם</span>
+          <h2>כל פרק הופך לשיחה קצרה עם תמונה, סטטוס וחידון.</h2>
+          <p>פותחים סטורי, מבינים את הכלל, ואז נכנסים לשיחה על אותו נושא.</p>
+          <button id="bannerStartBtn" type="button">פתח את השיחה הבאה</button>
+        </div>
+        <div class="banner-phone" aria-hidden="true">
+          <div class="banner-status-dot"></div>
+          <div class="banner-screen">
+            <b>פרק 4 · אחוזים</b>
+            <span>מה השלם?</span>
+            <i>35% = 0.35</i>
+          </div>
+        </div>
+      </section>
+
+      <section class="route-section" aria-labelledby="routeTitle">
+        <div class="section-heading"><h2 id="routeTitle">כניסה מהירה</h2><span>בחר מה דחוף לך</span></div>
+        <div class="route-grid">
+          <button class="route-button route-green" data-route="zero" type="button"><i>1</i><span><b>יסודות</b><small>סדר פעולות ומספרים שליליים</small></span></button>
+          <button class="route-button route-red" data-route="fractions" type="button"><i>%</i><span><b>שברים ואחוזים</b><small>חלקים, הנחות ויחס למאה</small></span></button>
+          <button class="route-button route-amber" data-route="algebra" type="button"><i>x</i><span><b>אלגברה</b><small>כינוס איברים ופתיחת סוגריים</small></span></button>
+          <button class="route-button route-blue" data-route="equations" type="button"><i>=</i><span><b>משוואות וגרפים</b><small>למצוא את x ולקרוא פונקציה</small></span></button>
+          <button class="route-button route-data" data-route="calculator" type="button"><i>fx</i><span><b>מחשבון Casio</b><small>להקליד נכון, לבדוק תשובות ולפתוח טבלאות</small></span></button>
+        </div>
+      </section>
+
+      <section class="library-section" aria-labelledby="libraryTitle">
+        <div class="section-heading"><h2 id="libraryTitle">שיחות ופרקים</h2><span id="resultCount">24 פרקים</span></div>
+        <label class="search-box" for="lessonSearch"><span aria-hidden="true">⌕</span><input id="lessonSearch" type="search" placeholder="חפש נושא או פרק" autocomplete="off"></label>
+        <div class="filter-row" role="group" aria-label="סינון פרקים">
+          <button class="filter active" data-filter="all" type="button">הכל</button>
+          <button class="filter" data-filter="chapters" type="button">פרקים</button>
+          <button class="filter" data-filter="done" type="button">הושלמו</button>
+        </div>
+        <div class="lesson-list" id="lessonList"></div>
+        <button class="show-more" id="showMoreBtn" type="button">הצג עוד פרקים</button>
+      </section>
+    </aside>
+
+    <section class="chat-view" id="chatView" aria-label="שיחה">
+      <header class="chat-header">
+        <a class="icon-button back-button" id="backBtn" href="../instagram/instagram-learning.html" aria-label="חזרה לאינסטגרם">‹</a>
+        <div class="contact-avatar" aria-hidden="true">ר</div>
+        <div class="contact-copy">
+          <h2 id="chatTitle">רונן</h2>
+          <p id="chatStatus">מחובר · מוכן למשימה</p>
+        </div>
+        <div class="chat-tools">
+          <button class="icon-button" id="doneBtn" type="button" title="סמן פרק כהושלם" aria-label="סמן פרק כהושלם">✓</button>
+          <a class="icon-link wa-contact-link" id="waContactLink" href="#" target="_blank" rel="noopener" title="שלחו הודעה אמיתית" aria-label="שלחו הודעה אמיתית" hidden>💬</a>
+          <a class="icon-link" id="openLessonLink" href="learn/seder_peulot.html" title="פתח פרק מלא" aria-label="פתח פרק מלא">↗</a>
+          <button class="icon-button" type="button" title="חיפוש בשיחה" aria-label="חיפוש בשיחה">⌕</button>
+          <button class="icon-button" type="button" title="תפריט שיחה" aria-label="תפריט שיחה">⋮</button>
+        </div>
+      </header>
+
+      <div class="messages" id="messages" aria-live="polite" aria-relevant="additions"></div>
+
+      <form class="composer" id="composer">
+        <input id="messageInput" type="text" placeholder="שאל את רונן על הפרק" autocomplete="off" aria-label="כתוב הודעה">
+        <button class="send-button" type="submit" aria-label="שלח הודעה">➤</button>
+      </form>
+    </section>
+  </main>
+
+  <button class="tools-fab" id="toolsFab" type="button" aria-label="כלים: מחשבון וטיוטה" title="מחשבון וטיוטה">🧮</button>
+
+  <div class="tools-panel" id="toolsPanel" hidden>
+    <div class="tools-panel-head">
+      <div class="tools-tabs">
+        <button class="tools-tab active" data-tab="calc" type="button">מחשבון</button>
+        <button class="tools-tab" data-tab="draft" type="button">טיוטה</button>
+      </div>
+      <button class="tools-panel-close" id="toolsPanelClose" type="button" aria-label="סגור כלים">×</button>
+    </div>
+    <div class="tools-tab-body" data-tabpanel="calc">
+      <div class="calc-display" id="calcDisplay">0</div>
+      <div class="calc-grid">
+        <button data-calc="clear">C</button>
+        <button data-calc="back">⌫</button>
+        <button data-calc="percent">%</button>
+        <button data-calc="op" data-op="÷">÷</button>
+        <button data-calc="num">7</button>
+        <button data-calc="num">8</button>
+        <button data-calc="num">9</button>
+        <button data-calc="op" data-op="×">×</button>
+        <button data-calc="num">4</button>
+        <button data-calc="num">5</button>
+        <button data-calc="num">6</button>
+        <button data-calc="op" data-op="−">−</button>
+        <button data-calc="num">1</button>
+        <button data-calc="num">2</button>
+        <button data-calc="num">3</button>
+        <button data-calc="op" data-op="+">+</button>
+        <button data-calc="num" data-wide="1">0</button>
+        <button data-calc="dot">.</button>
+        <button class="calc-eq" data-calc="equals">=</button>
+      </div>
+    </div>
+    <div class="tools-tab-body" data-tabpanel="draft" hidden>
+      <textarea id="draftPad" placeholder="רשמו כאן חישובים או פתרון תוך כדי הלימוד..."></textarea>
+      <div class="draft-actions"><button id="draftClear" type="button">נקה טיוטה</button><span id="draftSaved"></span></div>
+    </div>
+  </div>
+
+  <div class="status-modal" id="statusModal" hidden>
+    <div class="status-dialog" id="statusViewer" role="dialog" aria-modal="true" aria-labelledby="statusModalTitle">
+      <div class="status-bars" id="statusBars"></div>
+      <header class="status-header">
+        <div class="status-icon" id="statusIcon" aria-hidden="true"></div>
+        <div class="status-owner"><b id="statusOwnerName">מתמטיקה לחרדים</b><span id="statusTime">עכשיו</span></div>
+        <button class="status-close" id="statusClose" type="button" aria-label="סגור סטטוס">×</button>
+      </header>
+      <div class="status-photo" id="statusPhoto" aria-hidden="true"></div>
+      <div class="status-caption">
+        <p class="status-kicker">טיפ ממתמטיקה לחרדים</p>
+        <h2 id="statusModalTitle"></h2>
+        <p id="statusModalText"></p>
+        <button class="status-learn" id="statusLearn" type="button">פתח שיחה על זה</button>
+        <span>הקשה למעבר · לחיצה ארוכה לעצירה</span>
+      </div>
+      <button class="status-hit status-hit-prev" id="statusPrev" type="button" aria-label="סטטוס קודם"></button>
+      <button class="status-hit status-hit-next" id="statusNext" type="button" aria-label="סטטוס הבא"></button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    document.body.classList.add('chat-open');
+    // Instagram DM wording ("Active now") instead of WhatsApp's "מחובר" — registered
+    // before whatsapp-app.js runs so it catches the first lesson:changed dispatch too.
+    document.addEventListener('lesson:changed', () => {
+      const el = document.getElementById('chatStatus');
+      if (el) el.textContent = el.textContent.replace('מחובר', 'פעיל כעת');
+    });
+  </script>
+  <script src="math-pages.js?v=20260710-1"></script>
+  <script src="math-lessons.js?v=20260710-1"></script>
+  <script src="math-upgrades.js?v=20260710-1"></script>
+  <script src="math-visuals.js?v=20260710-1"></script>
+  <script src="whatsapp-app.js?v=20260710-1"></script>
+</body>
+</html>

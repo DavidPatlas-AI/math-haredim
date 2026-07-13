@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c62828">
+  <title>המבזק · מתמטיקה לחרדים</title>
+  <link rel="stylesheet" href="news-app.css?v=20260712-1">
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="hebrew-date" id="todayLabel">📅</div>
+  <div class="rates">
+    <span id="progressStat">📚 טוען...</span>
+    <span id="doneStat">🎯 טוען...</span>
+  </div>
+  <div class="weather">
+    <a href="../topics/yom-lifney-mivkhan.html">⏰ מסלול יום לפני המבחן</a>
+  </div>
+</div>
+
+<header class="main-header">
+  <a class="logo" href="../index.html">המבזק</a>
+  <label class="search-box"><span aria-hidden="true">🔍</span><input id="newsSearch" type="search" placeholder="חפש פרק..." aria-label="חיפוש פרק"></label>
+</header>
+
+<nav class="nav-bar">
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" class="active" data-group="all">הכל</a></li>
+    <li><a href="#" data-group="zero">יסודות</a></li>
+    <li><a href="#" data-group="fractions">שברים ואחוזים</a></li>
+    <li><a href="#" data-group="algebra">אלגברה</a></li>
+    <li><a href="#" data-group="equations">משוואות וגרפים</a></li>
+    <li><a href="#" data-group="calculator">מחשבון</a></li>
+  </ul>
+</nav>
+
+<div class="ticker-bar">
+  <div class="ticker-text" id="tickerText"></div>
+</div>
+
+<div class="page-wrapper">
+
+  <main class="content-area">
+
+    <div class="slider" id="mainSlider">
+      <div class="slides-track" id="slidesTrack"></div>
+      <button class="slider-btn prev-btn" id="prevSlide" aria-label="הקודם">&#10094;</button>
+      <button class="slider-btn next-btn" id="nextSlide" aria-label="הבא">&#10095;</button>
+    </div>
+
+    <div class="articles-grid" id="articlesGrid"></div>
+  </main>
+
+  <aside class="sidebar-col">
+    <section class="side-block">
+      <h2 class="side-title">📊 ההתקדמות שלי</h2>
+      <div class="progress-block">
+        <div class="progress-line-outer"><div class="progress-line-inner" id="sideProgressBar"></div></div>
+        <p id="sideProgressText">0 מתוך 24 פרקים הושלמו</p>
+      </div>
+      <a class="side-cta" href="../whatsapp/whatsapp-learning.html?demo-exam=1">מצב מבחן · 10 שאלות</a>
+    </section>
+
+    <section class="side-block">
+      <h2 class="side-title">💬 מסלולי למידה נוספים</h2>
+      <ul class="side-list">
+        <li><a href="../whatsapp/whatsapp-learning.html">מסלול ווצאפ — ללמוד כמו שיחה</a></li>
+        <li><a href="../instagram/instagram-learning.html">מסלול אינסטגרם — סטוריז ופיד</a></li>
+        <li><a href="../learn/index.html">מרכז הלמידה המלא</a></li>
+      </ul>
+    </section>
+  </aside>
+</div>
+
+<footer class="footer">
+  <div class="footer-group">
+    <h4>ניווט</h4>
+    <ul>
+      <li><a href="../index.html">דף הבית</a></li>
+      <li><a href="../learn/index.html">מרכז הלמידה</a></li>
+      <li><a href="../topics/yom-lifney-mivkhan.html">יום לפני המבחן</a></li>
+    </ul>
+  </div>
+  <div class="footer-group">
+    <h4>מסלולים</h4>
+    <ul>
+      <li><a href="../whatsapp/whatsapp-learning.html">מסלול ווצאפ</a></li>
+      <li><a href="../instagram/instagram-learning.html">מסלול אינסטגרם</a></li>
+      <li><a href="news-learning.html">המבזק</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">© 2026 מתמטיקה לחרדים — כל הזכויות שמורות</div>
+</footer>
+
+<script src="../whatsapp/math-pages.js?v=20260712-1"></script>
+<script src="../whatsapp/math-lessons.js?v=20260712-1"></script>
+<script src="../whatsapp/math-upgrades.js?v=20260712-1"></script>
+<script src="../whatsapp/math-visuals.js?v=20260712-1"></script>
+<script src="news-app.js?v=20260712-1"></script>
+</body>
+</html>

@@ -270,7 +270,7 @@
   /* ── Determine home URL depth ── */
   var path   = window.location.pathname.replace(/^\//, '');
   var segs   = path.split('/').filter(Boolean).length;
-  var isRoot = segs === 0 || path === 'index.html' || path === 'landing.html';
+  var isRoot = segs === 0 || path === 'index.html' || path === 'landing.html' || path === 'index-lavan.html' || path === 'index-lavan';
   var home   = segs <= 1 ? 'index.html' : '../index.html';
   var depth  = segs <= 1 ? '' : '../';
 

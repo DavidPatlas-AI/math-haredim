@@ -87,12 +87,14 @@
   .brand-sub { font-size:.68rem; color:var(--chalk-dim); letter-spacing:.3px; }
   .topbar-actions { display:flex; gap:8px; align-items:center; }
   .tb-btn {
+    display:inline-flex; align-items:center; gap:5px;
     background:rgba(255,230,109,.1);
     border:1px solid rgba(255,230,109,.2);
     color:var(--chalk-y);
     padding:8px 16px; border-radius:20px;
     font-family:'Heebo',sans-serif; font-size:.82rem; font-weight:700;
     cursor:pointer; transition:.2s; letter-spacing:.3px;
+    text-decoration:none; white-space:nowrap;
   }
   .tb-btn:hover { background:rgba(255,230,109,.18); transform:translateY(-1px); }
 
@@ -236,6 +238,26 @@
     background:var(--chalk-g);
     transform:translateY(-3px);
     box-shadow:0 8px 24px rgba(85,239,196,.25);
+  }
+  .track-instagram {
+    border-color:rgba(214,36,159,.32);
+    background:rgba(214,36,159,.08);
+  }
+  .track-instagram:hover {
+    border-color:#d6249f; color:#3a0a2c;
+    background:linear-gradient(135deg,#fdf497,#fd5949,#d6249f,#285aeb);
+    transform:translateY(-3px);
+    box-shadow:0 8px 24px rgba(214,36,159,.3);
+  }
+  .track-news {
+    border-color:rgba(198,40,40,.32);
+    background:rgba(198,40,40,.08);
+  }
+  .track-news:hover {
+    border-color:#c62828; color:#fff;
+    background:#c62828;
+    transform:translateY(-3px);
+    box-shadow:0 8px 24px rgba(198,40,40,.3);
   }
 
   /* ── ACCORDION ── */
@@ -566,6 +588,18 @@
     text-decoration:none;font-family:'Frank Ruhl Libre',serif;
   }
 
+  /* ── BOARD-STYLE SWITCH (like the day/night toggle) ── */
+  #board-switch{
+    position:fixed;bottom:22px;left:22px;z-index:99998;
+    width:46px;height:46px;border-radius:50%;
+    background:#12142a;color:#f0c14b;border:none;font-size:1.25rem;
+    cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.3);
+    text-decoration:none;display:flex;align-items:center;justify-content:center;
+    transition:transform .2s;
+  }
+  #board-switch:hover{transform:scale(1.12)}
+  @media(max-width:600px){#board-switch{bottom:70px;left:14px;width:42px;height:42px;font-size:1.1rem}}
+
   @media(max-width:600px){
     .sticky-mobile{display:block}
     body{padding-bottom:58px}
@@ -660,6 +694,12 @@
       <a href="whatsapp/whatsapp-learning.html" class="track-btn track-whatsapp">
         <span class="track-icon">💬</span> מסלול ווצאפ
       </a>
+      <a href="instagram/instagram-learning.html" class="track-btn track-instagram">
+        <span class="track-icon">📷</span> מסלול אינסטגרם
+      </a>
+      <a href="news/news-learning.html" class="track-btn track-news">
+        <span class="track-icon">📰</span> המבזק
+      </a>
     </div>
 
   </div><!-- /wrap -->
@@ -743,6 +783,24 @@
       <h3 style="color:var(--c6)">מסלול ווצאפ — ללמוד כמו שיחה</h3>
       <p>10 פרקים עם סטטוסים, תמונות, הסבר ברור, דוגמאות וחידון קצר עם רונן</p>
       <span class="arr" style="color:var(--c6)">← כניסה למסלול ווצאפ</span>
+    </div>
+  </a>
+
+  <a class="featured" href="instagram/instagram-learning.html" style="min-height:auto;border-color:#d6249f">
+    <div class="ico" style="animation:none">📷</div>
+    <div>
+      <h3 style="color:#d6249f">מסלול אינסטגרם — סטוריז ופיד</h3>
+      <p>24 פרקים כסטוריז ופוסטים, עם שיחה על כל נושא ואפשרות לשלוח הודעה אמיתית</p>
+      <span class="arr" style="color:#d6249f">← כניסה למסלול אינסטגרם</span>
+    </div>
+  </a>
+
+  <a class="featured" href="news/news-learning.html" style="min-height:auto;border-color:#c62828">
+    <div class="ico" style="animation:none">📰</div>
+    <div>
+      <h3 style="color:#c62828">המבזק — כל פרק ככתבה</h3>
+      <p>24 פרקים בעיצוב פורטל חדשות, עם כתבה מלאה על כל נושא והתקדמות אישית</p>
+      <span class="arr" style="color:#c62828">← כניסה למבזק</span>
     </div>
   </a>
 
@@ -1197,7 +1255,7 @@
     <div class="glow"></div>
     <div class="tag">מבחן</div>
     <h3>מבחני מה"ט לדוגמה</h3>
-    <div class="desc">10 שאלות שכיחות + מבחן רנדומלי + פתרונות</div>
+    <div class="desc">מאגר מבחני מכינה 2026 + מבחן רנדומלי + פתרונות</div>
         <span class="go"><span class="arr">←</span> למבחנים</span>
   </a>
 
@@ -1323,6 +1381,8 @@
 </footer>
 
 </div><!-- /wrap -->
+
+<a id="board-switch" href="index-lavan.html" title="עברו ללוח הלבן" aria-label="עברו ללוח הלבן">🖊️</a>
 
 <!-- MOBILE STICKY CTA -->
 <div class="sticky-mobile" id="sticky-mobile">
@@ -1569,5 +1629,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script src="/shared/nav.js"></script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}</script>
+<style>@media(max-width:600px){#dmode{bottom:70px!important}}</style>
 </body>
 </html>

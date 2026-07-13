@@ -1,0 +1,62 @@
+/* Instagram DM re-skin — overrides whatsapp-app.css chat-view chrome only.
+   Same functional engine (whatsapp-app.js), different visual skin. */
+
+body.ig-dm-body{--ig-blue:#0095f6;--ig-blue-dark:#1877c9;--ig-bg:#fff;--ig-line:#dbdbdb;--ig-bubble-in:#efefef;--ig-text:#262626}
+
+/* home-view (WhatsApp list) is never meant to be seen on this page — hide it entirely */
+body.ig-dm-body .home-view{display:none!important}
+body.ig-dm-body .app-shell{grid-template-columns:1fr!important}
+
+body.ig-dm-body .chat-view{background:var(--ig-bg)}
+body.ig-dm-body .chat-view:before{display:none}
+
+body.ig-dm-body .chat-header{
+  background:#fff;border-bottom:1px solid var(--ig-line);box-shadow:none;
+}
+body.ig-dm-body .back-button{color:var(--ig-text);font-size:26px;text-decoration:none;display:grid;place-items:center}
+body.ig-dm-body .contact-avatar{
+  background:radial-gradient(circle at 30% 107%,#fdf497 0,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285aeb 90%);
+  border:2px solid #fff;color:#fff;box-shadow:0 0 0 1px var(--ig-line);
+}
+body.ig-dm-body .contact-copy h2{color:var(--ig-text);font-weight:700;font-size:15px}
+body.ig-dm-body .contact-copy p{color:#8e8e8e;font-size:11.5px}
+body.ig-dm-body .chat-tools .icon-button,body.ig-dm-body .chat-tools .icon-link{color:var(--ig-text)}
+body.ig-dm-body .wa-contact-link{background:rgba(37,211,102,.14);color:#128c4a}
+
+body.ig-dm-body .messages{background:#fff}
+body.ig-dm-body .bubble{
+  border-radius:20px;box-shadow:none;padding:9px 14px;
+}
+body.ig-dm-body .bubble:before{display:none}
+body.ig-dm-body .bubble.bot{background:var(--ig-bubble-in);color:var(--ig-text);border-top-left-radius:20px}
+body.ig-dm-body .bubble.user{background:linear-gradient(135deg,#4facfe,var(--ig-blue));color:#fff;border-top-right-radius:20px}
+body.ig-dm-body .bubble.user *{color:#fff}
+body.ig-dm-body .bubble time{color:#8e8e8e}
+body.ig-dm-body .bubble .message-tag{background:rgba(0,149,246,.12);color:var(--ig-blue-dark)}
+body.ig-dm-body .bubble-actions button{border-color:var(--ig-line);color:var(--ig-blue-dark);border-radius:18px}
+body.ig-dm-body .bubble-actions button.primary{background:var(--ig-blue);border-color:var(--ig-blue);color:#fff}
+
+body.ig-dm-body .real-contact-banner{background:linear-gradient(135deg,#25d366,#128c4a)}
+
+body.ig-dm-body .composer{
+  background:#fff;border-top:1px solid var(--ig-line);
+  grid-template-columns:34px minmax(0,1fr) 34px;gap:8px;
+}
+body.ig-dm-body .composer:before{
+  content:"📷";order:-1;display:grid;place-items:center;font-size:18px;opacity:.75;
+}
+body.ig-dm-body .composer input{
+  background:var(--ig-bubble-in);border-radius:20px;padding:9px 16px;border:0;color:var(--ig-text);
+}
+body.ig-dm-body .send-button{
+  background:transparent;color:var(--ig-blue);font-size:20px;box-shadow:none;
+}
+
+body.ig-dm-body .tools-fab{background:var(--ig-blue);box-shadow:0 8px 20px rgba(0,149,246,.35)}
+body.ig-dm-body .tools-tab.active{color:var(--ig-blue)}
+body.ig-dm-body .calc-grid button[data-calc="op"]{background:var(--ig-blue);border-color:var(--ig-blue)}
+body.ig-dm-body .calc-eq{background:var(--ig-blue-dark)!important;border-color:var(--ig-blue-dark)!important}
+
+@media(max-width:760px){
+  body.ig-dm-body .chat-header{background:#fff}
+}
