@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;700;900&display=swap">
-  <link rel="stylesheet" href="news-app.css?v=20260713-1">
+  <link rel="stylesheet" href="news-app.css?v=20260713-2">
   <style>
     .article-page { max-width:760px; margin:24px auto; padding:0 20px 60px; }
     .back-link { display:inline-block; margin-bottom:14px; color:var(--primary); text-decoration:none; font-weight:700; font-size:.9rem; }
@@ -16,12 +16,21 @@
     .article-hero { width:100%; border-radius:var(--radius); overflow:hidden; margin-bottom:18px; box-shadow:0 3px 10px rgba(0,0,0,.1); }
     .article-hero img { width:100%; display:block; }
     .article-eyebrow { color:var(--primary); font-weight:700; font-size:.82rem; margin-bottom:6px; }
-    .article-title { font-size:1.7rem; margin-bottom:8px; line-height:1.3; color:var(--title); }
-    .article-byline { color:var(--muted-foreground); font-size:.85rem; margin-bottom:22px; padding-bottom:16px; border-bottom:1px solid var(--border); }
-    .article-body section { margin-bottom:22px; }
-    .article-body h2 { font-size:1.15rem; color:var(--title); margin-bottom:8px; border-right:4px solid var(--primary); padding-right:10px; }
-    .article-body p { font-size:1rem; line-height:1.75; color:var(--text-primary); }
-    .article-fact { background:#fff8e1; border-radius:var(--radius); padding:14px 16px; font-size:.95rem; color:#5a4a00; }
+    .article-title { font-size:1.9rem; margin-bottom:6px; line-height:1.3; color:var(--title); }
+    .article-kicker { color:var(--primary); font-weight:800; font-size:1rem; margin-bottom:10px; }
+    .article-byline { color:var(--muted-foreground); font-size:.85rem; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border); }
+    .article-lead p { font-size:1.18rem; line-height:1.85; color:var(--title); font-weight:500; margin-bottom:16px; }
+    .article-body section { margin-bottom:26px; }
+    .article-body h2 { font-size:1.2rem; color:var(--title); margin-bottom:10px; border-right:4px solid var(--primary); padding-right:10px; }
+    .article-body p { font-size:1.05rem; line-height:1.85; color:var(--text-primary); margin-bottom:14px; }
+    .article-body p:last-child { margin-bottom:0; }
+    .article-pullquote { border-right:4px solid var(--primary); margin:30px 0; padding:4px 22px; font-size:1.3rem; font-weight:700; line-height:1.65; color:var(--title); }
+    .inline-photo { width:100%; border-radius:var(--radius); overflow:hidden; margin:24px 0; }
+    .inline-photo img { width:100%; display:block; }
+    .inline-photo.photo-missing { display:flex; align-items:center; justify-content:center; min-height:190px; border:2px dashed var(--border); background:var(--muted); }
+    .inline-photo.photo-missing img { display:none; }
+    .inline-photo.photo-missing::after { content:attr(data-label); color:var(--muted-foreground); font-size:.9rem; font-weight:700; text-align:center; padding:20px; }
+    .article-fact { background:#fff8e1; border-radius:var(--radius); padding:14px 16px; font-size:.95rem; color:#5a4a00; margin-bottom:0; }
     .article-cta { display:block; text-align:center; background:var(--primary); color:#fff; text-decoration:none; font-weight:700; padding:14px; border-radius:var(--radius); margin-top:30px; font-size:1rem; }
     .article-cta:hover { background:var(--primary-dark); }
     .article-missing { text-align:center; padding:60px 20px; color:var(--muted-foreground); }
@@ -41,12 +50,22 @@
   <script src="../whatsapp/math-lessons.js?v=20260712-1"></script>
   <script src="../whatsapp/math-upgrades.js?v=20260712-1"></script>
   <script src="../whatsapp/math-visuals.js?v=20260712-1"></script>
+  <script src="news-articles.js?v=20260713-1"></script>
   <script>
     (function(){
       const pages=(window.MATHBRO_PAGES||[]).filter(p=>Number.isFinite(p.chapter));
       const lessons=window.MATHBRO_LESSONS||{};
       const visuals=window.MATHBRO_VISUALS||{};
+      const articles=window.MATHBRO_ARTICLES||{};
       function escapeHtml(v){ return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+      function paras(list){ return (list||[]).map(t=>`<p>${escapeHtml(t)}</p>`).join(''); }
+      function photoSlot(chapter,letter){
+        const n=String(chapter).padStart(2,'0');
+        const src=`../assets/chapter-cards/extra/chapter-${n}-${letter}.jpg`;
+        return `<div class="inline-photo" data-label="📷 מקום לתמונה נוספת מהפרק">
+          <img src="${escapeHtml(src)}" alt="" onerror="this.parentElement.classList.add('photo-missing')">
+        </div>`;
+      }
 
       const params=new URLSearchParams(location.search);
       const chapter=Number(params.get('lesson'));
@@ -57,6 +76,7 @@
         return;
       }
       const lesson=lessons[page.file]||{};
+      const article=articles[page.file]||null;
       const title=visuals.cleanTitle?visuals.cleanTitle(page):(page.title||'');
       const image=visuals.chapterArt?visuals.chapterArt(page,'wide'):'';
       const example=(lesson.examples&&lesson.examples[0])||lesson.case||'';
@@ -64,18 +84,39 @@
 
       document.title=`${title} · המבזק · מתמטיקה לחרדים`;
 
+      let bodyHtml;
+      if(article){
+        bodyHtml=`
+          <div class="article-lead">${paras(article.lead)}</div>
+          ${photoSlot(page.chapter,'a')}
+          <div class="article-body">
+            ${(article.sections||[]).map(s=>`<section><h2>${escapeHtml(s.h)}</h2>${paras(s.p)}</section>`).join('')}
+            ${article.pullquote?`<p class="article-pullquote">${escapeHtml(article.pullquote)}</p>`:''}
+            ${article.example?`<section><h2>${escapeHtml(article.example.h)}</h2>${paras(article.example.p)}</section>`:''}
+            ${photoSlot(page.chapter,'b')}
+            ${article.mistake?`<section><h2>${escapeHtml(article.mistake.h)}</h2>${paras(article.mistake.p)}</section>`:''}
+            ${lesson.fact?`<section><h2>עובדה מעניינת</h2><p class="article-fact">${escapeHtml(lesson.fact)}</p></section>`:''}
+          </div>
+        `;
+      }else{
+        bodyHtml=`
+          <div class="article-body">
+            ${lesson.beginner?`<section><h2>מה זה בעצם?</h2><p>${escapeHtml(lesson.beginner)}</p></section>`:''}
+            ${lesson.real?`<section><h2>איפה פוגשים את זה בחיים</h2><p>${escapeHtml(lesson.real)}</p></section>`:''}
+            ${example?`<section><h2>דוגמה</h2><p>${escapeHtml(example)}</p></section>`:''}
+            ${lesson.warning?`<section><h2>הטעות שהכי כדאי להיזהר ממנה</h2><p>${escapeHtml(lesson.warning)}</p></section>`:''}
+            ${lesson.fact?`<section><h2>עובדה מעניינת</h2><p class="article-fact">${escapeHtml(lesson.fact)}</p></section>`:''}
+          </div>
+        `;
+      }
+
       el.innerHTML=`
         <div class="article-hero"><img src="${escapeHtml(image)}" alt="${escapeHtml(title)}"></div>
         <p class="article-eyebrow">פרק ${page.chapter} · ${escapeHtml(page.group||'')}</p>
         <h1 class="article-title">${escapeHtml(title)}</h1>
+        ${article&&article.kicker?`<p class="article-kicker">${escapeHtml(article.kicker)}</p>`:''}
         <p class="article-byline">מערכת המבזק · ${now.toLocaleDateString('he-IL')}</p>
-        <div class="article-body">
-          ${lesson.beginner?`<section><h2>מה זה בעצם?</h2><p>${escapeHtml(lesson.beginner)}</p></section>`:''}
-          ${lesson.real?`<section><h2>איפה פוגשים את זה בחיים</h2><p>${escapeHtml(lesson.real)}</p></section>`:''}
-          ${example?`<section><h2>דוגמה</h2><p>${escapeHtml(example)}</p></section>`:''}
-          ${lesson.warning?`<section><h2>הטעות שהכי כדאי להיזהר ממנה</h2><p>${escapeHtml(lesson.warning)}</p></section>`:''}
-          ${lesson.fact?`<section><h2>עובדה מעניינת</h2><p class="article-fact">${escapeHtml(lesson.fact)}</p></section>`:''}
-        </div>
+        ${bodyHtml}
         <a class="article-cta" href="../whatsapp/whatsapp-learning.html?lesson=${page.chapter}">המשיכו לתרגל בשיחה על הפרק ›</a>
       `;
     })();
