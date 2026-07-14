@@ -19,17 +19,25 @@
     .article-title { font-size:1.9rem; margin-bottom:6px; line-height:1.3; color:var(--title); }
     .article-kicker { color:var(--primary); font-weight:800; font-size:1rem; margin-bottom:10px; }
     .article-byline { color:var(--muted-foreground); font-size:.85rem; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border); }
+    .article-news-hook { background:#fff3f2; border-right:4px solid var(--primary); border-radius:var(--radius); color:#55302f; font-size:1rem; font-weight:700; line-height:1.7; margin:18px 0 22px; padding:13px 16px; }
     .article-lead p { font-size:1.18rem; line-height:1.85; color:var(--title); font-weight:500; margin-bottom:16px; }
     .article-body section { margin-bottom:26px; }
     .article-body h2 { font-size:1.2rem; color:var(--title); margin-bottom:10px; border-right:4px solid var(--primary); padding-right:10px; }
     .article-body p { font-size:1.05rem; line-height:1.85; color:var(--text-primary); margin-bottom:14px; }
     .article-body p:last-child { margin-bottom:0; }
     .article-pullquote { border-right:4px solid var(--primary); margin:30px 0; padding:4px 22px; font-size:1.3rem; font-weight:700; line-height:1.65; color:var(--title); }
-    .inline-photo { width:100%; border-radius:var(--radius); overflow:hidden; margin:24px 0; }
-    .inline-photo img { width:100%; display:block; }
-    .inline-photo.photo-missing { display:flex; align-items:center; justify-content:center; min-height:190px; border:2px dashed var(--border); background:var(--muted); }
-    .inline-photo.photo-missing img { display:none; }
-    .inline-photo.photo-missing::after { content:attr(data-label); color:var(--muted-foreground); font-size:.9rem; font-weight:700; text-align:center; padding:20px; }
+    .photo-gallery { margin:24px 0; }
+    .gallery-track { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; border-radius:var(--radius); background:#fff; box-shadow:0 2px 9px rgba(0,0,0,.08); scrollbar-width:none; -ms-overflow-style:none; }
+    .gallery-track::-webkit-scrollbar { display:none; }
+    .gallery-slide { flex:0 0 100%; scroll-snap-align:start; }
+    .gallery-slide img { width:100%; display:block; }
+    .gallery-slide figcaption { color:var(--muted-foreground); font-size:.82rem; line-height:1.6; padding:9px 12px 11px; }
+    .gallery-slide.photo-missing { display:flex; align-items:center; justify-content:center; min-height:190px; border:2px dashed var(--border); background:var(--muted); }
+    .gallery-slide.photo-missing img { display:none; }
+    .gallery-slide.photo-missing::after { content:attr(data-label); color:var(--muted-foreground); font-size:.9rem; font-weight:700; text-align:center; padding:20px; }
+    .gallery-dots { display:flex; justify-content:center; gap:6px; margin-top:9px; }
+    .gallery-dots span { width:6px; height:6px; border-radius:50%; background:var(--border); transition:.2s; }
+    .gallery-dots span.active { background:var(--primary); width:16px; border-radius:4px; }
     .article-fact { background:#fff8e1; border-radius:var(--radius); padding:14px 16px; font-size:.95rem; color:#5a4a00; margin-bottom:0; }
     .article-cta { display:block; text-align:center; background:var(--primary); color:#fff; text-decoration:none; font-weight:700; padding:14px; border-radius:var(--radius); margin-top:30px; font-size:1rem; }
     .article-cta:hover { background:var(--primary-dark); }
@@ -41,6 +49,13 @@
     <a class="logo" href="news-learning.html">המבזק</a>
   </header>
 
+  <nav class="route-switcher" aria-label="מעבר בין מסלולי הלמידה">
+    <a href="../index.html">בית</a>
+    <a href="../whatsapp/whatsapp-learning.html">ווצאפ</a>
+    <a href="../instagram/instagram-learning.html">אינסטגרם</a>
+    <a class="active" href="news-learning.html">ניוז</a>
+  </nav>
+
   <div class="article-page" id="articlePage">
     <a class="back-link" href="news-learning.html">‹ חזרה לכל הכתבות</a>
     <div id="articleContent"></div>
@@ -50,7 +65,7 @@
   <script src="../whatsapp/math-lessons.js?v=20260712-1"></script>
   <script src="../whatsapp/math-upgrades.js?v=20260712-1"></script>
   <script src="../whatsapp/math-visuals.js?v=20260712-1"></script>
-  <script src="news-articles.js?v=20260713-1"></script>
+  <script src="news-articles.js?v=20260713-2"></script>
   <script>
     (function(){
       const pages=(window.MATHBRO_PAGES||[]).filter(p=>Number.isFinite(p.chapter));
@@ -59,12 +74,26 @@
       const articles=window.MATHBRO_ARTICLES||{};
       function escapeHtml(v){ return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
       function paras(list){ return (list||[]).map(t=>`<p>${escapeHtml(t)}</p>`).join(''); }
-      function photoSlot(chapter,letter){
-        const n=String(chapter).padStart(2,'0');
-        const src=`../assets/chapter-cards/extra/chapter-${n}-${letter}.jpg`;
-        return `<div class="inline-photo" data-label="📷 מקום לתמונה נוספת מהפרק">
-          <img src="${escapeHtml(src)}" alt="" onerror="this.parentElement.classList.add('photo-missing')">
-        </div>`;
+      function photoGallery(article){
+        const photos=(article&&article.photos||[]).filter(p=>p&&p.src);
+        if(!photos.length)return '';
+        const slides=photos.map(photo=>`<figure class="gallery-slide" data-label="📷 התמונה לא נטענה">
+          <img src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt||photo.caption||'תמונת כתבה')}" onerror="this.parentElement.classList.add('photo-missing')">
+          ${photo.caption?`<figcaption>${escapeHtml(photo.caption)}</figcaption>`:''}
+        </figure>`).join('');
+        const dots=photos.length>1?`<div class="gallery-dots">${photos.map((_,i)=>`<span class="${i===0?'active':''}"></span>`).join('')}</div>`:'';
+        return `<div class="photo-gallery"><div class="gallery-track">${slides}</div>${dots}</div>`;
+      }
+      function initGalleries(root){
+        root.querySelectorAll('.photo-gallery').forEach(gallery=>{
+          const track=gallery.querySelector('.gallery-track');
+          const dots=gallery.querySelectorAll('.gallery-dots span');
+          if(!dots.length)return;
+          track.addEventListener('scroll',()=>{
+            const i=Math.round(Math.abs(track.scrollLeft)/track.clientWidth);
+            dots.forEach((d,idx)=>d.classList.toggle('active',idx===i));
+          },{passive:true});
+        });
       }
 
       const params=new URLSearchParams(location.search);
@@ -80,6 +109,8 @@
       const title=visuals.cleanTitle?visuals.cleanTitle(page):(page.title||'');
       const image=visuals.chapterArt?visuals.chapterArt(page,'wide'):'';
       const example=(lesson.examples&&lesson.examples[0])||lesson.case||'';
+      const fact=(article&&article.fact)||lesson.fact||'';
+      const byline=[article&&article.reporter||'מערכת המבזק',article&&article.voice].filter(Boolean).join(' · ');
       const now=new Date();
 
       document.title=`${title} · המבזק · מתמטיקה לחרדים`;
@@ -88,14 +119,14 @@
       if(article){
         bodyHtml=`
           <div class="article-lead">${paras(article.lead)}</div>
-          ${photoSlot(page.chapter,'a')}
+          ${article.newsHook?`<p class="article-news-hook">${escapeHtml(article.newsHook)}</p>`:''}
+          ${photoGallery(article)}
           <div class="article-body">
             ${(article.sections||[]).map(s=>`<section><h2>${escapeHtml(s.h)}</h2>${paras(s.p)}</section>`).join('')}
             ${article.pullquote?`<p class="article-pullquote">${escapeHtml(article.pullquote)}</p>`:''}
             ${article.example?`<section><h2>${escapeHtml(article.example.h)}</h2>${paras(article.example.p)}</section>`:''}
-            ${photoSlot(page.chapter,'b')}
             ${article.mistake?`<section><h2>${escapeHtml(article.mistake.h)}</h2>${paras(article.mistake.p)}</section>`:''}
-            ${lesson.fact?`<section><h2>עובדה מעניינת</h2><p class="article-fact">${escapeHtml(lesson.fact)}</p></section>`:''}
+            ${fact?`<section><h2>עובדה מעניינת</h2><p class="article-fact">${escapeHtml(fact)}</p></section>`:''}
           </div>
         `;
       }else{
@@ -105,7 +136,7 @@
             ${lesson.real?`<section><h2>איפה פוגשים את זה בחיים</h2><p>${escapeHtml(lesson.real)}</p></section>`:''}
             ${example?`<section><h2>דוגמה</h2><p>${escapeHtml(example)}</p></section>`:''}
             ${lesson.warning?`<section><h2>הטעות שהכי כדאי להיזהר ממנה</h2><p>${escapeHtml(lesson.warning)}</p></section>`:''}
-            ${lesson.fact?`<section><h2>עובדה מעניינת</h2><p class="article-fact">${escapeHtml(lesson.fact)}</p></section>`:''}
+            ${fact?`<section><h2>עובדה מעניינת</h2><p class="article-fact">${escapeHtml(fact)}</p></section>`:''}
           </div>
         `;
       }
@@ -115,10 +146,11 @@
         <p class="article-eyebrow">פרק ${page.chapter} · ${escapeHtml(page.group||'')}</p>
         <h1 class="article-title">${escapeHtml(title)}</h1>
         ${article&&article.kicker?`<p class="article-kicker">${escapeHtml(article.kicker)}</p>`:''}
-        <p class="article-byline">מערכת המבזק · ${now.toLocaleDateString('he-IL')}</p>
+        <p class="article-byline">${escapeHtml(byline)} · ${now.toLocaleDateString('he-IL')}</p>
         ${bodyHtml}
         <a class="article-cta" href="../whatsapp/whatsapp-learning.html?lesson=${page.chapter}">המשיכו לתרגל בשיחה על הפרק ›</a>
       `;
+      initGalleries(el);
     })();
   </script>
 </body>

@@ -3,10 +3,12 @@
   const pages=(window.MATHBRO_PAGES||[]).filter(p=>Number.isFinite(p.chapter));
   const lessons=window.MATHBRO_LESSONS||{};
   const visuals=window.MATHBRO_VISUALS||{};
+  const articleData=window.MATHBRO_ARTICLES||{};
   const $=id=>document.getElementById(id);
   const DONE_KEY='mathbro-done';
 
   function lessonFor(p){ return lessons[p.file]||{}; }
+  function articleFor(p){ return articleData[p.file]||{}; }
   function cleanTitle(p){ return visuals.cleanTitle?visuals.cleanTitle(p):String(p.title||''); }
   function pageText(p){ return `${p.title||''} ${p.group||''} ${p.level||''}`.toLowerCase(); }
   function routeForPage(p){
@@ -19,16 +21,17 @@
   }
   function escapeHtml(v){ return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
   function teaserFor(p){
+    const a=articleFor(p);
     const l=lessonFor(p);
-    const t=(l.beginner||l.advanced||'').replace(/\s+/g,' ').trim();
-    return t.length>110?t.slice(0,110)+'…':t;
+    const t=(a.teaser||(a.lead&&a.lead[0])||l.beginner||l.advanced||'').replace(/\s+/g,' ').trim();
+    return t.length>126?t.slice(0,126)+'…':t;
   }
 
   const articles = pages.map((p,i)=>({
     page:p, index:i, title:cleanTitle(p),
     image:visuals.chapterArt?visuals.chapterArt(p,'wide'):'',
     thumb:visuals.chapterArt?visuals.chapterArt(p,'thumb'):'',
-    teaser:teaserFor(p), route:routeForPage(p),
+    story:articleFor(p), teaser:teaserFor(p), route:routeForPage(p),
   }));
 
   // ── top bar: real Hebrew weekday + real progress stats ──
@@ -58,6 +61,7 @@
       <div class="slide-item">
         <img src="${escapeHtml(a.image)}" alt="">
         <div class="slide-caption">
+          ${a.story&&a.story.voice?`<span class="slide-kicker">${escapeHtml(a.story.voice)}</span>`:''}
           <h2>${escapeHtml(a.title)}</h2>
           <p>${escapeHtml(a.teaser)}</p>
         </div>
@@ -86,7 +90,8 @@
         <div class="card-img"><img src="${escapeHtml(a.thumb)}" alt=""></div>
         <div class="card-body">
           <h3>${escapeHtml(a.title)}</h3>
-          <div class="post-date">פרק ${a.page.chapter} · ${escapeHtml(a.page.group||'')}</div>
+          <p class="card-teaser">${escapeHtml(a.teaser)}</p>
+          <div class="post-date">פרק ${a.page.chapter} · ${escapeHtml(a.page.group||'')}${a.story&&a.story.voice?` · ${escapeHtml(a.story.voice)}`:''}</div>
         </div>
       </a>`).join('') : `<div class="no-results">לא נמצאו פרקים מתאימים</div>`;
   }

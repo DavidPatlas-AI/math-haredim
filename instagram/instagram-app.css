@@ -28,6 +28,22 @@ img{display:block}
 .ig-topbar-icons button{width:24px;height:24px;color:var(--ig-text)}
 .ig-topbar-icons svg{width:24px;height:24px}
 
+.ig-mode-switcher{
+  position:sticky;top:54px;z-index:19;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:9px 14px;
+  background:rgba(255,255,255,.95);border-bottom:1px solid var(--ig-line);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);scrollbar-width:none;direction:rtl;
+}
+.ig-mode-switcher::-webkit-scrollbar{display:none}
+.ig-mode-switcher a{
+  flex:0 0 auto;min-height:32px;border-radius:999px;padding:6px 13px;text-decoration:none;
+  color:var(--ig-text);background:#fff;border:1px solid var(--ig-line);font-size:.78rem;font-weight:800;
+}
+.ig-mode-switcher a.active{
+  color:#fff;border-color:transparent;background:linear-gradient(135deg,#fdf497,#fd5949,#d6249f,#285aeb);
+  box-shadow:0 6px 18px rgba(214,36,159,.22);
+}
+.ig-mode-switcher a:hover{transform:translateY(-1px)}
+
 /* ── stories row ── */
 .ig-stories{display:flex;gap:17px;overflow-x:auto;padding:14px 16px;scrollbar-width:none;border-bottom:1px solid var(--ig-line)}
 .ig-stories::-webkit-scrollbar{display:none}
