@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" direction="rtl">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#1e1b4b"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+    <radialGradient id="spot" cx="24%" cy="15%" r="70%">
+      <stop offset="0" stop-color="#c7d2fe" stop-opacity=".55"/>
+      <stop offset=".62" stop-color="#c7d2fe" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#c7d2fe"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="26" stdDeviation="22" flood-color="#000" flood-opacity=".32"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect width="1200" height="675" fill="url(#spot)"/>
+  <g opacity=".12">
+    <path d="M0 0V675" stroke="#fff" stroke-width="1"/><path d="M100 0V675" stroke="#fff" stroke-width="1"/><path d="M200 0V675" stroke="#fff" stroke-width="1"/><path d="M300 0V675" stroke="#fff" stroke-width="1"/><path d="M400 0V675" stroke="#fff" stroke-width="1"/><path d="M500 0V675" stroke="#fff" stroke-width="1"/><path d="M600 0V675" stroke="#fff" stroke-width="1"/><path d="M700 0V675" stroke="#fff" stroke-width="1"/><path d="M800 0V675" stroke="#fff" stroke-width="1"/><path d="M900 0V675" stroke="#fff" stroke-width="1"/><path d="M1000 0V675" stroke="#fff" stroke-width="1"/><path d="M1100 0V675" stroke="#fff" stroke-width="1"/><path d="M1200 0V675" stroke="#fff" stroke-width="1"/>
+    <path d="M0 0H1200" stroke="#fff" stroke-width="1"/><path d="M0 96H1200" stroke="#fff" stroke-width="1"/><path d="M0 192H1200" stroke="#fff" stroke-width="1"/><path d="M0 288H1200" stroke="#fff" stroke-width="1"/><path d="M0 384H1200" stroke="#fff" stroke-width="1"/><path d="M0 480H1200" stroke="#fff" stroke-width="1"/><path d="M0 576H1200" stroke="#fff" stroke-width="1"/><path d="M0 672H1200" stroke="#fff" stroke-width="1"/>
+  </g>
+  <circle cx="1010" cy="118" r="155" fill="#fff" opacity=".09"/>
+  <circle cx="96" cy="580" r="210" fill="#000" opacity=".12"/>
+  <rect x="72" y="72" width="1056" height="531" rx="44" fill="#000" opacity=".22" filter="url(#shadow)"/>
+  <rect x="104" y="104" width="992" height="467" rx="34" fill="#fff" opacity=".08"/>
+  <g transform="translate(0 0)">
+    <text x="1015" y="164" text-anchor="middle" direction="rtl" font-family="Arial, 'Noto Sans Hebrew', sans-serif" font-size="30" font-weight="900" fill="#c7d2fe" opacity="0.98">חדשות למתמטיקאים</text>
+    <text x="1015" y="210" text-anchor="middle" direction="rtl" font-family="Arial, 'Noto Sans Hebrew', sans-serif" font-size="26" font-weight="800" fill="#fff" opacity="0.86">פרק 19 · מודדים בלי לגעת</text>
+    <text x="1015" y="292" text-anchor="middle" direction="rtl" font-family="Arial, 'Noto Sans Hebrew', sans-serif" font-size="54" font-weight="900" fill="#fff" opacity="1">טריגונומטריה</text>
+    <text x="1015" y="366" text-anchor="middle" direction="rtl" font-family="Arial, 'Noto Sans Hebrew', sans-serif" font-size="42" font-weight="900" fill="#c7d2fe" opacity="1">tan θ = מול/ליד</text>
+  </g>
+  <g transform="translate(110 130)">
+        <path d="M60 245 H520" stroke="#fff" stroke-width="7" opacity=".55"/>
+        <path d="M125 245 V74" stroke="#fff" stroke-width="8"/>
+        <path d="M125 245 L460 74" stroke="#c7d2fe" stroke-width="10" stroke-linecap="round"/>
+        <path d="M158 245 A38 38 0 0 0 143 215" fill="none" stroke="#fff" stroke-width="5"/>
+        <text x="176" y="226" text-anchor="middle" direction="rtl" font-family="Arial, 'Noto Sans Hebrew', sans-serif" font-size="30" font-weight="900" fill="#fff" opacity="1">θ</text>
+        <text x="365" y="175" text-anchor="middle" direction="rtl" font-family="Arial, 'Noto Sans Hebrew', sans-serif" font-size="46" font-weight="900" fill="#fff" opacity="1">tan θ</text>
+      </g>
+  <rect x="742" y="466" width="312" height="54" rx="27" fill="#fff" opacity=".14"/>
+  <text x="898" y="502" text-anchor="middle" direction="rtl" font-family="Arial, 'Noto Sans Hebrew', sans-serif" font-size="23" font-weight="900" fill="#fff" opacity="0.92">תמונה מקורית לכתבת הפרק</text>
+</svg>

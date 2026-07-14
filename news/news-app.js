@@ -29,8 +29,8 @@
 
   const articles = pages.map((p,i)=>({
     page:p, index:i, title:cleanTitle(p),
-    image:visuals.chapterArt?visuals.chapterArt(p,'wide'):'',
-    thumb:visuals.chapterArt?visuals.chapterArt(p,'thumb'):'',
+    image:visuals.chapterArt?visuals.chapterArt(p,'wide'):(articleFor(p).heroImage||''),
+    thumb:visuals.chapterArt?visuals.chapterArt(p,'thumb'):(articleFor(p).cardImage||articleFor(p).heroImage||''),
     story:articleFor(p), teaser:teaserFor(p), route:routeForPage(p),
   }));
 
@@ -89,9 +89,13 @@
       <a class="article-card" href="article.html?lesson=${a.page.chapter}">
         <div class="card-img"><img src="${escapeHtml(a.thumb)}" alt=""></div>
         <div class="card-body">
+          <div class="card-meta-row">
+            ${a.story&&a.story.realNews?`<span class="source-pill">מקור אמיתי</span>`:''}
+            ${a.story&&a.story.voice?`<span class="voice-pill">${escapeHtml(a.story.voice)}</span>`:''}
+          </div>
           <h3>${escapeHtml(a.title)}</h3>
           <p class="card-teaser">${escapeHtml(a.teaser)}</p>
-          <div class="post-date">פרק ${a.page.chapter} · ${escapeHtml(a.page.group||'')}${a.story&&a.story.voice?` · ${escapeHtml(a.story.voice)}`:''}</div>
+          <div class="post-date">פרק ${a.page.chapter} · ${escapeHtml(a.page.group||'')}</div>
         </div>
       </a>`).join('') : `<div class="no-results">לא נמצאו פרקים מתאימים</div>`;
   }

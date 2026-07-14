@@ -244,6 +244,9 @@
   .track-copy small { color:var(--chalk-dim); font-size:.68rem; line-height:1.25; white-space:normal; }
   .track-go { color:var(--track-a); font-size:1.15rem; font-weight:900; justify-self:end; transition:transform .2s; }
   .track-btn:hover .track-go { transform:translateX(-3px); }
+  .track-icon--brand { box-shadow:inset 0 0 0 1px rgba(255,255,255,.18), 0 3px 8px rgba(0,0,0,.25); }
+  .track-btn.has-caption { grid-template-rows:auto auto; row-gap:7px; }
+  .track-caption { grid-column:1/-1; color:var(--chalk-dim); font-size:.72rem; line-height:1.5; white-space:normal; }
   .track-math { --track-a:var(--chalk-y); --track-b:rgba(255,230,109,.09); }
   .track-english { --track-a:var(--chalk-b); --track-b:rgba(116,185,255,.1); }
   .track-whatsapp { --track-a:#25d366; --track-b:rgba(37,211,102,.12); }
@@ -719,20 +722,29 @@
         <span class="track-copy"><strong>אנגלית</strong><small>תרגול והכנה</small></span>
         <span class="track-go" aria-hidden="true">↗</span>
       </a>
-      <a href="whatsapp/whatsapp-learning.html" class="track-btn track-whatsapp">
-        <span class="track-icon" aria-hidden="true">💬</span>
-        <span class="track-copy"><strong>ווצאפ</strong><small>שיחה, סטטוס וחידון</small></span>
+      <a href="whatsapp/whatsapp-learning.html" class="track-btn track-whatsapp has-caption">
+        <span class="track-icon track-icon--brand" style="background:#25D366" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.87.5 3.62 1.43 5.13L2 22l5.1-1.54a9.86 9.86 0 0 0 4.94 1.32h.01c5.45 0 9.9-4.45 9.9-9.91C21.98 6.45 17.53 2 12.04 2Zm5.78 14.03c-.24.68-1.38 1.3-1.9 1.35-.5.05-1.03.1-1.66-.1-.38-.12-.87-.28-1.5-.55-2.63-1.14-4.35-3.8-4.48-3.98-.13-.18-1.07-1.42-1.07-2.72s.68-1.93.92-2.2c.24-.26.53-.32.7-.32h.5c.16 0 .38-.06.6.46.22.53.75 1.82.82 1.95.07.14.11.3.02.48-.09.18-.13.28-.26.44-.13.16-.28.35-.4.47-.13.13-.27.28-.11.54.15.26.68 1.12 1.47 1.81 1 .89 1.85 1.17 2.11 1.3.26.14.41.12.56-.06.16-.18.65-.76.83-1.02.18-.25.35-.21.6-.13.24.09 1.53.72 1.79.85.26.14.44.2.5.31.06.12.06.65-.14 1.28Z"/></svg>
+        </span>
+        <span class="track-copy"><strong>WhatsApp</strong><small>שיחה, סטטוס וחידון</small></span>
         <span class="track-go" aria-hidden="true">↗</span>
+        <span class="track-caption">מסלול לימוד שמדמה שיחת WhatsApp אמיתית עם חבר, פרק אחר פרק</span>
       </a>
-      <a href="instagram/instagram-learning.html" class="track-btn track-instagram">
-        <span class="track-icon" aria-hidden="true">📷</span>
-        <span class="track-copy"><strong>אינסטגרם</strong><small>סטוריז ופיד לימודי</small></span>
+      <a href="instagram/instagram-learning.html" class="track-btn track-instagram has-caption">
+        <span class="track-icon track-icon--brand" style="background:linear-gradient(135deg,#833ab4,#fd1d1d 60%,#fcb045)" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="#fff" stroke="none"/></svg>
+        </span>
+        <span class="track-copy"><strong>Instagram</strong><small>סטוריז ופיד לימודי</small></span>
         <span class="track-go" aria-hidden="true">↗</span>
+        <span class="track-caption">פיד וסטוריז בהשראת אינסטגרם, כשכל פרק הופך לפוסט שאפשר לגלול</span>
       </a>
-      <a href="news/news-learning.html" class="track-btn track-news">
-        <span class="track-icon" aria-hidden="true">📰</span>
+      <a href="news/news-learning.html" class="track-btn track-news has-caption">
+        <span class="track-icon track-icon--brand" style="background:#c8211e" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3V4Z"/><path d="M20 20a3 3 0 0 1-3-3V4"/><path d="M8 8h8M8 12h8M8 16h4"/></svg>
+        </span>
         <span class="track-copy"><strong>ניוז</strong><small>כל פרק ככתבה</small></span>
         <span class="track-go" aria-hidden="true">↗</span>
+        <span class="track-caption">פורטל חדשות מדומה: כל נושא הופך לכתבה עם כותרת, תמונה ועובדה מעניינת</span>
       </a>
     </div>
 

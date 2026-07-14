@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;700;900&display=swap">
-  <link rel="stylesheet" href="news-app.css?v=20260713-2">
+  <link rel="stylesheet" href="news-app.css?v=20260714-3">
   <style>
     .article-page { max-width:760px; margin:24px auto; padding:0 20px 60px; }
     .back-link { display:inline-block; margin-bottom:14px; color:var(--primary); text-decoration:none; font-weight:700; font-size:.9rem; }
@@ -20,6 +20,12 @@
     .article-kicker { color:var(--primary); font-weight:800; font-size:1rem; margin-bottom:10px; }
     .article-byline { color:var(--muted-foreground); font-size:.85rem; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border); }
     .article-news-hook { background:#fff3f2; border-right:4px solid var(--primary); border-radius:var(--radius); color:#55302f; font-size:1rem; font-weight:700; line-height:1.7; margin:18px 0 22px; padding:13px 16px; }
+    .article-source-card { background:#fff; border:1px solid #dedede; border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.06); margin:20px 0 24px; padding:16px 18px; }
+    .article-source-card .source-label { color:var(--primary); display:block; font-size:.78rem; font-weight:900; letter-spacing:.02em; margin-bottom:5px; }
+    .article-source-card h2 { color:var(--title); font-size:1.08rem; line-height:1.45; margin-bottom:7px; }
+    .article-source-card p { color:var(--text-primary); font-size:.96rem; line-height:1.75; margin-bottom:10px; }
+    .article-source-card a { color:var(--primary); display:inline-flex; font-size:.9rem; font-weight:900; text-decoration:none; }
+    .article-source-card a:hover { text-decoration:underline; }
     .article-lead p { font-size:1.18rem; line-height:1.85; color:var(--title); font-weight:500; margin-bottom:16px; }
     .article-body section { margin-bottom:26px; }
     .article-body h2 { font-size:1.2rem; color:var(--title); margin-bottom:10px; border-right:4px solid var(--primary); padding-right:10px; }
@@ -27,6 +33,7 @@
     .article-body p:last-child { margin-bottom:0; }
     .article-pullquote { border-right:4px solid var(--primary); margin:30px 0; padding:4px 22px; font-size:1.3rem; font-weight:700; line-height:1.65; color:var(--title); }
     .photo-gallery { margin:24px 0; }
+    .photo-gallery::before { content:"גלריית הכתבה"; color:var(--primary); display:block; font-size:.88rem; font-weight:900; margin:0 0 9px; }
     .gallery-track { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; border-radius:var(--radius); background:#fff; box-shadow:0 2px 9px rgba(0,0,0,.08); scrollbar-width:none; -ms-overflow-style:none; }
     .gallery-track::-webkit-scrollbar { display:none; }
     .gallery-slide { flex:0 0 100%; scroll-snap-align:start; }
@@ -65,7 +72,7 @@
   <script src="../whatsapp/math-lessons.js?v=20260712-1"></script>
   <script src="../whatsapp/math-upgrades.js?v=20260712-1"></script>
   <script src="../whatsapp/math-visuals.js?v=20260712-1"></script>
-  <script src="news-articles.js?v=20260713-2"></script>
+  <script src="news-articles.js?v=20260714-3"></script>
   <script>
     (function(){
       const pages=(window.MATHBRO_PAGES||[]).filter(p=>Number.isFinite(p.chapter));
@@ -74,6 +81,33 @@
       const articles=window.MATHBRO_ARTICLES||{};
       function escapeHtml(v){ return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
       function paras(list){ return (list||[]).map(t=>`<p>${escapeHtml(t)}</p>`).join(''); }
+      function articleWordCount(article){
+        if(!article)return 450;
+        const chunks=[
+          article.kicker,
+          article.teaser,
+          article.newsHook,
+          ...(article.lead||[]),
+          ...(article.sections||[]).flatMap(s=>[s.h,...(s.p||[])]),
+          article.pullquote,
+          article.example&&article.example.h,
+          ...(article.example&&article.example.p||[]),
+          article.mistake&&article.mistake.h,
+          ...(article.mistake&&article.mistake.p||[]),
+          article.fact
+        ].filter(Boolean);
+        return chunks.join(' ').trim().split(/\s+/).filter(Boolean).length;
+      }
+      function sourceCard(article){
+        const source=article&&article.realNews;
+        if(!source)return '';
+        return `<aside class="article-source-card">
+          <span class="source-label">חיבור לחדשות אמיתיות</span>
+          <h2>${escapeHtml(source.title||source.source||'מקור אמיתי')}</h2>
+          ${source.summary?`<p>${escapeHtml(source.summary)}</p>`:''}
+          ${source.url?`<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener">למקור: ${escapeHtml(source.source||'קישור')}</a>`:''}
+        </aside>`;
+      }
       function photoGallery(article){
         const photos=(article&&article.photos||[]).filter(p=>p&&p.src);
         if(!photos.length)return '';
@@ -107,19 +141,21 @@
       const lesson=lessons[page.file]||{};
       const article=articles[page.file]||null;
       const title=visuals.cleanTitle?visuals.cleanTitle(page):(page.title||'');
-      const image=visuals.chapterArt?visuals.chapterArt(page,'wide'):'';
+      const image=visuals.chapterArt?visuals.chapterArt(page,'wide'):(article&&article.heroImage)||'';
       const example=(lesson.examples&&lesson.examples[0])||lesson.case||'';
       const fact=(article&&article.fact)||lesson.fact||'';
       const byline=[article&&article.reporter||'מערכת המבזק',article&&article.voice].filter(Boolean).join(' · ');
       const now=new Date();
+      const readMinutes=Math.max(4,Math.ceil(articleWordCount(article)/190));
 
       document.title=`${title} · המבזק · מתמטיקה לחרדים`;
 
       let bodyHtml;
       if(article){
         bodyHtml=`
-          <div class="article-lead">${paras(article.lead)}</div>
           ${article.newsHook?`<p class="article-news-hook">${escapeHtml(article.newsHook)}</p>`:''}
+          ${sourceCard(article)}
+          <div class="article-lead">${paras(article.lead)}</div>
           ${photoGallery(article)}
           <div class="article-body">
             ${(article.sections||[]).map(s=>`<section><h2>${escapeHtml(s.h)}</h2>${paras(s.p)}</section>`).join('')}
@@ -146,7 +182,7 @@
         <p class="article-eyebrow">פרק ${page.chapter} · ${escapeHtml(page.group||'')}</p>
         <h1 class="article-title">${escapeHtml(title)}</h1>
         ${article&&article.kicker?`<p class="article-kicker">${escapeHtml(article.kicker)}</p>`:''}
-        <p class="article-byline">${escapeHtml(byline)} · ${now.toLocaleDateString('he-IL')}</p>
+        <p class="article-byline">${escapeHtml(byline)} · ${readMinutes} דקות קריאה · ${now.toLocaleDateString('he-IL')}</p>
         ${bodyHtml}
         <a class="article-cta" href="../whatsapp/whatsapp-learning.html?lesson=${page.chapter}">המשיכו לתרגל בשיחה על הפרק ›</a>
       `;
